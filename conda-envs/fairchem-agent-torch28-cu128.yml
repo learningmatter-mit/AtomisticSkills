@@ -4,7 +4,6 @@ channels:
 dependencies:
   - _openmp_mutex=4.5
   - arm-variant=1.2.0
-  - attr=2.5.1
   - brotli=1.2.0
   - brotli-bin=1.2.0
   - bzip2=1.0.8
@@ -26,7 +25,6 @@ dependencies:
   - cuda-version=12.9
   - cudnn=9.10.2.21
   - cycler=0.12.1
-  - cyrus-sasl=2.1.28
   - e3nn=0.5.8
   - filelock=3.20.0
   - font-ttf-dejavu-sans-mono=2.37
@@ -58,7 +56,6 @@ dependencies:
   - libbrotlicommon=1.2.0
   - libbrotlidec=1.2.0
   - libbrotlienc=1.2.0
-  - libcap=2.77
   - libcblas=3.11.0
   - libcublas=12.9.1.4
   - libcudnn=9.10.2.21
@@ -85,9 +82,6 @@ dependencies:
   - liblapack=3.11.0
   - liblzma=5.8.1
   - libmagma=2.9.0
-  - libnl=3.11.0
-  - libnsl=2.0.1
-  - libntlm=1.4
   - libnvjitlink=12.9.86
   - libopenblas=0.3.30
   - libpng=1.6.51
@@ -97,10 +91,8 @@ dependencies:
   - libsqlite=3.51.0
   - libstdcxx=15.2.0
   - libstdcxx-ng=15.2.0
-  - libsystemd0=258.2
   - libtiff=4.7.1
   - libtorch=2.8.0
-  - libudev1=258.2
   - libuuid=2.41.2
   - libuv=1.51.0
   - libwebp-base=1.6.0
@@ -332,14 +324,16 @@ dependencies:
       - threadpoolctl==3.6.0
       - tiktoken==0.12.0
       - tomli==2.3.0
-      - torch==2.9.1+cu130
+      - torch==2.8.0
+      - torchvision==0.23.0
+      - torchaudio==2.8.0
+      - --extra-index-url https://download.pytorch.org/whl/cu128
       - torch-geometric==2.7.0
       - torchdata==0.11.0
       - torchmetrics==1.8.2
       - torchtnt==0.2.4
-      - torchvision==0.24.1
       - tqdm==4.67.1
-      - triton==3.5.1
+      - triton==3.4.0
       - typer-slim==0.20.0
       - types-requests==2.32.4.20250913
       - typing-inspect==0.9.0
@@ -355,4 +349,3 @@ dependencies:
       - xxhash==3.6.0
       - yarl==1.22.0
       - zstandard==0.25.0
-prefix: /home/bdeng/miniforge3/envs/fairchem-agent

@@ -204,7 +204,7 @@ dependencies:
       - matcalc==0.4.5
       - matgl==2.0.6
       - matplotlib==3.10.7
-      - matscipy==1.2.0
+      - matscipy==1.1.0
       - mcp==1.22.0
       - mda-xdrlib==0.2.0
       - mdanalysis==2.9.0
