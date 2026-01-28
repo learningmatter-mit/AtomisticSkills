@@ -1,65 +1,45 @@
 {
-  "mcpServers": {
-    "matgl": {
-      "command": "/home/bdeng/miniforge3/envs/matgl-agent/bin/python",
-      "args": [
-        "-m",
-        "src.mcp_server.matgl_server"
-      ],
-      "env": {
-        "PYTHONPATH": "/home/bdeng/projects/simulation_mcp",
-        "MATGL_BACKEND": "DGL"
-      }
-    },
-    "mace": {
-      "command": "/home/bdeng/miniforge3/envs/mace-agent/bin/python",
-      "args": [
-        "-m",
-        "src.mcp_server.mace_server"
-      ],
-      "env": {
-        "PYTHONPATH": "/home/bdeng/projects/simulation_mcp"
-      }
-    },
-    "fairchem": {
-      "command": "/home/bdeng/miniforge3/envs/fairchem-agent/bin/python",
-      "args": [
-        "-m",
-        "src.mcp_server.fairchem_server"
-      ],
-      "env": {
-        "PYTHONPATH": "/home/bdeng/projects/simulation_mcp"
-      }
-    },
-    "materials_tools": {
-      "command": "/home/bdeng/miniforge3/envs/mlip-agent/bin/python",
-      "args": [
-        "-m",
-        "src.mcp_server.materials_server"
-      ],
-      "env": {
-        "PYTHONPATH": "/home/bdeng/projects/simulation_mcp"
-      }
-    },
-    "atomate2": {
-      "command": "/home/bdeng/miniforge3/envs/atomate2-agent/bin/python",
-      "args": [
-        "-m",
-        "src.mcp_server.atomate2_server"
-      ],
-      "env": {
-        "PYTHONPATH": "/home/bdeng/projects/simulation_mcp"
-      }
-    },
-    "smol": {
-      "command": "/home/bdeng/miniforge3/envs/smol-agent/bin/python",
-      "args": [
-        "-m",
-        "src.mcp_server.smol_server"
-      ],
-      "env": {
-        "PYTHONPATH": "/home/bdeng/projects/simulation_mcp"
-      }
+    "mcpServers": {
+        "mace": {
+            "command": "/mnt/data0/hojechun/miniforge3/envs/mace-agent/bin/python",
+            "args": [
+                "-m",
+                "src.mcp_server.mace_server"
+            ],
+            "env": {
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
+            }
+        },
+        "fairchem": {
+            "command": "/mnt/data0/hojechun/miniforge3/envs/fairchem-agent/bin/python",
+            "args": [
+                "-m",
+                "src.mcp_server.fairchem_server"
+            ],
+            "env": {
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
+            }
+        },
+        "materials_tools": {
+            "command": "/mnt/data0/hojechun/miniforge3/envs/mlip-agent/bin/python",
+            "args": [
+                "-m",
+                "src.mcp_server.materials_server"
+            ],
+            "env": {
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
+            }
+        },
+        "htvs": {
+            "command": "/mnt/data0/hojechun/miniforge3/envs/htvs-agent/bin/python",
+            "args": [
+                "-m",
+                "src.mcp_server.htvs_server"
+            ],
+            "env": {
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp",
+                "HTVS_DJANGOCHEM_DIR": "/mnt/data0/hojechun/repos/htvs/djangochem"
+            }
+        }
     }
-  }
 }

@@ -1,5 +1,5 @@
 ---
-trigger: manual
+trigger: always_on
 ---
 
 # machine learning interatomic potential (mlip) agent project guide

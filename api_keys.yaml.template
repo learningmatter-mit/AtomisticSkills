@@ -5,7 +5,7 @@ openai:
   api_key: "your-openai-api-key-here"
 
 materials_project:
-  api_key: "your-mp-api-key-here"
+  api_key: 12CP338fUaJRkNDgGE2TMELiRUkQMX9z
 
 # Optional: You can also set these as environment variables
 # export OPENAI_API_KEY="your-openai-api-key"
