@@ -41,7 +41,8 @@ The standard workflow for running a DFT job via HTVS is:
 
 ## Chemical Configuration Selection
 
-Select the `chem_config` based on the material type and desired accuracy:
+Select the `chem_config` based on the material type and desired accuracy.
+For a complete list of naming conventions and standard configurations, see `chemconfig-standards.md`.
 
 ### Inorganic Materials (Bulk, Surfaces)
 -   **Standard Relaxation**: `pbe_d3_paw_opt_vasp` or `pbe_paw_opt_vasp` (PBE + optional D3).
