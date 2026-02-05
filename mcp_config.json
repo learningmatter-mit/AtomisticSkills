@@ -38,7 +38,8 @@
             ],
             "env": {
                 "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp",
-                "HTVS_DJANGOCHEM_DIR": "/mnt/data0/hojechun/repos/htvs/djangochem"
+                "HTVS_DJANGOCHEM_DIR": "/mnt/data0/hojechun/repos/htvs/djangochem",
+                "HTVS_DIR": "/mnt/data0/hojechun/repos/htvs"
             }
         }
     }
