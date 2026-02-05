@@ -64,20 +64,20 @@ def vasp_to_htvs_details(vasp_input: Dict[str, Any], additional_details: Optiona
 
 @mcp.tool()
 def request_htvs_job(
-    project_name: str,
+    group_name: str,
     chem_config: str,
     details: Dict[str, Any],
+    settings_module: str,
     parent_pks: Optional[List[int]] = None,
     parent_config: Optional[str] = None,
     requester: Optional[str] = None,
-    settings_module: str = "djangochem.settings.orgel",
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
     Requests a new HTVS job by calling 'python manage.py requestjobs'.
 
     Args:
-        project_name: The name of the project.
+        group_name: The name of the group (project).
         chem_config: The name of the chemical configuration (e.g., 'pbe_d3_paw_bomd_vasp').
         details: A dictionary of job details (will be converted to JSON string).
         parent_pks: List of parent job primary keys (optional).
@@ -102,7 +102,7 @@ def request_htvs_job(
     # Construct command
     cmd = [
         sys.executable, manage_py_path, "requestjobs",
-        project_name,
+        group_name,
         chem_config,
         "--settings", settings_module,
         "--details", json.dumps(details)
@@ -146,24 +146,25 @@ def request_htvs_job(
 
 @mcp.tool()
 def build_htvs_job(
-    project_name: str,
-    inbox_path: str,
+    group_name: str,
+    settings_module: str,
+    inbox_path: Optional[str] = None,
     config_name: Optional[str] = None,
     limit: Optional[int] = None,
     compute_platform: Optional[str] = None,
-    settings_module: str = "djangochem.settings.orgel",
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
     Builds requested HTVS jobs (creates files in inbox) by calling 'python manage.py buildjobs'.
 
     Args:
-        project_name: The name of the project.
-        inbox_path: The directory where job folders should be created.
+        group_name: The name of the group (project).
+        settings_module: Django settings module to use.
+        inbox_path: The directory where job folders should be created. 
+                    Defaults to HTVS_JOB_ROOT/inbox or ./inbox.
         config_name: Filter by specific configuration name (optional).
         limit: Max number of jobs to build (optional).
         compute_platform: Compute platform string (e.g., 'slurm', 'local') (optional).
-        settings_module: Django settings module to use.
         djangochem_dir: Path to directory containing manage.py.
 
     Returns:
@@ -176,9 +177,17 @@ def build_htvs_job(
     if not os.path.exists(manage_py_path):
          return f"Error: manage.py not found at {manage_py_path}."
 
+    # Determine inbox_path if not provided
+    if not inbox_path:
+        job_root = os.environ.get("HTVS_JOB_ROOT")
+        if job_root:
+            inbox_path = os.path.join(job_root, "inbox")
+        else:
+            inbox_path = os.path.join(os.getcwd(), "inbox")
+
     cmd = [
         sys.executable, manage_py_path, "buildjobs",
-        project_name,
+        group_name,
         inbox_path,
         "--settings", settings_module,
     ]
@@ -212,18 +221,18 @@ def build_htvs_job(
 
 @mcp.tool()
 def parse_htvs_job(
-    project_name: str,
+    group_name: str,
     completed_path: str,
+    settings_module: str,
     config_name: Optional[str] = None,
     limit: Optional[int] = None,
-    settings_module: str = "djangochem.settings.orgel",
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
     Parses completed HTVS jobs by calling 'python manage.py parsejobs'.
 
     Args:
-        project_name: The name of the project.
+        group_name: The name of the group (project).
         completed_path: The directory containing completed job folders.
         config_name: Filter by specific configuration name (optional).
         limit: Max number of jobs to parse (optional).
@@ -242,7 +251,7 @@ def parse_htvs_job(
 
     cmd = [
         sys.executable, manage_py_path, "parsejobs",
-        project_name,
+        group_name,
         completed_path,
         "--settings", settings_module,
     ]
@@ -278,7 +287,7 @@ if __name__ == "__main__":
     
 def run_htvs_script(
     script_body: str, 
-    settings_module: str = "djangochem.settings.orgel", 
+    settings_module: str, 
     djangochem_dir: Optional[str] = None
 ) -> str:
     """
@@ -338,7 +347,7 @@ django.setup()
 
 @mcp.tool()
 def list_htvs_configs(
-    settings_module: str = "djangochem.settings.orgel",
+    settings_module: str,
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
@@ -357,10 +366,10 @@ print(json.dumps(list(configs), indent=2))
 
 @mcp.tool()
 def get_htvs_job_status(
+    settings_module: str,
     job_uuids: Optional[List[str]] = None,
-    project_name: Optional[str] = None,
+    group_name: Optional[str] = None,
     limit: int = 10,
-    settings_module: str = "djangochem.settings.orgel",
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
@@ -368,7 +377,7 @@ def get_htvs_job_status(
     
     Args:
         job_uuids: List of job UUIDs to check.
-        project_name: Project name to filter by (if job_uuids not provided).
+        group_name: Group (project) name to filter by (if job_uuids not provided).
         limit: Max number of jobs to return when filtering by project.
         
     Returns:
@@ -381,15 +390,15 @@ import json
 
 results = {{}}
 uuids = {json.dumps(job_uuids) if job_uuids else 'None'}
-project_name = "{project_name}" if {1 if project_name else 0} else None
+group_name = "{group_name}" if {1 if group_name else 0} else None
 limit = {limit}
 
 if uuids:
     jobs = Job.objects.filter(uuid__in=uuids)
     for job in jobs:
         results[str(job.uuid)] = job.status
-elif project_name:
-    jobs = Job.objects.filter(group__name=project_name).order_by('-createtime')[:limit]
+elif group_name:
+    jobs = Job.objects.filter(group__name=group_name).order_by('-createtime')[:limit]
     for job in jobs:
         results[str(job.uuid)] = job.status
 
@@ -401,7 +410,7 @@ print(json.dumps(results, indent=2))
 @mcp.tool()
 def get_htvs_job_results(
     job_uuids: List[str],
-    settings_module: str = "djangochem.settings.orgel",
+    settings_module: str,
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
@@ -447,9 +456,9 @@ def save_htvs_structures(
     structure_file: str,
     config_name: str,
     parent_bulk_id: int,
+    group_name: str,
+    settings_module: str,
     miller_index: Optional[List[int]] = None,
-    group_name: str = "default_group",
-    settings_module: str = "djangochem.settings.orgel",
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
@@ -643,7 +652,7 @@ def inspect_chem_config(config_name: str, htvs_repo_root: Optional[str] = None) 
 @mcp.tool()
 def create_htvs_group(
     group_name: str,
-    settings_module: str = "djangochem.settings.orgel",
+    settings_module: str,
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
@@ -672,9 +681,9 @@ print(json.dumps({{"name": group.name, "created": created}}))
 @mcp.tool()
 def query_htvs_structures(
     group_name: str,
+    settings_module: str,
     structure_type: str = "Crystal",
     limit: int = 10,
-    settings_module: str = "djangochem.settings.orgel",
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
@@ -757,119 +766,6 @@ print(json.dumps(results, indent=2))
 """
     return run_htvs_script(script, settings_module, djangochem_dir)
 
-@mcp.tool()
-def save_htvs_crystals(
-    structure_file: str,
-    group_name: str,
-    config_name: str = "pbe_d3_paw_bomd_vasp",
-    settings_module: str = "djangochem.settings.orgel",
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Saves a structure file (cif, xyz, etc.) to the HTVS database as 'Crystal' objects.
-    Useful for importing bulk structures (like SQS alloys) to start a workflow.
-    
-    Args:
-        structure_file: Absolute path to the structure file.
-        group_name: Name of the group (Project) to assign the crystals to.
-        config_name: Name of the JobConfig to associate with the import job (default: 'pbe_d3_paw_bomd_vasp').
-        settings_module: Django settings module to use.
-        djangochem_dir: Path to directory containing manage.py.
-    
-    Returns:
-        JSON string of list of created Crystal IDs.
-    """
-    script = f"""
-import os
-import json
-import sys
-import numpy as np
-from ase import io
-from django.utils import timezone
-from django.contrib.contenttypes.models import ContentType
-
-# Models
-from pgmols.models import Crystal, Method, Species, Geom
-from django.contrib.auth.models import Group
-from jobs.models import Job, JobConfig
-
-structure_file = "{structure_file}"
-group_name = "{group_name}"
-config_name = "{config_name}"
-
-def get_jobconfig(name):
-    try:
-        return JobConfig.objects.get(name=name)
-    except JobConfig.DoesNotExist:
-        # Fallback to first available if specific one not found, or error?
-        # Better to error to be safe
-        raise ValueError(f"JobConfig '{{name}}' not found")
-
-def get_group(name):
-    try:
-        return Group.objects.get(name=name)
-    except Group.DoesNotExist:
-        raise ValueError(f"Group '{{name}}' not found")
-
-def get_method():
-    # Get or create a default method for manual uploads
-    m, created = Method.objects.get_or_create(name="manual_upload")
-    return m
-
-def create_job(group_obj, config_obj):
-    # Create a dummy job to act as parent
-    j = Job(
-        group=group_obj,
-        config=config_obj,
-        status='done',
-        details={{'comments': f'Imported from {{structure_file}}', 'name': 'Import Job'}},
-        createtime=timezone.now(),
-        completetime=timezone.now()
-    )
-    j.save()
-    return j
-
-def create_crystal_object(atoms, group_obj, config_obj, method_obj):
-    # unexpected argument 'spacegroup_number' in Crystal.from_ase_atoms? 
-    # Checked pgmols/models.py: def from_ase_atoms(cls, atoms: Atoms, spacegroup_number: int | None = None) -> Crystal:
-    # So we can pass None implicitly.
-    
-    crystal = Crystal.from_ase_atoms(atoms)
-    crystal.method = method_obj
-    
-    # Needs a parent job
-    job = create_job(group_obj, config_obj)
-    crystal.parentjob = job
-    
-    # Save
-    crystal.save()
-    return crystal.id
-
-# Main
-try:
-    if not os.path.exists(structure_file):
-        print(json.dumps({{"error": f"File not found: {{structure_file}}"}}))
-        exit(1)
-
-    atoms_list = io.read(structure_file, ":")
-    created_ids = []
-    
-    config_obj = get_jobconfig(config_name)
-    group_obj = get_group(group_name)
-    method_obj = get_method()
-    
-    for atoms in atoms_list:
-        cid = create_crystal_object(atoms, group_obj, config_obj, method_obj)
-        created_ids.append(cid)
-        
-    print(json.dumps(created_ids))
-
-except Exception as e:
-    import traceback
-    traceback.print_exc()
-    print(json.dumps({{"error": str(e)}}))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
 
 if __name__ == "__main__":
     mcp.run()

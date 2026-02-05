@@ -14,29 +14,43 @@ Use the HTVS tools (`htvs_server`) when:
 2.  **Dataset Generation**: You need to generate a training dataset for an MLIP.
 3.  **HPC Execution**: The calculations need to run on a cluster (Slurm, Torque) rather than locally.
 
+## Research Planning
+
+For every HTVS-based research task, you MUST create a **[Research Plan](file:///home/hojechun/ssd_mnt/repos/simulation_mcp/.agent/workflows/research-plan-template.md)** and get user approval via `notify_user` before proceeding. 
+
+The research plan should include:
+- **Objective**: Run DFT calculations using HTVS.
+- **HTVS Parameters**: `group_name`, `chem_config`, `compute_platform`, `inbox_path`, `requester`, `parent_config`, `settings_module`, `details`, `complete_path`.
+
 ## Workflow
 
 The standard workflow for running a DFT job via HTVS is:
 
-1.  **Prepare Details**: Convert VASP settings to HTVS `details` format.
+1.  **Mandatory Variable Verification**: **STOP** and ask the user to confirm the following variables. **DO NOT** assume defaults.
+    -   `database_name`: Django Settings Module (e.g., `djangochem.settings.orgel`).
+    -   `import_config_name`: Job Config Name for imported structures (e.g., `parsed`).
+    -   `project_name`: Group Name (e.g., `agent`).
+    -   `chem_config`: Chemical Config (e.g., `pbe_d3_paw_opt_vasp`).
+    -   `compute_platform`: Cluster Name (e.g., `supercloud`, `perlmutter`).
+    -   `requester`: User ID (e.g., `hojechun`).
+
+2.  **Script Implementation Rules**:
+    -   **Configurable Scripts**: Any Python script you write MUST use `argparse` (or similar) for the variables above. **NEVER** hardcode them.
+    -   **Environment Setup**: Explicitly handle Django setup with `try/except` imports or `sys.path` appending using the `htvs_repo` variable.
+
+3.  **Prepare Details**: Convert VASP settings to HTVS `details` format.
     -   Use `vasp_to_htvs_details(vasp_input, ...)` tool.
     -   Map standard tags (`ENCUT`, `ISPIN`, etc.) to the `details` dictionary.
 
+4.  **Request Job**: Create a job entry in the database.
+    -   Use `request_htvs_job` tool or your script.
+    -   Ensure `details['compute_platform']` is set.
 
-2.  **Request Job**: Create a job entry in the database.
-    -   Use `request_htvs_job` tool.
-    -   **Critical Arguments**:
-        -   `settings_module`: Specifies the Database Name (e.g., `djangochem.settings.orgel`). Check with user if unsure.
-        -   `project_name`: Specifies the Group Name (e.g., `HighEntropyAlloys`). Must exist in DB.
-        -   `requester`: Specifies the Requester Name (e.g., `hojechun`).
-        -   `details['compute_platform']`: Specifies the Cluster Name (e.g., `supercloud`, `perlmutter`). MANDATORY.
-    -   **Chem Config**: Select the appropriate configuration (see selection guide below).
+5.  **Build Job**: Create the job files.
+    -   Use `build_htvs_job(project_name, inbox_path, ...)` tool or your script.
+    -   **Inbox Path**: Use the `inbox_path` argument. This is now **MANDATORY**. You must determine the correct path (e.g., from `$HTVS_JOB_ROOT/inbox` or explicit user input) and pass it. The tool will no longer auto-detect defaults.
 
-3.  **Build Job**: Create the job files.
-    -   Use `build_htvs_job(project_name, inbox_path, ...)` tool.
-    -   **Inbox Path**: Defaults to `HTVS_JOB_ROOT/inbox`.
-
-4.  **Parse Job**: (After completion) Retrieve results.
+6.  **Parse Job**: (After completion) Retrieve results.
     -   Use `parse_htvs_job(project_name, completed_path, ...)` tool.
 
 ## Chemical Configuration Selection
@@ -56,7 +70,7 @@ For a complete list of naming conventions and standard configurations, see `chem
 -   **Relaxation**: `pbe_d3_paw_opt_vasp` (Standard).
 -   **MD**: `pbe_d3_paw_bomd_vasp`.
 
-*Note: If unsure, `pbe_d3_paw_bomd_vasp` is a safe default for most MLIP training data generation tasks.*
+*Note: If unsure, `pbe_d3_paw_engrad_vasp` is a safe default for most MLIP training data generation tasks.*
 
 ## Configuration Details
 
