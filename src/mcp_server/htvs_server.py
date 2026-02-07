@@ -281,8 +281,7 @@ def parse_htvs_job(
 
 import tempfile
 
-if __name__ == "__main__":
-    mcp.run()
+
     
     
 def run_htvs_script(

@@ -4,7 +4,7 @@ import os
 from unittest.mock import MagicMock, patch
 
 # Add src to path
-sys.path.append(os.path.abspath("src"))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 
 # Mock mcp.server.fastmcp BEFORE importing htvs_server
@@ -18,7 +18,7 @@ def tool_decorator():
 mock_mcp.return_value.tool.side_effect = tool_decorator
 sys.modules["mcp.server.fastmcp"].FastMCP = mock_mcp
 
-from mcp_server import htvs_server
+from src.mcp_server import htvs_server
 
 def test_list_configs():
     print("Testing list_htvs_configs...")
@@ -26,14 +26,14 @@ def test_list_configs():
         mock_run.return_value.returncode = 0
         mock_run.return_value.stdout = '[{"name": "test_config", "parent_class_name": "TestClass"}]'
         
-        result = htvs_server.list_htvs_configs()
+        result = htvs_server.list_htvs_configs(settings_module="dummy")
         print(f"Result: {result}")
         
         # Verify subprocess was called
         mock_run.assert_called_once()
         call_args = mock_run.call_args[0][0]
         print(f"Command called: {call_args}")
-        assert call_args[0] == "python"
+        assert call_args[0].endswith("python")
         assert call_args[1].endswith(".py")
 
 def test_get_status():
@@ -42,7 +42,7 @@ def test_get_status():
         mock_run.return_value.returncode = 0
         mock_run.return_value.stdout = '{"uuid1": "done"}'
         
-        result = htvs_server.get_htvs_job_status(job_uuids=["uuid1"])
+        result = htvs_server.get_htvs_job_status(settings_module="dummy", job_uuids=["uuid1"])
         print(f"Result: {result}")
         
         mock_run.assert_called_once()
@@ -53,7 +53,7 @@ def test_query_structures():
         mock_run.return_value.returncode = 0
         mock_run.return_value.stdout = '[{"id": 1, "type": "Crystal", "formula": "CaTiO3"}]'
         
-        result = htvs_server.query_htvs_structures(group_name="perovskite")
+        result = htvs_server.query_htvs_structures(group_name="perovskite", settings_module="dummy")
         print(f"Result: {result}")
         mock_run.assert_called_once()
 

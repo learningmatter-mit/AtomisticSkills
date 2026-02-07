@@ -3,8 +3,8 @@ set -e
 
 # Define paths
 ENV_NAME="htvs-agent"
-ENV_FILE=../conda-envs/htvs-agent.yml
-VERIFY_SCRIPT=tests/verify_htvs_tools.py
+ENV_FILE=../../conda-envs/htvs-agent.yml
+VERIFY_SCRIPT=verify_htvs_tools.py
 
 echo "--- Checking for Conda environment: $ENV_NAME ---"
 if conda info --envs | grep -q "$ENV_NAME"; then
@@ -28,7 +28,7 @@ $PYTHON_EXEC -c "import htvs" 2>/dev/null || echo "htvs not found in env, assumi
 # Run verification
 echo "--- Running Verification Script ---"
 # We need to set PYTHONPATH to include simulation_mcp root and htvs root
-export PYTHONPATH=$PYTHONPATH:$(pwd)/..:/mnt/data0/hojechun/repos/htvs
+export PYTHONPATH=$PYTHONPATH:$(pwd)/../../:/mnt/data0/hojechun/repos/htvs
 export HTVS_DJANGOCHEM_DIR=/mnt/data0/hojechun/repos/htvs/djangochem
 
 $PYTHON_EXEC $VERIFY_SCRIPT

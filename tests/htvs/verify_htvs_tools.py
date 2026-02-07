@@ -4,7 +4,7 @@ import django
 from pathlib import Path
 
 # Add simulation_mcp to path to import tools
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from src.mcp_server.htvs_server import request_htvs_job, build_htvs_job, parse_htvs_job, vasp_to_htvs_details
 

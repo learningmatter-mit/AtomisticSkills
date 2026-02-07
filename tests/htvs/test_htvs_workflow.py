@@ -6,7 +6,7 @@ import logging
 from unittest.mock import MagicMock, patch
 
 # Add src to path
-sys.path.append(os.path.abspath("src"))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 # Mock mcp.server.fastmcp
 sys.modules["mcp.server.fastmcp"] = MagicMock()
@@ -19,7 +19,7 @@ def tool_decorator():
 mock_mcp.return_value.tool.side_effect = tool_decorator
 sys.modules["mcp.server.fastmcp"].FastMCP = mock_mcp
 
-from mcp_server import htvs_server
+from src.mcp_server import htvs_server
 
 def test_workflow():
     print("Testing HTVS Workflow Integration...")
@@ -39,7 +39,7 @@ def test_workflow():
             config = "pbe_d3_paw_bomd_vasp"
             
             output = htvs_server.request_htvs_job(
-                project, config, details, djangochem_dir="/dummy/path"
+                project, config, details, settings_module="dummy", djangochem_dir="/dummy/path"
             )
             print(f"2. Request Output: {output}")
             
@@ -55,7 +55,7 @@ def test_workflow():
             mock_run.return_value.stdout = "Built job 123 to inbox/"
             
             output = htvs_server.build_htvs_job(
-                project, "inbox_path", djangochem_dir="/dummy/path"
+                project, settings_module="dummy", inbox_path="inbox_path", djangochem_dir="/dummy/path"
             )
             print(f"3. Build Output: {output}")
             
