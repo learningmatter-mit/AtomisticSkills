@@ -424,6 +424,7 @@ def get_htvs_job_results(
     """
     script = f"""
 from jobs.models import Job
+from pgmols.models import Calc, Geom
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -438,15 +439,144 @@ for job in jobs:
         "status": job.status,
         "config": job.config.name if job.config else None,
         "details": job.details,
+        "results": {{}}
     }}
     
-    # Try to fetch associated results based on parent type or children
-    # This is a simplified fetch - strictly getting Job details and maybe checking for simple properties
-    # Deeper result parsing (like parsing the Geom props directly) might be needed depending on usage
+    # Try to fetch associated Calc and Geom results
+    calcs = Calc.objects.filter(parentjob=job)
+    if calcs.exists():
+        job_data["results"]["calcs"] = [
+            {{
+                "id": c.id,
+                "energy": c.final_potential_energy,
+                "forces": c.final_forces.tolist() if hasattr(c.final_forces, "tolist") else c.final_forces,
+                "stress": c.final_stress.tolist() if hasattr(c.final_stress, "tolist") else c.final_stress,
+            }} for c in calcs
+        ]
+        
+    geoms = Geom.objects.filter(parentjob=job)
+    if geoms.exists():
+        job_data["results"]["geoms"] = [
+            {{
+                "id": g.id,
+                "formula": g.stoichiometry.formula if g.stoichiometry else "Unknown",
+            }} for g in geoms
+        ]
     
     results[str(job.uuid)] = job_data
 
 print(json.dumps(results, indent=2, cls=DjangoJSONEncoder))
+"""
+    return run_htvs_script(script, settings_module, djangochem_dir)
+
+
+@mcp.tool()
+def query_htvs_calcs(
+    group_name: str,
+    settings_module: str,
+    formula: Optional[str] = None,
+    limit: int = 10,
+    djangochem_dir: Optional[str] = None,
+) -> str:
+    """
+    Query DFT calculation results (Calc records) in the HTVS database.
+    
+    Args:
+        group_name: Name of the project/group.
+        formula: Optional chemical formula to filter by (e.g., 'LiFePO4').
+        limit: Max number of results.
+        
+    Returns:
+        JSON string containing detailed calculation results.
+    """
+    script = f"""
+import json
+from pgmols.models import Calc, Group
+from django.db.models import Q
+
+group_name = "{group_name}"
+formula = {json.dumps(formula)}
+limit = {limit}
+
+try:
+    group = Group.objects.get(name=group_name)
+except Group.DoesNotExist:
+    print(json.dumps({{"error": "Group '" + group_name + "' not found"}}))
+    exit(0)
+
+qs = Calc.objects.filter(parentjob__group=group)
+if formula:
+    qs = qs.filter(stoichiometry__formula=formula)
+
+qs = qs.select_related('stoichiometry', 'parentjob', 'parentjob__config').order_by('-parentjob__completetime')[:limit]
+
+results = []
+for obj in qs:
+    results.append({{
+        "id": obj.id,
+        "uuid": str(obj.parentjob.uuid) if obj.parentjob else None,
+        "formula": obj.stoichiometry.formula if obj.stoichiometry else "Unknown",
+        "energy": obj.final_potential_energy,
+        "config": obj.parentjob.config.name if (obj.parentjob and obj.parentjob.config) else None,
+        "completetime": obj.parentjob.completetime.isoformat() if (obj.parentjob and obj.parentjob.completetime) else None
+    }})
+
+print(json.dumps(results, indent=2))
+"""
+    return run_htvs_script(script, settings_module, djangochem_dir)
+
+
+@mcp.tool()
+def query_htvs_geoms(
+    group_name: str,
+    settings_module: str,
+    formula: Optional[str] = None,
+    limit: int = 10,
+    djangochem_dir: Optional[str] = None,
+) -> str:
+    """
+    Query geometry models (Geom records) in the HTVS database.
+    
+    Args:
+        group_name: Name of the project/group.
+        formula: Optional chemical formula to filter by (e.g., 'Pt').
+        limit: Max number of results.
+        
+    Returns:
+        JSON string containing geometry model summaries.
+    """
+    script = f"""
+import json
+from pgmols.models import Geom, Group
+from django.db.models import Q
+
+group_name = "{group_name}"
+formula = {json.dumps(formula)}
+limit = {limit}
+
+try:
+    group = Group.objects.get(name=group_name)
+except Group.DoesNotExist:
+    print(json.dumps({{"error": "Group '" + group_name + "' not found"}}))
+    exit(0)
+
+qs = Geom.objects.filter(parentjob__group=group)
+if formula:
+    qs = qs.filter(stoichiometry__formula=formula)
+
+qs = qs.select_related('stoichiometry', 'parentjob', 'parentjob__config').order_by('-parentjob__completetime')[:limit]
+
+results = []
+for obj in qs:
+    results.append({{
+        "id": obj.id,
+        "uuid": str(obj.parentjob.uuid) if obj.parentjob else None,
+        "formula": obj.stoichiometry.formula if obj.stoichiometry else "Unknown",
+        "config": obj.parentjob.config.name if (obj.parentjob and obj.parentjob.config) else None,
+        "completetime": obj.parentjob.completetime.isoformat() if (obj.parentjob and obj.parentjob.completetime) else None
+    }})
+
+print(json.dumps(results, indent=2))
 """
     return run_htvs_script(script, settings_module, djangochem_dir)
 
