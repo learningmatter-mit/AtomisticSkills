@@ -1,12 +1,83 @@
-import json
 import os
 import sys
+import json
 import subprocess
 from typing import Optional, Dict, Any, List
-from mcp.server.fastmcp import FastMCP
 
-# Initialize the FastMCP server
-mcp = FastMCP("htvs")
+try:
+    from mcp.server.fastmcp import FastMCP
+    mcp = FastMCP("htvs")
+except ImportError:
+    # Fallback for environments without FastMCP (e.g., standalone scripts in htvs-agent)
+    class DummyMCP:
+        def tool(self, *args, **kwargs):
+            return lambda x: x
+    mcp = DummyMCP()
+
+@mcp.tool()
+def get_htvs_config() -> Dict[str, str]:
+    """
+    Read HTVS paths from mcp_config.json or environment.
+    
+    Returns:
+        Dict with 'htvs_dir' and 'htvs_djangochem_dir'.
+    """
+    # Assuming this script is at src/mcp_server/htvs_server.py
+    # Path to repo root
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    config_path = os.path.join(repo_root, "mcp_config.json")
+    
+    htvs_dir = os.environ.get("HTVS_DIR")
+    htvs_djangochem_dir = os.environ.get("HTVS_DJANGOCHEM_DIR")
+    
+    if os.path.exists(config_path):
+        try:
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+                # Look specifically for the htvs server environment config
+                htvs_server_env = config.get("mcpServers", {}).get("htvs", {}).get("env", {})
+                if not htvs_dir:
+                    htvs_dir = htvs_server_env.get("HTVS_DIR")
+                if not htvs_djangochem_dir:
+                    htvs_djangochem_dir = htvs_server_env.get("HTVS_DJANGOCHEM_DIR")
+        except Exception:
+            pass
+
+    # Fallback to defaults
+    if not htvs_dir:
+        htvs_dir = "/home/hojechun/ssd_mnt/repos/htvs"
+    if not htvs_djangochem_dir:
+        htvs_djangochem_dir = os.path.join(htvs_dir, "djangochem")
+        
+    return {"htvs_dir": htvs_dir, "htvs_djangochem_dir": htvs_djangochem_dir}
+
+@mcp.tool()
+def setup_htvs_django(settings_module: str = "orgel") -> str:
+    """
+    Configures the Django environment for HTVS database access.
+    
+    Args:
+        settings_module: The database settings to use (e.g., 'orgel', 'toy').
+        
+    Returns:
+        A confirmation message with resolved paths.
+    """
+    import django
+    config = get_htvs_config()
+    htvs_dir = config["htvs_dir"]
+    djangochem_dir = config["htvs_djangochem_dir"]
+    
+    if htvs_dir not in sys.path:
+        sys.path.append(htvs_dir)
+    if djangochem_dir not in sys.path:
+        sys.path.append(djangochem_dir)
+        
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"djangochem.settings.{settings_module}")
+    # Force override if it was already set
+    os.environ["DJANGO_SETTINGS_MODULE"] = f"djangochem.settings.{settings_module}"
+    
+    django.setup()
+    return f"Django setup complete. Settings: djangochem.settings.{settings_module}, HTVS_DIR: {htvs_dir}"
 
 # Default mapping from VASP INCAR tags (uppercase) to HTVS 'details' keys (lowercase)
 # This is based on common usage in HTVS templates (e.g., jobspec.py and INCAR templates)
@@ -470,57 +541,94 @@ print(json.dumps(results, indent=2, cls=DjangoJSONEncoder))
 
 
 @mcp.tool()
-def query_htvs_calcs(
+def query_htvs_results(
     group_name: str,
     settings_module: str,
     formula: Optional[str] = None,
-    limit: int = 10,
+    limit: Optional[int] = None,
+    output_file: Optional[str] = None,
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
-    Query DFT calculation results (Calc records) in the HTVS database.
+    Query detailed DFT calculation results (Calc records) including forces and stress.
     
     Args:
         group_name: Name of the project/group.
+        settings_module: Django settings module to use (e.g., 'orgel', 'toy').
         formula: Optional chemical formula to filter by (e.g., 'LiFePO4').
         limit: Max number of results.
+        output_file: Optional path to save the JSON results.
         
     Returns:
         JSON string containing detailed calculation results.
     """
     script = f"""
 import json
-from pgmols.models import Calc, Group
+import os
+from pgmols.models import Calc, SinglePoint, Jacobian, Hessian, Group
 from django.db.models import Q
 
 group_name = "{group_name}"
 formula = {json.dumps(formula)}
-limit = {limit}
+limit = {limit if limit else 'None'}
+output_file = {json.dumps(output_file)}
 
 try:
     group = Group.objects.get(name=group_name)
 except Group.DoesNotExist:
-    print(json.dumps({{"error": "Group '" + group_name + "' not found"}}))
-    exit(0)
+    potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
+    if potential_groups.exists():
+        group = potential_groups.first()
+    else:
+        print(json.dumps({{"error": "Group matching '" + group_name + "' not found"}}))
+        exit(0)
 
-qs = Calc.objects.filter(parentjob__group=group)
+qs = Calc.objects.filter(parentjob__group=group).select_related('species__stoichiometry', 'parentjob')
 if formula:
-    qs = qs.filter(stoichiometry__formula=formula)
+    qs = qs.filter(species__stoichiometry__formula=formula)
 
-qs = qs.select_related('stoichiometry', 'parentjob', 'parentjob__config').order_by('-parentjob__completetime')[:limit]
+if limit:
+    qs = qs[:limit]
 
 results = []
 for obj in qs:
-    results.append({{
+    data = {{
         "id": obj.id,
         "uuid": str(obj.parentjob.uuid) if obj.parentjob else None,
-        "formula": obj.stoichiometry.formula if obj.stoichiometry else "Unknown",
-        "energy": obj.final_potential_energy,
-        "config": obj.parentjob.config.name if (obj.parentjob and obj.parentjob.config) else None,
-        "completetime": obj.parentjob.completetime.isoformat() if (obj.parentjob and obj.parentjob.completetime) else None
-    }})
+        "formula": obj.species.stoichiometry.formula if obj.species and obj.species.stoichiometry else "Unknown",
+        "energy": obj.totalenergy,
+        "completetime": obj.parentjob.completetime.isoformat() if (obj.parentjob and obj.parentjob.completetime) else None,
+        "props": obj.props or {{}}
+    }}
+    
+    if hasattr(obj, 'jacobian'):
+        data["forces"] = obj.jacobian.forces
+        data["is_optimum"] = obj.jacobian.isoptimum
+    elif hasattr(obj, 'singlepoint'):
+        if data["energy"] is None:
+            data["energy"] = obj.singlepoint.energy
+        data["dipole"] = obj.singlepoint.dipole
+    elif hasattr(obj, 'hessian'):
+        data["vibfreqs"] = obj.hessian.vibfreqs
+        data["freeenergy"] = obj.hessian.freeenergy
 
-print(json.dumps(results, indent=2))
+    # Get structure info if available
+    geom = obj.geoms.first()
+    if geom:
+        data["structure"] = {{
+            "coords": geom.get_coords(),
+        }}
+        if hasattr(geom, 'crystal'):
+            data["structure"]["lattice"] = geom.crystal.lattice
+            
+    results.append(data)
+
+if output_file:
+    with open(output_file, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"Results saved to {{output_file}}")
+else:
+    print(json.dumps(results, indent=2))
 """
     return run_htvs_script(script, settings_module, djangochem_dir)
 
@@ -808,90 +916,179 @@ print(json.dumps({{"name": group.name, "created": created}}))
 
 
 @mcp.tool()
-def query_htvs_structures(
+def query_htvs_surfaces_detailed(
     group_name: str,
     settings_module: str,
-    structure_type: str = "Crystal",
-    limit: int = 10,
+    limit: Optional[int] = None,
+    output_file: Optional[str] = None,
     djangochem_dir: Optional[str] = None,
 ) -> str:
     """
-    Query structures in the HTVS database.
-    
-    Args:
-        group_name: Name of the project/group (e.g., 'perovskite').
-        structure_type: Type of structure: 'Crystal', 'Surface', 'Species', 'Geom'. Default 'Crystal'.
-        limit: Max number of results.
-        
-    Returns:
-        JSON string list of structure summaries.
+    Query Surface structures including Miller indices and bulk references.
     """
     script = f"""
 import json
-from pgmols.models import Crystal, Surface, Species, Geom, Group
+from pgmols.models import Surface, Group
 from django.db.models import Q
 
 group_name = "{group_name}"
-structure_type = "{structure_type}"
-limit = {limit}
+limit = {limit if limit else 'None'}
+output_file = {json.dumps(output_file)}
 
 try:
     group = Group.objects.get(name=group_name)
 except Group.DoesNotExist:
-    # Avoid nested f-string complexity by using concatenation
-    print(json.dumps({{"error": "Group '" + group_name + "' not found"}}))
-    exit(0)
+    potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
+    if potential_groups.exists():
+        group = potential_groups.first()
+    else:
+        print(json.dumps({{"error": "Group matching '" + group_name + "' not found"}}))
+        exit(0)
+
+qs = Surface.objects.filter(parentjob__group=group, bulk__isnull=False).select_related('bulk', 'miller_index', 'stoichiometry')
+if limit:
+    qs = qs[:limit]
 
 results = []
+for surf in qs:
+    results.append({{
+        "id": surf.id,
+        "formula": surf.stoichiometry.formula if surf.stoichiometry else "Unknown",
+        "miller_index": surf.miller_index.hkl if surf.miller_index else None,
+        "bulk_id": surf.bulk.id if surf.bulk else None,
+        "bulk_formula": surf.bulk.stoichiometry.formula if surf.bulk and surf.bulk.stoichiometry else "Unknown",
+        "lattice": surf.lattice,
+        "num_atoms": len(surf.xyz)
+    }})
 
-if structure_type == "Crystal":
-    qs = Crystal.objects.filter(Q(species__group=group) | Q(parentjob__group=group))[:limit]
-    for obj in qs:
-        # Stoichiometry might be null? usually not for Crystal
-        formula = obj.stoichiometry.formula if obj.stoichiometry else "Unknown"
-        sg = obj.spacegroup.symbol if obj.spacegroup else "Unknown"
-        results.append({{
-            "id": obj.id,
-            "type": "Crystal",
-            "formula": formula,
-            "spacegroup": sg,
-            "parentjob_id": obj.parentjob.id if (hasattr(obj, 'parentjob') and obj.parentjob) else None
-        }})
+if output_file:
+    with open(output_file, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"Results saved to {{output_file}}")
+else:
+    print(json.dumps(results, indent=2))
+"""
+    return run_htvs_script(script, settings_module, djangochem_dir)
 
-elif structure_type == "Surface":
-    qs = Surface.objects.filter(Q(species__group=group) | Q(parentjob__group=group))[:limit]
-    for obj in qs:
-        formula = obj.stoichiometry.formula if obj.stoichiometry else "Unknown"
-        results.append({{
-            "id": obj.id,
-            "type": "Surface",
-            "formula": formula,
-            "miller_index": obj.miller_index.hkl if obj.miller_index else None
-        }})
+@mcp.tool()
+def query_htvs_crystals_detailed(
+    group_name: str,
+    settings_module: str,
+    formula: Optional[str] = None,
+    limit: Optional[int] = None,
+    output_file: Optional[str] = None,
+    djangochem_dir: Optional[str] = None,
+) -> str:
+    """
+    Query Crystal structures including space groups and lattice info.
+    """
+    script = f"""
+import json
+from pgmols.models import Crystal, Group
+from django.db.models import Q
 
-elif structure_type == "Species":
-    qs = Species.objects.filter(group=group)[:limit]
-    for obj in qs:
-        formula = obj.stoichiometry.formula if obj.stoichiometry else "Unknown"
-        results.append({{
-            "id": obj.id,
-            "type": "Species",
-            "formula": formula,
-            "smiles": obj.smiles,
-            "inchikey": obj.inchikey
-        }})
+group_name = "{group_name}"
+formula = {json.dumps(formula)}
+limit = {limit if limit else 'None'}
+output_file = {json.dumps(output_file)}
 
-elif structure_type == "Geom":
-    qs = Geom.objects.filter(Q(species__group=group) | Q(parentjob__group=group), parentjob__status='done')[:limit]
-    for obj in qs:
-        formula = obj.stoichiometry.formula if obj.stoichiometry else "Unknown"
-        results.append({{
-            "id": obj.id,
-            "type": "Geom",
-            "formula": formula,
-        }})
+try:
+    group = Group.objects.get(name=group_name)
+except Group.DoesNotExist:
+    potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
+    if potential_groups.exists():
+        group = potential_groups.first()
+    else:
+        print(json.dumps({{"error": "Group matching '" + group_name + "' not found"}}))
+        exit(0)
 
-print(json.dumps(results, indent=2))
+qs = Crystal.objects.filter(parentjob__group=group).select_related('stoichiometry', 'spacegroup')
+if formula:
+    qs = qs.filter(stoichiometry__formula=formula)
+if limit:
+    qs = qs[:limit]
+
+results = []
+for crys in qs:
+    results.append({{
+        "id": crys.id,
+        "formula": crys.stoichiometry.formula if crys.stoichiometry else "Unknown",
+        "spacegroup": crys.spacegroup.symbol if crys.spacegroup else "Unknown",
+        "lattice": crys.lattice,
+        "num_atoms": len(crys.xyz),
+        "job_uuid": str(crys.parentjob.uuid) if crys.parentjob else None
+    }})
+
+if output_file:
+    with open(output_file, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"Results saved to {{output_file}}")
+else:
+    print(json.dumps(results, indent=2))
+"""
+    return run_htvs_script(script, settings_module, djangochem_dir)
+
+@mcp.tool()
+def query_htvs_jobs_detailed(
+    group_name: str,
+    settings_module: str,
+    status: Optional[str] = None,
+    config_name: Optional[str] = None,
+    limit: Optional[int] = None,
+    output_file: Optional[str] = None,
+    djangochem_dir: Optional[str] = None,
+) -> str:
+    """
+    Query HTVS Jobs with filtering and timing details.
+    """
+    script = f"""
+import json
+from jobs.models import Job, Group
+
+group_name = "{group_name}"
+status = {json.dumps(status)}
+config_name = {json.dumps(config_name)}
+limit = {limit if limit else 'None'}
+output_file = {json.dumps(output_file)}
+
+try:
+    group = Group.objects.get(name=group_name)
+except Group.DoesNotExist:
+    potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
+    if potential_groups.exists():
+        group = potential_groups.first()
+    else:
+        print(json.dumps({{"error": "Group matching '" + group_name + "' not found"}}))
+        exit(0)
+
+qs = Job.objects.filter(group=group).select_related('config')
+if status:
+    qs = qs.filter(status=status)
+if config_name:
+    qs = qs.filter(config__name=config_name)
+if limit:
+    qs = qs[:limit]
+
+results = []
+for job in qs:
+    results.append({{
+        "id": job.id,
+        "uuid": str(job.uuid),
+        "config": job.config.name if job.config else "Unknown",
+        "status": job.status,
+        "createtime": job.createtime.isoformat() if job.createtime else None,
+        "completetime": job.completetime.isoformat() if job.completetime else None,
+        "duration": job.duration,
+        "priority": job.priority,
+        "details": job.details
+    }})
+
+if output_file:
+    with open(output_file, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"Results saved to {{output_file}}")
+else:
+    print(json.dumps(results, indent=2))
 """
     return run_htvs_script(script, settings_module, djangochem_dir)
 
