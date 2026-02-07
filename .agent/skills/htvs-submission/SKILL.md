@@ -40,8 +40,10 @@ The research plan should include:
 - **Check Config**: Verify the `chem_config` supports the chosen `compute_platform` using `inspect_chem_config`.
 
 ### 3. Prepare Job Details
-Convert VASP settings to HTVS `details` format. Use the `vasp_to_htvs_details(vasp_input, ...)` tool.
-**MANDATORY**: Ensure `details['compute_platform']` is set.
+1.  **Generate VASP Inputs**: Use the `materials_tools` MCP tool `prepare_vasp_inputs(structure_path, output_dir, calculation_type, preset_type, config)` to generate standard VASP parameters. 
+    - Note that this tool creates physical files in `output_dir` but also returns the configuration.
+2.  **Convert to HTVS Details**: Use the `vasp_to_htvs_details(vasp_input, ...)` tool to convert the INCAR tags into the HTVS `details` dictionary format.
+3.  **Add Mandatory Fields**: Ensure `details['compute_platform']` is explicitly set.
 
 Example `details`:
 ```json
