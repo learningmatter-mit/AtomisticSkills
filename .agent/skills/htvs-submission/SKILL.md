@@ -87,6 +87,8 @@ Retrieve results into the database using `parse_htvs_job` or the `parse_jobs.py`
 
 ## Chemical Configuration Selection
 
+Select the `chem_config` based on the material type and desired accuracy. For detailed naming conventions and standards, see [chemconfig-standards.md](chemconfig-standards.md).
+
 ### Inorganic Materials (Bulk, Surfaces)
 - **Standard Relaxation**: `pbe_d3_paw_opt_vasp` (PBE+D3).
 - **Static/Energy**: `pbe_d3_paw_engrad_vasp` (Single point energy/forces).
@@ -104,6 +106,8 @@ Retrieve results into the database using `parse_htvs_job` or the `parse_jobs.py`
 - **Structure files** must be readable by `ase.io`.
 
 ## Files
+- [SKILL.md](SKILL.md): This documentation.
+- [chemconfig-standards.md](chemconfig-standards.md): Detailed HTVS configuration standards and naming conventions.
 - [submit_jobs.py](scripts/submit_jobs.py): Main submission logic.
 - [parse_jobs.py](scripts/parse_jobs.py): Result retrieval.
 - [monitor_jobs.py](scripts/monitor_jobs.py): Status tracking.
