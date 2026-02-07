@@ -1,0 +1,11 @@
+name: smol-agent
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - mcp
+    - smol
+    - pymatgen
+    - typing-extensions
+    - scikit-learn
+    - ase

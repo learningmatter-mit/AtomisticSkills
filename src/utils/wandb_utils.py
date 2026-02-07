@@ -58,7 +58,7 @@ def init_wandb(
     
     # Set default project if not provided
     if project is None:
-        project = os.environ.get("WANDB_PROJECT", "mlip-agent")
+        project = os.environ.get("WANDB_PROJECT", "base-agent")
     
     # Initialize wandb run
     run = wandb.init(

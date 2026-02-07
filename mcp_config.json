@@ -1,5 +1,16 @@
 {
     "mcpServers": {
+        "matgl": {
+            "command": "/mnt/data0/hojechun/miniforge3/envs/matgl-agent/bin/python",
+            "args": [
+                "-m",
+                "src.mcp_server.matgl_server"
+            ],
+            "env": {
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp",
+                "MATGL_BACKEND": "DGL"
+            }
+        },
         "mace": {
             "command": "/mnt/data0/hojechun/miniforge3/envs/mace-agent/bin/python",
             "args": [
@@ -40,6 +51,26 @@
                 "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp",
                 "HTVS_DJANGOCHEM_DIR": "/mnt/data0/hojechun/repos/htvs/djangochem",
                 "HTVS_DIR": "/mnt/data0/hojechun/repos/htvs"
+            }
+        },
+        "atomate2": {
+            "command": "/mnt/data0/hojechun/miniforge3/envs/atomate2-agent/bin/python",
+            "args": [
+                "-m",
+                "src.mcp_server.atomate2_server"
+            ],
+            "env": {
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
+            }
+        },
+        "smol": {
+            "command": "/mnt/data0/hojechun/miniforge3/envs/smol-agent/bin/python",
+            "args": [
+                "-m",
+                "src.mcp_server.smol_server"
+            ],
+            "env": {
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
             }
         }
     }

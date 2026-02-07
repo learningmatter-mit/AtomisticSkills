@@ -6,7 +6,7 @@ These tests validate the breaking changes:
 - save_structure() standardization
 - Materials Project query simplification
 
-Run in: mlip-agent environment
+Run in: base-agent environment
 """
 
 import pytest

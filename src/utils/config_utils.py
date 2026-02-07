@@ -6,8 +6,8 @@ from typing import Dict, Any, Optional
 from pathlib import Path
 
 # Config file locations
-CONFIG_FILE = Path.home() / ".config" / "mlip_agent.yaml"
-OLD_CONFIG_FILE = Path.home() / ".mlip_agent.yaml"
+CONFIG_FILE = Path.home() / ".config" / "atomistic_skills.yaml"
+OLD_CONFIG_FILE = Path.home() / ".atomistic_skills.yaml"
 ENV_VAR_PREFIX = "MLIP_"
 
 def load_config() -> Dict[str, Any]:

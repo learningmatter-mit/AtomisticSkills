@@ -23,7 +23,7 @@ trigger: always_on
 ## Development Standards
 
 ### Environment Setup
-- ALWAYS use the `mlip-agent` conda environment for development and testing by `conda activate mlip-agent`
+- ALWAYS use the `base-agent` conda environment for development and testing by `conda activate base-agent`
 - When installation depency is needed, see `dependency-rules.mdc` for dependency instructions
 
 ### Testing Requirements

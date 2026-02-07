@@ -1,0 +1,15 @@
+{
+    "summary": {
+        "temp_range": [
+            0.0,
+            1000.0
+        ],
+        "num_points": 101,
+        "eos": "vinet"
+    },
+    "output_dir": "research/2026-02-01_Li_qha_TensorNet/qha",
+    "saved_files": [
+        "gibbs_temperature.dat",
+        "thermal_expansion.dat"
+    ]
+}

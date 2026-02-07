@@ -1,0 +1,11 @@
+name: atomate2-agent
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - mcp
+    - atomate2
+    - pymatgen
+    - typing-extensions
+    - ase
+    - h5py

@@ -28,7 +28,7 @@ def detect_conda_env() -> str:
     Detect the current conda environment.
     
     Returns:
-        Environment name (e.g., 'mace-agent', 'mlip-agent')
+        Environment name (e.g., 'mace-agent', 'base-agent')
     """
     conda_env = os.environ.get('CONDA_DEFAULT_ENV', 'unknown')
     return conda_env
@@ -59,7 +59,7 @@ def skip_if_wrong_env(request, current_env):
         'matgl': 'matgl-agent',
         'fairchem': 'fairchem-agent',
         'atomate2': 'atomate2-agent',
-        'base': 'mlip-agent'
+        'base': 'base-agent'
     }
     
     for marker, required_env in env_map.items():

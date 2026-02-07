@@ -1,0 +1,11 @@
+name: matgl-agent
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - mcp
+    - matgl
+    - pymatgen
+    - dgl
+    - matcalc
+    - typing-extensions

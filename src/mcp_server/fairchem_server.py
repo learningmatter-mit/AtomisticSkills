@@ -137,86 +137,45 @@ def get_info() -> Dict[str, Any]:
 
 @mcp.tool()
 def relax_structure(
-    structure_data: Union[Dict[str, Any], str],
-    fmax: float = 0.01,
+    structure_data: Union[Dict[str, Any], str, List[Union[Dict[str, Any], str]]],
+    fmax: float = 0.02,
     steps: int = 500,
     optimizer: str = "FIRE",
+    relax_cell: bool = True,
     output_dir: Optional[str] = None
 ) -> Dict[str, Any]:
     """
-    Relax a structure using the loaded FAIRCHEM model and MatCalc.
+    Relax one or multiple structures using the loaded FAIRCHEM model.
     
     Args:
-        structure_data: Structure data (dict, ASE Atoms, pymatgen Structure, or file path).
+        structure_data: Can be:
+            - Single structure (dict, ASE Atoms, pymatgen Structure, or file path)
+            - Directory path containing CIF/POSCAR files (batch mode)
+            - List of file paths (batch mode)
+            - List of structure dicts (batch mode)
         fmax: Force convergence criterion (eV/Ang).
         steps: Maximum number of optimization steps.
         optimizer: Optimizer to use ("FIRE", "BFGS", "LBFGS").
-        output_dir: Directory to save results.
+        relax_cell: Whether to relax the unit cell (default: True).
+        output_dir: Directory to save results. For batch mode, each structure gets a subdirectory.
         
     Returns:
-        Dictionary with relaxation results (energy, final_structure, trajectory_path).
+        For single: Dict with energy, trajectory_path, cif_path, json_path
+        For batch: Dict with mode="batch", total_structures, successful, failed, results list
     """
     global wrapper
     if wrapper is None or not wrapper.is_loaded:
         return {"error": "Model not loaded. Please call load_model first."}
-        
-    try:
-        from matcalc import RelaxCalc
-        from pymatgen.io.ase import AseAtomsAdaptor
-        import os
-        
-        atoms = wrapper.check_structure_data(structure_data)
-        if isinstance(atoms, dict) and "error" in atoms:
-            return atoms
-            
-        if not output_dir:
-            output_dir = str(get_current_research_dir() / "fairchem" / "relaxation")
-            
-        os.makedirs(output_dir, exist_ok=True)
-        traj_file = f"{output_dir}/relax.traj"
-        
-        calc = wrapper.create_calculator()
-        
-        relaxer = RelaxCalc(
-            calculator=calc,
-            optimizer=optimizer,
-            fmax=fmax,
-            max_steps=steps,
-            traj_file=traj_file,
-            interval=1
-        )
-        
-        result = relaxer.calc(atoms)
-        
-        # Save relaxed structure to CIF
-        final_struct = result["final_structure"]
-        cif_path = os.path.join(output_dir, "relaxed_structure.cif")
-        
-        from src.utils.structure_utils import save_structure
-        save_structure(final_struct, cif_path)
-            
-        # Save energy and results to JSON
-        json_path = os.path.join(output_dir, "relaxation_results.json")
-        energy_val = float(result.get("energy")) if result.get("energy") is not None else None
-        results_data = {
-            "energy": energy_val,
-            "trajectory_path": traj_file,
-            "cif_path": cif_path
-        }
-        
-        with open(json_path, 'w') as f:
-            json.dump(results_data, f, indent=2)
-
-        return {
-            "energy": energy_val,
-            "trajectory_path": traj_file,
-            "cif_path": cif_path,
-            "json_path": json_path
-        }
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return {"error": f"Relaxation failed: {str(e)}"}
+    
+    # Simply delegate to base wrapper's unified relax_structure method
+    return recursive_tolist(wrapper.relax_structure(
+        structure_data=structure_data,
+        fmax=fmax,
+        steps=steps,
+        optimizer=optimizer,
+        relax_cell=relax_cell,  # Use passed argument
+        output_dir=output_dir
+    ))
 
 @mcp.tool()
 def run_md(
@@ -287,213 +246,8 @@ def run_md(
         traceback.print_exc(file=sys.stderr)
         return {"error": f"MD execution failed: {str(e)}", "traceback": traceback.format_exc()}
 
-@mcp.tool()
-def calculate_neb(
-    start_structure: Union[Dict[str, Any], str],
-    end_structure: Union[Dict[str, Any], str],
-    n_images: int = 7,
-    output_dir: Optional[str] = None,
-    fmax: float = 0.1,
-    climb: bool = True
-) -> Dict[str, Any]:
-    """
-    Calculate NEB barrier between two structures using MatCalc.
-    
-    Args:
-        start_structure: Initial structure dict.
-        end_structure: Final structure dict.
-        n_images: Number of intermediate images.
-        output_dir: Directory to save results.
-        fmax: Force convergence.
-        climb: Use CI-NEB.
-        
-    Returns:
-        Dictionary with barrier and reaction coordinates.
-    """
-    global wrapper
-    if wrapper is None or not wrapper.is_loaded:
-        return {"error": "Model not loaded. Please call load_model first."}
-        
-    try:
-        from matcalc import NEBCalc
-        from pymatgen.io.ase import AseAtomsAdaptor
-        from pymatgen.core import Structure
-        import os
-        
-        start_atoms = wrapper.check_structure_data(start_structure)
-        end_atoms = wrapper.check_structure_data(end_structure)
-        
-        if (isinstance(start_atoms, dict) and "error" in start_atoms) or \
-           (isinstance(end_atoms, dict) and "error" in end_atoms):
-           return {"error": "Invalid start or end structure."}
-           
-        start_struct = AseAtomsAdaptor.get_structure(start_atoms)
-        end_struct = AseAtomsAdaptor.get_structure(end_atoms)
-        
-        if not output_dir:
-            output_dir = str(get_current_research_dir() / "fairchem" / "neb")
 
-        os.makedirs(output_dir, exist_ok=True)
-        
-        calc = wrapper.create_calculator()
-        
-        neb_calc = NEBCalc(
-            calculator=calc,
-            traj_folder=output_dir,
-            fmax=fmax,
-            climb=climb
-        )
-        
-        result = neb_calc.calc_images(
-            start_struct=start_struct,
-            end_struct=end_struct,
-            n_images=n_images
-        )
-        
-        mep = result.get("mep")
-        mep_dict = mep.as_dict() if mep else {}
-        
-        return {
-            "barrier": result.get("barrier"),
-            "max_force": result.get("force"),
-            "mep": mep_dict
-        }
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return {"error": f"NEB failed: {str(e)}"}
 
-@mcp.tool()
-def calculate_phonon(
-    structure_data: Union[Dict[str, Any], str],
-    supercell_matrix: List[List[int]] = ((2, 0, 0), (0, 2, 0), (0, 0, 2)),
-    t_step: float = 10,
-    t_max: float = 1000,
-    t_min: float = 0,
-    output_dir: Optional[str] = None
-) -> Dict[str, Any]:
-    """
-    Calculate Phonon properties using MatCalc.
-    
-    Args:
-        structure_data: Structure dict.
-        supercell_matrix: Supercell matrix (3x3).
-        t_step, t_max, t_min: Temperature range.
-        output_dir: Directory to save results.
-        
-    Returns:
-        Dictionary with phonon results.
-    """
-    global wrapper
-    if wrapper is None or not wrapper.is_loaded:
-        return {"error": "Model not loaded. Please call load_model first."}
-        
-    try:
-        from matcalc import PhononCalc
-        import os
-        
-        atoms = wrapper.check_structure_data(structure_data)
-        if isinstance(atoms, dict) and "error" in atoms:
-            return atoms
-            
-        if not output_dir:
-            output_dir = str(get_current_research_dir() / "fairchem" / "phonon")
-
-        os.makedirs(output_dir, exist_ok=True)
-        
-        calc = wrapper.create_calculator()
-        
-        phonon_calc = PhononCalc(
-            calculator=calc,
-            supercell_matrix=supercell_matrix,
-            t_step=t_step,
-            t_max=t_max,
-            t_min=t_min,
-            write_phonon=os.path.join(output_dir, "phonon.yaml"),
-            write_band_structure=os.path.join(output_dir, "band_structure.yaml"),
-            write_total_dos=os.path.join(output_dir, "total_dos.dat")
-        )
-        
-        result = phonon_calc.calc(atoms)
-        
-        thermal_props = result.get("thermal_properties", {})
-        
-        return {
-            "thermal_properties": thermal_props,
-            "output_dir": output_dir
-        }
-        
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return {"error": f"Phonon calculation failed: {str(e)}"}
-
-@mcp.tool()
-def calculate_qha(
-    structure_data: Union[Dict[str, Any], str],
-    t_step: float = 10,
-    t_max: float = 1000,
-    t_min: float = 0,
-
-    eos: str = "vinet",
-    output_dir: Optional[str] = None
-) -> Dict[str, Any]:
-    """
-    Calculate QHA thermal properties using MatCalc.
-    
-    Args:
-        structure_data: Structure dict.
-        t_step, t_max, t_min: Temperature range.
-        eos: Equation of state ("vinet", "birch_murnaghan", "murnaghan").
-        output_dir: Directory to save results.
-        
-    Returns:
-        Dictionary with QHA results.
-    """
-    global wrapper
-    if wrapper is None or not wrapper.is_loaded:
-        return {"error": "Model not loaded. Please call load_model first."}
-    
-    try:
-        from matcalc import QHACalc
-        import os
-        
-        atoms = wrapper.check_structure_data(structure_data)
-        if isinstance(atoms, dict) and "error" in atoms:
-            return atoms
-            
-        if not output_dir:
-            output_dir = str(get_current_research_dir() / "fairchem" / "qha")
-
-        os.makedirs(output_dir, exist_ok=True)
-        
-        calc = wrapper.create_calculator()
-        
-        qha_calc = QHACalc(
-            calculator=calc,
-            t_step=t_step,
-            t_max=t_max,
-            t_min=t_min,
-            eos=eos,
-            write_gibbs_temperature=os.path.join(output_dir, "gibbs_temperature.dat"),
-            write_thermal_expansion=os.path.join(output_dir, "thermal_expansion.dat")
-        )
-        
-        result = qha_calc.calc(atoms)
-        
-        output = {
-            "temperatures": result.get("temperatures", []).tolist() if hasattr(result.get("temperatures"), "tolist") else result.get("temperatures"),
-            "volumes": result.get("volumes"),
-            "gibbs_free_energies": result.get("gibbs_free_energies").tolist() if hasattr(result.get("gibbs_free_energies"), "tolist") else result.get("gibbs_free_energies"),
-            "thermal_expansion_coefficients": result.get("thermal_expansion_coefficients").tolist() if hasattr(result.get("thermal_expansion_coefficients"), "tolist") else result.get("thermal_expansion_coefficients"),
-            "output_dir": output_dir
-        }
-        return output
-        
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return {"error": f"QHA calculation failed: {str(e)}"}
 
 @mcp.tool()
 def mock_dft(

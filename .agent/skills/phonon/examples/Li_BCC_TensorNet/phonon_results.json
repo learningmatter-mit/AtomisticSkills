@@ -1,0 +1,16 @@
+{
+    "thermal_properties_summary": {
+        "temp_300K": {
+            "temperatures": 300.0,
+            "free_energy": -3.2004694160315803,
+            "entropy": 36.845728138782796,
+            "heat_capacity": 23.74500189287916
+        }
+    },
+    "output_dir": "research/2026-02-01_Li_phonon_TensorNet/phonon",
+    "saved_files": [
+        "phonon.yaml",
+        "band_structure.yaml",
+        "total_dos.dat"
+    ]
+}

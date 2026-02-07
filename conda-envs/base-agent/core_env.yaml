@@ -1,0 +1,10 @@
+name: base-agent
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+    - mcp
+    - pymatgen
+    - ase
+    - mp-api
+    - typing-extensions

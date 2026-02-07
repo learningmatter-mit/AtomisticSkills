@@ -5,7 +5,7 @@ These tests validate:
 - check_structure_data() conversions
 - relax_structure() base implementation
 
-Run in: mlip-agent environment
+Run in: base-agent environment
 """
 
 import pytest

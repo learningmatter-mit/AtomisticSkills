@@ -1,0 +1,11 @@
+name: mace-agent
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - mcp
+    - mace-torch
+    - pymatgen
+    - ase
+    - matcalc
+    - typing-extensions

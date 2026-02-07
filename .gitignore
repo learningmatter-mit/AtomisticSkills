@@ -63,3 +63,4 @@ Thumbs.db
 # Temporary log files
 stdout.txt
 stderr.txt
+debug*

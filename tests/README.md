@@ -9,7 +9,7 @@ This project uses **pytest** with a multi-environment testing strategy. Differen
 ```
 tests/
 ├── conftest.py              # Shared fixtures and environment detection
-├── base/                    # Tests for base utilities (mlip-agent env)
+├── base/                    # Tests for base utilities (base-agent env)
 │   ├── conftest.py
 │   ├── test_structure_utils.py
 │   └── test_base_mlip.py
@@ -37,16 +37,16 @@ tests/
 
 ## Running Tests
 
-### 1. Run Base Tests (mlip-agent)
+### 1. Run Base Tests (base-agent)
 
 ```bash
-conda activate mlip-agent
+conda activate base-agent
 pytest tests/base/ -v
 ```
 
 Or using markers:
 ```bash
-conda activate mlip-agent
+conda activate base-agent
 pytest -m base -v
 ```
 
@@ -84,7 +84,7 @@ Create a script `run_all_tests.sh`:
 #!/bin/bash
 
 echo "Running base tests..."
-conda activate mlip-agent
+conda activate base-agent
 pytest tests/base/ -v
 
 echo "Running MACE tests..."
@@ -117,7 +117,7 @@ pytest tests/integration/ -v
 
 Tests are marked by required environment:
 
-- `@pytest.mark.base` - Base utilities (mlip-agent)
+- `@pytest.mark.base` - Base utilities (base-agent)
 - `@pytest.mark.mace` - MACE-specific tests (mace-agent)
 - `@pytest.mark.matgl` - MatGL-specific tests (matgl-agent)
 - `@pytest.mark.fairchem` - FairChem-specific tests (fairchem-agent)

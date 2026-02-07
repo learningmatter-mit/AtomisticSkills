@@ -1,0 +1,38 @@
+{
+    "alkaline_stability": {
+        "description": "Chemical systems for alkaline-stable electrolyte screening",
+        "systems": [
+            "Li-O-H",
+            "Na-O-H",
+            "Li-P-O-H",
+            "Li-Al-O-H"
+        ]
+    },
+    "cathode_materials": {
+        "description": "Common cathode materials for aqueous stability assessment",
+        "systems": [
+            "Li-Co-O-H",
+            "Li-Fe-P-O-H",
+            "Li-Mn-O-H",
+            "Li-Ni-Co-Mn-O-H"
+        ]
+    },
+    "classic_examples": {
+        "description": "Well-studied systems for validation",
+        "systems": [
+            "Fe-O-H",
+            "Al-O-H",
+            "Cu-O-H",
+            "Zn-O-H",
+            "Cr-O-H"
+        ]
+    },
+    "solid_electrolytes": {
+        "description": "Solid-state electrolyte materials",
+        "systems": [
+            "Li-La-Zr-O-H",
+            "Li-Ti-P-O-H",
+            "Li-Si-P-S-O-H"
+        ]
+    }
+}

@@ -1,0 +1,11 @@
+name: fairchem-agent
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - mcp
+    - fairchem-core
+    - pymatgen
+    - matcalc
+    - typing-extensions
+    - ase

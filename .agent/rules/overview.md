@@ -72,7 +72,7 @@ The fine-tuning process is broken down into distinct steps that can be run in di
 The LLM agent should decide which foundation potential to be used based on the users' input task type. This is mostly related to what pretrained chemistry in the foundation potentials are.
 
 ### Environment Setup
-The main agent is under `conda activate mlip-agent`
+The main agent is under `conda activate base-agent`
 Each foundation potential uses separate conda environments to avoid dependency conflicts:
 
 1. **MatGL Environment**: `conda activate matgl-agent`

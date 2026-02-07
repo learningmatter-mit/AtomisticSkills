@@ -6,7 +6,7 @@ This guide details how to set up and use remote job submission for high-throughp
 
 ### 1.1 Install `jobflow-remote`
 
-Configure your Conda environment (e.g., `mlip-agent`) and install `jobflow-remote`:
+Configure your Conda environment (e.g., `base-agent`) and install `jobflow-remote`:
 
 ```bash
 pip install jobflow-remote

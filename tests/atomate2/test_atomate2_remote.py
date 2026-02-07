@@ -8,7 +8,7 @@ from pathlib import Path
 # Add project root to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.mcp_server.materials_server import run_atomate2_vasp_calculation
+from src.mcp_server.atomate2_server import run_atomate2_vasp_calculation
 from src.utils.dft.atomate2_utils import Atomate2Handler
 from pymatgen.core import Structure
 

@@ -12,7 +12,7 @@ You job is to utilize the MCP tools to perform simulation workflows and analysis
 
 
 3.  **Define Research Directory**:
-    - For every research task, establish a dedicated directory for storing results (structures, logs, trajectories).
+    - For every research task, always establish a dedicated directory for storing results (structures, logs, trajectories).
     - Use the MCP tool create_research_dir to create this directory
     - you need to pass a <short_description> to the tool, which is a few word sumarizing this research plan (e.g. `LiFePO4_stability`).
     - This research dir named ./research/<date>_<short_description> will be used to save all MCP tool results in the current research.
@@ -23,6 +23,6 @@ You job is to utilize the MCP tools to perform simulation workflows and analysis
 Most materials/chemistry simulation workflows involves the following steps.
 1. Create or query the relevent material structures.
 2. Prepare an accurate and efficient machine learning interatomic potential (mlip).
-    - You need to decide which mlip to use based on the rules under `.agent/rules/foundation-potentials.md`
+    - You need to decide which mlip to use based on the rules under `.agent/skills/foundation-potentials/SKILL.md`
 3. Conduct multiple steps of simulations.
     - You can find example workflows for common research tasks under `.agent/workflows/`
