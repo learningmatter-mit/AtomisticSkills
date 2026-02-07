@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Rules for standardizing and selecting HTVS chemical configurations (chemconfigs).
+description: Rules for standardizing and selecting HTVS chemical configurations (chemconfigs) for VASP calculations.
 ---
 
 # HTVS Chemical Configuration Standards
@@ -11,7 +11,7 @@ This document defines the naming conventions and standard configurations for Hig
 
 HTVS `chemconfig` names follow a specific "underscore-separated" taxonomy:
 
-`[FUNCTIONAL]_[DISPERSION]_[BASIS]_[TASK]_[CODE]`
+`[FUNCTIONAL]_[DISPERSION]_[BASIS/POTENTIAL]_[TASK]_[CODE]`
 
 ### 1. Functional
 - `pbe`: Perdew-Burke-Ernzerhof (GGA). Standard for most materials.
@@ -39,8 +39,6 @@ HTVS `chemconfig` names follow a specific "underscore-separated" taxonomy:
 
 ### 5. DFT Code
 - `vasp`: Vienna Ab initio Simulation Package.
-- `orca`: ORCA quantum chemistry package.
-- `qchem`: Q-Chem.
 
 ## Standard VASP Configurations
 
