@@ -87,6 +87,10 @@ Each foundation potential uses separate conda environments to avoid dependency c
    - For FAIRCHEM models (UMA, ESEN series)
    - Includes FAIRCHEM-core and related dependencies
 
+4. **HTVS Environment**: `conda activate htvs-agent`
+   - For High-Throughput Virtual Screening (HTVS)
+   - Includes Django, PostgreSQL, and VASP parsers
+
 ### Environment Creation
 ```bash
 # Create MatGL environment
@@ -97,6 +101,9 @@ conda env create -f conda-envs/mace-environment.yml
 
 # Create FAIRCHEM environment
 conda env create -f conda-envs/fairchem-environment.yml
+
+# Create HTVS environment
+conda env create -f conda-envs/htvs-agent.yml
 ```
 
 ### Testing Requirements
@@ -143,6 +150,7 @@ This step involves parsing the raw DFT outputs to the formats that are supported
    conda activate matgl-agent  # For MatGL models
    conda activate mace-agent  # For MACE models
    conda activate fairchem-agent  # For FAIRCHEM models
+   conda activate htvs-agent  # For HTVS submissions
    ```
 
 ### Basic Usage
