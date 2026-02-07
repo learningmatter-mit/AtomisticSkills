@@ -1,11 +1,11 @@
 ---
 name: htvs-submission
-description: Submit DFT jobs to the High-Throughput Virtual Screening (HTVS) system.
+description: Submit DFT jobs using VASP to the High-Throughput Virtual Screening (HTVS) system.
 ---
 
 # HTVS Submission Skill
 
-**Goal**: Batch submit crystal structures (e.g., xyz/cif) to the HTVS system for DFT calculations.
+**Goal**: Submit crystal structures (e.g., xyz/cif) to the HTVS system for DFT calculations using VASP.
 
 ## When to use HTVS
 
@@ -20,7 +20,7 @@ For every HTVS-based research task, you **MUST** create a Research Plan and get 
 
 The research plan should include:
 - **Objective**: Detailed goal (e.g., ground truth labeling for Pt bulk).
-- **HTVS Parameters**: `group_name`, `chem_config`, `compute_platform`, `inbox_path`, `requester`, `settings_module`, `details`, `completed_path`.
+- **HTVS Parameters**: `group_name`, `chem_config`, `compute_platform`, `inbox_path`, `requester`, `settings_module`, `potcar_path`, `completed_path`.
 
 ## Workflow
 
@@ -33,6 +33,7 @@ The research plan should include:
 - **Compute Platform** (`compute_platform`): Cluster Name (e.g., `supercloud`, `perlmutter`).
 - **Requester** (`requester`): User ID (e.g., `hojechun`).
 - **Inbox Path** (`inbox_path`): Directory where job folders are created. **MANDATORY**.
+- **Potcar Path** (`potcar_path`): Path to the POTCAR files. **MANDATORY**. This should be the absolute path to the directory containing the POTCAR files in the cluster. Also, this information is used as a keyward argument for `details`.
 - **Completed Path** (`completed_path`): Directory where finished results are stored.
 
 ### 2. Verify Prerequisites
@@ -50,6 +51,7 @@ Example `details`:
 {
   "priority": 50,
   "compute_platform": "supercloud",
+  "pseudo_dir": "/path/to/potcar", # This is the path to the POTCAR files. 
   "kppa": 4000
 }
 ```
@@ -91,10 +93,15 @@ Retrieve results into the database using `parse_htvs_job` or the `parse_jobs.py`
 
 Select the `chem_config` based on the material type and desired accuracy. For detailed naming conventions and standards, see [chemconfig-standards.md](chemconfig-standards.md).
 
-### Inorganic Materials (Bulk, Surfaces)
+### Inorganic Materials (Bulk)
 - **Standard Relaxation**: `pbe_d3_paw_opt_vasp` (PBE+D3).
 - **Static/Energy**: `pbe_d3_paw_engrad_vasp` (Single point energy/forces).
 - **Accurate**: `r2scan_paw_opt_vasp` (r2SCAN relaxation).
+- **MD**: `pbe_d3_paw_bomd_vasp`.
+
+### Surfaces
+- **Standard Relaxation**: `pbe_u_paw_spinpol_opt_surf_vasp` (PBE+U).
+- **Static/Energy**: `pbe_u_paw_spinpol_opt_surf_vasp` (Single point energy/forces). Ensure NSW = 0.
 - **MD**: `pbe_d3_paw_bomd_vasp`.
 
 ### Organic / Molecules
