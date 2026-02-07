@@ -18,6 +18,7 @@ For detailed installation instructions, please refer to the `README.md` and `ins
 - **fairchem-agent**: `conda-envs/fairchem-agent/` (Core: fairchem-core, pymatgen)
 - **atomate2-agent**: `conda-envs/atomate2-agent/` (Core: atomate2, pymatgen)
 - **smol-agent**: `conda-envs/smol-agent/` (Core: smol, pymatgen)
+- **htvs-agent**: `conda-envs/htvs-agent.yml` (Core: django, psycopg2, vasp-parsers)
 
 | MCP Server | Conda Environment | Python Path |
 | :--- | :--- | :--- |
@@ -27,3 +28,4 @@ For detailed installation instructions, please refer to the `README.md` and `ins
 | materials_tools | `base-agent` | `<conda_base>/envs/base-agent/bin/python` |
 | atomate2 | `atomate2-agent` | `<conda_base>/envs/atomate2-agent/bin/python` |
 | smol | `smol-agent` | `<conda_base>/envs/smol-agent/bin/python` |
+| htvs | `htvs-agent` | `<conda_base>/envs/htvs-agent/bin/python` |
