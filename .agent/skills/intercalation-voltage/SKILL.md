@@ -141,3 +141,7 @@ Expected result: ~3.4-3.5 V for LiFePO4
 - **MLIP Consistency**: Use the same MLIP model for all three relaxations
 - **Metal Phase**: Use the provided metal structures from `resources/` which are the most stable phases from Materials Project
 - **Temperature**: This calculation provides the 0K OCV; entropy effects are neglected
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

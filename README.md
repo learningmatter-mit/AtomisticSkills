@@ -13,72 +13,91 @@ The framework integrates state-of-the-art Machine Learning Interatomic Potential
 
 ## Hierarchical Research Framework
 
-The core idea of **AtomisticSkills** is the **hierarchical decomposition of scientific tasks** into three distinct levels: **Workflows**, **Skills**, and **Tools**. This architecture enables AI agents to tackle complex materials research problems by breaking them down into manageable, composable components.
-
-
-### 🎯 Workflows (High-Level Scientific Tasks)
-[**Browse Workflows →**](.agent/workflows)
-
-Workflows represent **complete research objectives** that may span multiple computational tasks and require strategic decision-making. They are defined as step-by-step procedures in `.agent/workflows/` and guide the agent through complex, multi-stage research campaigns.
-
-**Examples:**
-- Search for a novel MOF sorption material in the Li-N-O chemical space
-- Explore novel solid-state conductors that are compatible with LiFePO₄ cathodes
-- Design thermally stable perovskites for high-temperature applications
-
----
-
-### 🔧 Skills (Mid-Level Research Tasks)
-[**Browse Skills →**](.agent/skills)
-
-Skills are **modular capabilities** that calculate or investigate specific material properties or answer focused research questions. Each skill encapsulates domain expertise, combining multiple tools and scripts to solve a well-defined problem. Skills are self-documented with instructions, helper scripts, and examples.
-
-**Examples:**
-- How to calculate the 0K thermodynamic stability of a material
-- How to fine-tune a machine learning interatomic potential
-- How to calculate the melting temperature of a material
-- How to compute ionic diffusion coefficients from MD trajectories
-
-**Current Skills:**
-- [**MLIP Training**](.agent/skills/mlip-training/SKILL.md): Benchmark and fine-tune MLIPs using data augmentation
-- [**Melting Point**](.agent/skills/melting-point/SKILL.md): Calculate melting temperature via solid-liquid coexistence
-- [**Diffusion Analysis**](.agent/skills/diffusion-analysis/SKILL.md): Compute diffusion coefficients and activation energies
-- [**Molecular Dynamics**](.agent/skills/molecular-dynamics/SKILL.md): Best practices for stable MLIP MD simulations
-- [**Material Stability**](.agent/skills/material-stability/SKILL.md): Calculate 0K thermodynamic stability and $E_{hull}$
+**AtomisticSkills** decomposes complex scientific tasks into three abstraction levels: **Tools** → **Skills** → **Workflows**. This hierarchy enables AI agents to tackle materials research problems by composing modular capabilities.
 
 ---
 
 ### ⚙️ Tools (Low-Level Research Primitives)
 [**View MCP Tools**](src/mcp_server)
 
-Tools are the **fundamental building blocks** that Skills and Workflows compose together. They are less flexible but highly optimized and battle-tested. Tools are exposed in two forms:
+Tools are **strictly structured, fundamental operations** exposed as Python functions through MCP servers. They have **fixed input/output types** and must match function call signatures exactly—similar to standard library APIs.
 
-1. **MCP Tools**: Reusable, general-purpose functions exposed via MCP servers that the agent can call directly:
-   - Ionic relaxation (structure optimization)
+**Key Characteristics:**
+- **Strict Type Checking**: Input and output types must match Python function signatures precisely
+- **Battle-Tested**: Optimized, reliable implementations for core operations
+- **Direct Callable**: The agent invokes tools directly via MCP protocol
+
+**Tool Categories:**
+
+1. **MCP Tools** (General-purpose primitives):
+   - Structure relaxation (geometry optimization)
    - Molecular dynamics (NVT, NPT, NVE ensembles)
    - Monte Carlo simulation (cluster expansion)
    - MLIP fine-tuning and prediction
    - DFT input preparation and output parsing
 
-2. **Skill-Specific Scripts**: Specialized tools restricted to certain Skills, provided as runnable scripts in `.agent/skills/<skill-name>/scripts/`:
+2. **Skill-Specific Scripts** (Specialized helpers):
    - Phase identification for melting point calculations
    - Parity plot generation for MLIP benchmarking
    - Diffusion coefficient fitting from MSD data
 
-**Example Tool Composition:**
+---
+
+### 🔧 Skills (Mid-Level Research Tutorials)
+[**Browse Skills →**](.agent/skills)
+
+Skills are **flexible tutorials** that combine multiple tool calls to solve focused research problems. Unlike tools, skills have **no fixed input/output type constraints**—the agent handles all data conversion and orchestration between steps.
+
+**Key Characteristics:**
+- **Flexible Composition**: Tutorials showing "how to combine tools" for specific tasks
+- **Agent-Managed**: The agent handles data format conversions between tool calls
+- **Self-Documented**: Each skill includes instructions (`SKILL.md`), helper scripts, and examples
+
+**Examples:**
+- Calculate 0K thermodynamic stability of a material
+- Fine-tune a machine learning interatomic potential
+- Compute ionic diffusion coefficients from MD trajectories
+- Calculate melting temperature via solid-liquid coexistence
+
+**Featured Skills:**
+- [**MLIP Training**](.agent/skills/mlip-training/SKILL.md): Benchmark and fine-tune MLIPs using data augmentation
+- [**Melting Point**](.agent/skills/melting-point/SKILL.md): Calculate melting temperature via solid-liquid coexistence
+- [**Diffusion Analysis**](.agent/skills/diffusion-analysis/SKILL.md): Compute diffusion coefficients and activation energies
+- [**Material Stability**](.agent/skills/material-stability/SKILL.md): Calculate 0K thermodynamic stability and $E_{hull}$
+
+---
+
+### 🎯 Workflows (High-Level Research Objectives)
+[**Browse Workflows →**](.agent/workflows)
+
+Workflows represent **complete, high-level research goals** that may span multiple skills and require strategic planning. They provide a non-detailed research roadmap for the agent to follow. Workflows are not necessarily constrained to the currently available tools and skills. They can be a summary of a research paper, or a research idea generated during a informal chat.
+
+**Key Characteristics:**
+- **High-Level Roadmaps**: Multi-stage research campaigns requiring decision-making
+- **Flexible Detail Level**: Workflows can be **detailed** (specifying every skill and tool step) or **vague** (providing only the goal, requiring the agent to independently determine the complete skill composition and execution strategy)
+- **Flexible Scope**: May exceed current tool/skill coverage; serve as targets for the agent to work toward
+
+**Examples:**
+- Search for novel MOF sorption materials in the Li-N-O chemical space
+- Explore solid-state conductors compatible with LiFePO₄ cathodes
+- Design thermally stable perovskites for high-temperature applications
+
+---
+
+### Example Composition Hierarchy
 ```
 Workflow: "Find stable Li-ion conductors"
+  ├── Skill: "Fine-tune MLIP for accuracy"
+  │     ├── Tool: Sample off-equilibrium structures (MCP)
+  │     ├── Tool: Label with DFT (MCP)
+  │     └── Tool: Fine-tune model (MCP)
   ├── Skill: "Calculate 0K stability"
   │     ├── Tool: Load structure from Materials Project (MCP)
   │     ├── Tool: Relax structure with MLIP (MCP)
   │     └── Tool: Calculate formation energy (MCP)
-  ├── Skill: "Compute ionic diffusion"
-  │     ├── Tool: Run MD simulation (MCP)
-  │     └── Tool: Analyze MSD and fit diffusivity (Skill Script)
-  └── Skill: "Fine-tune MLIP for accuracy"
-        ├── Tool: Sample off-equilibrium structures (MCP)
-        ├── Tool: Label with DFT or UMA (MCP)
-        └── Tool: Fine-tune model (MCP)
+  └── Skill: "Compute ionic diffusion"
+        ├── Tool: Run MD simulation (MCP)
+        └── Tool: Analyze MSD and fit diffusivity (Skill Script)
 ```
 
 ---

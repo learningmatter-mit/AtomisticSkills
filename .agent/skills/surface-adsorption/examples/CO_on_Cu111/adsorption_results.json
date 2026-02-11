@@ -1,0 +1,54 @@
+{
+    "miller_index": [
+        1,
+        1,
+        1
+    ],
+    "bulk_formula": "Cu4",
+    "adsorbate_formula": "C1 O1",
+    "num_sites": 3,
+    "adsorption_sites": [
+        {
+            "site_index": 0,
+            "site": "ontop",
+            "adsorption_energy": -1.12,
+            "adslab_energy": -45.23,
+            "slab_energy": -43.56,
+            "adsorbate_energy": -0.55
+        },
+        {
+            "site_index": 1,
+            "site": "bridge",
+            "adsorption_energy": -0.89,
+            "adslab_energy": -45.00,
+            "slab_energy": -43.56,
+            "adsorbate_energy": -0.55
+        },
+        {
+            "site_index": 2,
+            "site": "hollow",
+            "adsorption_energy": -0.67,
+            "adslab_energy": -44.78,
+            "slab_energy": -43.56,
+            "adsorbate_energy": -0.55
+        }
+    ],
+    "most_stable_site": {
+        "site_index": 0,
+        "site": "ontop",
+        "adsorption_energy": -1.12,
+        "adslab_energy": -45.23,
+        "slab_energy": -43.56,
+        "adsorbate_energy": -0.55
+    },
+    "calculation_settings": {
+        "relax_bulk": true,
+        "relax_slab": true,
+        "relax_adsorbate": true,
+        "fmax": 0.05,
+        "max_steps": 500,
+        "min_slab_size": 10.0,
+        "min_vacuum_size": 20.0
+    },
+    "output_dir": "research/CO_Cu111_adsorption"
+}

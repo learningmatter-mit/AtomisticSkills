@@ -47,15 +47,10 @@ mcp = FastMCP("materials_tools")
 
 @mcp.tool()
 def create_research_dir(research_topic: str) -> str:
-    """
-    Create a new research directory for a specific topic and set it as the current active directory.
-    
-    This directory will be used by all subsequent MCP tool calls (Atomate2, FairChem, etc.) 
-    that verify against the cached 'CURRENT_RESEARCH_DIR' environment variable.
+    """Create research directory and set as active for MCP tools.
     
     Args:
-        research_topic: Short description of the research task (e.g. "LiFePO4_stability").
-                        Will be prefixed with the current date.
+        research_topic: Short description (e.g. "LiFePO4_stability"), prefixed with date.
         
     Returns:
         Path to the newly created directory.
@@ -73,17 +68,15 @@ def search_materials_project_by_formula(
     api_key: Optional[str] = None,
     save_to_file: Optional[str] = None
 ) -> str:
-    """
-    Search for materials in Materials Project by chemical formula (e.g., "Fe2O3").
-    Supports wildcards (e.g., "Fe2O3", "Si*").
+    """Search Materials Project by formula. Supports wildcards.
     
     Args:
-        formula: Chemical formula (e.g., "Si", "Fe2O3").
-        api_key: Optional Materials Project API key. If not provided, tries to load from environment.
-        save_to_file: Optional path to save the structure file.
+        formula: Chemical formula (e.g., "Si", "Fe2O3", "Si*").
+        api_key: Optional MP API key (defaults to environment).
+        save_to_file: Optional save path.
         
     Returns:
-        Path to the saved structure file (CIF format).
+        Path to saved CIF file.
     """
     mp_key = api_key or get_mp_key()
     if not mp_key:
@@ -105,17 +98,15 @@ def search_materials_project_by_chemsys(
     api_key: Optional[str] = None,
     save_to_file: Optional[str] = None
 ) -> str:
-    """
-    Search for materials in Materials Project by chemical system (e.g., "Li-O").
-    Returns the most stable structure (lowest energy above hull).
+    """Search Materials Project by chemical system. Returns most stable structure.
     
     Args:
         chemsys: Chemical system (e.g., "Li-O", "Si-Fe-O").
-        api_key: Optional Materials Project API key. If not provided, tries to load from environment.
-        save_to_file: Optional path to save the structure file.
+        api_key: Optional MP API key (defaults to environment).
+        save_to_file: Optional save path.
         
     Returns:
-        Path to the saved structure file (CIF format).
+        Path to saved CIF file.
     """
     mp_key = api_key or get_mp_key()
     if not mp_key:
@@ -137,16 +128,15 @@ def search_materials_project_by_id(
     api_key: Optional[str] = None,
     save_to_file: Optional[str] = None
 ) -> str:
-    """
-    Search for materials in Materials Project by Material ID (e.g., "mp-149").
+    """Search Materials Project by Material ID.
     
     Args:
         material_id: Material ID (e.g., "mp-149").
-        api_key: Optional Materials Project API key. If not provided, tries to load from environment.
-        save_to_file: Optional path to save the structure file.
+        api_key: Optional MP API key (defaults to environment).
+        save_to_file: Optional save path.
         
     Returns:
-        Path to the saved structure file (CIF format).
+        Path to saved CIF file.
     """
     mp_key = api_key or get_mp_key()
     if not mp_key:
@@ -178,6 +168,177 @@ def _save_atoms(atoms: Any, name_hint: str, save_to_file: Optional[str] = None) 
     return f"Structure for {name_hint} saved to {save_path.absolute()}"
 
 @mcp.tool()
+def visualize_structure(
+    structure_path: str,
+    output_path: Optional[str] = None,
+    width: int = 1200,
+    height: int = 800,
+    scale: float = 2.0,
+) -> str:
+    """Visualize structure(s) as high-quality image(s).
+    
+    Args:
+        structure_path: Can be:
+            - Path to a single structure file (CIF, POSCAR, XYZ, etc.)
+            - Path to a directory containing multiple structures (generates one image per structure)
+            - Path to a trajectory file (visualizes the last frame)
+        output_path: Save path for single file, or directory for batch mode (auto: research_dir or cwd). 
+                     Formats: png, jpg, svg, pdf.
+        width: Image width in pixels (default: 1200).
+        height: Image height in pixels (default: 800).
+        scale: Resolution scale factor (default: 2.0).
+        
+    Returns:
+        Summary of saved image(s).
+    """
+    try:
+        import os
+        from pathlib import Path
+        import plotly.io as pio
+        from ase.io import read
+        from ase import Atoms
+        from pymatgen.io.ase import AseAtomsAdaptor
+
+        input_path = Path(structure_path)
+        current_research_dir = os.environ.get("CURRENT_RESEARCH_DIR")
+        
+        # Check if input is a directory
+        if input_path.is_dir():
+            # Batch mode: find all structure files
+            structure_files = []
+            for ext in ["cif", "CIF", "poscar", "POSCAR", "vasp", "xyz", "json"]:
+                structure_files.extend(input_path.rglob(f"*.{ext}"))
+            
+            # Also check for POSCAR files without extension
+            for poscar in input_path.rglob("POSCAR"):
+                if poscar not in structure_files:
+                    structure_files.append(poscar)
+            
+            structure_files = sorted(structure_files)
+            
+            if not structure_files:
+                return f"Error: No structure files found in directory {structure_path}"
+            
+            # Determine output directory
+            if output_path:
+                out_dir = Path(output_path)
+            elif current_research_dir:
+                out_dir = Path(current_research_dir) / "structure_visualizations"
+            else:
+                out_dir = Path.cwd() / "structure_visualizations"
+            
+            out_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Process each structure
+            saved_images = []
+            for struct_file in structure_files:
+                try:
+                    structure = load_structure_from_file(str(struct_file))
+                    if structure is None:
+                        continue
+                    
+                    # Convert to pymatgen if needed
+                    if isinstance(structure, Atoms):
+                        structure = AseAtomsAdaptor.get_structure(structure)
+                    
+                    # Generate output filename
+                    struct_name = struct_file.stem
+                    if struct_name == "POSCAR":
+                        struct_name = struct_file.parent.name
+                    
+                    img_path = out_dir / f"{struct_name}_structure.png"
+                    
+                    # Import visualization function
+                    try:
+                        from src.utils.structure_viz import structure_3d_custom
+                    except ImportError:
+                        from utils.structure_viz import structure_3d_custom
+                    
+                    # Generate and save figure
+                    fig = structure_3d_custom(structure, scale=scale)
+                    pio.write_image(fig, img_path, width=width, height=height, scale=scale)
+                    saved_images.append(str(img_path))
+                    
+                except Exception as e:
+                    print(f"Warning: Failed to visualize {struct_file}: {e}")
+                    continue
+            
+            if not saved_images:
+                return f"Error: Failed to visualize any structures in {structure_path}"
+            
+            return f"Successfully visualized {len(saved_images)} structures. Images saved to {out_dir}. Files: {[Path(p).name for p in saved_images[:5]]}{'...' if len(saved_images) > 5 else ''}"
+        
+        # Check if input is a trajectory file
+        trajectory_extensions = [".traj", ".extxyz"]
+        is_trajectory = any(str(input_path).endswith(ext) for ext in trajectory_extensions)
+        
+        if is_trajectory:
+            # Load trajectory and get the last frame
+            atoms_list = read(str(input_path), index=":")
+            if not atoms_list:
+                return f"Error: Trajectory file {structure_path} is empty"
+            
+            # Get last frame
+            structure = atoms_list[-1]
+            
+            # Convert to pymatgen
+            if isinstance(structure, Atoms):
+                structure = AseAtomsAdaptor.get_structure(structure)
+            
+            struct_name = f"{input_path.stem}_last_frame"
+        else:
+            # Single structure file
+            structure = load_structure_from_file(structure_path)
+            if structure is None:
+                return f"Error: Could not load structure from {structure_path}"
+            
+            # Convert ASE Atoms to pymatgen Structure if needed
+            if isinstance(structure, Atoms):
+                structure = AseAtomsAdaptor.get_structure(structure)
+                
+            # Get structure name for default filename
+            struct_name = input_path.stem
+        
+        # Determine output path with research dir support
+        if output_path:
+            out_p = Path(output_path)
+            # If output_path is relative and research dir is set, save there
+            if not out_p.is_absolute() and len(out_p.parts) == 1 and current_research_dir:
+                output_path = Path(current_research_dir) / out_p
+            else:
+                output_path = out_p
+        else:
+            filename = f"{struct_name}_structure.png"
+            if current_research_dir:
+                output_path = Path(current_research_dir) / filename
+            else:
+                output_path = Path.cwd() / filename
+                
+        # Ensure parent directory exists
+        if not output_path.parent.exists():
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Use custom implementation for better style control (Vesta colors, 3D lighting)
+        try:
+            from src.utils.structure_viz import structure_3d_custom
+        except ImportError:
+            from utils.structure_viz import structure_3d_custom
+            
+        # Generate the figure with custom settings
+        fig = structure_3d_custom(
+            structure,
+            scale=scale,
+        )
+        
+        # Save the image
+        pio.write_image(fig, output_path, width=width, height=height, scale=scale)
+        
+        return f"Structure visualization saved to {output_path.absolute()}"
+        
+    except Exception as e:
+        return f"Error visualizing structure: {str(e)}"
+
+@mcp.tool()
 def prepare_vasp_inputs(
     structure_path: str,
     output_dir: str,
@@ -186,23 +347,18 @@ def prepare_vasp_inputs(
     config: Optional[Dict[str, Any]] = None,
     vasp_settings: Optional[Dict[str, Any]] = None
 ) -> str:
-    """
-    Prepare VASP input files (POSCAR, INCAR, KPOINTS, POTCAR) for a given structure.
+    """Prepare VASP input files (POSCAR, INCAR, KPOINTS, POTCAR).
     
     Args:
-        structure_path: Path to the input structure file (CIF, POSCAR, XYZ, etc.)
-        output_dir: Directory where input files will be generated.
-        calculation_type: Type of VASP calculation: "relaxation", "static", "md".
-        preset_type: Preset calculation type ("omat", "mp", "matpes-pbe", "matpes-r2scan"). Default is "omat".
-                     - "omat": Optimized for OC20/OMat24 style calculations.
-                     - "mp": Materials Project standard (static or relaxation).
-                     - "matpes-pbe": MatPES project settings with PBE functional.
-                     - "matpes-r2scan": MatPES project settings with r2SCAN functional.
-        config: Custom VASP settings (INCAR tags) to override preset.
+        structure_path: Path to structure file or directory.
+        output_dir: Output directory for VASP files.
+        calculation_type: "relaxation", "static", or "md".
+        preset_type: "omat", "mp", "matpes-pbe", or "matpes-r2scan" (default: "omat").
+        config: Custom INCAR tags to override preset.
         vasp_settings: Deprecated, use config instead.
                         
     Returns:
-        Summary message indicating where files were written.
+        Summary message.
     """
     input_path = Path(structure_path)
     out_path = Path(output_dir)
@@ -263,73 +419,47 @@ def prepare_vasp_inputs(
 
 @mcp.tool()
 def parse_vasp_results(output_dir: str, save_to_file: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Parse VASP output files (vasprun.xml, OUTCAR) or UMA mock DFT results.
-    
-    Can parse a single calculation directory or a root directory containing 
-    multiple subdirectories (e.g., 'structure_0', 'structure_1').
+    """Parse VASP outputs (vasprun.xml, OUTCAR).
     
     Args:
-        output_dir: Directory containing VASP output files (vasprun.xml, OUTCAR) 
-                    or UMA result.json.
-        save_to_file: Optional path to save the parsed results as a JSON file.
+        output_dir: Directory with VASP outputs.
+        save_to_file: Optional JSON save path.
         
     Returns:
-        Dictionary containing:
-        - For single calculation:
-            - 'final_energy': Total energy (eV)
-            - 'forces': Atomic forces (eV/A)
-            - 'stress': Stress tensor (eV/Å³)
-            - 'final_structure': Pymatgen/ASE dict structure
-        - For multiple calculations:
-            - 'results': List of result dictionaries for each structure
+        Dict with energy, forces, stress, structure (single calc) or list of results (batch).
     """
     parser = VASPParser(output_dir)
     
-    # Detect result type (single or multiple)
-    # For simplicity, we expose the single parser logic via parsing all and returning list
-    # or checking if it's a single calculation
+    # Check if this is a single calculation directory
+    has_vasprun = (parser.output_dir / "vasprun.xml").exists()
     
-    # Check if it has direct result files
-    has_direct_result = (
-        (parser.output_dir / "vasprun.xml").exists() or 
-        (parser.output_dir / "result.json").exists()
-    )
+    if has_vasprun:
+        # Parse single VASP calculation
+        result = parser.parse_vasprun()
+        outcar_result = parser.parse_outcar()
+        result.update(outcar_result)
+        
+        # Serialize for JSON
+        results = parser._prepare_for_json(result)
+        
+        if save_to_file:
+            with open(save_to_file, 'w') as f:
+                json.dump(results, f, indent=2)
+                
+        return results
     
-    if has_direct_result:
-        # Try UMA format first
-        if parser.uma_result_path.exists():
-            return parser.parse_uma_result()
-        # Try VASP format
-        elif parser.vasprun_path.exists():
-            result = parser.parse_vasprun()
-            outcar_result = parser.parse_outcar()
-            result.update(outcar_result)
-            
-            # Serialize for JSON
-            results = parser._prepare_for_json(result)
-            
-            if save_to_file:
-                with open(save_to_file, 'w') as f:
-                    json.dump(results, f, indent=2)
-                    
-            return results
-    
-    # If not direct, try parsing all subdirectories
+    # Otherwise, parse all subdirectories
     all_results = parser.parse_all()
     if not all_results:
-        return {"error": f"No valid VASP or UMA results found in {output_dir}"}
+        return {"error": f"No valid VASP results found in {output_dir}"}
         
-    # Return summary or full list? Returning full list might be large.
-    # Let's return serialized list.
+    # Return serialized list
     results = {"results": parser._prepare_for_json(all_results)}
     
     if save_to_file:
         with open(save_to_file, 'w') as f:
             json.dump(results, f, indent=2)
             
-    return results
-
     return results
 
 if __name__ == "__main__":

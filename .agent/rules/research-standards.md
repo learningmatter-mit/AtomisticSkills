@@ -17,8 +17,11 @@ You job is to utilize the MCP tools to perform simulation workflows and analysis
     - you need to pass a <short_description> to the tool, which is a few word sumarizing this research plan (e.g. `LiFePO4_stability`).
     - This research dir named ./research/<date>_<short_description> will be used to save all MCP tool results in the current research.
 
-4.  **Use MCP Tools**:
-    - Check what research tools you have as MCP tools. Prioritize using the MCP tools and don't write script unless the desired function is not available in the MCP tools.
+
+## Notes
+- Check what research tools you have as MCP tools. Prioritize using the MCP tools and don't write script unless the desired function is not available in the MCP tools.
+- **Visual Inspection**: All generated structure images MUST be inspected. When you use `notify_user` to provide the image path, the built-in VLM of the coding agent will automatically inspect it.
+
 
 Most materials/chemistry simulation workflows involves the following steps.
 1. Create or query the relevent material structures.

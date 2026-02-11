@@ -68,3 +68,7 @@ Use the `analyze_amorphous.py` script to verify the results:
 
 ## Examples
 See `.agent/skills/amorphorization/examples/` for validated amorphous structures.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

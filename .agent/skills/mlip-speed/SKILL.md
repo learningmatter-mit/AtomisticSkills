@@ -67,3 +67,7 @@ Performance benchmarks conducted on **NVIDIA GB10** reveal distinct performance 
 
 ## Resources
 - [Example Benchmark Data (NVIDIA GB10)](resources/speed_benchmark_dgx_spark.yaml)
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

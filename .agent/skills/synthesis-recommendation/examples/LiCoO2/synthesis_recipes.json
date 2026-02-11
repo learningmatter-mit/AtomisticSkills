@@ -1,0 +1,1076 @@
+{
+  "target": "LiCoO2",
+  "num_recipes": 5,
+  "recipes": [
+    {
+      "doi": "10.1021/cm060175t",
+      "paragraph_string": "Reference Co3O4 and LiCoO2 phases were obtained by a classical ceramic method. Co3O4 was ...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "0.333 Co3O4 + 0.5 Li2CO3 + 0.083 O2 == 1 LiCoO2 + 0.5 CO2",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "0.5",
+            "material": "Li2CO3"
+          },
+          {
+            "amount": "0.333",
+            "material": "Co3O4"
+          },
+          {
+            "amount": "0.083",
+            "material": "O2"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiCoO2"
+          },
+          {
+            "amount": "0.5",
+            "material": "CO2"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Co1 O2"
+      ],
+      "target": {
+        "material_string": "LiCoO2",
+        "material_formula": "LiCoO2",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiCoO2",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "Co": "1",
+              "O": "2"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiCoO2"
+      ],
+      "precursors_formula_s": [
+        "Li2CO3",
+        "Co3O4"
+      ],
+      "precursors": [
+        {
+          "material_string": "Li2CO3",
+          "material_formula": "Li2CO3",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Li2CO3",
+              "amount": "1",
+              "elements": {
+                "Li": "2",
+                "C": "1",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "Co3O4",
+          "material_formula": "Co3O4",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Co3O4",
+              "amount": "1",
+              "elements": {
+                "Co": "3",
+                "O": "4"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "synthesized",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "calcination",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 450.0,
+                "max_value": 450.0,
+                "values": [
+                  450.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 15.0,
+                "max_value": 15.0,
+                "values": [
+                  15.0
+                ],
+                "units": "h"
+              }
+            ],
+            "heating_atmosphere": [
+              "oxygen"
+            ],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "heated",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 850.0,
+                "max_value": 850.0,
+                "values": [
+                  850.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 2.0,
+                "max_value": 2.0,
+                "values": [
+                  2.0
+                ],
+                "units": "day"
+              }
+            ],
+            "heating_atmosphere": [
+              "oxygen"
+            ],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    },
+    {
+      "doi": "10.1039/b600529b",
+      "paragraph_string": "The LiNi0.5-yMn0.5-yCo2yO2 samples with 0 \u2264 2y \u2264 0.58 were prepared by firing the coprecipitated ...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "0.5 Co2 + 1 LiOH + 0.75 O2 == 1 LiCoO2 + 0.5 H2O",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "0.5",
+            "material": "Co2"
+          },
+          {
+            "amount": "1",
+            "material": "LiOH"
+          },
+          {
+            "amount": "0.75",
+            "material": "O2"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiCoO2"
+          },
+          {
+            "amount": "0.5",
+            "material": "H2O"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Co1 O2"
+      ],
+      "target": {
+        "material_string": "LiCoO2",
+        "material_formula": "LiCoO2",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiCoO2",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "Co": "1",
+              "O": "2"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiCoO2"
+      ],
+      "precursors_formula_s": [
+        "Co",
+        "LiHO"
+      ],
+      "precursors": [
+        {
+          "material_string": "Co2+",
+          "material_formula": "Co2",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Co2",
+              "amount": "1",
+              "elements": {
+                "Co": "2"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [
+            "Co2+"
+          ],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "LiOH",
+          "material_formula": "LiOH",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "LiOH",
+              "amount": "1",
+              "elements": {
+                "Li": "1",
+                "O": "1",
+                "H": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "firing",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 900.0,
+                "max_value": 900.0,
+                "values": [
+                  900.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 24.0,
+                "max_value": 24.0,
+                "values": [
+                  24.0
+                ],
+                "units": "h"
+              }
+            ],
+            "heating_atmosphere": [
+              "air",
+              "air"
+            ],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "adding",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "washing",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": "water",
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "StartingSynthesis",
+          "token": "synthesized",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    },
+    {
+      "doi": "10.1016/j.ssi.2005.06.004",
+      "paragraph_string": "The LiNi0.5-yMn0.5-yCo2yO2 samples with 0 \u2264 2y \u2264 0.58 were prepared by firing the coprecipitated ...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "1 Co + 1 LiOH + 0.75 O2 == 1 LiCoO2 + 0.5 H2O",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "1",
+            "material": "Co"
+          },
+          {
+            "amount": "1",
+            "material": "LiOH"
+          },
+          {
+            "amount": "0.75",
+            "material": "O2"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiCoO2"
+          },
+          {
+            "amount": "0.5",
+            "material": "H2O"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Co1 O2"
+      ],
+      "target": {
+        "material_string": "LiCoO2",
+        "material_formula": "LiCoO2",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiCoO2",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "Co": "1",
+              "O": "2"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiCoO2"
+      ],
+      "precursors_formula_s": [
+        "Co",
+        "LiHO"
+      ],
+      "precursors": [
+        {
+          "material_string": "Co",
+          "material_formula": "Co",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Co",
+              "amount": "1",
+              "elements": {
+                "Co": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "lithium hydroxide",
+          "material_formula": "LiOH",
+          "material_name": "lithium hydroxide",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "LiOH",
+              "amount": "1",
+              "elements": {
+                "Li": "1",
+                "O": "1",
+                "H": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "firing",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 900.0,
+                "max_value": 900.0,
+                "values": [
+                  900.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 24.0,
+                "max_value": 24.0,
+                "values": [
+                  24.0
+                ],
+                "units": "h"
+              }
+            ],
+            "heating_atmosphere": [
+              "air",
+              "air"
+            ],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "adding",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    },
+    {
+      "doi": "10.1016/j.cej.2007.03.059",
+      "paragraph_string": "LiCoO2 was prepared as support material by solid-state reaction of Li2O and Co(NO3)2\u00b76H2O. ...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "1 Co(NO3)2\u00b76H2O + 0.5 Li2O + 0.25 O2 + 2 [OH-] == 1 LiCoO2 + 7 H2O + 2 [NO3-]",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "0.5",
+            "material": "Li2O"
+          },
+          {
+            "amount": "1",
+            "material": "Co(NO3)2\u00b76H2O"
+          },
+          {
+            "amount": "2",
+            "material": "[OH-]"
+          },
+          {
+            "amount": "0.25",
+            "material": "O2"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiCoO2"
+          },
+          {
+            "amount": "7",
+            "material": "H2O"
+          },
+          {
+            "amount": "2",
+            "material": "[NO3-]"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Co1 O2"
+      ],
+      "target": {
+        "material_string": "LiCoO2",
+        "material_formula": "LiCoO2",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiCoO2",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "Co": "1",
+              "O": "2"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiCoO2"
+      ],
+      "precursors_formula_s": [
+        "Li2O",
+        "Co(NO3)2",
+        "H4N2O3"
+      ],
+      "precursors": [
+        {
+          "material_string": "Li2O",
+          "material_formula": "Li2O",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Li2O",
+              "amount": "1",
+              "elements": {
+                "Li": "2",
+                "O": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "Co(NO3)2\u00b76H2O",
+          "material_formula": "Co(NO3)2\u00b76H2O",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Co(NO3)2",
+              "amount": "1",
+              "elements": {
+                "N": "2",
+                "O": "6",
+                "Co": "1"
+              }
+            },
+            {
+              "formula": "H2O",
+              "amount": "6",
+              "elements": {
+                "H": "2",
+                "O": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "ammonium nitrate",
+          "material_formula": "NH4NO3",
+          "material_name": "ammonium nitrate",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "NH4NO3",
+              "amount": "1",
+              "elements": {
+                "N": "2",
+                "H": "4",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "mixed",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "heated",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "calcined",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 300.0,
+                "max_value": 300.0,
+                "values": [
+                  300.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 3.0,
+                "max_value": 3.0,
+                "values": [
+                  3.0
+                ],
+                "units": "h"
+              }
+            ],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "heated",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 500.0,
+                "max_value": 900.0,
+                "values": [
+                  900.0,
+                  800.0,
+                  700.0,
+                  600.0,
+                  500.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    },
+    {
+      "doi": "10.1016/j.jpowsour.2007.06.194",
+      "paragraph_string": "The metal oxides LiMO2 (M = Co, Ni) and Li2MO3 (M = Mn, Mo, Sn) were synthesized directly by solid-...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "1 Co(OH)2 + 1 LiOH\u00b7H2O + 0.25 O2 == 1 LiMO2 + 2.5 H2O; M = Co",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "1",
+            "material": "Co(OH)2"
+          },
+          {
+            "amount": "1",
+            "material": "LiOH\u00b7H2O"
+          },
+          {
+            "amount": "0.25",
+            "material": "O2"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiMO2"
+          },
+          {
+            "amount": "2.5",
+            "material": "H2O"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Co1 O2"
+      ],
+      "target": {
+        "material_string": "LiMO2",
+        "material_formula": "LiMO2",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiMO2",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "M": "1",
+              "O": "2"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {
+          "M": [
+            "Ni",
+            "Co",
+            "Sn",
+            "Mn",
+            "Mo"
+          ]
+        },
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiCoO2"
+      ],
+      "precursors_formula_s": [
+        "Co(HO)2",
+        "LiHO",
+        "H5NO"
+      ],
+      "precursors": [
+        {
+          "material_string": "Co(OH)2",
+          "material_formula": "Co(OH)2",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Co(OH)2",
+              "amount": "1",
+              "elements": {
+                "O": "2",
+                "H": "2",
+                "Co": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "LiOH\u00b7H2O",
+          "material_formula": "LiOH\u00b7H2O",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "LiOH",
+              "amount": "1",
+              "elements": {
+                "Li": "1",
+                "O": "1",
+                "H": "1"
+              }
+            },
+            {
+              "formula": "H2O",
+              "amount": "1",
+              "elements": {
+                "H": "2",
+                "O": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "ammonium hydroxide",
+          "material_formula": "NH4OH",
+          "material_name": "ammonium hydroxide",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "NH4OH",
+              "amount": "1",
+              "elements": {
+                "N": "1",
+                "H": "5",
+                "O": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "synthesized",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "QuenchingOperation",
+          "token": "cooling",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "StartingSynthesis",
+          "token": "synthesized",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "DryingOperation",
+          "token": "drying",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "heating",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 900.0,
+                "max_value": 900.0,
+                "values": [
+                  900.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 12.0,
+                "max_value": 12.0,
+                "values": [
+                  12.0
+                ],
+                "units": "h"
+              }
+            ],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    }
+  ]
+}

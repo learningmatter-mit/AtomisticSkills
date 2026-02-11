@@ -28,3 +28,7 @@ As of **2026-01-30**, the library is fully expanded and contains **89 elements**
 - **Materials Project**: Structures must be queried from Materials Project to ensure they represent the true ground-state phases.
 - **Naming**: Library files must follow the `<checkpoint_name>_energies.json` format.
 - **Units**: Energies are stored as **eV/atom** (total potential energy of the relaxed structure divided by the number of atoms).
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

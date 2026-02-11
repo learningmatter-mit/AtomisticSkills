@@ -1,0 +1,126 @@
+# Common Synthesis Types in Inorganic Materials Chemistry
+
+synthesis_types:
+  solid_state:
+    name: "Solid-State Reaction"
+    description: "Direct reaction between solid precursors at high temperature"
+    typical_temp_range: [600, 1200]  # °C
+    advantages:
+      - Simple equipment requirements
+      - Scalable for large batches
+      - Well-established for ceramics and oxides
+    disadvantages:
+      - Requires high temperatures
+      - Long reaction times
+      - May produce inhomogeneous products
+    common_materials:
+      - Battery cathodes (LiFePO4, LiCoO2)
+      - Ceramics (BaTiO3, ZrO2)
+      - Perovskites (LaFeO3)
+  
+  hydrothermal:
+    name: "Hydrothermal Synthesis"
+    description: "Reaction in aqueous solution at elevated temperature and pressure"
+    typical_temp_range: [100, 300]  # °C
+    advantages:
+      - Lower temperatures than solid-state
+      - Good control over particle size and morphology
+      - Can produce metastable phases
+    disadvantages:
+      - Requires pressure vessels (autoclaves)
+      - Limited scalability
+      - Potential safety concerns
+    common_materials:
+      - Zeolites
+      - Metal oxides (TiO2, ZnO)
+      - Hydroxides
+  
+  sol_gel:
+    name: "Sol-Gel Synthesis"
+    description: "Solution-based method forming gel intermediate"
+    typical_temp_range: [200, 800]  # °C (for calcination)
+    advantages:
+      - Excellent homogeneity
+      - Low processing temperatures
+      - Good control over composition
+    disadvantages:
+      - Expensive precursors
+      - Long processing times
+      - Organic solvents may be required
+    common_materials:
+      - Thin films
+      - Silica-based materials
+      - Mixed metal oxides
+  
+  coprecipitation:
+    name: "Co-precipitation"
+    description: "Simultaneous precipitation of multiple components from solution"
+    typical_temp_range: [20, 100]  # °C
+    advantages:
+      - Room temperature or low temperature
+      - Simple equipment
+      - Good homogeneity
+    disadvantages:
+      - pH control critical
+      - Requires washing and drying steps
+      - Particle size control challenging
+    common_materials:
+      - Lithium iron phosphate
+      - Mixed metal hydroxides
+      - Carbonates
+  
+  combustion:
+    name: "Combustion Synthesis / Self-Propagating High-Temperature Synthesis (SHS)"
+    description: "Exothermic reaction that propagates through mixture"
+    typical_temp_range: [1000, 3000]  # °C (localized)
+    advantages:
+      - Very rapid synthesis
+      - Energy efficient
+      - Can produce unique phases
+    disadvantages:
+      - Difficult to control
+      - May produce inhomogeneous products
+      - Safety concerns
+    common_materials:
+      - Refractory materials
+      - Intermetallics
+      - Ceramics
+  
+  spray_pyrolysis:
+    name: "Spray Pyrolysis"
+    description: "Aerosol droplets decomposed at high temperature"
+    typical_temp_range: [200, 1000]  # °C
+    advantages:
+      - Continuous process
+      - Good for thin films and powders
+      - Control over particle size
+    disadvantages:
+      - Requires specialized equipment
+      - Precursor must be soluble
+    common_materials:
+      - Thin films
+      - Catalysts
+      - Semiconductors
+
+  mechanochemical:
+    name: "Mechanochemical / Ball Milling"
+    description: "Mechanical energy drives chemical reaction"
+    typical_temp_range: [20, 200]  # °C (from friction)
+    advantages:
+      - Low temperature
+      - Solvent-free option
+      - Can produce metastable phases
+    disadvantages:
+      - Contamination from milling media
+      - Long milling times
+      - Not suitable for all materials
+    common_materials:
+      - Composites
+      - Amorphous alloys
+      - Nanocrystalline materials
+
+notes:
+  - Temperature ranges are typical values and may vary significantly
+  - Many syntheses combine multiple methods (e.g., ball milling + calcination)
+  - Choice of method depends on target material properties, scale, and available equipment
+  - Environmental and cost considerations increasingly important

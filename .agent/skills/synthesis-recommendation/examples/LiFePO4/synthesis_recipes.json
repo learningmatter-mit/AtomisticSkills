@@ -1,0 +1,1076 @@
+{
+  "target": "LiFePO4",
+  "num_recipes": 5,
+  "recipes": [
+    {
+      "doi": "10.1021/jp407510h",
+      "paragraph_string": "6Li3Fe3(PO4)3 was prepared by the previously reported high-temperature solid-state synthesis as ...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "9 Fe2O3 + 18 LiOH + 18 NH4H2PO4 == 1 Li3Fe3(PO4)3 + 36 H2O + 18 NH3 + 4.5 O2",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "18",
+            "material": "NH4H2PO4"
+          },
+          {
+            "amount": "18",
+            "material": "LiOH"
+          },
+          {
+            "amount": "9",
+            "material": "Fe2O3"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "Li3Fe3(PO4)3"
+          },
+          {
+            "amount": "36",
+            "material": "H2O"
+          },
+          {
+            "amount": "18",
+            "material": "NH3"
+          },
+          {
+            "amount": "4.5",
+            "material": "O2"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li18 Fe18 P18 O72"
+      ],
+      "target": {
+        "material_string": "6Li3Fe3(PO4)3",
+        "material_formula": "Li3Fe3(PO4)3",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "Li3Fe3(PO4)3",
+            "amount": "6",
+            "elements": {
+              "P": "3",
+              "O": "12",
+              "Li": "3",
+              "Fe": "3"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiFePO4"
+      ],
+      "precursors_formula_s": [
+        "PH6NO4",
+        "LiHO",
+        "Fe2O3"
+      ],
+      "precursors": [
+        {
+          "material_string": "NH4H2PO4",
+          "material_formula": "NH4H2PO4",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "NH4H2PO4",
+              "amount": "1",
+              "elements": {
+                "N": "1",
+                "H": "6",
+                "P": "1",
+                "O": "4"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "LiOH monohydrate",
+          "material_formula": "LiOH",
+          "material_name": "monohydrate",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "LiOH",
+              "amount": "1",
+              "elements": {
+                "Li": "1",
+                "O": "1",
+                "H": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "Fe2O3",
+          "material_formula": "Fe2O3",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Fe2O3",
+              "amount": "1",
+              "elements": {
+                "Fe": "2",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "ground",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "heated",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 250.0,
+                "max_value": 250.0,
+                "values": [
+                  250.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 4.0,
+                "max_value": 4.0,
+                "values": [
+                  4.0
+                ],
+                "units": "h"
+              }
+            ],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "reground",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "heated",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 850.0,
+                "max_value": 850.0,
+                "values": [
+                  850.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 2.0,
+                "max_value": 2.0,
+                "values": [
+                  2.0
+                ],
+                "units": "day"
+              }
+            ],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    },
+    {
+      "doi": "10.1021/cm402617b",
+      "paragraph_string": "The ion-exchange method was used to prepare olivine phase of NaFePO4 (hereafter will be denoted ...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "1 (NH4)2HPO4 + 1 FeC2O4\u00b72H2O + 0.5 Li2CO3 + 0.5 O2 == 1 LiFePO4 + 2.5 CO2 + 3.5 H2O + 2 NH3",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "1",
+            "material": "FeC2O4\u00b72H2O"
+          },
+          {
+            "amount": "0.5",
+            "material": "Li2CO3"
+          },
+          {
+            "amount": "1",
+            "material": "(NH4)2HPO4"
+          },
+          {
+            "amount": "0.5",
+            "material": "O2"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiFePO4"
+          },
+          {
+            "amount": "2.5",
+            "material": "CO2"
+          },
+          {
+            "amount": "3.5",
+            "material": "H2O"
+          },
+          {
+            "amount": "2",
+            "material": "NH3"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Fe1 P1 O4"
+      ],
+      "target": {
+        "material_string": "LiFePO4",
+        "material_formula": "LiFePO4",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiFePO4",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "Fe": "1",
+              "P": "1",
+              "O": "4"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiFePO4"
+      ],
+      "precursors_formula_s": [
+        "Fe(CO2)2",
+        "Li2CO3",
+        "PH9(NO2)2"
+      ],
+      "precursors": [
+        {
+          "material_string": "FeC2O4\u00b72H2O",
+          "material_formula": "FeC2O4\u00b72H2O",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "FeC2O4",
+              "amount": "1",
+              "elements": {
+                "Fe": "1",
+                "C": "2",
+                "O": "4"
+              }
+            },
+            {
+              "formula": "H2O",
+              "amount": "2",
+              "elements": {
+                "H": "2",
+                "O": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "Li2CO3",
+          "material_formula": "Li2CO3",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Li2CO3",
+              "amount": "1",
+              "elements": {
+                "Li": "2",
+                "C": "1",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "(NH4)2HPO4",
+          "material_formula": "(NH4)2HPO4",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "(NH4)2HPO4",
+              "amount": "1",
+              "elements": {
+                "N": "2",
+                "H": "9",
+                "P": "1",
+                "O": "4"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "synthesized",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    },
+    {
+      "doi": "10.1021/cm303259j",
+      "paragraph_string": "Pristine LiFePO4 was synthesized by solid-state reactions of lithium carbonate (Li2CO3), iron(II) ...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "1 FeC2O4\u00b72H2O + 0.5 Li2CO3 + 1 NH4H2PO4 + 0.5 O2 == 1 LiFePO4 + 2.5 CO2 + 3.5 H2O + 1 NH3",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "0.5",
+            "material": "Li2CO3"
+          },
+          {
+            "amount": "1",
+            "material": "FeC2O4\u00b72H2O"
+          },
+          {
+            "amount": "1",
+            "material": "NH4H2PO4"
+          },
+          {
+            "amount": "0.5",
+            "material": "O2"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiFePO4"
+          },
+          {
+            "amount": "2.5",
+            "material": "CO2"
+          },
+          {
+            "amount": "3.5",
+            "material": "H2O"
+          },
+          {
+            "amount": "1",
+            "material": "NH3"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Fe1 P1 O4"
+      ],
+      "target": {
+        "material_string": "LiFePO4",
+        "material_formula": "LiFePO4",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiFePO4",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "Fe": "1",
+              "P": "1",
+              "O": "4"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiFePO4"
+      ],
+      "precursors_formula_s": [
+        "Li2CO3",
+        "Fe(CO2)2",
+        "PH6NO4"
+      ],
+      "precursors": [
+        {
+          "material_string": "Li2CO3",
+          "material_formula": "Li2CO3",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Li2CO3",
+              "amount": "1",
+              "elements": {
+                "Li": "2",
+                "C": "1",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "FeC2O4\u00b72H2O",
+          "material_formula": "FeC2O4\u00b72H2O",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "FeC2O4",
+              "amount": "1",
+              "elements": {
+                "Fe": "1",
+                "C": "2",
+                "O": "4"
+              }
+            },
+            {
+              "formula": "H2O",
+              "amount": "2",
+              "elements": {
+                "H": "2",
+                "O": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "NH4H2PO4",
+          "material_formula": "NH4H2PO4",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "NH4H2PO4",
+              "amount": "1",
+              "elements": {
+                "N": "1",
+                "H": "6",
+                "P": "1",
+                "O": "4"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "synthesized",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    },
+    {
+      "doi": "10.1007/s10853-011-6139-7",
+      "paragraph_string": "The FePO4 was synthesized by a sol-gel combustion method. Stoichiometric amounts of Fe(NO3)3 and ...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "1 FePO4 + 0.5 Li2CO3 == 1 LiFePO4 + 0.5 CO2 + 0.25 O2",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "0.5",
+            "material": "Li2CO3"
+          },
+          {
+            "amount": "1",
+            "material": "FePO4"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiFePO4"
+          },
+          {
+            "amount": "0.5",
+            "material": "CO2"
+          },
+          {
+            "amount": "0.25",
+            "material": "O2"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Fe1 P1 O4"
+      ],
+      "target": {
+        "material_string": "LiFePO4/C",
+        "material_formula": "LiFePO4",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiFePO4",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "Fe": "1",
+              "P": "1",
+              "O": "4"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiFePO4"
+      ],
+      "precursors_formula_s": [
+        "Li2CO3",
+        "FePO4",
+        "H4N2O3"
+      ],
+      "precursors": [
+        {
+          "material_string": "Li2CO3",
+          "material_formula": "Li2CO3",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Li2CO3",
+              "amount": "1",
+              "elements": {
+                "Li": "2",
+                "C": "1",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "FePO4",
+          "material_formula": "FePO4",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "FePO4",
+              "amount": "1",
+              "elements": {
+                "Fe": "1",
+                "P": "1",
+                "O": "4"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "NH4NO3",
+          "material_formula": "NH4NO3",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "NH4NO3",
+              "amount": "1",
+              "elements": {
+                "N": "2",
+                "H": "4",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "synthesized",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "dissolved",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": "citric acid"
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "stirring",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "added",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "stirred",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "DryingOperation",
+          "token": "evaporated",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 120.0,
+                "max_value": 120.0,
+                "values": [
+                  120.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "StartingSynthesis",
+          "token": "synthesized",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "MixingOperation",
+          "token": "mixed",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": "acetone"
+          }
+        },
+        {
+          "type": "HeatingOperation",
+          "token": "calcined",
+          "conditions": {
+            "heating_temperature": [
+              {
+                "min_value": 700.0,
+                "max_value": 700.0,
+                "values": [
+                  700.0
+                ],
+                "units": "\u00b0C"
+              }
+            ],
+            "heating_time": [
+              {
+                "min_value": 8.0,
+                "max_value": 8.0,
+                "values": [
+                  8.0
+                ],
+                "units": "h"
+              }
+            ],
+            "heating_atmosphere": [
+              "N2"
+            ],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    },
+    {
+      "doi": "10.1021/jp306936t",
+      "paragraph_string": "V-modified LiFePO4 prepared by the solution method (LFP-SM) used the following precursors: LiOH\u00b7...",
+      "synthesis_type": "solid-state",
+      "reaction_string": "1 FeC2O4\u00b72H2O + 0.5 Li2CO3 + 1 NH4H2PO4 + 0.5 O2 == 1 LiFePO4 + 2.5 CO2 + 3.5 H2O + 1 NH3 ; target LiFePO4 with additives V via NH4VO3 ; target LiFePO4 with additives V via NH4VO3",
+      "reaction": {
+        "left_side": [
+          {
+            "amount": "0.5",
+            "material": "Li2CO3"
+          },
+          {
+            "amount": "1",
+            "material": "FeC2O4\u00b72H2O"
+          },
+          {
+            "amount": "1",
+            "material": "NH4H2PO4"
+          },
+          {
+            "amount": "0.5",
+            "material": "O2"
+          }
+        ],
+        "right_side": [
+          {
+            "amount": "1",
+            "material": "LiFePO4"
+          },
+          {
+            "amount": "2.5",
+            "material": "CO2"
+          },
+          {
+            "amount": "3.5",
+            "material": "H2O"
+          },
+          {
+            "amount": "1",
+            "material": "NH3"
+          }
+        ],
+        "element_substitution": {}
+      },
+      "targets_formula": [
+        "Li1 Fe1 P1 O4"
+      ],
+      "target": {
+        "material_string": "LiFePO4",
+        "material_formula": "LiFePO4",
+        "material_name": "",
+        "phase": null,
+        "is_acronym": false,
+        "composition": [
+          {
+            "formula": "LiFePO4",
+            "amount": "1",
+            "elements": {
+              "Li": "1",
+              "Fe": "1",
+              "P": "1",
+              "O": "4"
+            }
+          }
+        ],
+        "amounts_vars": {},
+        "elements_vars": {},
+        "additives": [
+          "V"
+        ],
+        "oxygen_deficiency": "None"
+      },
+      "targets_formula_s": [
+        "LiFePO4"
+      ],
+      "precursors_formula_s": [
+        "Li2CO3",
+        "Fe(CO2)2",
+        "VH4NO3",
+        "PH6NO4"
+      ],
+      "precursors": [
+        {
+          "material_string": "Li2CO3",
+          "material_formula": "Li2CO3",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "Li2CO3",
+              "amount": "1",
+              "elements": {
+                "Li": "2",
+                "C": "1",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "FeC2O4\u00b72H2O",
+          "material_formula": "FeC2O4\u00b72H2O",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "FeC2O4",
+              "amount": "1",
+              "elements": {
+                "Fe": "1",
+                "C": "2",
+                "O": "4"
+              }
+            },
+            {
+              "formula": "H2O",
+              "amount": "2",
+              "elements": {
+                "H": "2",
+                "O": "1"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "NH4VO3",
+          "material_formula": "NH4VO3",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "NH4VO3",
+              "amount": "1",
+              "elements": {
+                "N": "1",
+                "H": "4",
+                "V": "1",
+                "O": "3"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        },
+        {
+          "material_string": "NH4H2PO4",
+          "material_formula": "NH4H2PO4",
+          "material_name": "",
+          "phase": null,
+          "is_acronym": false,
+          "composition": [
+            {
+              "formula": "NH4H2PO4",
+              "amount": "1",
+              "elements": {
+                "N": "1",
+                "H": "6",
+                "P": "1",
+                "O": "4"
+              }
+            }
+          ],
+          "amounts_vars": {},
+          "elements_vars": {},
+          "additives": [],
+          "oxygen_deficiency": "None"
+        }
+      ],
+      "operations": [
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        },
+        {
+          "type": "StartingSynthesis",
+          "token": "prepared",
+          "conditions": {
+            "heating_temperature": [],
+            "heating_time": [],
+            "heating_atmosphere": [],
+            "mixing_device": null,
+            "mixing_media": null
+          }
+        }
+      ],
+      "fields_not_requested": [
+        "precursors_formula",
+        "search_score",
+        "highlights"
+      ]
+    }
+  ]
+}

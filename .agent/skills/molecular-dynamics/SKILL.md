@@ -73,3 +73,7 @@ Monitoring stability is handled automatically by the ASE callbacks. When a monit
 ## Constraints
 - **Termination**: If a monitor triggers an explosion, terminate the task and adjust parameters. Do not proceed with unstable trajectories.
 - **Reporting**: Always report simulation parameters (ensemble, T, timestep, duration) in the research report.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

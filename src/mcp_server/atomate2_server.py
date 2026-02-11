@@ -42,7 +42,8 @@ def run_atomate2_vasp_calculation(
     execution_mode: str = "remote",
     check_only: bool = False,
     job_id: Optional[str] = None,
-    remote_settings: Optional[Dict[str, str]] = None
+    remote_settings: Optional[Dict[str, str]] = None,
+    bandstructure_mode: str = "line"
 ) -> str:
     """
     Run VASP calculations using atomate2 flows.
@@ -54,13 +55,14 @@ def run_atomate2_vasp_calculation(
         structures_path: Path to structure files or directory.
         output_dir: Directory to save results and logs.
         preset_type: VASP input preset ("omat", "mp", "matpes-pbe", "matpes-r2scan").
-        calculation_type: "static" or "relaxation".
+        calculation_type: "static", "relaxation", or "band_structure".
         config: Optional custom INCAR settings to override preset.
         execution_mode: "local" (blocking) or "remote".
         check_only: If True, only check environment or job status without running.
         job_id: Optional Job ID to check status or extract results from.
         remote_settings: Optional dict for remote execution. 
                         Keys: 'project' (default: remote_perlmutter), 'worker' (default: perlmutter_worker).
+        bandstructure_mode: For 'band_structure' type: "line", "uniform", or "both" (default: "line").
         
     Returns:
         Status message or results summary.
@@ -97,6 +99,10 @@ def run_atomate2_vasp_calculation(
         return f"No structures found at {structures_path}"
 
     # 4. Create flows
+    if calculation_type == "band_structure":
+        config = config or {}
+        config["bandstructure_type"] = bandstructure_mode
+
     flow_maker = handler.get_flow_maker(preset_type, calculation_type, config)
     flows = []
     

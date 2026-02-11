@@ -133,3 +133,7 @@ python .agent/skills/cluster-expansion/scripts/extract_mc_structures.py \
 -   **Fixed Cell**: Always set `relax_cell=False` to maintain the cluster expansion mapping.
 -   **Convergence**: Target LOOCV < 10 meV/atom for high-accuracy models.
 -   **Simulations**: For finite-temperature MC simulations using your trained model, refer to the [disordered-material](../disordered-material/SKILL.md) skill.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

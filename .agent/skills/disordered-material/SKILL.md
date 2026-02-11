@@ -77,3 +77,7 @@ python .agent/skills/disordered-material/scripts/iterative_ce_training.py \
     - `smol-agent` for iterative training and smol-based analysis.
 - **Fractional Occupancies**: The input must be a format that carries occupancy information (like CIF with `_atom_site_occupancy`).
 - **Algorithm**: Uses `ALGO_FAST` for efficiency; while fast, it may not find the global Ewald minimum for extremely large cells.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

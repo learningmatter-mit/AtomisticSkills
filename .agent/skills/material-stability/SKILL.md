@@ -137,3 +137,7 @@ python .agent/skills/material-stability/scripts/query_mp_hull.py \
 - **Phase Diagram Construction**: For full phase diagram visualization and competing phase analysis, see the separate phase-diagram skill (to be developed).
 - **Energy Input**: Use **TOTAL POTENTIAL ENERGY** for all entries in `pymatgen.analysis.phase_diagram.PhaseDiagram` automatically calculates formation energies by identifying elemental ground states from the provided entries. Do not pass formation energies directly.
 - **DFT Validation**: For publication-quality results, validate E_hull with DFT calculations, especially for materials close to the stability threshold.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

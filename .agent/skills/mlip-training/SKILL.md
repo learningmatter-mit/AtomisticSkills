@@ -33,3 +33,7 @@ python scripts/plot_training_results.py --results results.json --output_dir plot
 ## Constraints
 - **Data Size**: For small datasets (<500 structures), `freeze_backbone=True` is strongly recommended.
 - **Units**: Ensure stress labels are in eV/Å³ as per project standards.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

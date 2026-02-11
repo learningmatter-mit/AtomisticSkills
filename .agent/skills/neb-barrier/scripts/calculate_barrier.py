@@ -38,15 +38,12 @@ def load_wrapper(model_type, model_name, device="auto"):
     
     if model_type == "mace":
         from src.utils.mlips.mace.mace_wrapper import MACEWrapper
-        model_name = model_name or "MACE-OMAT-0-small"
         wrapper = MACEWrapper(model_name=model_name, device=device)
     elif model_type == "fairchem":
         from src.utils.mlips.fairchem.fairchem_wrapper import FAIRCHEMWrapper
-        model_name = model_name or "uma-s-1p1"
         wrapper = FAIRCHEMWrapper(model_name=model_name, device=device)
     elif model_type == "matgl":
         from src.utils.mlips.matgl.matgl_wrapper import MatGLWrapper
-        model_name = model_name or "CHGNet-MatPES-PBE-2025.2.10-2.7M-PES"
         wrapper = MatGLWrapper(model_name=model_name, device=device)
     else:
         raise ValueError(f"Unknown model type: {model_type}. Supported: mace, fairchem, matgl")

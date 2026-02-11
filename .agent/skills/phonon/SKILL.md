@@ -46,3 +46,7 @@ python .agent/skills/phonon/scripts/calculate_phonon.py \
 ## 5. Examples
 
 See `examples/` for detailed usage scenarios.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

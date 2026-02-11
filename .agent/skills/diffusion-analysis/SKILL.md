@@ -54,3 +54,7 @@ To accurately calculate the ionic diffusivity ($D$) and activation energy ($E_a$
 - **Linearity**: The diffusivity calculation assumes a linear diffusive regime. Always inspect the generated MSD plots to ensure linearity after the `ignore_ps` period.
 - **Atom Count**: To ensure statistical significance, the system should contain a sufficient number of mobile ions (> 20 recommended).
 - **Paths**: Always use relative paths from the project root when executing scripts.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

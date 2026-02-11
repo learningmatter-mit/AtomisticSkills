@@ -33,13 +33,11 @@ class VASPParser:
         Initialize VASP parser.
         
         Args:
-            output_dir: Directory containing VASP output files or UMA mock DFT results
+            output_dir: Directory containing VASP output files
         """
         self.output_dir = Path(output_dir)
         self.vasprun_path = self.output_dir / "vasprun.xml"
         self.outcar_path = self.output_dir / "OUTCAR"
-        # Also check for UMA mock DFT results
-        self.uma_result_path = self.output_dir / "result.json"
         
     
     def parse_vasprun(self) -> Dict[str, Any]:
@@ -133,57 +131,11 @@ class VASPParser:
         logger.info("Successfully parsed OUTCAR")
         return results
     
-    def parse_uma_result(self) -> Dict[str, Any]:
-        """
-        Parse UMA mock DFT result.json file.
-        
-        Returns:
-            Dictionary containing parsed UMA results in VASP-compatible format.
-        """
-        if not self.uma_result_path.exists():
-            raise FileNotFoundError(f"result.json not found in {self.output_dir}")
-        
-        with open(self.uma_result_path, 'r') as f:
-            uma_data = json.load(f)
-        
-        # Read structure from CONTCAR if available, otherwise from result.json
-        contcar_path = self.output_dir / "CONTCAR"
-        if contcar_path.exists():
-            from ase.io import read
-            atoms = read(str(contcar_path))
-            structure = AseAtomsAdaptor.get_structure(atoms)
-        else:
-            # Try to reconstruct from result.json structure data if available
-            if 'structure' in uma_data:
-                # Structure data might be in various formats
-                structure = Structure.from_dict(uma_data['structure'])
-            else:
-                raise ValueError("No structure found in UMA result")
-        
-        # Convert forces and stress from lists to numpy arrays
-        forces = np.array(uma_data.get('forces', [])) if uma_data.get('forces') else None
-        stress = np.array(uma_data.get('stress', [])) if uma_data.get('stress') else None
-        
-        results = {
-            'final_structure': structure,
-            'final_energy': uma_data.get('energy', 0.0),
-            'forces': forces,
-            'stress': stress,
-            'is_completed': True,
-            'is_ionic_converged': True,
-            'calculation_type': 'static',  # UMA mock DFT is typically static
-            'ionic_steps': 0,
-            'electronic_steps': 0,
-            'energy_history': [uma_data.get('energy', 0.0)],
-            'source': 'uma_mock_dft'
-        }
-        
-        logger.info(f"Successfully parsed UMA result.json: {results['final_energy']:.6f} eV")
-        return results
+
     
     def parse_all(self) -> List[Dict[str, Any]]:
         """
-        Parse all available results (VASP or UMA mock DFT).
+        Parse all available VASP results.
         
         Returns:
             List of dictionaries containing parsed results (one per structure directory).
@@ -198,16 +150,13 @@ class VASPParser:
             for struct_dir in sorted(structure_dirs):
                 parser = VASPParser(str(struct_dir))
                 try:
-                    # Try UMA format first (faster)
-                    if (struct_dir / "result.json").exists():
-                        result = parser.parse_uma_result()
-                    # Try VASP format
-                    elif (struct_dir / "vasprun.xml").exists():
+                    # Parse VASP format
+                    if (struct_dir / "vasprun.xml").exists():
                         result = parser.parse_vasprun()
                         outcar_result = parser.parse_outcar()
                         result.update(outcar_result)
                     else:
-                        logger.warning(f"No results found in {struct_dir}")
+                        logger.warning(f"No VASP results found in {struct_dir}")
                         continue
                     
                     result['structure_id'] = struct_dir.name
@@ -218,16 +167,13 @@ class VASPParser:
         else:
             # Single structure directory - parse it
             try:
-                # Try UMA format first
-                if self.uma_result_path.exists():
-                    result = self.parse_uma_result()
-                # Try VASP format
-                elif self.vasprun_path.exists():
+                # Parse VASP format
+                if self.vasprun_path.exists():
                     result = self.parse_vasprun()
                     outcar_result = self.parse_outcar()
                     result.update(outcar_result)
                 else:
-                    raise FileNotFoundError(f"No result files found in {self.output_dir}")
+                    raise FileNotFoundError(f"No VASP result files found in {self.output_dir}")
                 
                 all_results.append(result)
             except Exception as e:
@@ -292,7 +238,7 @@ class VASPParser:
         training_data.append(data_entry)
         
         # Add intermediate steps if available (only for VASP with history)
-        if 'energy_history' in results and len(results['energy_history']) > 1 and results.get('source') != 'uma_mock_dft':
+        if 'energy_history' in results and len(results['energy_history']) > 1:
             # Add intermediate structures (simplified)
             for i, energy in enumerate(results['energy_history'][:-1]):
                 intermediate_data = {

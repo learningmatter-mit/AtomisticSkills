@@ -228,3 +228,18 @@ See [`.agent/skills/melting-point/`](./../skills/melting-point/) for a comprehen
 - Cross-references to related skills
 - Validation and quality checks embedded in the workflow
 - Realistic examples with concrete parameters
+
+### 7. Author Information
+
+At the very end of every `SKILL.md` file, you MUST include the author's contact information in the following format:
+
+```text
+Author: Bowen Deng
+Contact: github username <bowen-bd>
+```
+
+If an email is provided, use:
+```text
+Author: Bowen Deng
+Contact: email <name@gmail.com>
+```

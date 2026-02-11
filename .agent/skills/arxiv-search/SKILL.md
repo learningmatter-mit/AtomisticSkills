@@ -61,3 +61,7 @@ python .agent/skills/arxiv-search/scripts/arxiv_search.py --authors "Boris Kozin
 - **Environment**: Requires `base-agent` conda environment.
 - **Dependencies**: Uses `feedparser` and `urllib`.
 - **Metadata**: Results include ID, URL, Title, Authors, Summary, Publication Date, and DOI (if available).
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>

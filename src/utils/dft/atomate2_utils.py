@@ -62,8 +62,19 @@ class Atomate2Handler:
                 checks["error"] = "VASP_CMD or ATOMATE2_VASP_CMD not set."
 
         # Check POTCAR
-        if os.environ.get("PMG_VASP_PSP_DIR"):
+        potcar_dir = os.environ.get("PMG_VASP_PSP_DIR")
+        if not potcar_dir:
+            # Check pymatgen SETTINGS (reads from ~/.pmgrc.yaml)
+            try:
+                from pymatgen.core import SETTINGS
+                potcar_dir = SETTINGS.get("PMG_VASP_PSP_DIR")
+            except Exception:
+                pass
+        
+        if potcar_dir:
             checks["potcar"] = True
+            # Set it in environment for atomate2 to use
+            os.environ["PMG_VASP_PSP_DIR"] = str(potcar_dir)
         else:
             checks["error"] = "PMG_VASP_PSP_DIR (POTCAR directory) not set."
 
@@ -134,6 +145,7 @@ class Atomate2Handler:
         from atomate2.vasp.flows.matpes import MatPesStaticFlowMaker
         from atomate2.vasp.jobs.matpes import MatPesGGAStaticMaker, MatPesMetaGGAStaticMaker
         from atomate2.vasp.jobs.core import StaticMaker, RelaxMaker
+        from atomate2.vasp.flows.core import BandStructureMaker
 
         preset = preset_type.lower()
         user_incar = config or {}
@@ -160,11 +172,26 @@ class Atomate2Handler:
         elif preset in ["mp", "omat"]:
             if calculation_type == "static":
                 maker = StaticMaker()
-            else:
+            elif calculation_type == "relaxation":
                 maker = RelaxMaker()
+            elif calculation_type == "band_structure":
+                # Config can contain 'bandstructure_type' (line, uniform, both)
+                bs_type = user_incar.pop("bandstructure_type", "line")
+                maker = BandStructureMaker(bandstructure_type=bs_type)
+            else:
+                raise ValueError(f"Unknown calculation_type: {calculation_type}")
             
             if user_incar:
-                maker.input_set_generator.user_incar_settings.update(user_incar)
+                # For BandStructureMaker, we might need to apply incar settings to underlying static/bs makers
+                # But typically maker.input_set_generator access works for simple makers.
+                # BandStructureMaker has static_maker and bs_maker.
+                if calculation_type == "band_structure":
+                     if hasattr(maker.static_maker, "input_set_generator"):
+                         maker.static_maker.input_set_generator.user_incar_settings.update(user_incar)
+                     if hasattr(maker.bs_maker, "input_set_generator"):
+                         maker.bs_maker.input_set_generator.user_incar_settings.update(user_incar)
+                else:
+                    maker.input_set_generator.user_incar_settings.update(user_incar)
             return maker
         else:
             raise ValueError(f"Unknown preset_type: {preset_type}")

@@ -44,3 +44,7 @@ python .agent/skills/qha/scripts/calculate_qha.py \
 ## 5. Examples
 
 See `examples/` for detailed usage scenarios.
+
+
+Author: Bowen Deng
+Contact: github username <bowen-bd>
