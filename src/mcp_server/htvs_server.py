@@ -14,1084 +14,156 @@ except ImportError:
             return lambda x: x
     mcp = DummyMCP()
 
-@mcp.tool()
-def get_htvs_config() -> Dict[str, str]:
-    """
-    Read HTVS paths from mcp_config.json or environment.
-    
-    Returns:
-        Dict with 'htvs_dir' and 'htvs_djangochem_dir'.
-    """
-    # Assuming this script is at src/mcp_server/htvs_server.py
-    # Path to repo root
-    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    config_path = os.path.join(repo_root, "mcp_config.json")
-    
-    htvs_dir = os.environ.get("HTVS_DIR")
-    htvs_djangochem_dir = os.environ.get("HTVS_DJANGOCHEM_DIR")
-    
-    if os.path.exists(config_path):
-        try:
-            with open(config_path, 'r') as f:
-                config = json.load(f)
-                # Look specifically for the htvs server environment config
-                htvs_server_env = config.get("mcpServers", {}).get("htvs", {}).get("env", {})
-                if not htvs_dir:
-                    htvs_dir = htvs_server_env.get("HTVS_DIR")
-                if not htvs_djangochem_dir:
-                    htvs_djangochem_dir = htvs_server_env.get("HTVS_DJANGOCHEM_DIR")
-        except Exception:
-            pass
-
-    # Fallback to defaults
-    if not htvs_dir:
-        htvs_dir = "/home/hojechun/ssd_mnt/repos/htvs"
-    if not htvs_djangochem_dir:
-        htvs_djangochem_dir = os.path.join(htvs_dir, "djangochem")
-        
-    return {"htvs_dir": htvs_dir, "htvs_djangochem_dir": htvs_djangochem_dir}
-
-@mcp.tool()
-def setup_htvs_django(settings_module: str = "orgel") -> str:
-    """
-    Configures the Django environment for HTVS database access.
-    
-    Args:
-        settings_module: The database settings to use (e.g., 'orgel', 'toy').
-        
-    Returns:
-        A confirmation message with resolved paths.
-    """
-    import django
-    config = get_htvs_config()
-    htvs_dir = config["htvs_dir"]
-    djangochem_dir = config["htvs_djangochem_dir"]
-    
-    if htvs_dir not in sys.path:
-        sys.path.append(htvs_dir)
-    if djangochem_dir not in sys.path:
-        sys.path.append(djangochem_dir)
-        
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"djangochem.settings.{settings_module}")
-    # Force override if it was already set
-    os.environ["DJANGO_SETTINGS_MODULE"] = f"djangochem.settings.{settings_module}"
-    
-    django.setup()
-    return f"Django setup complete. Settings: djangochem.settings.{settings_module}, HTVS_DIR: {htvs_dir}"
-
-# Default mapping from VASP INCAR tags (uppercase) to HTVS 'details' keys (lowercase)
-# This is based on common usage in HTVS templates (e.g., jobspec.py and INCAR templates)
-VASP_TO_HTVS_MAPPING = {
-    "ENCUT": "encut",
-    "ISMEAR": "ismear",
-    "SIGMA": "sigma",
-    "ISPIN": "ispin",
-    "LORBIT": "lorbit",
-    "LREAL": "lreal",
-    "NSW": "nsteps", # NSW in INCAR maps to nsteps in details
-    "IBRION": "ibrion",
-    "ISIF": "isif",
-    "EDIFF": "ediff",
-    "EDIFFG": "ediffg",
-    "POTIM": "timestep",
-    "TEBEG": "temperature",
-    "ALGO": "algo",
-    "PREC": "prec",
-    "KPOINT_DENSITY": "kppa", # standard pymatgen/atomate naming -> htvs kppa
-    "KPOINTS": "kpoints", # Explicit kpoints list
-}
-
-@mcp.tool()
-def vasp_to_htvs_details(vasp_input: Dict[str, Any], additional_details: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-    """
-    Converts standard VASP input parameters (INCAR tags) to the 'details' dictionary format
-    expected by HTVS templates.
-
-    Args:
-        vasp_input: Dictionary of VASP INCAR tags (e.g., {'ENCUT': 500, 'ISPIN': 2})
-        additional_details: Optional dictionary of extra HTVS-specific details 
-                           (e.g., {'compute_platform': 'slurm', 'priority': 100})
-
-    Returns:
-        A dictionary ready to be passed as the 'details' argument to request_htvs_job.
-    """
-    details = {}
-    
-    # 1. Map standard VASP tags
-    for vasp_tag, value in vasp_input.items():
-        htvs_key = VASP_TO_HTVS_MAPPING.get(vasp_tag, vasp_tag.lower())
-        details[htvs_key] = value
-
-    # 2. Handle specific complex mappings if necessary
-    # Example: If user passes 'user_kpoints_settings' for KPOINTS, we might need logic here.
-    # For now, simplistic mapping is a good start.
-
-    # 3. Merge additional details
-    if additional_details:
-        details.update(additional_details)
-
-    return details
-
-
-@mcp.tool()
-def request_htvs_job(
-    group_name: str,
-    chem_config: str,
-    details: Dict[str, Any],
-    settings_module: str,
-    parent_pks: Optional[List[int]] = None,
-    parent_config: Optional[str] = None,
-    requester: Optional[str] = None,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Requests a new HTVS job by calling 'python manage.py requestjobs'.
-
-    Args:
-        group_name: The name of the group (project).
-        chem_config: The name of the chemical configuration (e.g., 'pbe_d3_paw_bomd_vasp').
-        details: A dictionary of job details (will be converted to JSON string).
-        parent_pks: List of parent job primary keys (optional).
-        parent_config: Name of the parent configuration (optional).
-        requester: Name of the user requesting the job (optional).
-        settings_module: Django settings module to use.
-        djangochem_dir: Path to the directory containing manage.py. 
-                        If None, uses 'HTVS_DJANGOCHEM_DIR' env var or defaults to current working dir.
-
-    Returns:
-        The output of the command (stdout).
-    """
-    
-    # Resolve manage.py location
-    if djangochem_dir is None:
-        djangochem_dir = os.environ.get("HTVS_DJANGOCHEM_DIR", os.getcwd())
-    
-    manage_py_path = os.path.join(djangochem_dir, "manage.py")
-    if not os.path.exists(manage_py_path):
-         return f"Error: manage.py not found at {manage_py_path}. Please provide correct djangochem_dir."
-
-    # Construct command
-    cmd = [
-        sys.executable, manage_py_path, "requestjobs",
-        group_name,
-        chem_config,
-        "--settings", settings_module,
-        "--details", json.dumps(details)
-    ]
-
-    if requester:
-        cmd.extend(["--requester", requester])
-
-    if parent_pks:
-        # Convert list of ints to space-separated strings
-        cmd.extend(["--parentpks"] + [str(pk) for pk in parent_pks])
-    
-    if parent_config:
-        cmd.extend(["--parent_config", parent_config])
-        
-    # Check for force in details or separate arg?
-    # Usually requestjobs has --force.
-    # Let's check logic: explicit --force flag in command line.
-    if details.get("force", False):
-         cmd.append("--force")
-
-    try:
-        # Run command
-        # We assume the environment is already set up (conda activated)
-        result = subprocess.run(
-            cmd, 
-            capture_output=True, 
-            text=True, 
-            cwd=djangochem_dir, # Run from djangochem dir to be safe
-            env={**os.environ, "PYTHONUNBUFFERED": "1"}
-        )
-        
-        if result.returncode != 0:
-            return f"Command Failed:\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
-        
-        return f"Success:\n{result.stdout}"
-
-    except Exception as e:
-        return f"Execution Error: {str(e)}"
-
-
-@mcp.tool()
-def build_htvs_job(
-    group_name: str,
-    settings_module: str,
-    inbox_path: Optional[str] = None,
-    config_name: Optional[str] = None,
-    limit: Optional[int] = None,
-    compute_platform: Optional[str] = None,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Builds requested HTVS jobs (creates files in inbox) by calling 'python manage.py buildjobs'.
-
-    Args:
-        group_name: The name of the group (project).
-        settings_module: Django settings module to use.
-        inbox_path: The directory where job folders should be created. 
-                    Defaults to HTVS_JOB_ROOT/inbox or ./inbox.
-        config_name: Filter by specific configuration name (optional).
-        limit: Max number of jobs to build (optional).
-        compute_platform: Compute platform string (e.g., 'slurm', 'local') (optional).
-        djangochem_dir: Path to directory containing manage.py.
-
-    Returns:
-        The output of the command.
-    """
-    if djangochem_dir is None:
-        djangochem_dir = os.environ.get("HTVS_DJANGOCHEM_DIR", os.getcwd())
-    
-    manage_py_path = os.path.join(djangochem_dir, "manage.py")
-    if not os.path.exists(manage_py_path):
-         return f"Error: manage.py not found at {manage_py_path}."
-
-    # Determine inbox_path if not provided
-    if not inbox_path:
-        job_root = os.environ.get("HTVS_JOB_ROOT")
-        if job_root:
-            inbox_path = os.path.join(job_root, "inbox")
-        else:
-            inbox_path = os.path.join(os.getcwd(), "inbox")
-
-    cmd = [
-        sys.executable, manage_py_path, "buildjobs",
-        group_name,
-        inbox_path,
-        "--settings", settings_module,
-    ]
-
-    if config_name:
-        cmd.extend(["--config", config_name])
-    
-    if limit is not None:
-         cmd.extend(["--limit", str(limit)])
-
-    if compute_platform:
-        cmd.extend(["--compute_platform", compute_platform])
-
-    try:
-        result = subprocess.run(
-            cmd, 
-            capture_output=True, 
-            text=True, 
-            cwd=djangochem_dir,
-             env={**os.environ, "PYTHONUNBUFFERED": "1"}
-        )
-        
-        if result.returncode != 0:
-            return f"Command Failed:\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
-        
-        return f"Success:\n{result.stdout}"
-
-    except Exception as e:
-        return f"Execution Error: {str(e)}"
-
-
-@mcp.tool()
-def parse_htvs_job(
-    group_name: str,
-    completed_path: str,
-    settings_module: str,
-    config_name: Optional[str] = None,
-    limit: Optional[int] = None,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Parses completed HTVS jobs by calling 'python manage.py parsejobs'.
-
-    Args:
-        group_name: The name of the group (project).
-        completed_path: The directory containing completed job folders.
-        config_name: Filter by specific configuration name (optional).
-        limit: Max number of jobs to parse (optional).
-        settings_module: Django settings module to use.
-        djangochem_dir: Path to directory containing manage.py.
-
-    Returns:
-        The output of the command.
-    """
-    if djangochem_dir is None:
-        djangochem_dir = os.environ.get("HTVS_DJANGOCHEM_DIR", os.getcwd())
-    
-    manage_py_path = os.path.join(djangochem_dir, "manage.py")
-    if not os.path.exists(manage_py_path):
-         return f"Error: manage.py not found at {manage_py_path}."
-
-    cmd = [
-        sys.executable, manage_py_path, "parsejobs",
-        group_name,
-        completed_path,
-        "--settings", settings_module,
-    ]
-
-    if config_name:
-        cmd.extend(["--config", config_name])
-    
-    if limit is not None:
-         cmd.extend(["--limit", str(limit)])
-
-    try:
-        result = subprocess.run(
-            cmd, 
-            capture_output=True, 
-            text=True, 
-            cwd=djangochem_dir,
-             env={**os.environ, "PYTHONUNBUFFERED": "1"}
-        )
-        
-        if result.returncode != 0:
-            return f"Command Failed:\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
-        
-        return f"Success:\n{result.stdout}"
-
-    except Exception as e:
-        return f"Execution Error: {str(e)}"
-
-import tempfile
-
-
-    
-    
-def run_htvs_script(
-    script_body: str, 
-    settings_module: str, 
-    djangochem_dir: Optional[str] = None
-) -> str:
-    """
-    Executes a python script within the HTVS django environment.
-    
-    Args:
-        script_body: The python code to execute.
-        settings_module: The settings module to use.
-        djangochem_dir: The directory containing manage.py.
-        
-    Returns:
-        The stdout of the execution or error message.
-    """
-    if djangochem_dir is None:
-        djangochem_dir = os.environ.get("HTVS_DJANGOCHEM_DIR", os.getcwd())
-
-    # Create a temporary python file
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as temp_file:
-        temp_file_path = temp_file.name
-        
-        # Write boilerplate code to setup django
-        boilerplate = f"""
-import sys
-import os
-import django
-import json
-
-sys.path.append("{djangochem_dir}")
-sys.path.append(os.path.abspath(os.path.join("{djangochem_dir}", "..")))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{settings_module}")
-django.setup()
-
-"""
-        temp_file.write(boilerplate + script_body)
-        
-    try:
-        # Run the temporary file using the same python interpreter (or standard python)
-        # We assume 'python' in the environment is the correct one for HTVS if not specified otherwise
-        result = subprocess.run(
-            [sys.executable, temp_file_path],
-            capture_output=True,
-            text=True,
-            env={**os.environ, "PYTHONUNBUFFERED": "1"}
-        )
-        
-        if result.returncode != 0:
-             return f"Script Execution Failed:\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
-        
-        return result.stdout.strip()
-        
-    except Exception as e:
-        return f"Execution Error: {str(e)}"
-    finally:
-        # Clean up
-        if os.path.exists(temp_file_path):
-            os.remove(temp_file_path)
-
-@mcp.tool()
-def list_htvs_configs(
-    settings_module: str,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Lists all available JobConfigs in the HTVS database.
-    
-    Returns:
-        JSON string containing list of configs with 'name' and 'parent_class_name'.
-    """
-    script = """
-from jobs.models import JobConfig
-configs = JobConfig.objects.all().values('name', 'parent_class_name')
-print(json.dumps(list(configs), indent=2))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
-
-@mcp.tool()
-def get_htvs_job_status(
-    settings_module: str,
-    job_uuids: Optional[List[str]] = None,
-    group_name: Optional[str] = None,
-    limit: int = 10,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Get the status of HTVS jobs.
-    
-    Args:
-        job_uuids: List of job UUIDs to check.
-        group_name: Group (project) name to filter by (if job_uuids not provided).
-        limit: Max number of jobs to return when filtering by project.
-        
-    Returns:
-        JSON string mapping UUIDs to status.
-    """
-    script = f"""
-from jobs.models import Job
-from django.db.models import Q
-import json
-
-results = {{}}
-uuids = {json.dumps(job_uuids) if job_uuids else 'None'}
-group_name = "{group_name}" if {1 if group_name else 0} else None
-limit = {limit}
-
-if uuids:
-    jobs = Job.objects.filter(uuid__in=uuids)
-    for job in jobs:
-        results[str(job.uuid)] = job.status
-elif group_name:
-    jobs = Job.objects.filter(group__name=group_name).order_by('-createtime')[:limit]
-    for job in jobs:
-        results[str(job.uuid)] = job.status
-
-print(json.dumps(results, indent=2))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
-
-@mcp.tool()
-def get_htvs_job_results(
-    job_uuids: List[str],
-    settings_module: str,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Get results for specific HTVS jobs.
-    
-    Args:
-        job_uuids: List of job UUIDs to retrieve results for.
-        
-    Returns:
-        JSON string containing job details and results.
-    """
-    script = f"""
-from jobs.models import Job
-from pgmols.models import Calc, Geom
-import json
-from django.core.serializers.json import DjangoJSONEncoder
-
-uuids = {json.dumps(job_uuids)}
-results = {{}}
-
-jobs = Job.objects.filter(uuid__in=uuids)
-
-for job in jobs:
-    job_data = {{
-        "uuid": str(job.uuid),
-        "status": job.status,
-        "config": job.config.name if job.config else None,
-        "details": job.details,
-        "results": {{}}
-    }}
-    
-    # Try to fetch associated Calc and Geom results
-    calcs = Calc.objects.filter(parentjob=job)
-    if calcs.exists():
-        job_data["results"]["calcs"] = [
-            {{
-                "id": c.id,
-                "energy": c.final_potential_energy,
-                "forces": c.final_forces.tolist() if hasattr(c.final_forces, "tolist") else c.final_forces,
-                "stress": c.final_stress.tolist() if hasattr(c.final_stress, "tolist") else c.final_stress,
-            }} for c in calcs
-        ]
-        
-    geoms = Geom.objects.filter(parentjob=job)
-    if geoms.exists():
-        job_data["results"]["geoms"] = [
-            {{
-                "id": g.id,
-                "formula": g.stoichiometry.formula if g.stoichiometry else "Unknown",
-            }} for g in geoms
-        ]
-    
-    results[str(job.uuid)] = job_data
-
-print(json.dumps(results, indent=2, cls=DjangoJSONEncoder))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
-
-@mcp.tool()
-def query_htvs_results(
-    group_name: str,
-    settings_module: str,
-    formula: Optional[str] = None,
-    limit: Optional[int] = None,
-    output_file: Optional[str] = None,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Query detailed DFT calculation results (Calc records) including forces and stress.
-    
-    Args:
-        group_name: Name of the project/group.
-        settings_module: Django settings module to use (e.g., 'orgel', 'toy').
-        formula: Optional chemical formula to filter by (e.g., 'LiFePO4').
-        limit: Max number of results.
-        output_file: Optional path to save the JSON results.
-        
-    Returns:
-        JSON string containing detailed calculation results.
-    """
-    script = f"""
-import json
-import os
-from pgmols.models import Calc, SinglePoint, Jacobian, Hessian, Group
-from django.db.models import Q
-
-group_name = "{group_name}"
-formula = {json.dumps(formula)}
-limit = {limit if limit else 'None'}
-output_file = {json.dumps(output_file)}
-
 try:
-    group = Group.objects.get(name=group_name)
-except Group.DoesNotExist:
-    potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
-    if potential_groups.exists():
-        group = potential_groups.first()
-    else:
-        print(json.dumps({{"error": "Group matching '" + group_name + "' not found"}}))
-        exit(0)
-
-qs = Calc.objects.filter(parentjob__group=group).select_related('species__stoichiometry', 'parentjob')
-if formula:
-    qs = qs.filter(species__stoichiometry__formula=formula)
-
-if limit:
-    qs = qs[:limit]
-
-results = []
-for obj in qs:
-    data = {{
-        "id": obj.id,
-        "uuid": str(obj.parentjob.uuid) if obj.parentjob else None,
-        "formula": obj.species.stoichiometry.formula if obj.species and obj.species.stoichiometry else "Unknown",
-        "energy": obj.totalenergy,
-        "completetime": obj.parentjob.completetime.isoformat() if (obj.parentjob and obj.parentjob.completetime) else None,
-        "props": obj.props or {{}}
-    }}
-    
-    if hasattr(obj, 'jacobian'):
-        data["forces"] = obj.jacobian.forces
-        data["is_optimum"] = obj.jacobian.isoptimum
-    elif hasattr(obj, 'singlepoint'):
-        if data["energy"] is None:
-            data["energy"] = obj.singlepoint.energy
-        data["dipole"] = obj.singlepoint.dipole
-    elif hasattr(obj, 'hessian'):
-        data["vibfreqs"] = obj.hessian.vibfreqs
-        data["freeenergy"] = obj.hessian.freeenergy
-
-    # Get structure info if available
-    geom = obj.geoms.first()
-    if geom:
-        data["structure"] = {{
-            "coords": geom.get_coords(),
-        }}
-        if hasattr(geom, 'crystal'):
-            data["structure"]["lattice"] = geom.crystal.lattice
-            
-    results.append(data)
-
-if output_file:
-    with open(output_file, 'w') as f:
-        json.dump(results, f, indent=2)
-    print(f"Results saved to {{output_file}}")
-else:
-    print(json.dumps(results, indent=2))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
+    from src.utils.htvs import (
+        HTVSConfigHandler,
+        run_htvs_script,
+        HTVSJobHandler,
+        HTVSVaspHandler,
+        HTVSDbHandler,
+    )
+    HTVS_UTILS_AVAILABLE = True
+except ImportError:
+    HTVS_UTILS_AVAILABLE = False
 
 
 @mcp.tool()
-def query_htvs_geoms(
-    group_name: str,
-    settings_module: str,
-    formula: Optional[str] = None,
-    limit: int = 10,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Query geometry models (Geom records) in the HTVS database.
-    
-    Args:
-        group_name: Name of the project/group.
-        formula: Optional chemical formula to filter by (e.g., 'Pt').
-        limit: Max number of results.
-        
-    Returns:
-        JSON string containing geometry model summaries.
-    """
-    script = f"""
-import json
-from pgmols.models import Geom, Group
-from django.db.models import Q
-
-group_name = "{group_name}"
-formula = {json.dumps(formula)}
-limit = {limit}
-
-try:
-    group = Group.objects.get(name=group_name)
-except Group.DoesNotExist:
-    print(json.dumps({{"error": "Group '" + group_name + "' not found"}}))
-    exit(0)
-
-qs = Geom.objects.filter(parentjob__group=group)
-if formula:
-    qs = qs.filter(stoichiometry__formula=formula)
-
-qs = qs.select_related('stoichiometry', 'parentjob', 'parentjob__config').order_by('-parentjob__completetime')[:limit]
-
-results = []
-for obj in qs:
-    results.append({{
-        "id": obj.id,
-        "uuid": str(obj.parentjob.uuid) if obj.parentjob else None,
-        "formula": obj.stoichiometry.formula if obj.stoichiometry else "Unknown",
-        "config": obj.parentjob.config.name if (obj.parentjob and obj.parentjob.config) else None,
-        "completetime": obj.parentjob.completetime.isoformat() if (obj.parentjob and obj.parentjob.completetime) else None
-    }})
-
-print(json.dumps(results, indent=2))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
-
-@mcp.tool()
-def save_htvs_structures(
+def save_htvs_structure(
     structure_file: str,
     config_name: str,
-    parent_bulk_id: int,
     group_name: str,
     settings_module: str,
+    structure_type: str = "auto",
+    parent_bulk_id: Optional[int] = None,
     miller_index: Optional[List[int]] = None,
+    method_name: Optional[str] = None,
+    framework_name: Optional[str] = None,
     djangochem_dir: Optional[str] = None,
+    htvs_dir: Optional[str] = None,
 ) -> str:
     """
-    Saves structures from a file to the HTVS database as Surfaces, creating jobs for them.
+    Save structures to HTVS database with automatic type detection.
+    
+    Automatically detects whether to save as Crystal or Surface based on
+    provided parameters or structure properties. Extensible for future
+    Molecule support.
     
     Args:
         structure_file: Absolute path to the structure file (must be readable by ase.io).
-        config_name: Name of the JobConfig to use.
-        parent_bulk_id: ID of the parent Crystal or Surface in the DB.
-        miller_index: List of 3 integers for Miller index (e.g. [1, 1, 1]). Defaults to [0, 0, 1].
+        config_name: Name of the JobConfig to use as the parent config.
         group_name: Name of the project/group.
+        settings_module: Django settings module.
+        structure_type: Type of structure ("auto", "crystal", "surface", "molecule").
+                       "auto" will detect based on parent_bulk_id and structure properties.
+        parent_bulk_id: ID of the parent Crystal or Surface (required for surfaces).
+        miller_index: List of 3 integers for Miller index (e.g. [1, 1, 1]).
+                     Defaults to [0, 0, 1] for surfaces.
+        method_name: Optional name of the Method to associate with the structures.
+        framework_name: Optional name of the Framework to associate with the structures.
+        djangochem_dir: Optional override for DJANGOCHEM_DIR.
+        htvs_dir: Optional override for HTVS_DIR.
         
     Returns:
-        JSON string containing list of created Surface IDs.
-    """
-    if miller_index is None:
-        miller_index = [0, 0, 1]
+        JSON string containing list of created structure IDs.
         
-    script = f"""
-import os
-import json
-import numpy as np
-from ase import io
-from tqdm import tqdm
-from django.contrib.contenttypes.models import ContentType
-from django.utils import timezone
-from jobs.models import Job, JobConfig
-from pgmols.models import Calc, Crystal, Group, MillerIndex, Surface
-
-structure_file = "{structure_file}"
-config_name = "{config_name}"
-parent_bulk_id = {parent_bulk_id}
-miller_index_arg = {miller_index}
-group_name = "{group_name}"
-
-def get_miller_index(hkl):
-    miller_indexes = MillerIndex.objects.filter(hkl=hkl)
-    if miller_indexes.count() == 0:
-        mi = MillerIndex(hkl=hkl)
-        mi.save()
-        return mi
+    Auto-detection logic:
+        - If parent_bulk_id is provided → Surface
+        - If structure has ASE tags → Surface  
+        - Otherwise → Crystal
+        - Future: Molecule detection based on lack of periodicity
+    """
+    if not HTVS_UTILS_AVAILABLE:
+        return "Error: HTVS utilities not available"
+    
+    # Auto-detect structure type
+    if structure_type == "auto":
+        if parent_bulk_id is not None:
+            structure_type = "surface"
+        else:
+            # Read first structure to check for surface markers
+            try:
+                from ase.io import read
+                atoms = read(structure_file, index=0)
+                # Check for ASE tags indicating surface atoms
+                if hasattr(atoms, 'get_tags') and any(atoms.get_tags()):
+                    structure_type = "surface"
+                else:
+                    structure_type = "crystal"
+            except Exception:
+                # Default to crystal if cannot read
+                structure_type = "crystal"
+    
+    # Create handler
+    handler = HTVSDbHandler(settings_module, djangochem_dir, htvs_dir)
+    
+    # Dispatch to appropriate method
+    if structure_type == "crystal":
+        return handler.save_crystals(
+            structure_file=structure_file,
+            config_name=config_name,
+            group_name=group_name,
+            method_name=method_name,
+            framework_name=framework_name
+        )
+    elif structure_type == "surface":
+        if miller_index is None:
+            miller_index = [0, 1, 0]
+        if parent_bulk_id is None:
+            import json
+            return json.dumps({"error": "parent_bulk_id required for surface structures"})
+        return handler.save_surfaces(
+            structure_file=structure_file,
+            config_name=config_name,
+            parent_bulk_id=parent_bulk_id,
+            group_name=group_name,
+            miller_index=miller_index,
+            method_name=method_name,
+            framework_name=framework_name
+        )
+    # Future: elif structure_type == "molecule":
+    #     return handler.save_molecules(...)
     else:
-        return miller_indexes.first()
+        import json
+        return json.dumps({"error": f"Unknown structure_type: {structure_type}. Use 'auto', 'crystal', 'surface', or 'molecule'"})
 
-def get_jobconfig(name):
-    jc, created = JobConfig.objects.get_or_create(name=name)
-    return jc
 
-def get_group(name):
-    g, created = Group.objects.get_or_create(name=name)
-    return g
+@mcp.tool()
+def prepare_vasp_job_details(
+    structure_file: str,
+    preset_type: str = "mp",
+    calculation_type: str = "static",
+    custom_settings: Optional[Dict[str, Any]] = None,
+    magnetism: bool = True,
+) -> str:
+    """
+    Prepare VASP job details (INCAR parameters) using Pymatgen presets.
+    
+    Generates comprehensive VASP input parameters from a structure file using
+    Pymatgen's preset input sets. Returns JSON-formatted details ready for
+    HTVS job submission.
+    
+    Args:
+        structure_file: Path to the structure file (readable by ASE/Pymatgen).
+        preset_type: Pymatgen preset to use ("mp", "omat", "matpes-pbe", "matpes-r2scan").
+        calculation_type: "static" or "relaxation".
+        custom_settings: Dictionary of custom settings to override defaults.
+        magnetism: Whether to apply default magnetic moments (Cr, Co, Ni).
 
-def create_job(parent, group_obj, config_obj):
-    return Job(
-        config=config_obj,
-        group=group_obj,
-        status="done",
-        parentct=ContentType.objects.get_for_model(parent),
-        parentid=parent.id,
-        completetime=timezone.now(),
+    Returns:
+        JSON string of the 'details' dictionary ready for HTVS submission.
+    """
+    if not HTVS_UTILS_AVAILABLE:
+        import json
+        return json.dumps({"error": "HTVS utilities not available"})
+    
+    handler = HTVSVaspHandler()
+    return handler.generate_details(
+        structure_file=structure_file,
+        preset_type=preset_type,
+        calculation_type=calculation_type,
+        custom_settings=custom_settings,
+        magnetism=magnetism
     )
-
-def create_surface_object(structure, config_obj, parent_id, miller_idx_obj, group_obj):
-    surf = Surface.from_ase_atoms(structure, reorder=True)
-    
-    # Try finding parent
-    try:
-        parent = Surface.objects.get(id=parent_id)
-    except Surface.DoesNotExist:
-        try:
-            parent = Crystal.objects.get(id=parent_id)
-        except Crystal.DoesNotExist:
-            print(f"Error: Parent with id {{parent_id}} not found (checked Surface and Crystal)")
-            return None
-
-    if hasattr(parent, 'method'):
-        surf.method = parent.method
-        
-    if hasattr(parent, "miller_index"):
-        surf.miller_index = parent.miller_index
-    else:
-        surf.miller_index = miller_idx_obj
-        
-    surf.chemical_tag = surf.generate_hash()
-    
-    # Handle surface/adsorbate atoms tagging
-    if structure.info.get("surf_atoms", None) is not None:
-        surf_atoms = structure.info.get("surf_atoms")
-        surf.surface_atoms = np.array(surf_atoms, dtype=int).tolist()
-        try:
-            surf.adsorbate_atoms = np.array(structure.ads_atoms, dtype=int).tolist()
-        except AttributeError:
-             # structure.get_tags() == 2 logic from user script seems specific to their construction
-             # Defaulting to False/Empty if not found, or relying on tags if available
-             tags = structure.get_tags()
-             surf.adsorbate_atoms = (tags == 2).tolist()
-    elif hasattr(structure, "get_surface_atoms"):
-        surf.surface_atoms = np.isin(
-            np.arange(len(structure)),
-            np.array(structure.get_surface_atoms(), dtype=int),
-        ).tolist()
-        try:
-            surf_indices = np.array(structure.get_adsorbate_atoms(), dtype=int).tolist()
-        except AttributeError:
-            surf_indices = []
-        surf.adsorbate_atoms = np.isin(np.arange(len(structure)), surf_indices).tolist()
-    else:
-        # Fallback to tags
-        tags = structure.get_tags()
-        surf.surface_atoms = (tags == 1).tolist()
-        surf.adsorbate_atoms = (tags == 2).tolist()
-
-    # Create Job
-    job = create_job(parent, group_obj, config_obj)
-    job.save()
-    
-    surf.parentjob = job
-    surf.save()
-    return surf.id
-
-# Main Execution
-try:
-    if not os.path.exists(structure_file):
-        print(json.dumps({{"error": f"File not found: {{structure_file}}"}}))
-        exit(1)
-
-    samples = io.read(structure_file, ":")
-    created_ids = []
-    
-    config_obj = get_jobconfig(config_name)
-    group_obj = get_group(group_name)
-    miller_idx_obj = get_miller_index(miller_index_arg)
-    
-    for sample in samples:
-        sid = create_surface_object(sample, config_obj, parent_bulk_id, miller_idx_obj, group_obj)
-        if sid is not None:
-            created_ids.append(sid)
-            
-    print(json.dumps(created_ids))
-
-except Exception as e:
-    import traceback
-    traceback.print_exc()
-    print(json.dumps({{"error": str(e)}}))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
-@mcp.tool()
-def inspect_chem_config(config_name: str, htvs_repo_root: Optional[str] = None) -> str:
-    """
-    Inspects the job script (job.sh) for a given chemical configuration.
-    Useful for determining cluster requirements (compute_platform, partitions, etc.).
-
-    Args:
-        config_name: The name of the configuration (e.g., 'pbe_d3_paw_bomd_vasp').
-        htvs_repo_root: Path to the HTVS repository root. 
-                        Defaults to '/home/hojechun/ssd_mnt/repos/htvs' if not provided.
-
-    Returns:
-        The content of the job.sh file, or an error message if not found.
-    """
-    if htvs_repo_root is None:
-        htvs_repo_root = "/home/hojechun/ssd_mnt/repos/htvs"
-    
-    chemconfigs_root = os.path.join(htvs_repo_root, "chemconfigs")
-    if not os.path.exists(chemconfigs_root):
-        return f"Error: chemconfigs directory not found at {chemconfigs_root}"
-
-    # Search for the config directory
-    found_path = None
-    for root, dirs, files in os.walk(chemconfigs_root):
-        if config_name in dirs:
-            found_path = os.path.join(root, config_name)
-            break
-    
-    if not found_path:
-        return f"Error: Configuration '{config_name}' not found in {chemconfigs_root}"
-    
-    job_sh_path = os.path.join(found_path, "job.sh")
-    if not os.path.exists(job_sh_path):
-        return f"Error: job.sh not found in {found_path}"
-    
-    try:
-        with open(job_sh_path, "r") as f:
-            content = f.read()
-        return f"Found config at: {found_path}\n\n--- job.sh content ---\n{content}"
-    except Exception as e:
-        return f"Error reading job.sh: {str(e)}"
-
-
-@mcp.tool()
-def create_htvs_group(
-    group_name: str,
-    settings_module: str,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Creates a new Group (Project) in the HTVS database if it doesn't exist.
-    
-    Args:
-        group_name: Name of the group to create.
-        settings_module: Django settings module to use (default: 'djangochem.settings.orgel').
-        djangochem_dir: Path to directory containing manage.py.
-    
-    Returns:
-        JSON string indicating if the group was created or already existed.
-    """
-    script = f"""
-import json
-from django.contrib.auth.models import Group
-
-group_name = "{group_name}"
-group, created = Group.objects.get_or_create(name=group_name)
-
-print(json.dumps({{"name": group.name, "created": created}}))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
-
-@mcp.tool()
-def query_htvs_surfaces_detailed(
-    group_name: str,
-    settings_module: str,
-    limit: Optional[int] = None,
-    output_file: Optional[str] = None,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Query Surface structures including Miller indices and bulk references.
-    """
-    script = f"""
-import json
-from pgmols.models import Surface, Group
-from django.db.models import Q
-
-group_name = "{group_name}"
-limit = {limit if limit else 'None'}
-output_file = {json.dumps(output_file)}
-
-try:
-    group = Group.objects.get(name=group_name)
-except Group.DoesNotExist:
-    potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
-    if potential_groups.exists():
-        group = potential_groups.first()
-    else:
-        print(json.dumps({{"error": "Group matching '" + group_name + "' not found"}}))
-        exit(0)
-
-qs = Surface.objects.filter(parentjob__group=group, bulk__isnull=False).select_related('bulk', 'miller_index', 'stoichiometry')
-if limit:
-    qs = qs[:limit]
-
-results = []
-for surf in qs:
-    results.append({{
-        "id": surf.id,
-        "formula": surf.stoichiometry.formula if surf.stoichiometry else "Unknown",
-        "miller_index": surf.miller_index.hkl if surf.miller_index else None,
-        "bulk_id": surf.bulk.id if surf.bulk else None,
-        "bulk_formula": surf.bulk.stoichiometry.formula if surf.bulk and surf.bulk.stoichiometry else "Unknown",
-        "lattice": surf.lattice,
-        "num_atoms": len(surf.xyz)
-    }})
-
-if output_file:
-    with open(output_file, 'w') as f:
-        json.dump(results, f, indent=2)
-    print(f"Results saved to {{output_file}}")
-else:
-    print(json.dumps(results, indent=2))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
-@mcp.tool()
-def query_htvs_crystals_detailed(
-    group_name: str,
-    settings_module: str,
-    formula: Optional[str] = None,
-    limit: Optional[int] = None,
-    output_file: Optional[str] = None,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Query Crystal structures including space groups and lattice info.
-    """
-    script = f"""
-import json
-from pgmols.models import Crystal, Group
-from django.db.models import Q
-
-group_name = "{group_name}"
-formula = {json.dumps(formula)}
-limit = {limit if limit else 'None'}
-output_file = {json.dumps(output_file)}
-
-try:
-    group = Group.objects.get(name=group_name)
-except Group.DoesNotExist:
-    potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
-    if potential_groups.exists():
-        group = potential_groups.first()
-    else:
-        print(json.dumps({{"error": "Group matching '" + group_name + "' not found"}}))
-        exit(0)
-
-qs = Crystal.objects.filter(parentjob__group=group).select_related('stoichiometry', 'spacegroup')
-if formula:
-    qs = qs.filter(stoichiometry__formula=formula)
-if limit:
-    qs = qs[:limit]
-
-results = []
-for crys in qs:
-    results.append({{
-        "id": crys.id,
-        "formula": crys.stoichiometry.formula if crys.stoichiometry else "Unknown",
-        "spacegroup": crys.spacegroup.symbol if crys.spacegroup else "Unknown",
-        "lattice": crys.lattice,
-        "num_atoms": len(crys.xyz),
-        "job_uuid": str(crys.parentjob.uuid) if crys.parentjob else None
-    }})
-
-if output_file:
-    with open(output_file, 'w') as f:
-        json.dump(results, f, indent=2)
-    print(f"Results saved to {{output_file}}")
-else:
-    print(json.dumps(results, indent=2))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
-@mcp.tool()
-def query_htvs_jobs_detailed(
-    group_name: str,
-    settings_module: str,
-    status: Optional[str] = None,
-    config_name: Optional[str] = None,
-    limit: Optional[int] = None,
-    output_file: Optional[str] = None,
-    djangochem_dir: Optional[str] = None,
-) -> str:
-    """
-    Query HTVS Jobs with filtering and timing details.
-    """
-    script = f"""
-import json
-from jobs.models import Job, Group
-
-group_name = "{group_name}"
-status = {json.dumps(status)}
-config_name = {json.dumps(config_name)}
-limit = {limit if limit else 'None'}
-output_file = {json.dumps(output_file)}
-
-try:
-    group = Group.objects.get(name=group_name)
-except Group.DoesNotExist:
-    potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
-    if potential_groups.exists():
-        group = potential_groups.first()
-    else:
-        print(json.dumps({{"error": "Group matching '" + group_name + "' not found"}}))
-        exit(0)
-
-qs = Job.objects.filter(group=group).select_related('config')
-if status:
-    qs = qs.filter(status=status)
-if config_name:
-    qs = qs.filter(config__name=config_name)
-if limit:
-    qs = qs[:limit]
-
-results = []
-for job in qs:
-    results.append({{
-        "id": job.id,
-        "uuid": str(job.uuid),
-        "config": job.config.name if job.config else "Unknown",
-        "status": job.status,
-        "createtime": job.createtime.isoformat() if job.createtime else None,
-        "completetime": job.completetime.isoformat() if job.completetime else None,
-        "duration": job.duration,
-        "priority": job.priority,
-        "details": job.details
-    }})
-
-if output_file:
-    with open(output_file, 'w') as f:
-        json.dump(results, f, indent=2)
-    print(f"Results saved to {{output_file}}")
-else:
-    print(json.dumps(results, indent=2))
-"""
-    return run_htvs_script(script, settings_module, djangochem_dir)
-
 
 if __name__ == "__main__":
     mcp.run()

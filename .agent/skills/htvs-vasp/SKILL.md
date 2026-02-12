@@ -9,10 +9,10 @@ description: Submit DFT jobs using VASP to the High-Throughput Virtual Screening
 
 ## When to use HTVS
 
-Use the HTVS tools (`htvs_server` or the included scripts) when:
+Use the HTVS tools (`htvs_server` MCP tools or the included scripts) when:
 1.  **DFT Labeling**: You need to calculate energy, forces, or stress for a structure using DFT (VASP).
-2.  **Dataset Generation**: You need to generate a training dataset for an MLIP.
-3.  **HPC Execution**: The calculations need to run on a cluster (Slurm, Torque) rather than locally.
+2.  **Save to Database**: Save DFT results to the database.
+3.  **Monitor Jobs**: Monitor running jobs in the cluster.
 
 ## Research Planning
 
@@ -24,69 +24,171 @@ The research plan should include:
 
 ## Workflow
 
+> **Note**: The HTVS MCP tools use a modular utility structure (`src/utils/htvs/`) with class-based handlers:
+> - `HTVSJobHandler`: Job lifecycle (request, build, parse)
+> - `HTVSVaspHandler`: VASP input generation
+> - `HTVSDbHandler`: Database operations (save structures, create groups)
+
 ### 1. Gather Mandatory Inputs
 **STOP** and ask the user to confirm the following variables. **DO NOT** assume defaults.
 
-- **Settings Module** (`settings_module`): Django Settings Module (e.g., `djangochem.settings.orgel`).
-- **Project Name** (`group_name`): HTVS Group/Project Name (e.g., `agent`).
+- **Settings Module** (`settings_module`): Django Settings Module (e.g., `djangochem.settings.orgel`). **MANDATORY**.
+- **Group Name** (`group_name`): HTVS Group/Project Name (e.g., `agent`). **MANDATORY**.
 - **Chemical Config** (`chem_config`): VASP calculation protocol (e.g., `pbe_d3_paw_opt_vasp`).
-- **Compute Platform** (`compute_platform`): Cluster Name (e.g., `supercloud`, `perlmutter`).
-- **Requester** (`requester`): User ID (e.g., `hojechun`).
+- **Compute Platform** (`compute_platform`): Cluster Name (e.g., `supercloud`, `perlmutter`). **MANDATORY**.
+- **Requester** (`requester`): User ID (e.g., `hojechun`). **MANDATORY**.
 - **Inbox Path** (`inbox_path`): Directory where job folders are created. **MANDATORY**.
-- **Potcar Path** (`potcar_path`): Path to the POTCAR files. **MANDATORY**. This should be the absolute path to the directory containing the POTCAR files in the cluster. Also, this information is used as a keyward argument for `details`.
+- **Potcar Path** (`potcar_path`): Path to the POTCAR files. This should be the absolute path to the directory containing the POTCAR files in the cluster. **MANDATORY**.
+- **Project Name** (`project_name`): Compute project account (e.g., `m5068`). **MANDATORY for Perlmutter**.
 - **Completed Path** (`completed_path`): Directory where finished results are stored.
 
 ### 2. Verify Prerequisites
-- **Check Group**: Ensure the `group_name` exists using `create_htvs_group` if necessary.
-- **Check Config**: Verify the `chem_config` supports the chosen `compute_platform` using `inspect_chem_config`.
+- **Check Group**: Ensure the `group_name` exists. Use `HTVSDbHandler` to create if needed:
+  ```python
+  from src.utils.htvs import HTVSDbHandler
+  handler = HTVSDbHandler("djangochem.settings.orgel")
+  handler.create_group("my_group")
+  ```
+- **Check Config**: Verify the `chem_config` supports the chosen `compute_platform` (e.g. via `HTVSConfigHandler.inspect_chemconfig`).
+- **Check Potcar Path**: Verify the `potcar_path` is valid and accessible.
+- **Check Inbox Path**: Verify the `inbox_path` is valid and accessible.
 
-### 3. Prepare Job Details
-1.  **Generate VASP Inputs**: Use the `materials_tools` MCP tool `prepare_vasp_inputs(structure_path, output_dir, calculation_type, preset_type, config)` to generate standard VASP parameters. 
-    - Note that this tool creates physical files in `output_dir` but also returns the configuration.
-2.  **Convert to HTVS Details**: Use the `vasp_to_htvs_details(vasp_input, ...)` tool to convert the INCAR tags into the HTVS `details` dictionary format.
-3.  **Add Mandatory Fields**: Ensure `details['compute_platform']` is explicitly set.
+### 3. Save Structures to Database
 
-Example `details`:
+Use the `save_htvs_structure` MCP tool or `HTVSDbHandler`:
+
+**Using MCP tool:**
+```python
+save_htvs_structure(
+    structure_file="/path/to/structure.cif",
+    config_name="agent_generated",
+    group_name="agent",
+    settings_module="djangochem.settings.orgel",
+    structure_type="auto"  # Auto-detects Crystal vs Surface
+)
+```
+
+**Using HTVSDbHandler:**
+```python
+from src.utils.htvs import HTVSDbHandler
+
+handler = HTVSDbHandler("djangochem.settings.orgel")
+
+# Batch save from directory
+result = handler.save_structures(
+    structure_path="./structures",
+    config_name="agent_generated",
+    group_name="agent"
+)
+```
+
+### 4. Prepare Job Details
+
+Use the **`prepare_vasp_job_details`** MCP tool to generate standard VASP parameters:
+
+```python
+details_json = prepare_vasp_job_details(
+    structure_file="structure.cif",
+    preset_type="omat",  # or "mp", "matpes-pbe", "matpes-r2scan"
+    calculation_type="static",  # or "relaxation"
+    custom_settings=None,
+    magnetism=True
+)
+```
+
+Then add mandatory platform-specific fields:
 ```json
 {
   "priority": 50,
   "compute_platform": "supercloud",
-  "pseudo_dir": "/path/to/potcar", # This is the path to the POTCAR files. 
-  "kppa": 4000
+  "pseudo_dir": "/path/to/potcar",
+  "requester": "hojechun"
 }
 ```
 
-### 4. Execute Job Request
-Run `request_htvs_job` or the `submit_jobs.py` script.
+### 5. Submit Jobs & Build
 
-**Using Script**:
-```bash
-/mnt/data0/hojechun/miniforge3/envs/htvs-agent/bin/python scripts/submit_jobs.py \
-    --structure_dir /path/to/structures \
-    --group_name "MyProject" \
-    --chem_config "pbe_d3_paw_opt_vasp" \
-    --compute_platform "supercloud" \
-    --requester "username" \
-    --settings_module "djangochem.settings.orgel" \
-    --inbox_path "/path/to/inbox"
+Use `HTVSJobHandler` directly for job operations:
+
+```python
+from src.utils.htvs import HTVSJobHandler, HTVSVaspHandler
+
+#Initialize handlers
+job_handler = HTVSJobHandler("djangochem.settings.orgel")
+vasp_handler = HTVSVaspHandler()
+
+# Generate VASP details
+details_json = vasp_handler.generate_details(
+    structure_file="structure.cif",
+    preset_type="omat",
+    calculation_type="static",
+    magnetism=True
+)
+details = json.loads(details_json)
+
+# Add platform-specific settings
+details.update({
+    "compute_platform": "perlmutter",
+    "pseudo_dir": "/path/to/potcar",
+    "requester": "hojechun",
+    "project_name": "m5068"
+})
+
+# Request jobs
+result = job_handler.request_job(
+    group_name="agent",
+    chem_config="pbe_d3_paw_opt_vasp",
+    details=details,
+    requester="hojechun"
+)
+
+# Build jobs
+result = job_handler.build_jobs(
+    group_name="agent",
+    inbox_path="/path/to/inbox",
+    config_name="pbe_d3_paw_opt_vasp",
+    compute_platform="perlmutter"
+)
 ```
 
-### 5. Build Job
-Run `build_htvs_job`. This creates the actual file structure in the `inbox_path`.
+**Or use submit_jobs.py script** for convenience:
+```bash
+python scripts/submit_jobs.py \
+    --group_name "agent" \
+    --chem_config "pbe_d3_paw_opt_vasp" \
+    --parent_config "agent_generated" \
+    --compute_platform "perlmutter" \
+    --requester "hojechun" \
+    --settings_module "djangochem.settings.orgel" \
+    --inbox_path "/path/to/inbox" \
+    --project_name "m5068" \
+    --potcar_path "/path/to/potcar" \
+    --preset_type "omat" \
+    --calculation_type "static"
+```
 
 ### 6. Monitor Job Status
-Before parsing, ensure jobs are complete. Use `get_htvs_job_status` or the `monitor_jobs.py` script.
+Before parsing, ensure jobs are complete. Use the `monitor_jobs.py` script:
+
+```bash
+python scripts/monitor_jobs.py \
+    --tracking_file job_tracking.json \
+    --completed_path "/path/to/completed"
+```
 
 ### 7. Parse Jobs
-Retrieve results into the database using `parse_htvs_job` or the `parse_jobs.py` script.
 
-**Using Script**:
-```bash
-/mnt/data0/hojechun/miniforge3/envs/htvs-agent/bin/python scripts/parse_jobs.py \
-    --group_name "MyProject" \
-    --completed_path "/path/to/completed" \
-    --settings_module "djangochem.settings.orgel" \
-    --config_name "pbe_d3_paw_opt_vasp"
+Use `HTVSJobHandler` directly:
+
+```python
+from src.utils.htvs import HTVSJobHandler
+
+handler = HTVSJobHandler("djangochem.settings.orgel")
+result = handler.parse_jobs(
+    group_name="agent",
+    completed_path="/path/to/completed",
+    config_name="pbe_d3_paw_opt_vasp"
+)
 ```
 
 ## Chemical Configuration Selection
@@ -117,6 +219,7 @@ Select the `chem_config` based on the material type and desired accuracy. For de
 ## Files
 - [SKILL.md](SKILL.md): This documentation.
 - [chemconfig-standards.md](chemconfig-standards.md): Detailed HTVS configuration standards and naming conventions.
-- [submit_jobs.py](scripts/submit_jobs.py): Main submission logic.
-- [parse_jobs.py](scripts/parse_jobs.py): Result retrieval.
+- [submit_jobs.py](scripts/submit_jobs.py): Submit jobs using HTVSJobHandler and HTVSVaspHandler.
 - [monitor_jobs.py](scripts/monitor_jobs.py): Status tracking.
+
+

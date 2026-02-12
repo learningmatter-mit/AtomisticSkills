@@ -11,7 +11,7 @@ This document defines the naming conventions and standard configurations for Hig
 
 HTVS `chemconfig` names follow a specific "underscore-separated" taxonomy:
 
-`[FUNCTIONAL]_[DISPERSION]_[BASIS/POTENTIAL]_[TASK]_[CODE]`
+`[FUNCTIONAL]_[DISPERSION]_[BASIS/POTENTIAL]_[TASK]_[TAGS]_[CODE]`
 
 ### 1. Functional
 - `pbe`: Perdew-Burke-Ernzerhof (GGA). Standard for most materials.
@@ -35,9 +35,16 @@ HTVS `chemconfig` names follow a specific "underscore-separated" taxonomy:
     - `NSW=0`.
 - `bomd`: Born-Oppenheimer Molecular Dynamics.
     - `IBRION=0`, `MDALGO=2` (Nose-Hoover) or `1` (Andersen).
+- `es`: Electronic Structure.
+    - Static calculations for Band Structure, Density of States (DOS), or Dielectric Properties.
+    - typically `NSW=0`, `ICHARG=11` (non-self-consistent) or `ICHARG=2`.
 - `neb`: Nudged Elastic Band transition state search.
 
-### 5. DFT Code
+### 5. Optional Tags
+- `surf`: Surface-specific settings. Often ensures `ISIF=2`.
+- `spinpol`: Spin-polarized calculation (`ISPIN=2`).
+
+### 6. DFT Code
 - `vasp`: Vienna Ab initio Simulation Package.
 
 ## Standard VASP Configurations
@@ -45,6 +52,11 @@ HTVS `chemconfig` names follow a specific "underscore-separated" taxonomy:
 | Task | Configuration Name | Description | Key INCAR Tags |
 | :--- | :--- | :--- | :--- |
 | **Standard Relaxation** | `pbe_d3_paw_opt_vasp` | Robust default for relaxing structures. | `IBRION=2`, `ISIF=3` (Bulk) / `2` (Surf), `IVDW=12` |
+| **Surface Relaxation** | `pbe_d3_paw_opt_surf_vasp` | Specialized for surface relaxations. Ensures cell vectors are fixed. | `ISIF=2`, `IBRION=2` |
+| **Surface + Spin** | `pbe_u_paw_spinpol_opt_surf_vasp` | Standard relaxation for magnetic surfaces. | `ISPIN=2`, `ISIF=2`, `LDAU=.TRUE.` |
+| **Surface Static** | `pbe_u_paw_spinpol_opt_surf_vasp` | For magnetic surface static calculations. | *Override* `details`: `{"nsw": 0}` |
+| **Surface Electronic** | `pbe_u_paw_spinpol_es_surf_vasp` | For surface band structure/DOS. | `ICHARG=11` (usually) |
+| **Crystal Electronic** | `pbe_d3_paw_spinpol_es_vasp` | For crystal band structure/DOS. | `ICHARG=11`, `LOPTICS=.TRUE.` |
 | **Accurate Relaxation** | `r2scan_paw_opt_vasp` | detailed geometry optimization. | `METAGGA=R2SCAN`, `LASPH=.TRUE.` |
 | **Static Calculation** | `pbe_d3_paw_engrad_vasp` | Energy & Forces matching training data. | `NSW=0`, `IBRION=-1` |
 | **Molecular Dynamics** | `pbe_d3_paw_bomd_vasp` | Sampling PES for training data. | `IBRION=0`, `POTIM=2.0` |
@@ -54,7 +66,9 @@ HTVS `chemconfig` names follow a specific "underscore-separated" taxonomy:
 
 1.  **Always prefer D3**: Unless you have a specific reason (e.g. reproducing old PBE data), always use the `_d3_` variant.
 2.  **Match Training Data**: If fine-tuning a model trained on Materials Project (MP) data, use MP-compatible settings (often just PBE or PBE+U without D3 for older data, but `r2scan` or `pbe_d3` for newer datasets).
-3.  **Surfaces MUST use ISIF=2**: When relaxing surfaces, ensure the `chemconfig` DOES NOT relax the cell vectors (`ISIF=3`), or manual `details` override is applied.
+3.  **Surfaces MUST use ISIF=2**: When relaxing surfaces, ensure the `chemconfig` DOES NOT relax the cell vectors (`ISIF=3`).
+    - Use configs containing the `_surf_` tag (e.g., `pbe_d3_paw_opt_surf_vasp`) whenever available to guarantee `ISIF=2`.
+    - If a `_surf_` specific config is missing, manually override in `details`: `{"isif": 2}`.
 
 ## Selection based on Accuracy (INCAR)
 

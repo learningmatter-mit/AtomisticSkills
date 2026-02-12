@@ -6,52 +6,120 @@ from pathlib import Path
 # Add simulation_mcp to path to import tools
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from src.mcp_server.htvs_server import request_htvs_job, build_htvs_job, parse_htvs_job, vasp_to_htvs_details
+from src.mcp_server.htvs_server import (
+    request_htvs_job, 
+    build_htvs_job, 
+    parse_htvs_job, 
+    vasp_to_htvs_details,
+    save_htvs_crystals,
+    save_htvs_surfaces
+)
 
 # Configuration
-HTVS_REPO_ROOT = "/mnt/data0/hojechun/repos/htvs"
-DJANGOCHEM_DIR = os.path.join(HTVS_REPO_ROOT, "djangochem")
+HTVS_REPO_ROOT = os.environ.get("HTVS_DIR", "/home/hojechun/ssd_mnt/repos/htvs")
+DJANGOCHEM_DIR = os.environ.get("HTVS_DJANGOCHEM_DIR", os.path.join(HTVS_REPO_ROOT, "djangochem"))
 SETTINGS_MODULE = "djangochem.settings.toy"
-TEST_PROJECT = "test_project_mcp"
+TEST_GROUP = "test_group_mcp"
 
 # Ensure djangochem is providing the tools
-# We need to set up Django to query the DB directly for verification
 sys.path.append(DJANGOCHEM_DIR)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", SETTINGS_MODULE)
 django.setup()
 
-from jobs.models import Job, JobConfig, Group
+from jobs.models import Job, JobConfig
+from pgmols.models import Group, Crystal, Surface
+
+# Ensure Group and Config exist
+try:
+    group, _ = Group.objects.get_or_create(name=TEST_GROUP)
+    print(f"Ensured group '{TEST_GROUP}' exists.")
+    
+    config, _ = JobConfig.objects.get_or_create(
+        name="manual_import",
+        defaults={"parent_class_name": "GenericConfig"} 
+    )
+    print(f"Ensured config 'manual_import' exists.")
+except Exception as e:
+    print(f"Warning during setup: {e}")
+
+# Create dummy CIF file
+TEST_CIF = os.path.join(os.path.dirname(__file__), "test_structure.cif")
+with open(TEST_CIF, "w") as f:
+    f.write("""data_test
+_cell_length_a 4.0
+_cell_length_b 4.0
+_cell_length_c 4.0
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+loop_
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Si 0.0 0.0 0.0
+""")
+
+def cleanup():
+    if os.path.exists(TEST_CIF):
+        os.remove(TEST_CIF)
+    inbox = os.path.join(os.path.dirname(__file__), "htvs_test_inbox")
+    import shutil
+    if os.path.exists(inbox):
+        shutil.rmtree(inbox)
+
 
 def verify_request():
     print("--- Verifying request_htvs_job ---")
     
     # 1. Test VASP conversion
     print("Testing vasp_to_htvs_details...")
+    
+    # 1a. Explicit input
     vasp_input = {"ENCUT": 520, "ISPIN": 2, "LREAL": "Auto"}
-    details = vasp_to_htvs_details(vasp_input, additional_details={"priority": 50})
-    print(f"Converted details: {details}")
+    # Add force to pass job request without parent config
+    details = vasp_to_htvs_details(vasp_input, additional_details={"priority": 50, "force": True})
+    print(f"Converted details (explicit): {details}")
     if details.get("encut") != 520 or details.get("priority") != 50:
         print("FAILED: details conversion incorrect")
         return False
+        
+    # 1b. Structure-based input (Implicitly tests gen logic from handler)
+    structure_file = os.path.join(os.path.dirname(__file__), "test_structure.cif")
+    if os.path.exists(structure_file):
+        print("Testing vasp_to_htvs_details with structure...")
+        details_struct = vasp_to_htvs_details(
+            structure_file=structure_file,
+            preset_type="mp",
+            calculation_type="static"
+        )
+        print(f"Converted details (structure): {details_struct}")
+        # Check for MPStaticSet defaults (e.g. ALGO=Fast, LREAL=Auto)
+        if details_struct.get("algo") != "Fast" or details_struct.get("lreal") != "Auto":
+             print("FAILED: structure-based details incorrect")
+             return False
+    else:
+        print("Warning: test_structure.cif not found, skipping structure test.")
+
+    # 1c. Merge explicit + structure
+    if os.path.exists(structure_file):
+        print("Testing vasp_to_htvs_details merge...")
+        details_merge = vasp_to_htvs_details(
+            vasp_input={"ALGO": "VeryFast"}, # Override defaults
+            structure_file=structure_file,
+            preset_type="mp"
+        )
+        if details_merge.get("algo") != "VeryFast":
+             print("FAILED: merge override incorrect")
+             return False
+
 
     # 2. Request Job
-    print(f"Requesting job for project {TEST_PROJECT}...")
-    # Use a likely existing config or one we know from 'toy' db?
-    # We saw 'pbe_d3_paw_bomd_vasp' in the file earlier.
+    print(f"Requesting job for group {TEST_GROUP}...")
     chem_config = "pbe_d3_paw_bomd_vasp" 
     
-    # Needs valid parent info usually?
-    # For 'toy' we might need existing data.
-    # Let's try to request without parents first or see what happens.
-    # The 'requestjobs' command usually filters based on parents.
-    # If we don't have parents, maybe we can request a job from scratch if the config allows?
-    # Or maybe we rely on the user to provide a valid parent pk if needed.
-    
-    # For this verification, we just want to see if the command runs without crashing
-    # and if it interacts with the DB.
-    
     output = request_htvs_job(
-        project_name=TEST_PROJECT,
+        group_name=TEST_GROUP,
         chem_config=chem_config,
         details=details,
         settings_module=SETTINGS_MODULE,
@@ -61,18 +129,46 @@ def verify_request():
     print("Output from request_htvs_job:")
     print(output)
     
-    if "Error" in output or "Command Failed" in output:
-        # It's possible it fails due to logic (no parents found), but the tool execution itself worked.
-        print("Tool executed, but htvs logic might have errored (expected if no valid parents).")
-        # Proceed with caution
-    else:
-        print("Tool reported success.")
-
     # Verify DB
-    # We can query if any job exists for this project?
-    # Note: requestjobs creates jobs.
-    jobs_count = Job.objects.filter(group__project__name=TEST_PROJECT).count()
-    print(f"Jobs in project {TEST_PROJECT}: {jobs_count}")
+    jobs_count = Job.objects.filter(group__name=TEST_GROUP).count()
+    print(f"Jobs in group {TEST_GROUP}: {jobs_count}")
+    return True
+
+def verify_save():
+    print("\n--- Verifying save tools ---")
+    # Path to a test structure (re-use one from project if possible)
+    structure_file = os.path.join(os.path.dirname(__file__), "test_structure.cif")
+    
+    if not os.path.exists(structure_file):
+        print(f"Skipping save verification: {structure_file} not found")
+        return True
+
+    print("Checking save_htvs_crystals...")
+    crystals_json = save_htvs_crystals(
+        structure_file=structure_file,
+        config_name="manual_import",
+        group_name=TEST_GROUP,
+        settings_module=SETTINGS_MODULE,
+        method_name="verify_method",
+        framework_name="verify_framework"
+    )
+    print(f"Created Crystal IDs: {crystals_json}")
+
+    import json
+    crystal_ids = json.loads(crystals_json)
+    if crystal_ids and isinstance(crystal_ids, list):
+        parent_id = crystal_ids[0]
+        print(f"Checking save_htvs_surfaces for parent {parent_id}...")
+        surfaces_json = save_htvs_surfaces(
+            structure_file=structure_file,
+            config_name="manual_import",
+            parent_bulk_id=parent_id,
+            group_name=TEST_GROUP,
+            settings_module=SETTINGS_MODULE,
+            miller_index=[0, 0, 1]
+        )
+        print(f"Created Surface IDs: {surfaces_json}")
+
     return True
 
 def verify_build():
@@ -81,7 +177,7 @@ def verify_build():
     os.makedirs(inbox_path, exist_ok=True)
     
     output = build_htvs_job(
-        project_name=TEST_PROJECT,
+        group_name=TEST_GROUP,
         inbox_path=inbox_path,
         limit=1,
         settings_module=SETTINGS_MODULE,
@@ -90,15 +186,18 @@ def verify_build():
     print("Output from build_htvs_job:")
     print(output)
     
-    # Check if any folder was created
     if os.path.exists(inbox_path) and os.listdir(inbox_path):
         print(f"Files created in {inbox_path}")
         print(os.listdir(inbox_path))
     else:
-        print("No files created (might be expected if no jobs were requested successfully).")
+        print("No files created (expected if jobs were requested for a different partition/system).")
 
     return True
 
 if __name__ == "__main__":
-    verify_request()
-    verify_build()
+    try:
+        verify_request()
+        verify_save()
+        verify_build()
+    finally:
+        cleanup()
