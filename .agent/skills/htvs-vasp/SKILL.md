@@ -212,6 +212,23 @@ Select the `chem_config` based on the material type and desired accuracy. For de
 
 *Note: For MLIP training labels, `pbe_d3_paw_engrad_vasp` is often the standard choice.*
 
+
+### 8. Fetching Results from DB
+
+After parsing, retrieve results (energies, structures) directly from the database using a custom script via `run_htvs_script` or `HTVSDbHandler`.
+
+See the example script for a complete query template.
+
+## Example Workflow
+
+A complete, runnable example of the pipeline (Save -> Submit -> Build -> Parse -> Query) is available in:
+- [examples/run_workflow.py](examples/run_workflow.py)
+
+To run the example:
+```bash
+python .agent/skills/htvs-vasp/examples/run_workflow.py
+```
+
 ## Constraints
 - **Environments**: All scripts require the **htvs-agent** conda environment.
 - **Structure files** must be readable by `ase.io`.
@@ -221,5 +238,6 @@ Select the `chem_config` based on the material type and desired accuracy. For de
 - [chemconfig-standards.md](chemconfig-standards.md): Detailed HTVS configuration standards and naming conventions.
 - [submit_jobs.py](scripts/submit_jobs.py): Submit jobs using HTVSJobHandler and HTVSVaspHandler.
 - [monitor_jobs.py](scripts/monitor_jobs.py): Status tracking.
+- [examples/run_workflow.py](examples/run_workflow.py): Full Python workflow example.
 
 
