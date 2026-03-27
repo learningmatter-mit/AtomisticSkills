@@ -1,0 +1,15 @@
+runs/
+bcc_w_tsite_lattice.json
+validation_summary.json
+validation_plot.png
+
+# Route 1: MLIP first-principles artifacts
+start_relaxed.cif
+end_relaxed.cif
+saddle_point.cif
+structure_prep_summary.json
+neb_results/
+phonon_eq/
+phonon_ts/
+htst_results.json
+mlip_validation/

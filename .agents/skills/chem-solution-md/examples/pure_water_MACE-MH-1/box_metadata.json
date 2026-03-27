@@ -1,0 +1,14 @@
+{
+  "box_size_angstrom": 12.4296,
+  "total_atoms": 192,
+  "num_solvent_molecules": 64,
+  "solvent_name": "water",
+  "solvent_density_g_cm3": 0.997,
+  "has_solute": false,
+  "solute_num_atoms": 0,
+  "solute_indices": [],
+  "tolerance_angstrom": 2.0,
+  "seed": 1,
+  "cif_path": "research/2026-02-18_water_solution_md_example/solvation_box/solvated_box.cif",
+  "xyz_path": "research/2026-02-18_water_solution_md_example/solvation_box/solvated_box.xyz"
+}

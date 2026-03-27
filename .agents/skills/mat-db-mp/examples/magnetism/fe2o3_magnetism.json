@@ -1,0 +1,98 @@
+{
+  "num_results": 1,
+  "results": [
+    {
+      "builder_meta": {
+        "emmet_version": "0.84.3rc4",
+        "pymatgen_version": "2024.11.13",
+        "run_id": "5c8ad8eb-1c5e-4547-a1f2-c91ac96ff9a9",
+        "batch_id": null,
+        "database_version": "2025.09.25",
+        "build_date": {
+          "@module": "datetime",
+          "@class": "datetime",
+          "string": "2024-11-22 23:37:07.388000+00:00"
+        },
+        "license": null
+      },
+      "nsites": 10,
+      "elements": [
+        "Fe",
+        "O"
+      ],
+      "nelements": 2,
+      "composition": {
+        "Fe": 4.0,
+        "O": 6.0
+      },
+      "composition_reduced": {
+        "Fe": 2.0,
+        "O": 3.0
+      },
+      "formula_pretty": "Fe2O3",
+      "formula_anonymous": "A2B3",
+      "chemsys": "Fe-O",
+      "volume": 103.1107530196113,
+      "density": 5.143372282900504,
+      "density_atomic": 10.311075301961129,
+      "symmetry": {
+        "crystal_system": "Trigonal",
+        "symbol": "R-3c",
+        "hall": null,
+        "number": 167,
+        "point_group": "-3m",
+        "symprec": 0.1,
+        "angle_tolerance": 5.0,
+        "version": "2.5.0"
+      },
+      "property_name": "magnetism",
+      "material_id": "mp-bdgk",
+      "deprecated": false,
+      "deprecation_reasons": null,
+      "last_updated": {
+        "@module": "datetime",
+        "@class": "datetime",
+        "string": "2023-10-07 08:37:38.400000+00:00"
+      },
+      "origins": [
+        {
+          "name": "magnetism",
+          "task_id": "mp-emqqu",
+          "last_updated": {
+            "@module": "datetime",
+            "@class": "datetime",
+            "string": "2021-03-17 01:25:18.244000+00:00"
+          }
+        }
+      ],
+      "warnings": [],
+      "ordering": "FM",
+      "is_magnetic": true,
+      "exchange_symmetry": 167,
+      "num_magnetic_sites": 10,
+      "num_unique_magnetic_sites": 3,
+      "types_of_magnetic_species": [
+        "Fe",
+        "O"
+      ],
+      "magmoms": [
+        4.2,
+        4.2,
+        4.2,
+        4.2,
+        0.4,
+        0.4,
+        0.4,
+        0.4,
+        0.4,
+        0.4
+      ],
+      "total_magnetization": 19.9980745,
+      "total_magnetization_normalized_vol": 0.193947516765748,
+      "total_magnetization_normalized_formula_units": 9.99903725,
+      "fields_not_requested": [
+        "structure"
+      ]
+    }
+  ]
+}

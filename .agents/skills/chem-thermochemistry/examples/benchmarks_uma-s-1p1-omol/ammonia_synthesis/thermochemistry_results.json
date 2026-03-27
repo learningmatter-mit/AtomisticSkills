@@ -1,0 +1,167 @@
+{
+    "mode": "reaction",
+    "reaction": "N2 + 3H2 -> 2NH3",
+    "temperature_K": 298.15,
+    "pressure_Pa": 101325,
+    "reactants": [
+        {
+            "coefficient": 1,
+            "species": "N2"
+        },
+        {
+            "coefficient": 3,
+            "species": "H2"
+        }
+    ],
+    "products": [
+        {
+            "coefficient": 2,
+            "species": "NH3"
+        }
+    ],
+    "species": {
+        "N2": {
+            "species": "N2",
+            "formula": "N2",
+            "n_atoms": 2,
+            "geometry": "linear",
+            "spin": 0.0,
+            "symmetrynumber": 2,
+            "potential_energy_eV": -2981.07788640438,
+            "zero_point_energy_eV": 0.15690522812165206,
+            "frequencies_cm1": [
+                0.0,
+                0.0,
+                0.0,
+                17.2,
+                17.2,
+                2496.7
+            ],
+            "real_vibrational_modes": [
+                {
+                    "index": 5,
+                    "frequency_cm1": 2496.6540728395926,
+                    "energy_meV": 309.54565139748803
+                }
+            ],
+            "n_real_modes": 1,
+            "enthalpy_eV": -2980.8331877696014,
+            "enthalpy_kJmol": -287606.5843719063,
+            "entropy_eV_per_K": 0.001982994913972089,
+            "entropy_J_per_molK": 191.32985917307118,
+            "gibbs_energy_eV": -2981.4244177032024,
+            "gibbs_energy_kJmol": -287663.6293694188,
+            "temperature_K": 298.15,
+            "pressure_Pa": 101325
+        },
+        "H2": {
+            "species": "H2",
+            "formula": "H2",
+            "n_atoms": 2,
+            "geometry": "linear",
+            "spin": 0.0,
+            "symmetrynumber": 2,
+            "potential_energy_eV": -31.589746414238235,
+            "zero_point_energy_eV": 0.28187347041873484,
+            "frequencies_cm1": [
+                0.0,
+                0.0,
+                0.0,
+                43.7,
+                43.7,
+                4459.6
+            ],
+            "real_vibrational_modes": [
+                {
+                    "index": 5,
+                    "frequency_cm1": 4459.621623105963,
+                    "energy_meV": 552.9226076324557
+                }
+            ],
+            "n_real_modes": 1,
+            "enthalpy_eV": -31.223361113771485,
+            "enthalpy_kJmol": -3012.5953640705757,
+            "entropy_eV_per_K": 0.0013497101989549305,
+            "entropy_J_per_molK": 130.22719345922616,
+            "gibbs_energy_eV": -31.6257772095899,
+            "gibbs_energy_kJmol": -3051.422601800444,
+            "temperature_K": 298.15,
+            "pressure_Pa": 101325
+        },
+        "NH3": {
+            "species": "NH3",
+            "formula": "H3N",
+            "n_atoms": 4,
+            "geometry": "nonlinear",
+            "spin": 0.0,
+            "symmetrynumber": 3,
+            "potential_energy_eV": -1538.811378388418,
+            "zero_point_energy_eV": 0.9332593135098274,
+            "frequencies_cm1": [
+                "51.7i",
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.6,
+                1022.4,
+                1655.4,
+                1655.8,
+                3494.3,
+                3612.6,
+                3613.0
+            ],
+            "real_vibrational_modes": [
+                {
+                    "index": 6,
+                    "frequency_cm1": 1022.4321324248755,
+                    "energy_meV": 126.7654273309953
+                },
+                {
+                    "index": 7,
+                    "frequency_cm1": 1655.3679997859476,
+                    "energy_meV": 205.23947284915667
+                },
+                {
+                    "index": 8,
+                    "frequency_cm1": 1655.7641097303976,
+                    "energy_meV": 205.28858422270005
+                },
+                {
+                    "index": 9,
+                    "frequency_cm1": 3494.2671916327304,
+                    "energy_meV": 433.23391324318186
+                },
+                {
+                    "index": 10,
+                    "frequency_cm1": 3612.630088344067,
+                    "energy_meV": 447.9090419934508
+                },
+                {
+                    "index": 11,
+                    "frequency_cm1": 3612.9684822724557,
+                    "energy_meV": 447.9509974930658
+                }
+            ],
+            "n_real_modes": 6,
+            "enthalpy_eV": -1537.7743559988132,
+            "enthalpy_kJmol": -148372.62007085228,
+            "entropy_eV_per_K": 0.001993472116291272,
+            "entropy_J_per_molK": 192.34075518199822,
+            "gibbs_energy_eV": -1538.3687097102854,
+            "gibbs_energy_kJmol": -148429.9664670098,
+            "temperature_K": 298.15,
+            "pressure_Pa": 101325
+        }
+    },
+    "reaction_thermodynamics": {
+        "delta_H_eV": -1.0454408867106082,
+        "delta_H_kJmol": -100.86967758653904,
+        "delta_S_eV_per_K": -0.002045181278254337,
+        "delta_S_J_per_molK": -197.3299291867532,
+        "delta_G_eV": -0.4356700885987834,
+        "delta_G_kJmol": -42.0357591994802
+    },
+    "model_type": "fairchem",
+    "model_name": "uma-s-1p1"
+}

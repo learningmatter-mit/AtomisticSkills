@@ -293,6 +293,51 @@ def get_feature_matrix(ce_file: str) -> Dict[str, Any]:
         return {"error": str(e)}
 
 @mcp.tool()
+def fit_feature_matrix(
+    feature_matrix_path: str,
+    energies_path: str,
+    groups_path: Optional[str] = None,
+    fit_method: str = "ls",
+    alpha: float = 0.002,
+    lambda_mixing: float = 0.5,
+    point_features_count: int = 1,
+    test_size: float = 0.2
+) -> Dict[str, Any]:
+    """
+    Fit a feature matrix directly, typically used with SGL or external pipelines.
+
+    Args:
+        feature_matrix_path: Path to .npy file of the feature matrix (n_samples, n_features)
+        energies_path: Path to .npy file of the energies (n_samples,)
+        groups_path: Path to .npy file of the groups (n_features,)
+        fit_method: "ls", "lasso", "ridge", or "sgl" (Sparse Group Lasso)
+        alpha: Regularization parameter for Lasso/Ridge/SGL
+        lambda_mixing: L1/L2 mixing parameter for SGL
+        point_features_count: For SGL, the first N features (typically 1 constant + point clusters) 
+                              that are not penalized via the group penalty.
+        test_size: Test split ratio for RMSE evaluation
+
+    Returns:
+        Dictionary with fitting results, including training RMSE, testing RMSE, and coefficient count.
+    """
+    try:
+        wrapper = SmolWrapper()
+        return wrapper.fit_feature_matrix(
+            feature_matrix_path=feature_matrix_path,
+            energies_path=energies_path,
+            groups_path=groups_path,
+            fit_method=fit_method,
+            alpha=alpha,
+            lambda_mixing=lambda_mixing,
+            point_features_count=point_features_count,
+            test_size=test_size
+        )
+    except Exception as e:
+        import traceback
+        return {"error": f"Direct feature matrix fitting failed: {str(e)}\n{traceback.format_exc()}"}
+
+
+@mcp.tool()
 def check_mapping(
     initial_structure: Union[Dict[str, Any], str],
     relaxed_structure: Union[Dict[str, Any], str]

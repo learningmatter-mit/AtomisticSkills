@@ -1,0 +1,22 @@
+{
+  "model_name": "mp_csp",
+  "generation_mode": "symmetry_constrained",
+  "spacegroup": 12,
+  "wyckoff_letters": [
+    "2a",
+    "4g",
+    "4h",
+    "4i",
+    "4i"
+  ],
+  "atom_types": [
+    "Zr",
+    "Li",
+    "Cl",
+    "Cl",
+    "Cl"
+  ],
+  "num_samples_requested": 3,
+  "num_generated": 3,
+  "step_lr": 1e-05
+}

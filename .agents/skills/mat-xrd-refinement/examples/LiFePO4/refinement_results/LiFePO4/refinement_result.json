@@ -1,0 +1,62 @@
+{
+  "rwp": 32.32,
+  "refined_cif": null,
+  "instrument_profile": "Aeris-fds-Pixcel1d-Medipix3",
+  "phase_params": null,
+  "refinement_params": null,
+  "phases": [
+    {
+      "name": "Li3PO4",
+      "gewicht": [
+        0.0,
+        1e-05
+      ],
+      "lattice": {
+        "a": [
+          0.61,
+          0.48
+        ],
+        "b": [
+          0.53,
+          0.4
+        ],
+        "c": [
+          0.48,
+          0.25
+        ],
+        "alpha": null,
+        "beta": null,
+        "gamma": null
+      }
+    },
+    {
+      "name": "LiFePO4",
+      "gewicht": [
+        8.6e-05,
+        2e-05
+      ],
+      "lattice": {
+        "a": [
+          1.0235,
+          0.0036
+        ],
+        "b": [
+          0.5974,
+          0.002
+        ],
+        "c": [
+          0.4658,
+          0.002
+        ],
+        "alpha": null,
+        "beta": null,
+        "gamma": null
+      }
+    }
+  ],
+  "plots": {
+    "html": null,
+    "png": ".agents/skills/mat-xrd-refinement/examples/LiFePO4/refinement_results/LiFePO4/LiFePO4_refinement.png"
+  },
+  "peak_data": ".agents/skills/mat-xrd-refinement/examples/LiFePO4/refinement_results/LiFePO4/LiFePO4_peak_data.csv"
+}

@@ -1,0 +1,117 @@
+{
+  "rdkit_version": "2025.09.4",
+  "fingerprint": {
+    "type": "Morgan",
+    "radius": 2,
+    "fp_size": 2048,
+    "use_chirality": false,
+    "use_features": false,
+    "count_simulation": false,
+    "info_string": "Common arguments : countSimulation=0 fpSize=2048 bitsPerFeature=1 includeChirality=0 --- MorganArguments onlyNonzeroInvariants=0 radius=2 --- MorganEnvironmentGenerator --- MorganInvariantGenerator includeRingMembership=1 --- MorganInvariantGenerator useBondTypes=1 useChirality=0"
+  },
+  "standardization": {
+    "mode": "none"
+  },
+  "compounds": [
+    {
+      "input_smiles": "CC(=O)Oc1ccccc1C(=O)O",
+      "input_name": null,
+      "valid": true,
+      "name": "CC(=O)Oc1ccccc1C(=O)O",
+      "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+      "num_on_bits": 24,
+      "bit_density": 0.011719
+    },
+    {
+      "input_smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
+      "input_name": null,
+      "valid": true,
+      "name": "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+      "smiles": "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+      "num_on_bits": 25,
+      "bit_density": 0.012207
+    },
+    {
+      "input_smiles": "O=C(O)Cc1ccccc1Nc1c(Cl)cccc1Cl",
+      "input_name": null,
+      "valid": true,
+      "name": "O=C(O)Cc1ccccc1Nc1c(Cl)cccc1Cl",
+      "smiles": "O=C(O)Cc1ccccc1Nc1c(Cl)cccc1Cl",
+      "num_on_bits": 31,
+      "bit_density": 0.015137
+    },
+    {
+      "input_smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+      "input_name": null,
+      "valid": true,
+      "name": "Cn1c(=O)c2c(ncn2C)n(C)c1=O",
+      "smiles": "Cn1c(=O)c2c(ncn2C)n(C)c1=O",
+      "num_on_bits": 25,
+      "bit_density": 0.012207
+    }
+  ],
+  "similarity_matrix": [
+    [
+      1.0,
+      0.1951,
+      0.1957,
+      0.0889
+    ],
+    [
+      0.1951,
+      1.0,
+      0.1667,
+      0.087
+    ],
+    [
+      0.1957,
+      0.1667,
+      1.0,
+      0.0769
+    ],
+    [
+      0.0889,
+      0.087,
+      0.0769,
+      1.0
+    ]
+  ],
+  "clusters": [
+    {
+      "cluster_id": 0,
+      "indices": [
+        3
+      ],
+      "members": [
+        "Cn1c(=O)c2c(ncn2C)n(C)c1=O"
+      ]
+    },
+    {
+      "cluster_id": 1,
+      "indices": [
+        2
+      ],
+      "members": [
+        "O=C(O)Cc1ccccc1Nc1c(Cl)cccc1Cl"
+      ]
+    },
+    {
+      "cluster_id": 2,
+      "indices": [
+        1
+      ],
+      "members": [
+        "CC(C)Cc1ccc(C(C)C(=O)O)cc1"
+      ]
+    },
+    {
+      "cluster_id": 3,
+      "indices": [
+        0
+      ],
+      "members": [
+        "CC(=O)Oc1ccccc1C(=O)O"
+      ]
+    }
+  ]
+}

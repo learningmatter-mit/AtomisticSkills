@@ -9,3 +9,5 @@ dependencies:
     - typing-extensions
     - scikit-learn
     - ase
+    - pyyaml
+    - polytope

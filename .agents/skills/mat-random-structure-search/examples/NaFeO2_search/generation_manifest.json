@@ -1,0 +1,494 @@
+{
+  "composition": "NaFeO2",
+  "num_generated": 50,
+  "total_attempts": 123,
+  "spacegroups_used": [
+    1,
+    2,
+    129,
+    11,
+    139,
+    141,
+    14,
+    15,
+    140,
+    148,
+    160,
+    33,
+    161,
+    166,
+    167,
+    55,
+    57,
+    58,
+    59,
+    61,
+    62,
+    63,
+    64,
+    193,
+    216,
+    221,
+    226,
+    227,
+    229,
+    127
+  ],
+  "volume_range": [
+    0.6,
+    1.8
+  ],
+  "seed": 42,
+  "structures": [
+    {
+      "index": 0,
+      "formula": "NaFeO2",
+      "spacegroup": 1,
+      "volume_scale": 1.556,
+      "num_atoms": 4,
+      "volume": 74.85,
+      "cif_file": "0000_NaFeO2_sg1.cif"
+    },
+    {
+      "index": 1,
+      "formula": "NaFeO2",
+      "spacegroup": 63,
+      "volume_scale": 0.997,
+      "num_atoms": 4,
+      "volume": 45.38,
+      "cif_file": "0001_NaFeO2_sg63.cif"
+    },
+    {
+      "index": 2,
+      "formula": "NaFeO2",
+      "spacegroup": 58,
+      "volume_scale": 1.512,
+      "num_atoms": 4,
+      "volume": 68.83,
+      "cif_file": "0002_NaFeO2_sg58.cif"
+    },
+    {
+      "index": 3,
+      "formula": "NaFeO2",
+      "spacegroup": 227,
+      "volume_scale": 1.515,
+      "num_atoms": 4,
+      "volume": 68.97,
+      "cif_file": "0003_NaFeO2_sg227.cif"
+    },
+    {
+      "index": 4,
+      "formula": "NaFeO2",
+      "spacegroup": 141,
+      "volume_scale": 1.578,
+      "num_atoms": 4,
+      "volume": 71.84,
+      "cif_file": "0004_NaFeO2_sg141.cif"
+    },
+    {
+      "index": 5,
+      "formula": "NaFeO2",
+      "spacegroup": 148,
+      "volume_scale": 1.322,
+      "num_atoms": 4,
+      "volume": 60.18,
+      "cif_file": "0005_NaFeO2_sg148.cif"
+    },
+    {
+      "index": 6,
+      "formula": "NaFeO2",
+      "spacegroup": 11,
+      "volume_scale": 1.278,
+      "num_atoms": 4,
+      "volume": 58.2,
+      "cif_file": "0006_NaFeO2_sg11.cif"
+    },
+    {
+      "index": 7,
+      "formula": "NaFeO2",
+      "spacegroup": 166,
+      "volume_scale": 1.774,
+      "num_atoms": 4,
+      "volume": 80.74,
+      "cif_file": "0007_NaFeO2_sg166.cif"
+    },
+    {
+      "index": 8,
+      "formula": "NaFeO2",
+      "spacegroup": 61,
+      "volume_scale": 1.136,
+      "num_atoms": 4,
+      "volume": 51.7,
+      "cif_file": "0008_NaFeO2_sg61.cif"
+    },
+    {
+      "index": 9,
+      "formula": "NaFeO2",
+      "spacegroup": 139,
+      "volume_scale": 1.063,
+      "num_atoms": 4,
+      "volume": 48.37,
+      "cif_file": "0009_NaFeO2_sg139.cif"
+    },
+    {
+      "index": 10,
+      "formula": "NaFeO2",
+      "spacegroup": 221,
+      "volume_scale": 1.621,
+      "num_atoms": 4,
+      "volume": 73.79,
+      "cif_file": "0010_NaFeO2_sg221.cif"
+    },
+    {
+      "index": 11,
+      "formula": "NaFeO2",
+      "spacegroup": 148,
+      "volume_scale": 1.49,
+      "num_atoms": 4,
+      "volume": 67.83,
+      "cif_file": "0011_NaFeO2_sg148.cif"
+    },
+    {
+      "index": 12,
+      "formula": "NaFeO2",
+      "spacegroup": 58,
+      "volume_scale": 1.644,
+      "num_atoms": 4,
+      "volume": 74.82,
+      "cif_file": "0012_NaFeO2_sg58.cif"
+    },
+    {
+      "index": 13,
+      "formula": "NaFeO2",
+      "spacegroup": 59,
+      "volume_scale": 1.352,
+      "num_atoms": 4,
+      "volume": 61.54,
+      "cif_file": "0013_NaFeO2_sg59.cif"
+    },
+    {
+      "index": 14,
+      "formula": "NaFeO2",
+      "spacegroup": 14,
+      "volume_scale": 1.359,
+      "num_atoms": 4,
+      "volume": 61.86,
+      "cif_file": "0014_NaFeO2_sg14.cif"
+    },
+    {
+      "index": 15,
+      "formula": "NaFeO2",
+      "spacegroup": 193,
+      "volume_scale": 1.55,
+      "num_atoms": 4,
+      "volume": 70.55,
+      "cif_file": "0015_NaFeO2_sg193.cif"
+    },
+    {
+      "index": 16,
+      "formula": "NaFeO2",
+      "spacegroup": 59,
+      "volume_scale": 1.007,
+      "num_atoms": 4,
+      "volume": 45.82,
+      "cif_file": "0016_NaFeO2_sg59.cif"
+    },
+    {
+      "index": 17,
+      "formula": "NaFeO2",
+      "spacegroup": 63,
+      "volume_scale": 1.341,
+      "num_atoms": 4,
+      "volume": 61.03,
+      "cif_file": "0017_NaFeO2_sg63.cif"
+    },
+    {
+      "index": 18,
+      "formula": "NaFeO2",
+      "spacegroup": 229,
+      "volume_scale": 1.441,
+      "num_atoms": 4,
+      "volume": 65.61,
+      "cif_file": "0018_NaFeO2_sg229.cif"
+    },
+    {
+      "index": 19,
+      "formula": "NaFeO2",
+      "spacegroup": 57,
+      "volume_scale": 1.754,
+      "num_atoms": 4,
+      "volume": 79.83,
+      "cif_file": "0019_NaFeO2_sg57.cif"
+    },
+    {
+      "index": 20,
+      "formula": "NaFeO2",
+      "spacegroup": 61,
+      "volume_scale": 1.508,
+      "num_atoms": 4,
+      "volume": 68.65,
+      "cif_file": "0020_NaFeO2_sg61.cif"
+    },
+    {
+      "index": 21,
+      "formula": "NaFeO2",
+      "spacegroup": 63,
+      "volume_scale": 1.76,
+      "num_atoms": 4,
+      "volume": 80.12,
+      "cif_file": "0021_NaFeO2_sg63.cif"
+    },
+    {
+      "index": 22,
+      "formula": "NaFeO2",
+      "spacegroup": 221,
+      "volume_scale": 1.169,
+      "num_atoms": 4,
+      "volume": 53.24,
+      "cif_file": "0022_NaFeO2_sg221.cif"
+    },
+    {
+      "index": 23,
+      "formula": "NaFeO2",
+      "spacegroup": 127,
+      "volume_scale": 1.762,
+      "num_atoms": 4,
+      "volume": 80.21,
+      "cif_file": "0023_NaFeO2_sg127.cif"
+    },
+    {
+      "index": 24,
+      "formula": "NaFeO2",
+      "spacegroup": 58,
+      "volume_scale": 1.44,
+      "num_atoms": 4,
+      "volume": 65.57,
+      "cif_file": "0024_NaFeO2_sg58.cif"
+    },
+    {
+      "index": 25,
+      "formula": "NaFeO2",
+      "spacegroup": 127,
+      "volume_scale": 1.54,
+      "num_atoms": 4,
+      "volume": 70.08,
+      "cif_file": "0025_NaFeO2_sg127.cif"
+    },
+    {
+      "index": 26,
+      "formula": "NaFeO2",
+      "spacegroup": 62,
+      "volume_scale": 1.101,
+      "num_atoms": 4,
+      "volume": 50.13,
+      "cif_file": "0026_NaFeO2_sg62.cif"
+    },
+    {
+      "index": 27,
+      "formula": "NaFeO2",
+      "spacegroup": 139,
+      "volume_scale": 1.136,
+      "num_atoms": 4,
+      "volume": 51.7,
+      "cif_file": "0027_NaFeO2_sg139.cif"
+    },
+    {
+      "index": 28,
+      "formula": "NaFeO2",
+      "spacegroup": 167,
+      "volume_scale": 1.256,
+      "num_atoms": 4,
+      "volume": 57.16,
+      "cif_file": "0028_NaFeO2_sg167.cif"
+    },
+    {
+      "index": 29,
+      "formula": "NaFeO2",
+      "spacegroup": 2,
+      "volume_scale": 1.438,
+      "num_atoms": 4,
+      "volume": 66.65,
+      "cif_file": "0029_NaFeO2_sg2.cif"
+    },
+    {
+      "index": 30,
+      "formula": "NaFeO2",
+      "spacegroup": 229,
+      "volume_scale": 1.175,
+      "num_atoms": 4,
+      "volume": 53.51,
+      "cif_file": "0030_NaFeO2_sg229.cif"
+    },
+    {
+      "index": 31,
+      "formula": "NaFeO2",
+      "spacegroup": 193,
+      "volume_scale": 1.434,
+      "num_atoms": 4,
+      "volume": 65.29,
+      "cif_file": "0031_NaFeO2_sg193.cif"
+    },
+    {
+      "index": 32,
+      "formula": "NaFeO2",
+      "spacegroup": 64,
+      "volume_scale": 1.53,
+      "num_atoms": 4,
+      "volume": 69.66,
+      "cif_file": "0032_NaFeO2_sg64.cif"
+    },
+    {
+      "index": 33,
+      "formula": "NaFeO2",
+      "spacegroup": 167,
+      "volume_scale": 1.198,
+      "num_atoms": 4,
+      "volume": 54.53,
+      "cif_file": "0033_NaFeO2_sg167.cif"
+    },
+    {
+      "index": 34,
+      "formula": "NaFeO2",
+      "spacegroup": 148,
+      "volume_scale": 1.534,
+      "num_atoms": 4,
+      "volume": 69.81,
+      "cif_file": "0034_NaFeO2_sg148.cif"
+    },
+    {
+      "index": 35,
+      "formula": "NaFeO2",
+      "spacegroup": 216,
+      "volume_scale": 1.544,
+      "num_atoms": 4,
+      "volume": 70.27,
+      "cif_file": "0035_NaFeO2_sg216.cif"
+    },
+    {
+      "index": 36,
+      "formula": "NaFeO2",
+      "spacegroup": 227,
+      "volume_scale": 1.091,
+      "num_atoms": 4,
+      "volume": 49.68,
+      "cif_file": "0036_NaFeO2_sg227.cif"
+    },
+    {
+      "index": 37,
+      "formula": "NaFeO2",
+      "spacegroup": 55,
+      "volume_scale": 1.461,
+      "num_atoms": 4,
+      "volume": 66.5,
+      "cif_file": "0037_NaFeO2_sg55.cif"
+    },
+    {
+      "index": 38,
+      "formula": "NaFeO2",
+      "spacegroup": 167,
+      "volume_scale": 1.437,
+      "num_atoms": 4,
+      "volume": 65.42,
+      "cif_file": "0038_NaFeO2_sg167.cif"
+    },
+    {
+      "index": 39,
+      "formula": "NaFeO2",
+      "spacegroup": 63,
+      "volume_scale": 1.729,
+      "num_atoms": 4,
+      "volume": 78.73,
+      "cif_file": "0039_NaFeO2_sg63.cif"
+    },
+    {
+      "index": 40,
+      "formula": "NaFeO2",
+      "spacegroup": 62,
+      "volume_scale": 0.987,
+      "num_atoms": 4,
+      "volume": 44.95,
+      "cif_file": "0040_NaFeO2_sg62.cif"
+    },
+    {
+      "index": 41,
+      "formula": "NaFeO2",
+      "spacegroup": 226,
+      "volume_scale": 1.73,
+      "num_atoms": 4,
+      "volume": 78.73,
+      "cif_file": "0041_NaFeO2_sg226.cif"
+    },
+    {
+      "index": 42,
+      "formula": "NaFeO2",
+      "spacegroup": 160,
+      "volume_scale": 1.673,
+      "num_atoms": 4,
+      "volume": 76.15,
+      "cif_file": "0042_NaFeO2_sg160.cif"
+    },
+    {
+      "index": 43,
+      "formula": "NaFeO2",
+      "spacegroup": 129,
+      "volume_scale": 1.44,
+      "num_atoms": 4,
+      "volume": 65.54,
+      "cif_file": "0043_NaFeO2_sg129.cif"
+    },
+    {
+      "index": 44,
+      "formula": "NaFeO2",
+      "spacegroup": 33,
+      "volume_scale": 1.336,
+      "num_atoms": 4,
+      "volume": 60.81,
+      "cif_file": "0044_NaFeO2_sg33.cif"
+    },
+    {
+      "index": 45,
+      "formula": "NaFeO2",
+      "spacegroup": 161,
+      "volume_scale": 1.589,
+      "num_atoms": 4,
+      "volume": 72.32,
+      "cif_file": "0045_NaFeO2_sg161.cif"
+    },
+    {
+      "index": 46,
+      "formula": "NaFeO2",
+      "spacegroup": 15,
+      "volume_scale": 1.719,
+      "num_atoms": 4,
+      "volume": 78.25,
+      "cif_file": "0046_NaFeO2_sg15.cif"
+    },
+    {
+      "index": 47,
+      "formula": "NaFeO2",
+      "spacegroup": 229,
+      "volume_scale": 1.725,
+      "num_atoms": 4,
+      "volume": 78.55,
+      "cif_file": "0047_NaFeO2_sg229.cif"
+    },
+    {
+      "index": 48,
+      "formula": "NaFeO2",
+      "spacegroup": 140,
+      "volume_scale": 1.701,
+      "num_atoms": 4,
+      "volume": 77.44,
+      "cif_file": "0048_NaFeO2_sg140.cif"
+    },
+    {
+      "index": 49,
+      "formula": "NaFeO2",
+      "spacegroup": 33,
+      "volume_scale": 1.408,
+      "num_atoms": 4,
+      "volume": 64.08,
+      "cif_file": "0049_NaFeO2_sg33.cif"
+    }
+  ]
+}

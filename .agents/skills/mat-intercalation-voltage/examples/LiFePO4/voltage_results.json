@@ -1,0 +1,12 @@
+{
+  "voltage_V": 3.260441522078377,
+  "n_ions": 4,
+  "E_full_eV": -261.89665720909494,
+  "E_empty_eV": -239.33166201427946,
+  "E_metal_total_eV": -7.142421829876479,
+  "n_metal_atoms": 3,
+  "mu_metal_eV": -2.380807276625493,
+  "energy_difference_eV": -22.56499519481548,
+  "metal_contribution_eV": -9.523229106501972,
+  "metal_symbol": "Li"
+}

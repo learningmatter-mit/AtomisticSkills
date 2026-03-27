@@ -52,31 +52,72 @@ def load_structure_from_file(filename: Union[str, Path]):
     from pymatgen.core import Structure
     return Structure.from_file(str(filename))
 
-def get_structure_by_formula(formula: str, mprester: Any) -> Any:
+def get_structure_by_formula(formula: str, mprester: Any, return_all: bool = False) -> Any:
     """
-    Search for the most stable structure by formula in Materials Project.
-    Returns ASE Atoms object.
+    Search for structures by formula in Materials Project.
+    Returns ASE Atoms object (most stable) or list of ASE Atoms (if return_all=True).
     """
-    docs = mprester.summary.search(formula=formula, fields=["structure", "energy_above_hull"])
+    docs = mprester.summary.search(formula=formula, fields=["structure", "energy_above_hull", "material_id", "theoretical", "database_IDs"])
     if not docs:
-        return None
-    # Sort by stability
-    stable_doc = min(docs, key=lambda x: x.energy_above_hull)
+        return [] if return_all else None
+        
     from pymatgen.io.ase import AseAtomsAdaptor
-    return AseAtomsAdaptor.get_atoms(stable_doc.structure)
+    
+    if return_all:
+        atoms_list = []
+        for doc in docs:
+            atoms = AseAtomsAdaptor.get_atoms(doc.structure)
+            atoms.info['material_id'] = doc.material_id
+            atoms.info['formula'] = formula
+            atoms.info['energy_above_hull'] = doc.energy_above_hull
+            atoms.info['theoretical'] = doc.theoretical
+            atoms_list.append(atoms)
+        return atoms_list
+    else:
+        # Sort by stability
+        stable_doc = min(docs, key=lambda x: x.energy_above_hull)
+        atoms = AseAtomsAdaptor.get_atoms(stable_doc.structure)
+        atoms.info['material_id'] = stable_doc.material_id
+        atoms.info['theoretical'] = stable_doc.theoretical
+        return atoms
 
-def get_structure_by_chemsys(chemsys: str, mprester: Any) -> Any:
+def get_structure_by_chemsys(chemsys: str, mprester: Any) -> List[Any]:
     """
-    Search for the most stable structure by chemical system in Materials Project.
-    Returns ASE Atoms object.
+    Search for all stable structures on the convex hull by chemical system in Materials Project.
+    Returns list of ASE Atoms objects for structures with energy_above_hull = 0.
+    
+    Args:
+        chemsys: Chemical system (e.g., "Li-O")
+        mprester: MPRester instance
+        
+    Returns:
+        List of ASE Atoms objects for all structures on the hull (E_hull < 1e-6 eV/atom)
     """
-    docs = mprester.summary.search(chemsys=chemsys, fields=["structure", "energy_above_hull"])
+    docs = mprester.summary.search(
+        chemsys=chemsys, 
+        fields=["structure", "energy_above_hull", "material_id", "formula_pretty"]
+    )
     if not docs:
-        return None
-    # Sort by stability
-    stable_doc = min(docs, key=lambda x: x.energy_above_hull)
+        return []
+    
+    # Filter for structures on the hull (E_hull = 0, using tiny tolerance for floating point)
+    hull_docs = [doc for doc in docs if doc.energy_above_hull < 1e-6]
+    
+    if not hull_docs:
+        return []
+    
+    # Convert all hull structures to ASE Atoms
     from pymatgen.io.ase import AseAtomsAdaptor
-    return AseAtomsAdaptor.get_atoms(stable_doc.structure)
+    atoms_list = []
+    for doc in hull_docs:
+        atoms = AseAtomsAdaptor.get_atoms(doc.structure)
+        # Store metadata as info dict
+        atoms.info['material_id'] = doc.material_id
+        atoms.info['formula'] = doc.formula_pretty
+        atoms.info['energy_above_hull'] = doc.energy_above_hull
+        atoms_list.append(atoms)
+    
+    return atoms_list
 
 def get_structure_by_id(material_id: str, mprester: Any) -> Any:
     """
@@ -163,7 +204,7 @@ def load_structures(inputs: Union[str, Path, dict, List, Any]) -> List[Any]:
             
     return structures
 
-def expand_structure(structure: Any, target_atoms: int = 50, max_atoms: Optional[int] = None) -> Any:
+def expand_structure(structure: Any, target_atoms: int = 50, max_atoms: Optional[int] = None, min_length: Optional[float] = None) -> Any:
     """
     Expand a structure to reach a target number of atoms with a close-to-cubic supercell.
     
@@ -171,6 +212,7 @@ def expand_structure(structure: Any, target_atoms: int = 50, max_atoms: Optional
         structure: Structure to expand (ASE Atoms or pymatgen Structure)
         target_atoms: Target total number of atoms (default: 50)
         max_atoms: Optional maximum number of atoms limit.
+        min_length: Optional minimum length for each lattice vector.
         
     Returns:
         Expanded structure in the same format as input.
@@ -198,8 +240,15 @@ def expand_structure(structure: Any, target_atoms: int = 50, max_atoms: Optional
         return structure
         
     if current_atoms >= target_atoms * 0.9:
-        logger.info(f"Structure already has {current_atoms} atoms, sufficient size. No expansion.")
-        return structure
+        if min_length is None:
+            logger.info(f"Structure already has {current_atoms} atoms, sufficient size. No expansion.")
+            return structure
+        else:
+            # Check if current lengths meet min_length
+            cell_lengths = atoms.cell.lengths()
+            if all(l >= min_length for l in cell_lengths):
+                logger.info(f"Structure has {current_atoms} atoms and meets min_length. No expansion.")
+                return structure
 
     # Calculate expansion factor needed
     expansion_factor = (target_atoms / current_atoms) ** (1.0 / 3.0)
@@ -228,7 +277,16 @@ def expand_structure(structure: Any, target_atoms: int = 50, max_atoms: Optional
                 max_exp = max(nx, ny, nz)
                 cubicness = (max_exp - min(nx, ny, nz)) / max_exp if max_exp > 0 else 0
                 
-                score = 0.5 * target_dist + 0.5 * cubicness
+                # Check min_length if specified
+                length_penalty = 0
+                if min_length is not None:
+                    cell_lengths = atoms.cell.lengths()
+                    new_lengths = [nx * cell_lengths[0], ny * cell_lengths[1], nz * cell_lengths[2]]
+                    for l in new_lengths:
+                        if l < min_length:
+                            length_penalty += (min_length - l)  # Heavy penalty for being too short
+                            
+                score = 0.5 * target_dist + 0.5 * cubicness + length_penalty
                 
                 if score < best_score:
                     best_score = score

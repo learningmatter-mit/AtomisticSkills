@@ -1,0 +1,25 @@
+---
+description: Discover available AtomisticSkills by scanning .agents/skills/ frontmatter. Use this to find skills relevant to a research task.
+alwaysApply: true
+---
+
+# Skill Discovery
+
+Use the Grep tool to scan all skill descriptions:
+
+```
+Grep pattern="^description:" glob=".agents/skills/*/SKILL.md" output_mode="content"
+```
+
+## Instructions
+
+1. Run the Grep search above to get all skill descriptions from YAML frontmatter.
+2. If the user provided a search term ($ARGUMENTS), filter to skills whose name or description matches.
+3. If no search term was provided, display the full list organized by category prefix:
+   - `mat-`: Materials science
+   - `ml-`: Machine learning / MLIPs
+   - `drug-`: Drug discovery
+   - `chem-`: Chemistry / molecular
+   - `general-`: General utilities
+4. Present results as a clean table: skill name and description.
+5. If the user wants to run a skill, read its full `SKILL.md` at `.agents/skills/<skill-name>/SKILL.md` and follow the numbered instructions step by step.

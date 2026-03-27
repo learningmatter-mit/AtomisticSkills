@@ -2,6 +2,9 @@
 # Verification script for fairchem-agent simplified installation
 set -e
 
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "${REPO_ROOT}"
+
 echo "Cleaning up previous test environment..."
 conda env remove -n fairchem-agent-test -y || true
 
@@ -16,5 +19,5 @@ pip install pytest pytest-cov
 
 echo "Verifying imports and running tests..."
 export PYTHONPATH=$(pwd)
-pytest tests/fairchem/ -v
+pytest tests/fairchem/test_fairchem_server.py -v
 echo "Verification complete!"

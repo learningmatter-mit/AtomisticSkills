@@ -1,0 +1,108 @@
+{
+  "reactant": "reactant_optimized.xyz",
+  "product": "product_optimized.xyz",
+  "ts": "ts_optimized.xyz",
+  "output_dir": "output",
+  "model_type": "fairchem",
+  "model_name": "uma-s-1p1",
+  "task_name": "omol",
+  "device": "auto",
+  "fmax": 0.02,
+  "steps": 400,
+  "rmsd_threshold": 0.2,
+  "relax_endpoints": true,
+  "endpoint_relax_fmax": 0.02,
+  "irc_runs": {
+    "forward": {
+      "converged": true,
+      "optimization_steps": 47,
+      "max_force_eV_per_A": 0.014423121961958267,
+      "trajectory_file": "irc_forward.traj",
+      "endpoint_file": "irc_forward_endpoint.xyz"
+    },
+    "reverse": {
+      "converged": true,
+      "optimization_steps": 42,
+      "max_force_eV_per_A": 0.011935899727233187,
+      "trajectory_file": "irc_reverse.traj",
+      "endpoint_file": "irc_reverse_endpoint.xyz"
+    }
+  },
+  "endpoint_mapping": {
+    "forward": "product",
+    "reverse": "reactant"
+  },
+  "selected_metrics": {
+    "forward_to_product": {
+      "rmsd_angstrom": 0.1508797667705792,
+      "connectivity_match": true,
+      "rmsd_within_threshold": true,
+      "pair_pass": true
+    },
+    "reverse_to_reactant": {
+      "rmsd_angstrom": 0.16167643779346372,
+      "connectivity_match": true,
+      "rmsd_within_threshold": true,
+      "pair_pass": true
+    }
+  },
+  "assignment_candidates": [
+    {
+      "endpoint_mapping": {
+        "forward": "reactant",
+        "reverse": "product"
+      },
+      "metrics": {
+        "forward_to_reactant": {
+          "rmsd_angstrom": 0.6926138838763842,
+          "connectivity_match": false,
+          "rmsd_within_threshold": false,
+          "pair_pass": false
+        },
+        "reverse_to_product": {
+          "rmsd_angstrom": 0.6814710359802935,
+          "connectivity_match": false,
+          "rmsd_within_threshold": false,
+          "pair_pass": false
+        }
+      },
+      "total_rmsd_angstrom": 1.3740849198566778,
+      "assignment_pass": false
+    },
+    {
+      "endpoint_mapping": {
+        "forward": "product",
+        "reverse": "reactant"
+      },
+      "metrics": {
+        "forward_to_product": {
+          "rmsd_angstrom": 0.1508797667705792,
+          "connectivity_match": true,
+          "rmsd_within_threshold": true,
+          "pair_pass": true
+        },
+        "reverse_to_reactant": {
+          "rmsd_angstrom": 0.16167643779346372,
+          "connectivity_match": true,
+          "rmsd_within_threshold": true,
+          "pair_pass": true
+        }
+      },
+      "total_rmsd_angstrom": 0.3125562045640429,
+      "assignment_pass": true
+    }
+  ],
+  "endpoint_relaxation": {
+    "forward": {
+      "steps": 0,
+      "max_force_eV_per_A": 0.014422948472201824,
+      "converged": true
+    },
+    "reverse": {
+      "steps": 0,
+      "max_force_eV_per_A": 0.011935683898627758,
+      "converged": true
+    }
+  },
+  "verification_passed": true
+}

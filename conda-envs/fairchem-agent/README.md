@@ -1,22 +1,32 @@
 # FairChem Agent Environment
 
-This environment supports the FairChem/OCP models.
+Minimal setup for FairChem simulations.
 
-## Quick Installation
-Most users should use the simplified installation script, which installs only the necessary core packages:
+## 1) New Machine Setup
 
 ```bash
-bash install.sh
+bash conda-envs/fairchem-agent/install.sh
+bash conda-envs/fairchem-agent/install_lammps.sh
 ```
 
-This installs:
-- python 3.10
-- fairchem-core
-- pymatgen
+Creates `fairchem-agent` and installs `lmp` + `lmp_fc`.
 
-## Full Reproduction
-If you need to reproduce the exact environment state (including all pinned dependency versions), use the full example configuration:
+## 2) Run FairChem Example
 
 ```bash
-conda env create -f example_full_env.yaml
+conda activate fairchem-agent
+bash .agents/skills/mat-lammps-md/examples/fairchem/run_fairchem_co_cu111_adsorption.sh
+```
+
+## 3) Hugging Face Auth (if model access fails)
+
+```bash
+python -c "from huggingface_hub import login; login()"
+```
+
+## 4) Optional Verification
+
+```bash
+bash conda-envs/fairchem-agent/verify_install.sh
+python conda-envs/fairchem-agent/verify_model_loading.py
 ```

@@ -1,0 +1,7 @@
+{
+  "model_name": "mp_csp",
+  "generation_mode": "batch_symmetry",
+  "num_specs": 2,
+  "num_generated": 2,
+  "step_lr": 1e-05
+}

@@ -1,0 +1,31 @@
+{
+    "metadata": {
+        "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+        "structure_file": null,
+        "model": "MACE-OFF23-small",
+        "temperature_K": 298.15,
+        "num_initial": 2,
+        "num_unique": 2,
+        "dedup_threshold": 0.1
+    },
+    "conformers": [
+        {
+            "id": 0,
+            "filename": "conf_000.xyz",
+            "energy_eV": -17664.382452022044,
+            "relative_energy_eV": 0.0,
+            "relative_energy_kcal_mol": 0.0,
+            "boltzmann_weight": 0.5724969975455981,
+            "original_id": 1
+        },
+        {
+            "id": 1,
+            "filename": "conf_001.xyz",
+            "energy_eV": -17664.374948605022,
+            "relative_energy_eV": 0.007503417022235226,
+            "relative_energy_kcal_mol": 0.17303254824125544,
+            "boltzmann_weight": 0.4275030024544019,
+            "original_id": 0
+        }
+    ]
+}

@@ -27,11 +27,12 @@ tests/
 ├── atomate2/                # Tests for Atomate2 integration (atomate2-agent env)
 │   ├── conftest.py
 │   ├── test_atomate2_local.py
-│   └── test_atomate2_remote.py
-├── integration/             # Integration tests (various envs)
-│   ├── conftest.py
+│   ├── test_atomate2_remote.py
+│   ├── test_atomate2_utils.py
 │   ├── test_remote_submission_check.py
 │   └── submit_perlmutter_test.py
+├── smol/                    # Tests for Smol integration (smol-agent env)
+│   └── test_smol_enumeration.py
 └── README.md                # Testing guide
 ```
 
@@ -103,14 +104,11 @@ echo "Running Atomate2 tests..."
 conda activate atomate2-agent
 pytest tests/atomate2/ -v
 
+echo "Running Smol tests..."
+conda activate smol-agent
+pytest tests/smol/ -v
+
 echo "All tests complete!"
-```
-
-### 5. Run Integration Tests
-
-```bash
-# Integration tests may require specific environment setup
-pytest tests/integration/ -v
 ```
 
 ## Test Markers
@@ -121,7 +119,7 @@ Tests are marked by required environment:
 - `@pytest.mark.mace` - MACE-specific tests (mace-agent)
 - `@pytest.mark.matgl` - MatGL-specific tests (matgl-agent)
 - `@pytest.mark.fairchem` - FairChem-specific tests (fairchem-agent)
-- `@pytest.mark.integration` - Integration tests (may require multiple envs)
+- `@pytest.mark.smol` - Smol-specific tests (smol-agent)
 
 ## Auto-Skip Behavior
 

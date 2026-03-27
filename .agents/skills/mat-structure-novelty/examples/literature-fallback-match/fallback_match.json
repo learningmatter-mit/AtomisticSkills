@@ -1,0 +1,33 @@
+[
+  {
+    "target": "Li2ZrCl6.cif",
+    "target_formula": "Li2ZrCl6",
+    "matches": [],
+    "match_found": false,
+    "target_spacegroup": "P-31m",
+    "target_crystal_system": "trigonal",
+    "literature_reported": true,
+    "literature_matches": [
+      {
+        "title": "Fast Li+-conducting Zr4+-based oxychloride electrolyte with good thermal and solvent stability",
+        "doi": "10.1007/s40843-023-2434-4"
+      },
+      {
+        "title": "Unveiling the Lithium-Ion Transport Mechanism in Li<sub>2</sub>ZrCl<sub>6</sub> Solid-State Electrolyte <i>via</i> Deep Learning-Accelerated Molecular Dynamics Simulations",
+        "doi": "10.1021/acsaem.5c02491"
+      },
+      {
+        "title": "Re-investigating the structure\u2013property relationship of the solid electrolytes Li <sub> 3\u2212 <i>x</i> </sub> In <sub> 1\u2212 <i>x</i> </sub> Zr <sub> <i>x</i> </sub> Cl <sub>6</sub> and the impact of In\u2013Zr( <scp>iv</scp> ) substitution",
+        "doi": "10.1039/d2ta08433c"
+      },
+      {
+        "title": "Unraveling the Correlation between Structure and Lithium Ionic Migration of Metal Halide Solid-State Electrolytes via Neutron Powder Diffraction",
+        "doi": "10.3390/batteries9100510"
+      },
+      {
+        "title": "Mechanochemical Synthesis and Characterization of Na&lt;sub&gt;3\u2212&lt;/sub&gt;&lt;i&gt;&lt;sub&gt;x&lt;/sub&gt;&lt;/i&gt;In&lt;sub&gt;1\u2212&lt;/sub&gt;&lt;i&gt;&lt;sub&gt;x&lt;/sub&gt;&lt;/i&gt;Zr&lt;i&gt;&lt;sub&gt;x&lt;/sub&gt;&lt;/i&gt;Cl&lt;sub&gt;6&lt;/sub&gt; Solid Electrolyte",
+        "doi": "10.5796/electrochemistry.23-00054"
+      }
+    ]
+  }
+]

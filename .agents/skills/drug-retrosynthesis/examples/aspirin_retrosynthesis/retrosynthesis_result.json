@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "target_smiles": "CC(=O)Oc1ccccc1C(=O)O",
+    "target_name": "aspirin (acetylsalicylic acid)",
+    "max_steps": 3,
+    "api": "IBM RXN for Chemistry",
+    "model": "Molecular Transformer (AiZynthFinder)"
+  },
+  "status": "SUCCESS",
+  "n_pathways": 3,
+  "top_pathway": {
+    "confidence": 0.91,
+    "n_steps": 1,
+    "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+    "children": [
+      {
+        "smiles": "Oc1ccccc1C(=O)O",
+        "name": "salicylic acid",
+        "is_commercial": true,
+        "children": []
+      },
+      {
+        "smiles": "CC(=O)OC(C)=O",
+        "name": "acetic anhydride",
+        "is_commercial": true,
+        "children": []
+      }
+    ]
+  },
+  "all_pathways": [
+    {
+      "rank": 1,
+      "confidence": 0.91,
+      "n_steps": 1,
+      "reaction_smarts": "[OH:1][c:2]>>[O:1]C(=O)C.[c:2]",
+      "precursors": [
+        {"smiles": "Oc1ccccc1C(=O)O", "is_commercial": true},
+        {"smiles": "CC(=O)OC(C)=O", "is_commercial": true}
+      ]
+    },
+    {
+      "rank": 2,
+      "confidence": 0.73,
+      "n_steps": 2,
+      "precursors": [
+        {"smiles": "Oc1ccccc1C(=O)O", "is_commercial": true},
+        {"smiles": "CC(=O)Cl", "is_commercial": true}
+      ]
+    },
+    {
+      "rank": 3,
+      "confidence": 0.58,
+      "n_steps": 3,
+      "precursors": [
+        {"smiles": "c1ccc(O)c(C(=O)O)c1", "is_commercial": true},
+        {"smiles": "O=C(O)C(F)(F)F", "is_commercial": false}
+      ]
+    }
+  ]
+}

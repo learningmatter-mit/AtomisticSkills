@@ -1,0 +1,25 @@
+[
+    {
+        "spacegroup_number": 58,
+        "wyckoff_letters": [
+            "2a",
+            "2d",
+            "4g"
+        ],
+        "atom_types": [
+            "Mn",
+            "Li",
+            "O"
+        ]
+    },
+    {
+        "spacegroup_number": 194,
+        "wyckoff_letters": "abff",
+        "atom_types": [
+            "Tm",
+            "Tm",
+            "Ni",
+            "As"
+        ]
+    }
+]

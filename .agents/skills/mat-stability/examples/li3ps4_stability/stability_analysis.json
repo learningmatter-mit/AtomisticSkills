@@ -1,0 +1,16 @@
+{
+  "target_formula": "Li3PS4",
+  "energy_above_hull_meV": 0.0,
+  "stability": "STABLE",
+  "assessment": "On the convex hull - thermodynamically stable",
+  "decomposition_products": [
+    {
+      "phase": "Li3PS4",
+      "fraction": 1.0
+    }
+  ],
+  "num_phases_on_hull": 9,
+  "v_red": 0.6254337628682456,
+  "v_ox": 2.2313351233800263,
+  "ecw": "[0.63 V, 2.23 V]"
+}

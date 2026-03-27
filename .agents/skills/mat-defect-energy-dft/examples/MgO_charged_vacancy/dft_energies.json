@@ -1,0 +1,22 @@
+{
+  "pristine": {
+    "energy": -320.6679838,
+    "nsites": 54,
+    "converged": true
+  },
+  "vac_O_q0": {
+    "energy": -309.06090302,
+    "nsites": 53,
+    "converged": true
+  },
+  "vac_O_q+1": {
+    "energy": -313.71163049,
+    "nsites": 53,
+    "converged": true
+  },
+  "vac_O_q+2": {
+    "energy": -316.80320907,
+    "nsites": 53,
+    "converged": true
+  }
+}

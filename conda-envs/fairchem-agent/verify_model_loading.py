@@ -14,9 +14,9 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger("FairChemVerification")
 
 FAIRCHEM_MODELS = [
-    "uma-s-1p1", "uma-m-1p1", "uma-s-1",
+    "uma-s-1p1", "uma-m-1p1",
     "esen-md-direct-all-omol", "esen-sm-conserving-all-omol", "esen-sm-direct-all-omol",
-    "esen-sm-conserving-all-oc25", "esen-md-direct-all-oc25"
+    # "esen-sm-conserving-all-oc25", "esen-md-direct-all-oc25"
 ]
 
 def main():

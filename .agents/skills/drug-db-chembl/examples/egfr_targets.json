@@ -1,0 +1,26 @@
+[
+    {
+        "target_chembl_id": "CHEMBL3608",
+        "pref_name": "Epidermal growth factor receptor",
+        "target_type": "SINGLE PROTEIN",
+        "organism": "Mus musculus",
+        "target_components": [
+            {
+                "accession": "Q01279",
+                "component_description": "Epidermal growth factor receptor"
+            }
+        ]
+    },
+    {
+        "target_chembl_id": "CHEMBL203",
+        "pref_name": "Epidermal growth factor receptor",
+        "target_type": "SINGLE PROTEIN",
+        "organism": "Homo sapiens",
+        "target_components": [
+            {
+                "accession": "P00533",
+                "component_description": "Epidermal growth factor receptor"
+            }
+        ]
+    }
+]

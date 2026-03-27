@@ -1,0 +1,17 @@
+name: mattergen-agent
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - uv
+  
+  - pip:
+    - mattergen
+    
+  # CRITICAL: PyG dependencies require manual installation from git source on ARM/aarch64
+  # See README.md and docs/installing_torch_scatter_arm.md for detailed instructions
+
+

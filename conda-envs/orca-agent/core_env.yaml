@@ -1,0 +1,18 @@
+# NOTE: scine-utilities-python and scine-readuct-python are only available
+# for x86_64 (linux-64, osx-64) on conda-forge. This environment will NOT
+# install on aarch64 (ARM/Apple Silicon) systems.
+name: test-orca-agent
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  # SCINE conda packages (x86_64 only — no aarch64 builds available)
+  - scine-utilities-python
+  - scine-readuct-python
+  - pip:
+    - ase
+    - "numpy<2"
+    - scipy
+    - pyyaml
+    - pytest

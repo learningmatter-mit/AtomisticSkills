@@ -1,0 +1,10 @@
+{
+    "thermal_conductivity_summary": {
+        "temp_300K": 67.27445414644988,
+        "temp_100K": 283.0220326044298
+    },
+    "output_dir": "research/Si_thermal_conductivity",
+    "saved_files": [
+        "phonon3.yaml"
+    ]
+}

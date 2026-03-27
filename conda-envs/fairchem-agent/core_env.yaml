@@ -5,7 +5,12 @@ dependencies:
   - pip:
     - mcp
     - fairchem-core
+    - cython
     - pymatgen
+    - pymatgen-analysis-diffusion
     - matcalc
+    - setuptools<70
+    - setuptools-scm
+    - sella
     - typing-extensions
     - ase

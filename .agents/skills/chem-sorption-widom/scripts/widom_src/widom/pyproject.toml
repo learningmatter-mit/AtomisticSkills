@@ -1,0 +1,25 @@
+[project]
+name = "widom"
+version = "0.1.1"
+authors = [
+    { name = "Pim de Haan", email = "pim@cusp.ai" },
+    { name = "CuspAI OpenSource Team", email = "opensource@cusp.ai" },
+]
+description = "A Python package for performing Widom insertion simulations to calculate gas adsorption properties in porous materials"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+dependencies = [
+    "ase>=3.25.0",
+    "numpy>=2.2.6",
+    "pydantic>=2.11.5",
+    "pymatgen>=2025.5.28",
+    "tqdm-loggable>=0.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["pytest>=8.4.0"]

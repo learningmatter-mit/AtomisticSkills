@@ -1,0 +1,19 @@
+name: drugdisc-agent
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - vina
+  - pdbfixer
+  - pip
+  - pip:
+    - mcp
+    - rdkit
+    - meeko
+    - scipy
+    - gemmi
+    - openbabel-wheel
+    - biopython
+    - dimorphite_dl
+    - requests
+    - matplotlib

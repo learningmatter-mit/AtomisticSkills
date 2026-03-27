@@ -1,0 +1,11 @@
+{
+    "bulk_modulus_GPa": 96.42681590768773,
+    "equilibrium_volume_A3": 31.34880012190209,
+    "equilibrium_energy_eV": -9.965703964233398,
+    "r2_score": 0.9999876441231208,
+    "n_points": 7,
+    "max_abs_strain": 0.08,
+    "output_dir": ".agents/test/eos_validation",
+    "model_type": "mace",
+    "model_name": "MACE-OMAT-0-small"
+}

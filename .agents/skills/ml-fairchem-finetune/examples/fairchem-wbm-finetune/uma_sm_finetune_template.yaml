@@ -1,0 +1,111 @@
+defaults:
+- data: uma_conserving_data_task_energy_force_stress
+- _self_
+job:
+  device_type: CUDA
+  scheduler:
+    mode: LOCAL
+    ranks_per_node: 1
+    num_nodes: 1
+  debug: true
+  run_dir: /tmp/uma_finetune_runs/
+  run_name: uma_finetune
+  logger:
+    _target_: fairchem.core.common.logger.TensorboardLogger
+    _partial_: true
+base_model_name: uma-s-1p1
+max_neighbors: 300
+epochs: 10
+steps: null
+batch_size: 2
+lr: 0.0001
+weight_decay: 0.001
+evaluate_every_n_steps: 100
+checkpoint_every_n_steps: 1000
+train_dataset:
+  _target_: fairchem.core.datasets.mt_concat_dataset.create_concat_dataset
+  dataset_configs:
+    omat: ${data.train_dataset}
+  combined_dataset_config:
+    sampling:
+      type: temperature
+      temperature: 1.0
+train_dataloader:
+  _target_: fairchem.core.components.common.dataloader_builder.get_dataloader
+  dataset: ${train_dataset}
+  batch_sampler_fn:
+    _target_: fairchem.core.common.data_parallel.BalancedBatchSampler
+    _partial_: true
+    batch_size: ${batch_size}
+    shuffle: true
+    seed: 0
+  num_workers: 0
+  collate_fn:
+    _target_: fairchem.core.units.mlip_unit.mlip_unit.mt_collater_adapter
+    tasks: ${data.tasks_list}
+val_dataset:
+  _target_: fairchem.core.datasets.mt_concat_dataset.create_concat_dataset
+  dataset_configs:
+    omat: ${data.val_dataset}
+  combined_dataset_config:
+    sampling:
+      type: temperature
+      temperature: 1.0
+eval_dataloader:
+  _target_: fairchem.core.components.common.dataloader_builder.get_dataloader
+  dataset: ${val_dataset}
+  batch_sampler_fn:
+    _target_: fairchem.core.common.data_parallel.BalancedBatchSampler
+    _partial_: true
+    batch_size: ${batch_size}
+    shuffle: false
+    seed: 0
+  num_workers: 0
+  collate_fn:
+    _target_: fairchem.core.units.mlip_unit.mlip_unit.mt_collater_adapter
+    tasks: ${data.tasks_list}
+runner:
+  _target_: fairchem.core.components.train.train_runner.TrainEvalRunner
+  train_dataloader: ${train_dataloader}
+  eval_dataloader: ${eval_dataloader}
+  train_eval_unit:
+    _target_: fairchem.core.units.mlip_unit.mlip_unit.MLIPTrainEvalUnit
+    job_config: ${job}
+    tasks: ${data.tasks_list}
+    model:
+      _target_: _freeze_backbone_helper.initialize_finetuning_model_frozen
+      checkpoint_location:
+        _target_: fairchem.core.calculate.pretrained_mlip.pretrained_checkpoint_path_from_name
+        model_name: ${base_model_name}
+      overrides:
+        backbone:
+          otf_graph: true
+          max_neighbors: ${max_neighbors}
+          regress_stress: ${data.regress_stress}
+          always_use_pbc: false
+        pass_through_head_outputs: ${data.pass_through_head_outputs}
+      heads: ${data.heads}
+    optimizer_fn:
+      _target_: torch.optim.AdamW
+      _partial_: true
+      lr: ${lr}
+      weight_decay: ${weight_decay}
+    cosine_lr_scheduler_fn:
+      _target_: fairchem.core.units.mlip_unit.mlip_unit._get_consine_lr_scheduler
+      _partial_: true
+      warmup_factor: 0.2
+      warmup_epochs: 0.01
+      lr_min_factor: 0.01
+      epochs: ${epochs}
+      steps: ${steps}
+    print_every: 10
+    clip_grad_norm: 100.0
+    ema_decay: 0.999
+  max_epochs: ${epochs}
+  max_steps: ${steps}
+  evaluate_every_n_steps: ${evaluate_every_n_steps}
+  callbacks:
+  - _target_: fairchem.core.components.train.train_runner.TrainCheckpointCallback
+    checkpoint_every_n_steps: ${checkpoint_every_n_steps}
+    max_saved_checkpoints: 5
+  - _target_: torchtnt.framework.callbacks.TQDMProgressBar

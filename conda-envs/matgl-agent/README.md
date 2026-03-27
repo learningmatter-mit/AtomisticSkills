@@ -1,23 +1,40 @@
 # MatGL Agent Environment
 
-This environment supports the MatGL graph neural network models.
+Minimal setup for MatGL/CHGNet simulations.
 
-## Quick Installation
-Most users should use the simplified installation script, which installs only the necessary core packages:
-
-```bash
-bash install.sh
-```
-
-This installs:
-- python 3.10
-- matgl
-- pymatgen
-- dgl
-
-## Full Reproduction
-If you need to reproduce the exact environment state (including all pinned dependency versions), use the full example configuration:
+## 1) New Machine Setup
 
 ```bash
-conda env create -f example_full_env.yaml
+bash conda-envs/matgl-agent/install.sh
 ```
+
+This creates `matgl-agent` from `core_env.yaml`.
+
+## 2) Run Simulations (Recommended)
+
+For the current Cu phase-transition example, no LAMMPS compile is needed:
+
+```bash
+conda activate matgl-agent
+bash .agents/skills/mat-lammps-md/examples/matgl/run_matgl_cu_phase_transition.sh
+```
+
+## 3) Compile LAMMPS (Optional)
+
+If you need a dedicated MatGL-linked LAMMPS binary:
+
+```bash
+KOKKOS_ARCH_FLAG=Kokkos_ARCH_AMPERE86 \
+bash conda-envs/matgl-agent/install_lammps.sh
+```
+
+Optional reproducible ref:
+
+```bash
+KOKKOS_ARCH_FLAG=Kokkos_ARCH_AMPERE86 \
+LAMMPS_REF="stable_2Aug2023_update2" \
+bash conda-envs/matgl-agent/install_lammps.sh
+```
+
+Binary path:
+- `lammps/matgl-agent/lmp`

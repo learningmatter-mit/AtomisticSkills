@@ -1,0 +1,253 @@
+{
+    "metadata": {
+        "smiles": "CCO",
+        "structure_file": null,
+        "formula": "C2H6O",
+        "n_atoms": 9,
+        "model_type": "mace",
+        "model_name": "MACE-OFF23-small",
+        "fmax": 0.01,
+        "include_h_bonds": true
+    },
+    "intact_energy_eV": -4221.602111324089,
+    "bonds": [
+        {
+            "bond_idx": 0,
+            "atom_indices": [
+                0,
+                1
+            ],
+            "atom_symbols": [
+                "C",
+                "C"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "CH3",
+            "frag2_formula": "CH3O",
+            "frag1_energy_eV": -1084.5298733475847,
+            "frag2_energy_eV": -3132.561389419471,
+            "bde_eV": 4.510848557032659,
+            "bde_kJ_mol": 435.2292230252961,
+            "bde_kcal_mol": 104.02242314945164,
+            "frag1_file": "frag_bond0_1.xyz",
+            "frag2_file": "frag_bond0_2.xyz"
+        },
+        {
+            "bond_idx": 1,
+            "atom_indices": [
+                1,
+                2
+            ],
+            "atom_symbols": [
+                "C",
+                "O"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "C2H5",
+            "frag2_formula": "HO",
+            "frag1_energy_eV": -2154.806459688825,
+            "frag2_energy_eV": -2063.1560468194057,
+            "bde_eV": 3.6396048158576377,
+            "bde_kJ_mol": 351.16727065802417,
+            "bde_kcal_mol": 83.93110685608507,
+            "frag1_file": "frag_bond1_1.xyz",
+            "frag2_file": "frag_bond1_2.xyz"
+        },
+        {
+            "bond_idx": 2,
+            "atom_indices": [
+                0,
+                3
+            ],
+            "atom_symbols": [
+                "C",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "C2H5O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -4202.9625075217455,
+            "frag2_energy_eV": -13.571964772646918,
+            "bde_eV": 5.067639029695783,
+            "bde_kJ_mol": 488.9511517801977,
+            "bde_kcal_mol": 116.86228984429962,
+            "frag1_file": "frag_bond2_1.xyz",
+            "frag2_file": "frag_bond2_2.xyz"
+        },
+        {
+            "bond_idx": 3,
+            "atom_indices": [
+                0,
+                4
+            ],
+            "atom_symbols": [
+                "C",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "C2H5O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -4202.956898917556,
+            "frag2_energy_eV": -13.571964772646918,
+            "bde_eV": 5.07324763388533,
+            "bde_kJ_mol": 489.49229795542607,
+            "bde_kcal_mol": 116.99162706121267,
+            "frag1_file": "frag_bond3_1.xyz",
+            "frag2_file": "frag_bond3_2.xyz"
+        },
+        {
+            "bond_idx": 4,
+            "atom_indices": [
+                0,
+                5
+            ],
+            "atom_symbols": [
+                "C",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "C2H5O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -4202.930129986229,
+            "frag2_energy_eV": -13.571964772646918,
+            "bde_eV": 5.100016565212172,
+            "bde_kJ_mol": 492.07509829449646,
+            "bde_kcal_mol": 117.6089320020753,
+            "frag1_file": "frag_bond4_1.xyz",
+            "frag2_file": "frag_bond4_2.xyz"
+        },
+        {
+            "bond_idx": 5,
+            "atom_indices": [
+                1,
+                6
+            ],
+            "atom_symbols": [
+                "C",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "C2H5O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -4203.498336122012,
+            "frag2_energy_eV": -13.571964772646918,
+            "bde_eV": 4.5318104294292425,
+            "bde_kJ_mol": 437.2517292834805,
+            "bde_kcal_mol": 104.50581440785305,
+            "frag1_file": "frag_bond5_1.xyz",
+            "frag2_file": "frag_bond5_2.xyz"
+        },
+        {
+            "bond_idx": 6,
+            "atom_indices": [
+                1,
+                7
+            ],
+            "atom_symbols": [
+                "C",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "C2H5O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -4203.499513903666,
+            "frag2_energy_eV": -13.571964772646918,
+            "bde_eV": 4.530632647774837,
+            "bde_kJ_mol": 437.1380910205552,
+            "bde_kcal_mol": 104.47865417401164,
+            "frag1_file": "frag_bond6_1.xyz",
+            "frag2_file": "frag_bond6_2.xyz"
+        },
+        {
+            "bond_idx": 7,
+            "atom_indices": [
+                2,
+                8
+            ],
+            "atom_symbols": [
+                "O",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "C2H5O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -4203.350968638234,
+            "frag2_energy_eV": -13.571964772646918,
+            "bde_eV": 4.679177913207241,
+            "bde_kJ_mol": 451.4704809558006,
+            "bde_kcal_mol": 107.90418226751558,
+            "frag1_file": "frag_bond7_1.xyz",
+            "frag2_file": "frag_bond7_2.xyz"
+        }
+    ],
+    "bonds_ranked_by_bde": [
+        {
+            "bond_label": "C(1)-O(2)",
+            "bde_kcal_mol": 83.93110685608507,
+            "bde_kJ_mol": 351.16727065802417,
+            "bde_eV": 3.6396048158576377
+        },
+        {
+            "bond_label": "C(0)-C(1)",
+            "bde_kcal_mol": 104.02242314945164,
+            "bde_kJ_mol": 435.2292230252961,
+            "bde_eV": 4.510848557032659
+        },
+        {
+            "bond_label": "C(1)-H(7)",
+            "bde_kcal_mol": 104.47865417401164,
+            "bde_kJ_mol": 437.1380910205552,
+            "bde_eV": 4.530632647774837
+        },
+        {
+            "bond_label": "C(1)-H(6)",
+            "bde_kcal_mol": 104.50581440785305,
+            "bde_kJ_mol": 437.2517292834805,
+            "bde_eV": 4.5318104294292425
+        },
+        {
+            "bond_label": "O(2)-H(8)",
+            "bde_kcal_mol": 107.90418226751558,
+            "bde_kJ_mol": 451.4704809558006,
+            "bde_eV": 4.679177913207241
+        },
+        {
+            "bond_label": "C(0)-H(3)",
+            "bde_kcal_mol": 116.86228984429962,
+            "bde_kJ_mol": 488.9511517801977,
+            "bde_eV": 5.067639029695783
+        },
+        {
+            "bond_label": "C(0)-H(4)",
+            "bde_kcal_mol": 116.99162706121267,
+            "bde_kJ_mol": 489.49229795542607,
+            "bde_eV": 5.07324763388533
+        },
+        {
+            "bond_label": "C(0)-H(5)",
+            "bde_kcal_mol": 117.6089320020753,
+            "bde_kJ_mol": 492.07509829449646,
+            "bde_eV": 5.100016565212172
+        }
+    ],
+    "weakest_bond": {
+        "bond_label": "C(1)-O(2)",
+        "bde_kcal_mol": 83.93110685608507
+    }
+}

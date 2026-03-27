@@ -44,6 +44,25 @@ def load_model(
     - UMA (Universal): 'uma-s-1p1', 'uma-m-1p1', 'uma-s-1'
     - ESEN (Organic/Molecular): 'esen-md-direct-all-omol', 'esen-sm-conserving-all-omol', 'esen-sm-direct-all-omol'
     - ESEN (Catalysis/OC25): 'esen-sm-conserving-all-oc25', 'esen-md-direct-all-oc25'
+    - Fine-tuned checkpoint: provide the full path to an inference_ckpt.pt file
+    
+    Args:
+        model_name: Name of the model to load (default: "uma-s-1p1").
+                   Can also be a file path to a fine-tuned inference checkpoint
+                   (e.g., "/path/to/inference_ckpt.pt" from fairchem CLI fine-tuning).
+        device: Device to use ("auto", "cpu", "cuda").
+        task_name: Optional task name for UMA multi-task models.
+                  'omat' (default for bulk/periodic): Inorganic materials (PBE-level, OMat24 dataset).
+                  'omol': Molecules and polymers (PBE-level).
+                  'oc20': Heterogeneous catalysis / surface reactions (PBE-level).
+                  'odac': Metal-Organic Frameworks / CO2 capture (PBE-level).
+                  'omc': Molecular crystals (PBE-level).
+        inference_settings: Inference settings preset (default: "default").
+    
+    Returns:
+        Confirmation message.
+    
+    CRITICAL: This tool must be called before using any other tool to load the model into memory.
     """
     global wrapper
     try:
@@ -62,10 +81,13 @@ def load_model(
         return f"Error loading model: {str(e)}"
 
 @mcp.tool()
-def predict_structure(structure_data: Union[Dict[str, Any], str]) -> Dict[str, Any]:
+def predict_structure(structure_data: Union[Dict[str, Any], str, List[Union[Dict[str, Any], str]]]) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
     """
-    Predict energy, forces, and stress for a structure.
+    Predict energy, forces, and stress for a structure or a batch of structures.
     
+    Args:
+        structure_data: Single structure or batch (directory path, list of dicts/paths).
+            
     Returns:
         Dict: {'energy': eV, 'forces': eV/A, 'stress': eV/Å³}
     """
@@ -74,55 +96,7 @@ def predict_structure(structure_data: Union[Dict[str, Any], str]) -> Dict[str, A
         return {"error": "Model not loaded. Please call load_model first."}
     
     return wrapper.static_calculation(structure_data)
-
-@mcp.tool()
-def fine_tune_model(
-    training_data_path: str,
-    epochs: int = 100,
-    learning_rate: float = 1e-4,
-    output_dir: Optional[str] = None,
-    training_config: Optional[Dict[str, Any]] = None
-) -> Dict[str, Any]:
-    """
-    Fine-tune the current FAIRCHEM model.
-
-    Args:
-        training_data_path: Path to a JSON file containing the training data list.
-                             Each sample must have:
-                               - 'structure': Dict (ASE atoms or pymatgen format)
-                               - 'energy': Total potential energy (float, eV)
-                               - 'forces': Atomic forces (list/array, eV/A)
-                               - 'stress': (Optional) Stress tensor (list/array) in eV/Å³. 
-                                 NOTE: Provide stress in eV/Å³. (Standard ASE unit)
-        epochs: Number of training epochs.
-        learning_rate: Learning rate.
-        output_dir: Directory to save the fine-tuned model.
-        training_config: Optional dictionary for advanced configuration.
-    """
-    global wrapper
-    if wrapper is None:
-        return {"error": "Model not loaded. Please call load_model first."}
-        
-    try:
-        with open(training_data_path, 'r') as f:
-            training_data = json.load(f)
-        
-        final_config = {
-            "max_epochs": epochs,
-            "learning_rate": learning_rate
-        }
-        if training_config:
-            final_config.update(training_config)
-        
-        result = wrapper.fine_tune(
-            training_data=training_data,
-            training_config=final_config,
-            output_dir=output_dir if output_dir else str(get_current_research_dir() / "fairchem" / "fine_tuning")
-        )
-        
-        return result
-    except Exception as e:
-        return {"error": f"Fine-tuning failed: {str(e)}"}
+    
 
 @mcp.tool()
 def get_info() -> Dict[str, Any]:
@@ -148,11 +122,7 @@ def relax_structure(
     Relax one or multiple structures using the loaded FAIRCHEM model.
     
     Args:
-        structure_data: Can be:
-            - Single structure (dict, ASE Atoms, pymatgen Structure, or file path)
-            - Directory path containing CIF/POSCAR files (batch mode)
-            - List of file paths (batch mode)
-            - List of structure dicts (batch mode)
+        structure_data: Single structure or batch (directory path, list of dicts/paths).
         fmax: Force convergence criterion (eV/Ang).
         steps: Maximum number of optimization steps.
         optimizer: Optimizer to use ("FIRE", "BFGS", "LBFGS").
@@ -179,7 +149,7 @@ def relax_structure(
 
 @mcp.tool()
 def run_md(
-    structure_data: Union[Dict[str, Any], str],
+    structure_data: Union[Dict[str, Any], str, List[Union[Dict[str, Any], str]]],
     temperature: float = 300,
     steps: int = 1000,
     timestep: float = 1.0,
@@ -190,13 +160,14 @@ def run_md(
     output_dir: Optional[str] = None,
     monitor: bool = False,
     monitor_type: Optional[Union[str, List[str]]] = None,
-    monitor_params: Optional[Dict[str, Any]] = None
+    monitor_params: Optional[Dict[str, Any]] = None,
+    supercell_min_length: Optional[float] = None
 ) -> Dict[str, Any]:
     """
     Run molecular dynamics simulation using MatCalc.
     
     Args:
-        structure_data: Structure in partial dictionary format.
+        structure_data: Single structure or batch (directory path, list of dicts/paths).
         temperature: Temperature in Kelvin.
         steps: Number of steps.
         timestep: Timestep in fs.
@@ -209,6 +180,7 @@ def run_md(
         monitor: Whether to enable automatic MD monitoring.
         monitor_type: Type of monitor ("melting", "explosion", "overshoot", "volume") or list of types.
         monitor_params: Optional dictionary of parameters for the monitors (e.g., {"upper_limit_ratio": 4.0}).
+        supercell_min_length: Minimum length (Å) for each lattice vector. Automatically expands supercell.
         
     Returns:
         Dictionary with MD results (trajectory_path, final_structure).
@@ -236,7 +208,8 @@ def run_md(
             output_dir=output_dir,
             monitor=monitor,
             monitor_type=monitor_type,
-            monitor_params=monitor_params
+            monitor_params=monitor_params,
+            supercell_min_length=supercell_min_length
         )
         
         return recursive_tolist(result)

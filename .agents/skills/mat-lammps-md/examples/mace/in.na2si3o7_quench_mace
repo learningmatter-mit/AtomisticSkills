@@ -1,0 +1,41 @@
+# Thermal quench template for Na2Si3O7 glass with native MACE pair style.
+# Run with:
+#   -var datafile <path> -var outdir <path> -var model_file <path>
+
+units           metal
+atom_style      atomic
+atom_modify     map yes
+newton          on
+boundary        p p p
+
+read_data       ${datafile}
+
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes
+timestep        0.001
+
+# ---------------- MACE model hookup ----------------------------------------
+pair_style      mace no_domain_decomposition
+pair_coeff      * * ${model_file} Na Si O
+# ---------------------------------------------------------------------------
+
+thermo          500
+thermo_style    custom step temp pe etotal press vol density
+
+# Stage 1: melt/equilibrate
+velocity        all create 3200.0 13579 dist gaussian mom yes rot yes
+fix             melt all npt temp 3200.0 3200.0 0.1 iso 1.0 1.0 1.0
+dump            trj all custom 1000 ${outdir}/na2si3o7_quench.lammpstrj id type x y z
+run             60000
+
+# Stage 2: thermal quench (linear cooling)
+unfix           melt
+fix             quench all npt temp 3200.0 300.0 0.1 iso 1.0 1.0 1.0
+run             120000
+
+# Stage 3: room-temperature relax/hold
+unfix           quench
+fix             hold all npt temp 300.0 300.0 0.1 iso 1.0 1.0 1.0
+run             30000
+
+write_data      ${outdir}/na2si3o7_glass_final.data

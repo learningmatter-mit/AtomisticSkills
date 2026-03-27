@@ -123,7 +123,8 @@ def test_equilibration_monitor():
         atoms=atoms,
         window_ps=0.01,      # 10 fs window
         stability_ps=0.02,   # 20 fs stability check
-        temp_std_threshold=1000.0  # High threshold
+        temp_std_threshold=1000.0,  # High threshold
+        log_interval=1
     )
     dyn.attach(monitor, interval=1, dyn=dyn)
     

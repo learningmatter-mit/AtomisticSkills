@@ -1,0 +1,627 @@
+{
+    "target": "BaLiBO3",
+    "precursors": [
+        "LiBO2",
+        "BaO"
+    ],
+    "byproducts": [],
+    "temperature": 1000,
+    "net_reaction": "LiBO2 + BaO -> BaLiBO3",
+    "pathways": [
+        {
+            "total_cost": 0.1899583199964433,
+            "steps": [
+                {
+                    "reaction_string": "BaO + LiBO2 -> BaLiBO3",
+                    "dG_eV_per_atom": -0.2661849005729058
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20394552089996057,
+            "steps": [
+                {
+                    "reaction_string": "6.75 LiBO2 -> 0.25 Li3B11O18 + Li6B4O9",
+                    "dG_eV_per_atom": -0.09337705425463522
+                },
+                {
+                    "reaction_string": "0.06667 Li3B11O18 + BaO -> 0.2 BaLiBO3 + 0.2667 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.2744888272679544
+                },
+                {
+                    "reaction_string": "Li3BO3 + Ba3(BO3)2 -> 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.03947888878352759
+                },
+                {
+                    "reaction_string": "Li6B4O9 + 3 BaO -> Li3BO3 + 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.13176444750282829
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20740753024959413,
+            "steps": [
+                {
+                    "reaction_string": "3 LiBO2 + BaLi4O3 -> 2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.22392965623592473
+                },
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "26 Li3BO3 + 15 Ba5B4O11 -> Li3B11O18 + 75 BaLiBO3",
+                    "dG_eV_per_atom": -0.02437443284146832
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20838176734103972,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "15 LiBO2 + 4 Ba3(BO3)2 -> Li3B11O18 + 12 BaLiBO3",
+                    "dG_eV_per_atom": -0.06671474770142713
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20853972711924057,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "Li3BO3 + Ba3(BO3)2 -> 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.03947888878352759
+                },
+                {
+                    "reaction_string": "15 LiBO2 + 4 Ba3(BO3)2 -> Li3B11O18 + 12 BaLiBO3",
+                    "dG_eV_per_atom": -0.06671474770142713
+                },
+                {
+                    "reaction_string": "0.2 Li3B11O18 + BaLi4O3 -> 1.2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.254126553542477
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20978628201662824,
+            "steps": [
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "4.5 LiBO2 + 0.5 BaLi4O3 -> Li6B4O9 + 0.5 BaLiBO3",
+                    "dG_eV_per_atom": -0.16984152659549392
+                },
+                {
+                    "reaction_string": "3.714 Li6B4O9 + 3.857 Ba5B4O11 -> Li3B11O18 + 19.29 BaLiBO3",
+                    "dG_eV_per_atom": -0.0034023742150427164
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21065604954215814,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "3 LiBO2 + BaLi4O3 -> 2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.22392965623592473
+                },
+                {
+                    "reaction_string": "Li3BO3 + Ba3(BO3)2 -> 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.03947888878352759
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21077628704181278,
+            "steps": [
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "13 LiBO2 + 2 Ba5B4O11 -> Li3B11O18 + 10 BaLiBO3",
+                    "dG_eV_per_atom": -0.05561090742762267
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21175852865425743,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "Li3BO3 + Ba3(BO3)2 -> 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.03947888878352759
+                },
+                {
+                    "reaction_string": "4.5 LiBO2 + 0.5 BaLi4O3 -> Li6B4O9 + 0.5 BaLiBO3",
+                    "dG_eV_per_atom": -0.16984152659549392
+                },
+                {
+                    "reaction_string": "Li6B4O9 + 3 BaO -> Li3BO3 + 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.13176444750282829
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2119620183861115,
+            "steps": [
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "6.75 LiBO2 -> 0.25 Li3B11O18 + Li6B4O9",
+                    "dG_eV_per_atom": -0.09337705425463522
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "3.714 Li6B4O9 + 3.857 Ba5B4O11 -> Li3B11O18 + 19.29 BaLiBO3",
+                    "dG_eV_per_atom": -0.0034023742150427164
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2120193242505835,
+            "steps": [
+                {
+                    "reaction_string": "0.8 LiBO2 + BaO -> 0.2 BaLi4O3 + 0.4 Ba2B2O5",
+                    "dG_eV_per_atom": -0.15772543142955384
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "15 LiBO2 + 4 Ba3(BO3)2 -> Li3B11O18 + 12 BaLiBO3",
+                    "dG_eV_per_atom": -0.06671474770142713
+                },
+                {
+                    "reaction_string": "BaLi4O3 + 3 Ba2B2O5 -> 4 BaLiBO3 + Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.08220320398758389
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21224194087376697,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "Li3BO3 + Ba3(BO3)2 -> 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.03947888878352759
+                },
+                {
+                    "reaction_string": "4.5 LiBO2 + 0.5 BaLi4O3 -> Li6B4O9 + 0.5 BaLiBO3",
+                    "dG_eV_per_atom": -0.16984152659549392
+                },
+                {
+                    "reaction_string": "Li6B4O9 + BaLi4O3 -> 3 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.11042133711025526
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2124252196796445,
+            "steps": [
+                {
+                    "reaction_string": "0.8 LiBO2 + BaO -> 0.2 BaLi4O3 + 0.4 Ba2B2O5",
+                    "dG_eV_per_atom": -0.15772543142955384
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "13 LiBO2 + 2 Ba5B4O11 -> Li3B11O18 + 10 BaLiBO3",
+                    "dG_eV_per_atom": -0.05561090742762267
+                },
+                {
+                    "reaction_string": "BaLi4O3 + 4 Ba2B2O5 -> 4 BaLiBO3 + Ba5B4O11",
+                    "dG_eV_per_atom": -0.0631955367708072
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21248727984464794,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "11 LiBO2 + 4 Ba2B2O5 -> Li3B11O18 + 8 BaLiBO3",
+                    "dG_eV_per_atom": -0.03635048898918993
+                },
+                {
+                    "reaction_string": "LiBO2 + Ba3(BO3)2 -> BaLiBO3 + Ba2B2O5",
+                    "dG_eV_per_atom": -0.06717157736355735
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21250299351375385,
+            "steps": [
+                {
+                    "reaction_string": "0.8 LiBO2 + BaO -> 0.2 BaLi4O3 + 0.4 Ba2B2O5",
+                    "dG_eV_per_atom": -0.15772543142955384
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "11 LiBO2 + 4 Ba2B2O5 -> Li3B11O18 + 8 BaLiBO3",
+                    "dG_eV_per_atom": -0.03635048898918993
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21276484571360776,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "4.5 LiBO2 + 0.5 BaLi4O3 -> Li6B4O9 + 0.5 BaLiBO3",
+                    "dG_eV_per_atom": -0.16984152659549392
+                },
+                {
+                    "reaction_string": "0.5556 Li6B4O9 + Ba3(BO3)2 -> 0.1111 Li3B11O18 + 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.015491487823493357
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2127927096601883,
+            "steps": [
+                {
+                    "reaction_string": "3 LiBO2 + BaLi4O3 -> 2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.22392965623592473
+                },
+                {
+                    "reaction_string": "0.8 LiBO2 + BaO -> 0.2 BaLi4O3 + 0.4 Ba2B2O5",
+                    "dG_eV_per_atom": -0.15772543142955384
+                },
+                {
+                    "reaction_string": "Li3BO3 + Ba3(BO3)2 -> 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.03947888878352759
+                },
+                {
+                    "reaction_string": "BaLi4O3 + 3 Ba2B2O5 -> 4 BaLiBO3 + Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.08220320398758389
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21355039706467555,
+            "steps": [
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "15 LiBO2 + 4 Ba3(BO3)2 -> Li3B11O18 + 12 BaLiBO3",
+                    "dG_eV_per_atom": -0.06671474770142713
+                },
+                {
+                    "reaction_string": "0.25 BaLi4O3 + 0.75 Ba5B4O11 -> BaLiBO3 + Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.04656820153698633
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2136117323175469,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "13 LiBO2 + 2 Ba5B4O11 -> Li3B11O18 + 10 BaLiBO3",
+                    "dG_eV_per_atom": -0.05561090742762267
+                },
+                {
+                    "reaction_string": "0.5 LiBO2 + Ba3(BO3)2 -> 0.5 BaLiBO3 + 0.5 Ba5B4O11",
+                    "dG_eV_per_atom": -0.035040966877057704
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21443650867638356,
+            "steps": [
+                {
+                    "reaction_string": "3 LiBO2 + BaLi4O3 -> 2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.22392965623592473
+                },
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "Li3BO3 + Ba3(BO3)2 -> 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.03947888878352759
+                },
+                {
+                    "reaction_string": "0.25 BaLi4O3 + 0.75 Ba5B4O11 -> BaLiBO3 + Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.04656820153698633
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2145138604901156,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "6.75 LiBO2 -> 0.25 Li3B11O18 + Li6B4O9",
+                    "dG_eV_per_atom": -0.09337705425463522
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "0.5556 Li6B4O9 + Ba3(BO3)2 -> 0.1111 Li3B11O18 + 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.015491487823493357
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21564449353026133,
+            "steps": [
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "11 LiBO2 + 4 Ba2B2O5 -> Li3B11O18 + 8 BaLiBO3",
+                    "dG_eV_per_atom": -0.03635048898918993
+                },
+                {
+                    "reaction_string": "0.5 LiBO2 + 0.5 Ba5B4O11 -> 0.5 BaLiBO3 + Ba2B2O5",
+                    "dG_eV_per_atom": -0.04600342425430202
+                }
+            ]
+        },
+        {
+            "total_cost": 0.215966308850773,
+            "steps": [
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "0.4 Li3BO3 + 0.2 Ba5B4O11 -> 0.2 LiBO2 + BaLiBO3",
+                    "dG_eV_per_atom": -0.015005142864810138
+                },
+                {
+                    "reaction_string": "13 LiBO2 + 2 Ba5B4O11 -> Li3B11O18 + 10 BaLiBO3",
+                    "dG_eV_per_atom": -0.05561090742762267
+                },
+                {
+                    "reaction_string": "0.2 Li3B11O18 + BaLi4O3 -> 1.2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.254126553542477
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2183694549511813,
+            "steps": [
+                {
+                    "reaction_string": "3 LiBO2 + BaLi4O3 -> 2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.22392965623592473
+                },
+                {
+                    "reaction_string": "0.8 LiBO2 + BaO -> 0.2 BaLi4O3 + 0.4 Ba2B2O5",
+                    "dG_eV_per_atom": -0.15772543142955384
+                },
+                {
+                    "reaction_string": "0.4 Li3BO3 + 0.2 Ba5B4O11 -> 0.2 LiBO2 + BaLiBO3",
+                    "dG_eV_per_atom": -0.015005142864810138
+                },
+                {
+                    "reaction_string": "BaLi4O3 + 4 Ba2B2O5 -> 4 BaLiBO3 + Ba5B4O11",
+                    "dG_eV_per_atom": -0.0631955367708072
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2189941656260535,
+            "steps": [
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "0.4 Li3BO3 + 0.2 Ba5B4O11 -> 0.2 LiBO2 + BaLiBO3",
+                    "dG_eV_per_atom": -0.015005142864810138
+                },
+                {
+                    "reaction_string": "4.5 LiBO2 + 0.5 BaLi4O3 -> Li6B4O9 + 0.5 BaLiBO3",
+                    "dG_eV_per_atom": -0.16984152659549392
+                },
+                {
+                    "reaction_string": "Li6B4O9 + 3 BaO -> Li3BO3 + 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.13176444750282829
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2192874053073508,
+            "steps": [
+                {
+                    "reaction_string": "6.75 LiBO2 -> 0.25 Li3B11O18 + Li6B4O9",
+                    "dG_eV_per_atom": -0.09337705425463522
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "Li6B4O9 + 4.5 BaO -> 4 BaLiBO3 + 0.5 BaLi4O3",
+                    "dG_eV_per_atom": -0.12323138322741231
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21988434227558648,
+            "steps": [
+                {
+                    "reaction_string": "3 LiBO2 + BaLi4O3 -> 2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.22392965623592473
+                },
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "0.4 Li3BO3 + 0.2 Ba5B4O11 -> 0.2 LiBO2 + BaLiBO3",
+                    "dG_eV_per_atom": -0.015005142864810138
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21995302807932116,
+            "steps": [
+                {
+                    "reaction_string": "0.5714 LiBO2 + BaO -> 0.1429 BaLi4O3 + 0.2857 Ba3(BO3)2",
+                    "dG_eV_per_atom": -0.1759977567712178
+                },
+                {
+                    "reaction_string": "3 LiBO2 + BaLi4O3 -> 2 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.22392965623592473
+                },
+                {
+                    "reaction_string": "0.4 Li3BO3 + 0.2 Ba5B4O11 -> 0.2 LiBO2 + BaLiBO3",
+                    "dG_eV_per_atom": -0.015005142864810138
+                },
+                {
+                    "reaction_string": "0.5 LiBO2 + Ba3(BO3)2 -> 0.5 BaLiBO3 + 0.5 Ba5B4O11",
+                    "dG_eV_per_atom": -0.035040966877057704
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22096364872278773,
+            "steps": [
+                {
+                    "reaction_string": "0.6667 LiBO2 + BaO -> 0.1667 BaLi4O3 + 0.1667 Ba5B4O11",
+                    "dG_eV_per_atom": -0.16406744423223496
+                },
+                {
+                    "reaction_string": "0.4 Li3BO3 + 0.2 Ba5B4O11 -> 0.2 LiBO2 + BaLiBO3",
+                    "dG_eV_per_atom": -0.015005142864810138
+                },
+                {
+                    "reaction_string": "4.5 LiBO2 + 0.5 BaLi4O3 -> Li6B4O9 + 0.5 BaLiBO3",
+                    "dG_eV_per_atom": -0.16984152659549392
+                },
+                {
+                    "reaction_string": "Li6B4O9 + BaLi4O3 -> 3 Li3BO3 + BaLiBO3",
+                    "dG_eV_per_atom": -0.11042133711025526
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22454978716056637,
+            "steps": [
+                {
+                    "reaction_string": "6.75 LiBO2 -> 0.25 Li3B11O18 + Li6B4O9",
+                    "dG_eV_per_atom": -0.09337705425463522
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 2 BaLi4O3 -> 9 LiBO2 + 2 BaLiBO3",
+                    "dG_eV_per_atom": -0.10127776001880132
+                },
+                {
+                    "reaction_string": "Li6B4O9 + 3 BaO -> Li3BO3 + 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.13176444750282829
+                },
+                {
+                    "reaction_string": "Li3BO3 + 1.5 BaO -> BaLiBO3 + 0.5 BaLi4O3",
+                    "dG_eV_per_atom": -0.01563675427968967
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2272411861391388,
+            "steps": [
+                {
+                    "reaction_string": "6.75 LiBO2 -> 0.25 Li3B11O18 + Li6B4O9",
+                    "dG_eV_per_atom": -0.09337705425463522
+                },
+                {
+                    "reaction_string": "0.4 Li3BO3 + 0.2 Ba5B4O11 -> 0.2 LiBO2 + BaLiBO3",
+                    "dG_eV_per_atom": -0.015005142864810138
+                },
+                {
+                    "reaction_string": "Li6B4O9 + 3 BaO -> Li3BO3 + 3 BaLiBO3",
+                    "dG_eV_per_atom": -0.13176444750282829
+                },
+                {
+                    "reaction_string": "Li3B11O18 + 13 BaO -> 3 BaLiBO3 + 2 Ba5B4O11",
+                    "dG_eV_per_atom": -0.2697623924369888
+                }
+            ]
+        }
+    ]
+}

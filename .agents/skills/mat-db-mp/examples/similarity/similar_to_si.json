@@ -1,0 +1,95 @@
+{
+  "num_results": 15,
+  "results": [
+    {
+      "task_id": "mp-1001789",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "IrC"
+    },
+    {
+      "task_id": "mp-1001837",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "MoP"
+    },
+    {
+      "task_id": "mp-1002164",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "GeC"
+    },
+    {
+      "task_id": "mp-1002209",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "ReN"
+    },
+    {
+      "task_id": "mp-1006882",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "CdC"
+    },
+    {
+      "task_id": "mp-1008223",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "CaSe"
+    },
+    {
+      "task_id": "mp-1008921",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "CdN"
+    },
+    {
+      "task_id": "mp-1009130",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "MnN"
+    },
+    {
+      "task_id": "mp-1009458",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "NbC"
+    },
+    {
+      "task_id": "mp-1009494",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "NpN"
+    },
+    {
+      "task_id": "mp-1009639",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "PrN"
+    },
+    {
+      "task_id": "mp-1009696",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "RhC"
+    },
+    {
+      "task_id": "mp-1009747",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "ScSn"
+    },
+    {
+      "task_id": "mp-1009753",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "ScGe"
+    },
+    {
+      "task_id": "mp-1094336",
+      "nelements": 2,
+      "dissimilarity": 0.0,
+      "formula": "SrMg"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "method": "PBE (MatPES preset via atomate2)",
+  "supercell": "3x3x3 rocksalt MgO (54 atoms)",
+  "energies": {
+    "pristine": -320.6679838,
+    "vac_O_q0": -309.06090302,
+    "vac_O_q+1": -313.71163049,
+    "vac_O_q+2": -316.80320907
+  },
+  "formation_energies_O_rich_EF0": {
+    "V_O_q0": 6.659080779999989,
+    "V_O_q+1": 2.008353309999997,
+    "V_O_q+2": -1.0832252699999785
+  },
+  "formation_energies_O_poor_EF0": {
+    "V_O_q0": 0.9590807799999901,
+    "V_O_q+1": -3.6916466900000025,
+    "V_O_q+2": -6.783225269999978
+  },
+  "transition_levels": {
+    "+2/+1": 3.0915785799999753,
+    "+1/0": 4.6507274699999925,
+    "+2/0_thermodynamic": 3.871153024999984
+  },
+  "band_gap_PBE": 4.7,
+  "chemical_potentials": {
+    "mu_O_rich": -4.948,
+    "mu_O_poor": -10.648
+  },
+  "notes": "No Freysoldt or other finite-size corrections applied. PBE underestimates band gap."
+}

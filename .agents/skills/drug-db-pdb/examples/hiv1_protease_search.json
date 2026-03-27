@@ -1,0 +1,154 @@
+{
+    "mode": "search",
+    "query": {
+        "text": "HIV-1 protease",
+        "organism": null,
+        "resolution_max": 2.0,
+        "methods": [
+            "X-RAY DIFFRACTION"
+        ],
+        "max_results": 5
+    },
+    "pdb_ids": [
+        "1TW7",
+        "4RVI",
+        "4NJV",
+        "4RVX",
+        "5T84"
+    ],
+    "results": [
+        {
+            "pdb_id": "1TW7",
+            "title": "Wide Open 1.3A Structure of a Multi-drug Resistant HIV-1 Protease Represents a Novel Drug Target",
+            "experimental_method": "X-ray",
+            "resolution": 1.3,
+            "deposit_date": "2004-06-30T00:00:00+0000",
+            "initial_release_date": "2005-07-19T00:00:00+0000",
+            "revision_date": "2023-08-23T00:00:00+0000",
+            "polymer_entity_count": 1,
+            "nonpolymer_entity_count": 1,
+            "assembly_count": 1,
+            "unit_cell": {
+                "a": 45.043,
+                "b": 45.043,
+                "c": 105.744,
+                "alpha": 90.0,
+                "beta": 90.0,
+                "gamma": 90.0
+            },
+            "ligands": [
+                {
+                    "entity_id": "2",
+                    "comp_id": "NA",
+                    "name": "SODIUM ION"
+                }
+            ],
+            "search_score": 1.0
+        },
+        {
+            "pdb_id": "4RVI",
+            "title": "Crystal structure of multidrug-resistant clinical isolate A02 HIV-1 protease in complex with non-peptidic inhibitor, GRL0519",
+            "experimental_method": "X-ray",
+            "resolution": 1.99,
+            "deposit_date": "2014-11-26T00:00:00+0000",
+            "initial_release_date": "2016-05-04T00:00:00+0000",
+            "revision_date": "2024-02-28T00:00:00+0000",
+            "polymer_entity_count": 1,
+            "nonpolymer_entity_count": 1,
+            "assembly_count": 2,
+            "unit_cell": {
+                "a": 58.96,
+                "b": 64.73,
+                "c": 100.74,
+                "alpha": 90.0,
+                "beta": 90.0,
+                "gamma": 90.0
+            },
+            "ligands": [
+                {
+                    "entity_id": "2",
+                    "comp_id": "G52",
+                    "name": "(3R,3aS,3bR,6aS,7aS)-octahydrodifuro[2,3-b:3',2'-d]furan-3-yl [(1S,2R)-1-benzyl-2-hydroxy-3-{[(4-methoxyphenyl)sulfonyl](2-methylpropyl)amino}propyl]carbamate"
+                }
+            ],
+            "search_score": 0.9993631499842681
+        },
+        {
+            "pdb_id": "4NJV",
+            "title": "Crystal structure of multidrug-resistant clinical isolate A02 HIV-1 protease in complex with ritonavir",
+            "experimental_method": "X-ray",
+            "resolution": 1.8,
+            "deposit_date": "2013-11-11T00:00:00+0000",
+            "initial_release_date": "2014-04-02T00:00:00+0000",
+            "revision_date": "2024-02-28T00:00:00+0000",
+            "polymer_entity_count": 1,
+            "nonpolymer_entity_count": 1,
+            "assembly_count": 2,
+            "unit_cell": {
+                "a": 45.952,
+                "b": 58.219,
+                "c": 86.866,
+                "alpha": 90.0,
+                "beta": 90.02,
+                "gamma": 90.0
+            },
+            "ligands": [
+                {
+                    "entity_id": "2",
+                    "comp_id": "RIT",
+                    "name": "RITONAVIR"
+                }
+            ],
+            "search_score": 0.9990725350207572
+        },
+        {
+            "pdb_id": "4RVX",
+            "title": "Crystal structure of multidrug-resistant clinical isolate A02 HIV-1 protease in complex with non-peptidic inhibitor, GRL079",
+            "experimental_method": "X-ray",
+            "resolution": 1.955,
+            "deposit_date": "2014-11-28T00:00:00+0000",
+            "initial_release_date": "2016-05-04T00:00:00+0000",
+            "revision_date": "2024-02-28T00:00:00+0000",
+            "polymer_entity_count": 1,
+            "nonpolymer_entity_count": 1,
+            "assembly_count": 2,
+            "unit_cell": {
+                "a": 53.789,
+                "b": 89.008,
+                "c": 56.513,
+                "alpha": 90.0,
+                "beta": 112.98,
+                "gamma": 90.0
+            },
+            "ligands": [
+                {
+                    "entity_id": "2",
+                    "comp_id": "79G",
+                    "name": "(4S)-4-amino-N-[(2S,3S)-3-hydroxy-4-{[(4-methoxyphenyl)sulfonyl](2-methylpropyl)amino}-1-phenylbutan-2-yl]-3,4-dihydro-2H-chromene-6-carboxamide"
+                }
+            ],
+            "search_score": 0.998977293610233
+        },
+        {
+            "pdb_id": "5T84",
+            "title": "HIV-1 protease, unbound subtype B L63P construct",
+            "experimental_method": "X-ray",
+            "resolution": 1.65,
+            "deposit_date": "2016-09-06T00:00:00+0000",
+            "initial_release_date": "2017-09-20T00:00:00+0000",
+            "revision_date": "2024-05-22T00:00:00+0000",
+            "polymer_entity_count": 1,
+            "nonpolymer_entity_count": 0,
+            "assembly_count": 1,
+            "unit_cell": {
+                "a": 46.29,
+                "b": 58.01,
+                "c": 85.86,
+                "alpha": 90.0,
+                "beta": 90.0,
+                "gamma": 90.0
+            },
+            "search_score": 0.9987810889524726
+        }
+    ]
+}

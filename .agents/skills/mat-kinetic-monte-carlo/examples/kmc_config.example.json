@@ -1,0 +1,22 @@
+{
+    "lattice": "lattice.json",
+    "model": {
+        "temperature_K": 800,
+        "prefactor_Hz": 1e13,
+        "rate_model": "constant",
+        "barrier_eV": 0.35,
+        "site_energies_eV": null
+    },
+    "initial_state": {
+        "occupied_sites": [0, 5, 9, 12]
+    },
+    "simulation": {
+        "max_steps": 200000,
+        "max_time_s": null,
+        "save_every": 200,
+        "seed": 123
+    },
+    "output": {
+        "out_dir": "kmc_run_T800K"
+    }
+}

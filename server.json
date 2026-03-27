@@ -1,0 +1,80 @@
+{
+    "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+    "name": "bowen-bd/atomisticskills",
+    "description": "AtomisticSkills MCP Server: AI tools for atomistic simulations, DFT, MLIPs, and generative models.",
+    "websiteUrl": "https://github.com/bowen-bd/AtomisticSkills",
+    "repository": {
+        "url": "https://github.com/bowen-bd/AtomisticSkills",
+        "source": "github"
+    },
+    "version": "1.0.0",
+    "packages": [
+        {
+            "registryType": "pypi",
+            "registryBaseUrl": "https://pypi.org",
+            "identifier": "atomisticskills",
+            "version": "1.0.0",
+            "runtimeHint": "python",
+            "transport": {
+                "type": "stdio"
+            },
+            "packageArguments": [],
+            "environmentVariables": [
+                {
+                    "name": "MP_API_KEY",
+                    "description": "API Key for Materials Project access. Required by base-server for querying bulk structures. Get a key at https://materialsproject.org/api",
+                    "isRequired": false,
+                    "isSecret": true
+                },
+                {
+                    "name": "OPENALEX_EMAIL",
+                    "description": "Email address to access the OpenAlex Polite Pool. Register your email for free at https://docs.openalex.org/how-to-use-the-api/rate-limits-and-authentication#the-polite-pool",
+                    "isRequired": false,
+                    "isSecret": false
+                },
+                {
+                    "name": "ELSEVIER_API_KEY",
+                    "description": "API Key for accessing Elsevier ScienceDirect API.",
+                    "isRequired": false,
+                    "isSecret": true
+                },
+                {
+                    "name": "ELSEVIER_INST_TOKEN",
+                    "description": "Optional institutional token for Elsevier access.",
+                    "isRequired": false,
+                    "isSecret": true
+                },
+                {
+                    "name": "SPRINGER_API_KEY",
+                    "description": "API Key for accessing Springer Nature Meta API v2.",
+                    "isRequired": false,
+                    "isSecret": true
+                },
+                {
+                    "name": "UNPAYWALL_EMAIL",
+                    "description": "Email required for accessing the Unpaywall API to retrieve open access preprints and papers.",
+                    "isRequired": false,
+                    "isSecret": false
+                },
+                {
+                    "name": "ATOMATE2_REMOTE_PROJECT",
+                    "description": "Default project name for remote job submission (auto-detected if blank). Required by atomate2-server.",
+                    "isRequired": false,
+                    "isSecret": false
+                },
+                {
+                    "name": "VASP_CMD",
+                    "description": "Command to run VASP. Required by atomate2-server if running locally.",
+                    "isRequired": false,
+                    "isSecret": false
+                },
+                {
+                    "name": "PMG_VASP_PSP_DIR",
+                    "description": "Path to VASP POTCAR directory. Required by pymatgen and atomate2-server.",
+                    "isRequired": false,
+                    "isSecret": false
+                }
+            ]
+        }
+    ]
+}

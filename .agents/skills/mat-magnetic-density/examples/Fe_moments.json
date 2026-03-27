@@ -1,0 +1,13 @@
+{
+  "total_magnetization": 4.3,
+  "site_moments": [
+    2.15,
+    2.15
+  ],
+  "species": [
+    "Fe",
+    "Fe"
+  ],
+  "magnetic_ordering": "ferromagnetic",
+  "structure_formula": "Fe2"
+}

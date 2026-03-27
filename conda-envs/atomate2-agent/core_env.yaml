@@ -9,3 +9,4 @@ dependencies:
     - typing-extensions
     - ase
     - h5py
+    - pytest
