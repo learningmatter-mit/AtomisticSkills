@@ -9,7 +9,7 @@ description: Submit DFT jobs using VASP to the High-Throughput Virtual Screening
 
 ## When to use HTVS
 
-Use the HTVS tools (`htvs_server` MCP tools or the included scripts) when:
+Use the HTVS tools (`htvs_server` MCP tools, the included scripts, or the utility functions in `src/utils/htvs`) when:
 1.  **DFT Labeling**: You need to calculate energy, forces, or stress for a structure using DFT (VASP).
 2.  **Save to Database**: Save DFT results to the database.
 3.  **Monitor Jobs**: Monitor running jobs in the cluster.
