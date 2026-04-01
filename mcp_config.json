@@ -31,16 +31,6 @@
                 "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
             }
         },
-        "materials_tools": {
-            "command": "/mnt/data0/hojechun/miniforge3/envs/mlip-agent/bin/python",
-            "args": [
-                "-m",
-                "src.mcp_server.materials_server"
-            ],
-            "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
-            }
-        },
         "htvs": {
             "command": "/mnt/data0/hojechun/miniforge3/envs/htvs-agent/bin/python",
             "args": [
