@@ -1,0 +1,95 @@
+{
+    "formula": "H2O",
+    "n_atoms": 3,
+    "is_linear": false,
+    "n_expected_vibrational_modes": 3,
+    "frequencies_cm1": [
+        "52.2i",
+        "0.6i",
+        "0.4i",
+        0.4,
+        26.3,
+        27.3,
+        1631.8,
+        3630.2,
+        3764.2
+    ],
+    "frequencies_meV": [
+        "6.5i",
+        "0.1i",
+        "0.0i",
+        0.1,
+        3.3,
+        3.4,
+        202.3,
+        450.1,
+        466.7
+    ],
+    "real_modes": [
+        {
+            "index": 6,
+            "frequency_cm1": 1631.847969621012,
+            "energy_meV": 202.32336078641782,
+            "type": "vibration"
+        },
+        {
+            "index": 7,
+            "frequency_cm1": 3630.197985262146,
+            "energy_meV": 450.0871835927816,
+            "type": "vibration"
+        },
+        {
+            "index": 8,
+            "frequency_cm1": 3764.162754490446,
+            "energy_meV": 466.69669798494726,
+            "type": "vibration"
+        }
+    ],
+    "imaginary_modes": [
+        {
+            "index": 0,
+            "frequency_cm1": -52.225197695647054,
+            "energy_meV": 0.0,
+            "type": "imaginary"
+        }
+    ],
+    "translational_rotational_modes": [
+        {
+            "index": 1,
+            "frequency_cm1": 0.0,
+            "energy_meV": 0.0,
+            "type": "translation/rotation"
+        },
+        {
+            "index": 2,
+            "frequency_cm1": 0.0,
+            "energy_meV": 0.0,
+            "type": "translation/rotation"
+        },
+        {
+            "index": 3,
+            "frequency_cm1": 0.4234686685588899,
+            "energy_meV": 0.05250342299379914,
+            "type": "translation/rotation"
+        },
+        {
+            "index": 4,
+            "frequency_cm1": 26.32626954867905,
+            "energy_meV": 3.264041400434447,
+            "type": "translation/rotation"
+        },
+        {
+            "index": 5,
+            "frequency_cm1": 27.330003683934386,
+            "energy_meV": 3.3884885715934563,
+            "type": "translation/rotation"
+        }
+    ],
+    "zero_point_energy_eV": 0.5629061378795842,
+    "zero_point_energy_meV": 562.9061378795842,
+    "delta_angstrom": 0.01,
+    "nfree": 2,
+    "model_type": "mace",
+    "model_name": "MACE-OMAT-0-small",
+    "output_dir": ".agents/test/chem-vibration-test"
+}

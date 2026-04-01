@@ -1,0 +1,35 @@
+{
+    "mode": "entry",
+    "pdb_ids": [
+        "1HSG"
+    ],
+    "results": [
+        {
+            "pdb_id": "1HSG",
+            "title": "CRYSTAL STRUCTURE AT 1.9 ANGSTROMS RESOLUTION OF HUMAN IMMUNODEFICIENCY VIRUS (HIV) II PROTEASE COMPLEXED WITH L-735,524, AN ORALLY BIOAVAILABLE INHIBITOR OF THE HIV PROTEASES",
+            "experimental_method": "X-ray",
+            "resolution": 2.0,
+            "deposit_date": "1995-03-31T00:00:00+0000",
+            "initial_release_date": "1996-04-03T00:00:00+0000",
+            "revision_date": "2024-02-07T00:00:00+0000",
+            "polymer_entity_count": 1,
+            "nonpolymer_entity_count": 1,
+            "assembly_count": 1,
+            "unit_cell": {
+                "a": 59.57,
+                "b": 87.07,
+                "c": 46.71,
+                "alpha": 90.0,
+                "beta": 90.0,
+                "gamma": 90.0
+            },
+            "ligands": [
+                {
+                    "entity_id": "2",
+                    "comp_id": "MK1",
+                    "name": "N-[2(R)-HYDROXY-1(S)-INDANYL]-5-[(2(S)-TERTIARY BUTYLAMINOCARBONYL)-4(3-PYRIDYLMETHYL)PIPERAZINO]-4(S)-HYDROXY-2(R)-PHENYLMETHYLPENTANAMIDE"
+                }
+            ]
+        }
+    ]
+}

@@ -317,9 +317,9 @@ class SmolWrapper:
     def fit_expansion(self, method: str = "ls", **kwargs) -> Dict[str, Any]:
         """
         Fit the cluster expansion using the data in the wrangler.
-        methods: 'ls' (least squares), 'lasso', 'ridge'
+        methods: 'ls' (least squares), 'lasso', 'ridge', 'sgl' (Sparse Group Lasso)
         """
-        from sklearn.linear_model import Lasso, Ridge, LinearRegression
+        from sklearn.linear_model import Lasso, Ridge, LinearRegression, LassoCV
         from sklearn.model_selection import LeaveOneOut
         from sklearn.metrics import mean_squared_error
         from smol.cofe import ClusterExpansion
@@ -336,16 +336,52 @@ class SmolWrapper:
             # Fallback for older versions or different property names
             energies = np.array([entry.energy for entry in self.wrangler.entries])
         
-        if method == "lasso":
-            model = Lasso(**kwargs)
-        elif method == "ridge":
-            model = Ridge(**kwargs)
-        else:
-            model = LinearRegression()
+        if method == "sgl":
+            # Special handling for Sparse Group Lasso as per high-component-ce-tools authors
+            from .sparse_group_lasso import SparseGroupLasso, make_groups
+            alpha = kwargs.get("alpha", 0.002)
+            lambd = kwargs.get("lambda_mixing", 0.5)
+            # Find groups
+            groups = make_groups(self.wrangler, ignore=1) # 1 means ignore point terms
+            groups = np.array(groups)
             
-        # Fit model
-        model.fit(feature_matrix, energies)
-        eci = model.coef_
+            # Point clusters are typically index 1 to N_points
+            # Find point clusters manually from subspace if ignore=1
+            point_cluster_start = 1 # Assuming 0 is empty cluster
+            point_cluster_end = 1
+            if 1 in self.subspace.orbits_by_size:
+                for orbit in self.subspace.orbits_by_size[1]:
+                    point_cluster_end += len(orbit.bit_combos)
+                    
+            e0 = np.mean(energies)
+            # Fit Lasso to point terms first
+            lasso_cv = LassoCV(fit_intercept=True).fit(
+                feature_matrix[:, point_cluster_start:point_cluster_end], energies.ravel() - e0)
+            e1 = lasso_cv.predict(feature_matrix[:, point_cluster_start:point_cluster_end]).reshape(-1, 1)
+            
+            y_remainder = energies.reshape(-1, 1) - e0 - e1
+            
+            sgl = SparseGroupLasso(groups=groups, lambd=lambd)
+            sgl.set_params(alpha)
+            sgl.fit(feature_matrix[:, point_cluster_end:], y_remainder)
+            
+            eci = np.concatenate(([e0 + lasso_cv.intercept_], lasso_cv.coef_, sgl.coef_), axis=0)
+            model = sgl # For RMSE prediction purposes later
+            
+            y_pred = e0 + e1.ravel() + np.dot(feature_matrix[:, point_cluster_end:], sgl.coef_)
+        else:
+            if method == "lasso":
+                model = Lasso(**kwargs)
+            elif method == "ridge":
+                model = Ridge(**kwargs)
+            else:
+                model = LinearRegression()
+                
+            # Fit model
+            model.fit(feature_matrix, energies)
+            eci = model.coef_
+            y_pred = model.predict(feature_matrix)
+
         # Scikit-learn intercept is separate, but smol ClusterExpansion
         # handles it via the empty cluster correlation (which should be the first column)
         # We need to make sure the constant is handled correctly.
@@ -353,24 +389,129 @@ class SmolWrapper:
         self.expansion = ClusterExpansion(self.subspace, coefficients=eci)
         
         # Calculate RMSE
-        y_pred = model.predict(feature_matrix)
         rmse = float(np.sqrt(mean_squared_error(energies, y_pred)))
         
-        # Calculate LOOCV
-        loo = LeaveOneOut()
-        errors = []
-        for train_index, test_index in loo.split(feature_matrix):
-            X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
-            y_train, y_test = energies[train_index], energies[test_index]
-            model.fit(X_train, y_train)
-            errors.append((model.predict(X_test)[0] - y_test[0])**2)
-        loocv = float(np.sqrt(np.mean(errors)))
+        loocv = None
+        if method != "sgl":
+            # Calculate LOOCV
+            loo = LeaveOneOut()
+            errors = []
+            for train_index, test_index in loo.split(feature_matrix):
+                X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
+                y_train, y_test = energies[train_index], energies[test_index]
+                model.fit(X_train, y_train)
+                errors.append((model.predict(X_test)[0] - y_test[0])**2)
+            loocv = float(np.sqrt(np.mean(errors)))
         
         return {
             "status": "success",
             "rmse": rmse,
             "loocv": loocv,
-            "coef_count": len(eci)
+            "coef_count": len(np.where(np.abs(eci) > 1e-5)[0]) if method == "sgl" else len(eci)
+        }
+
+    def fit_feature_matrix(
+        self,
+        feature_matrix_path: str,
+        energies_path: str,
+        groups_path: Optional[str] = None,
+        fit_method: str = "ls",
+        alpha: float = 0.002,
+        lambda_mixing: float = 0.5,
+        point_features_count: int = 1,
+        test_size: float = 0.2
+    ) -> Dict[str, Any]:
+        """
+        Fit directly from pre-computed feature matrices.
+        
+        Args:
+            feature_matrix_path: Path to the .npy file containing the feature matrix (n_samples, n_features).
+            energies_path: Path to the .npy file containing the target energies.
+            groups_path: Path to the .npy file containing the cluster group assignments (required for 'sgl').
+            fit_method: The fitting method to use ('ls', 'lasso', 'ridge', or 'sgl').
+            alpha: The regularization strength for 'lasso', 'ridge', and 'sgl'.
+            lambda_mixing: The L1/L2 mixing parameter for 'sgl' (1.0 goes to Lasso, 0.0 to Ridge).
+            point_features_count: The number of unpenalized point/constant features at the start of the feature matrix. 
+                                  Used by SGL to fit these via CV Lasso before grouping the remaining features.
+            test_size: The proportion of the dataset to include in the test split for RMSE validation.
+            
+        Returns:
+            Dictionary containing the fitting results, method used, RMSEs, and coefficient count.
+        """
+        from sklearn.linear_model import Lasso, Ridge, LinearRegression, LassoCV
+        from sklearn.model_selection import train_test_split
+        from sklearn.metrics import mean_squared_error
+
+        X = np.load(feature_matrix_path)
+        y = np.load(energies_path)
+        if len(y.shape) == 2 and y.shape[1] == 1:
+            y = y.ravel()
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
+
+        if fit_method == "sgl":
+            from .sparse_group_lasso import SparseGroupLasso
+            if not groups_path:
+                return {"error": "groups_path is required for sgl fit."}
+            groups = np.load(groups_path)
+            
+            # If groups array covers the whole feature matrix, slice it
+            non_grouped_cols = point_features_count
+            if len(groups) == X.shape[1]:
+                sgl_groups = groups[non_grouped_cols:]
+            elif len(groups) == X.shape[1] - non_grouped_cols:
+                sgl_groups = groups
+            else:
+                return {"error": f"Size of groups ({len(groups)}) doesn't match X features ({X.shape[1]}) minus point_features_count ({non_grouped_cols})."}
+            
+            first_point = 1 # Assuming 0 is the constant
+            last_point = non_grouped_cols
+            
+            e0 = np.mean(y_train)
+            lasso_cv = LassoCV(fit_intercept=True).fit(
+                X_train[:, first_point:last_point], y_train - e0)
+            e1 = lasso_cv.predict(X_train[:, first_point:last_point]).reshape(-1, 1)
+            e1_test = lasso_cv.predict(X_test[:, first_point:last_point]).reshape(-1, 1)
+            
+            y_train_rem = y_train.reshape(-1, 1) - e0 - e1
+            y_test_rem = y_test.reshape(-1, 1) - e0 - e1_test
+            
+            sgl = SparseGroupLasso(groups=sgl_groups, lambd=lambda_mixing)
+            sgl.set_params(alpha)
+            sgl.fit(X_train[:, last_point:], y_train_rem)
+            
+            y_train_pred = np.dot(X_train[:, last_point:], sgl.coef_).ravel()
+            y_test_pred = np.dot(X_test[:, last_point:], sgl.coef_).ravel()
+            
+            train_rmse = np.sqrt(mean_squared_error(y_train_rem.ravel(), y_train_pred))
+            test_rmse = np.sqrt(mean_squared_error(y_test_rem.ravel(), y_test_pred))
+            
+            coef = np.concatenate(([e0 + lasso_cv.intercept_], lasso_cv.coef_, sgl.coef_), axis=0)
+            coef_count = len(np.where(np.abs(coef) > 1e-5)[0])
+        else:
+            if fit_method == "lasso":
+                model = Lasso(alpha=alpha)
+            elif fit_method == "ridge":
+                model = Ridge(alpha=alpha)
+            else:
+                model = LinearRegression()
+                
+            model.fit(X_train, y_train)
+            y_train_pred = model.predict(X_train)
+            y_test_pred = model.predict(X_test)
+            
+            train_rmse = np.sqrt(mean_squared_error(y_train, y_train_pred))
+            test_rmse = np.sqrt(mean_squared_error(y_test, y_test_pred))
+            coef = model.coef_
+            coef_count = len(np.where(np.abs(coef) > 1e-5)[0])
+
+        return {
+            "status": "success",
+            "method": fit_method,
+            "train_rmse": float(train_rmse),
+            "test_rmse": float(test_rmse),
+            "coef_count": int(coef_count),
+            "test_size": float(test_size)
         }
 
     def sample_ordered_structures(
@@ -514,7 +655,24 @@ class SmolWrapper:
                             if not sl_dict:
                                 sl_dict = {sp: 1.0/len(sl.species) for sp in sl.species}
                             
-                            processed_comp.append(Composition(sl_dict))
+                            # Normalize fractions to 1.0 to ensure supercell is fully occupied
+                            total_frac = sum(sl_dict.values())
+                            sl_dict = {k: v / total_frac for k, v in sl_dict.items()}
+                            
+                            # smol strict fraction checking workaround: convert to exact atom counts
+                            n_sites = len(sl.active_sites) if len(sl.active_sites) > 0 else len(sl.sites)
+                            exact_dict = {}
+                            remaining_sites = n_sites
+                            
+                            for i, (k, v) in enumerate(sl_dict.items()):
+                                if i == len(sl_dict) - 1:
+                                    exact_dict[k] = remaining_sites
+                                else:
+                                    count = int(round(v * n_sites))
+                                    exact_dict[k] = count
+                                    remaining_sites -= count
+                            
+                            processed_comp.append(Composition(exact_dict))
                         
                         initial_comp_obj = processed_comp
                     elif isinstance(initial_composition, list):

@@ -150,22 +150,33 @@ class Atomate2Handler:
         preset = preset_type.lower()
         user_incar = config or {}
         
-        if preset == "matpes-r2scan":
-            # For MatPES, we apply custom settings to the relevant makers
-            # Note: MatPesStaticFlowMaker doesn't easily expose nested config in init
-            # but we can try to wrap it or just use standard makers if config is provided
+        if preset == "mp-r2scan":
+            from atomate2.vasp.jobs.mp import MPMetaGGARelaxMaker, MPMetaGGAStaticMaker
+            if calculation_type == "relaxation":
+                maker = MPMetaGGARelaxMaker()
+            elif calculation_type == "static":
+                maker = MPMetaGGAStaticMaker()
+            else:
+                raise ValueError(f"Unsupported calculation_type {calculation_type} for mp-r2scan")
+            if user_incar:
+                maker.input_set_generator.user_incar_settings.update(user_incar)
+            return maker
+
+        elif preset == "matpes-r2scan":
+            meta_maker = MatPesMetaGGAStaticMaker()
+            if user_incar:
+                meta_maker.input_set_generator.user_incar_settings.update(user_incar)
             return MatPesStaticFlowMaker(
                 static1=None,
-                static2=MatPesMetaGGAStaticMaker(
-                    input_set_generator=MatPesMetaGGAStaticMaker().input_set_generator.default_factory()
-                ).update_incar(user_incar) if user_incar else MatPesMetaGGAStaticMaker(),
+                static2=meta_maker,
                 static3=None
             )
         elif preset == "matpes-pbe":
+            gga_maker = MatPesGGAStaticMaker()
+            if user_incar:
+                gga_maker.input_set_generator.user_incar_settings.update(user_incar)
             return MatPesStaticFlowMaker(
-                static1=MatPesGGAStaticMaker(
-                    input_set_generator=MatPesGGAStaticMaker().input_set_generator.default_factory()
-                ).update_incar(user_incar) if user_incar else MatPesGGAStaticMaker(),
+                static1=gga_maker,
                 static2=None,
                 static3=None
             )
@@ -182,9 +193,6 @@ class Atomate2Handler:
                 raise ValueError(f"Unknown calculation_type: {calculation_type}")
             
             if user_incar:
-                # For BandStructureMaker, we might need to apply incar settings to underlying static/bs makers
-                # But typically maker.input_set_generator access works for simple makers.
-                # BandStructureMaker has static_maker and bs_maker.
                 if calculation_type == "band_structure":
                      if hasattr(maker.static_maker, "input_set_generator"):
                          maker.static_maker.input_set_generator.user_incar_settings.update(user_incar)
@@ -264,15 +272,7 @@ class Atomate2Handler:
         if "perlmutter" not in worker_name.lower():
             return True, ""
 
-        # Check for NERSC key file
-        nersc_key = Path.home() / ".ssh" / "nersc"
-        if not nersc_key.exists():
-            return False, f"NERSC SSH key not found at {nersc_key}. Please run 'sshproxy -u <username>' to generate keys."
-            
-        # Optional: Check if key is expired (naive check based on file modification time > 24h?)
-        # For now, existence is the primary check requested.
-        
-        return True, "SSHProxy appears configured."
+        return True, ""
 
     def run_remote(self, flow: Any, project_name: Optional[str] = None, worker_name: Optional[str] = None) -> str:
         """Submit a flow remotely using jobflow-remote. If project_name is None, uses default configuration."""
@@ -370,7 +370,8 @@ class Atomate2Handler:
                 if entry["stress"] is not None:
                     import ase.units
                     # Atomate2 standardizes stress to GPa. We convert to eV/A^3.
-                    entry["stress"] = (np.array(entry["stress"]) * ase.units.GPa).tolist()
+                    # VASP uses compressive positive convention, while ASE uses tensile positive. Multiply by -1.
+                    entry["stress"] = (np.array(entry["stress"]) * -1.0 * ase.units.GPa).tolist()
                 
                 extracted.append(entry)
 
@@ -534,87 +535,93 @@ class Atomate2Handler:
             except Exception as e:
                 logger.warning(f"Error fetching flows by flow_ids: {e}")
             
-        # If no IDs provided, but formula/chemsys are, we search all completed jobs.
-        # This is a bit expensive, but useful for broad retrieval.
+        # If no IDs provided, but formula/chemsys are, we search MongoDB directly.
+        docs_to_process = []
+        
         if not (job_ids or flow_ids) and (formula or chemsys):
             try:
-                # Query completed jobs
-                jobs_info = jc.get_jobs_info(states=[JobState.COMPLETED], limit=limit)
-                f_ids = list(set([j.flow_id for j in jobs_info if hasattr(j, 'flow_id')]))
-                if f_ids:
-                    all_flows.extend(jc.get_flows_info(flow_ids=f_ids))
+                query = {}
+                if formula:
+                    query["output.formula_pretty"] = formula
+                if chemsys:
+                    query["output.chemsys"] = chemsys
+                
+                # Fetch directly from collection
+                # output.last_updated is used by atomate2 MongoStores
+                docs_to_process = list(jc.jobstore.docs_store._collection.find(query).sort("output.last_updated", -1).limit(limit))
             except Exception as e:
                  logger.warning(f"Error searching flows by metadata: {e}")
+        else:
+            seen_job_uuids = set()
+            for flow_info in all_flows:
+                for jid in getattr(flow_info, "job_ids", []):
+                    if jid in seen_job_uuids:
+                        continue
+                    seen_job_uuids.add(jid)
+                    try:
+                        doc = jobstore.get_output(jid)
+                        if not doc:
+                            doc = jobstore.get_output(getattr(flow_info, "flow_id", jid))
+                        if doc:
+                            docs_to_process.append(doc)
+                    except Exception:
+                        continue
         
         results = []
-        seen_job_uuids = set()
 
-        for flow_info in all_flows:
-            for jid in flow_info.job_ids:
-                if jid in seen_job_uuids:
-                    continue
+        for doc in docs_to_process:
+            if not doc:
+                continue
+            
+            doc_dict = jsanitize(doc)
+            
+            # Extract data early to handle nested filtering
+            task_doc = doc_dict.get("output", doc_dict)
+            
+            # Check filtering (TaskDoc fields)
+            if formula and task_doc.get("formula_pretty") != formula:
+                continue
+            if chemsys and task_doc.get("chemsys") != chemsys:
+                continue
                 
-                try:
-                    doc = jobstore.get_output(jid)
-                    if not doc:
-                        # Fallback to flow level output if job output is missing
-                        doc = jobstore.get_output(flow_info.flow_id)
-                except Exception:
-                    continue
+            # VASP outputs (energy, forces, stress) are typically nested another level down
+            # under task_doc["output"] in standard JobFlow wrappers.
+            actual_output = task_doc.get("output", task_doc) if isinstance(task_doc, dict) else task_doc
+            
+            # The structure in TaskDoc is typically in doc_dict["output"]["structure"]
+            structure = task_doc.get("structure") or doc_dict.get("structure")
+            
+            # Energy
+            energy = actual_output.get("energy") or actual_output.get("final_energy") or task_doc.get("energy")
+            
+            # Forces
+            forces = actual_output.get("forces") or task_doc.get("forces")
+            
+            # Stress
+            stress = actual_output.get("stress") or task_doc.get("stress")
+            
+            if structure and energy is not None:
+                # Convert stress from kB to GPa if requested
+                if stress is not None and convert_units:
+                    # VASP stress is in kB. 1 kB = 0.1 GPa.
+                    # We standardize to eV/A^3 (ASE standard).
+                    # VASP uses compressive positive convention, while ASE uses tensile positive convention.
+                    # So we need to multiply by -1
+                    import ase.units
+                    stress = (np.array(stress) * -0.1 * ase.units.GPa).tolist()
                 
-                if not doc:
-                    continue
+                if forces is not None:
+                    forces = np.array(forces).tolist()
                 
-                doc_dict = jsanitize(doc)
-                
-                # Check filtering (TaskDoc fields)
-                if formula and doc_dict.get("formula_pretty") != formula:
-                    continue
-                if chemsys and doc_dict.get("chemsys") != chemsys:
-                    continue
-                
-                # Extract data
-                output_field = doc_dict.get("output", {})
-                
-                # Support both direct TaskDoc and nested structures
-                if isinstance(output_field, dict) and ("energy" in output_field or "final_energy" in output_field):
-                    actual_output = output_field
-                else:
-                    actual_output = doc_dict
-                
-                # The structure in TaskDoc is typically in doc_dict["structure"]
-                structure = doc_dict.get("structure") or output_field.get("structure")
-                
-                # Energy
-                energy = actual_output.get("energy") or actual_output.get("final_energy")
-                
-                # Forces
-                forces = actual_output.get("forces")
-                
-                # Stress
-                stress = actual_output.get("stress")
-                
-                if structure and energy is not None:
-                    # Convert stress from kB to GPa if requested
-                    if stress is not None and convert_units:
-                        # VASP stress is in kB. 1 kB = 0.1 GPa.
-                        # We standardize to eV/A^3 (ASE standard).
-                        import ase.units
-                        stress = (np.array(stress) * 0.1 * ase.units.GPa).tolist()
-                    
-                    if forces is not None:
-                        forces = np.array(forces).tolist()
-                    
-                    results.append({
-                        "structure": structure,
-                        "energy": energy,
-                        "forces": forces,
-                        "stress": stress,
-                        "job_uuid": jid,
-                        "flow_id": flow_info.flow_id,
-                        "formula": doc_dict.get("formula_pretty"),
-                        "chemsys": doc_dict.get("chemsys")
-                    })
-                    seen_job_uuids.add(jid)
+                results.append({
+                    "structure": structure,
+                    "energy": energy,
+                    "forces": forces,
+                    "stress": stress,
+                    "job_uuid": doc_dict.get("uuid", "Unknown"),
+                    "flow_id": doc_dict.get("flow_id", "Unknown"),
+                    "formula": task_doc.get("formula_pretty"),
+                    "chemsys": task_doc.get("chemsys")
+                })
 
         return results

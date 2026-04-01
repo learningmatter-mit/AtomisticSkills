@@ -208,3 +208,53 @@ class TestMLIPModelAbstract:
         # Check it's marked as abstract
         assert getattr(MLIPModel.predict_atomic_features, '__isabstractmethod__', False), \
             "predict_atomic_features should be an abstract method"
+
+
+@pytest.mark.base
+class TestRunMDBase:
+    """Test MLIPModel.run_md() batching logic"""
+
+    def test_run_md_batching(self, sample_ase_atoms, skip_if_wrong_env):
+        """Test that run_md correctly batches multiple structures and calls _single_run_md."""
+        from src.utils.mlips.base import MLIPModel
+        from unittest.mock import Mock, call
+        from copy import deepcopy
+
+        class TestModel(MLIPModel):
+            def __init__(self):
+                super().__init__(model_name="test-model")
+                self.is_loaded = True
+            def load(self, model_path=None): pass
+            def create_calculator(self): pass
+            def predict_atomic_features(self, structure_data): pass
+            def fine_tune(self, training_data, **kwargs): pass
+            def save_checkpoint(self, checkpoint_path): pass
+            def load_checkpoint(self, checkpoint_path): pass
+            
+        model = TestModel()
+        
+        # Mock _single_run_md to just return a dummy result
+        model._single_run_md = Mock(return_value={"status": "success", "dummy": "result"})
+        
+        # Test with a single structure
+        res_single = model.run_md(sample_ase_atoms, temperature=500.0)
+        assert isinstance(res_single, dict)
+        assert res_single["status"] == "success"
+        model._single_run_md.assert_called_once()
+        
+        model._single_run_md.reset_mock()
+        
+        # Test with a list of structures
+        struct_list = [sample_ase_atoms, deepcopy(sample_ase_atoms)]
+        res_batch = model.run_md(struct_list, temperature=600.0)
+        
+        assert isinstance(res_batch, dict)
+        assert res_batch["mode"] == "batch"
+        assert res_batch["total_jobs"] == 2
+        assert len(res_batch["results"]) == 2
+        assert model._single_run_md.call_count == 2
+        
+        # Check call arguments
+        calls = model._single_run_md.call_args_list
+        assert calls[0].kwargs.get("temperature") == 600.0
+        assert calls[1].kwargs.get("temperature") == 600.0

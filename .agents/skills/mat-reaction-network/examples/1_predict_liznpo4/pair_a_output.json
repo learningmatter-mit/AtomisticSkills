@@ -1,0 +1,729 @@
+{
+    "target": "LiZnPO4",
+    "precursors": [
+        "Zn2P2O7",
+        "Li2O"
+    ],
+    "byproducts": [],
+    "temperature": 1000,
+    "net_reaction": "0.5 Zn2P2O7 + 0.5 Li2O -> LiZnPO4",
+    "pathways": [
+        {
+            "total_cost": 0.20267256964508795,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20267256964508795,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20468535289680967,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "0.2 ZnP4O11 + Li2O -> 0.6 Li3PO4 + 0.2 LiZnPO4",
+                    "dG_eV_per_atom": -0.4197658185129504
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li3PO4 -> 3 LiZnPO4",
+                    "dG_eV_per_atom": -0.02704525546896264
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20625898343906485,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "0.2 ZnP4O11 + Li2O -> 0.6 Li3PO4 + 0.2 LiZnPO4",
+                    "dG_eV_per_atom": -0.4197658185129504
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li3PO4 -> 3 LiZnPO4",
+                    "dG_eV_per_atom": -0.02704525546896264
+                }
+            ]
+        },
+        {
+            "total_cost": 0.20983185584724756,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 5 Li2O -> Li6ZnO4 + Li4Zn(PO4)2",
+                    "dG_eV_per_atom": -0.18504810949720213
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.25 Li6ZnO4 -> 0.25 Zn3(PO4)2 + 1.5 LiZnPO4",
+                    "dG_eV_per_atom": -0.1526086620832907
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2119613153408307,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 3.25 Li2O -> Li4Zn(PO4)2 + 0.25 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.2194895977436244
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.1111 Li10Zn4O9 -> 0.4444 Zn3(PO4)2 + 1.111 LiZnPO4",
+                    "dG_eV_per_atom": -0.1271118954124265
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21246732415956754,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 5.5 Li2O -> 2 Li3PO4 + 0.5 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.22226925772726758
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li3PO4 -> 3 LiZnPO4",
+                    "dG_eV_per_atom": -0.02704525546896264
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.1111 Li10Zn4O9 -> 0.4444 Zn3(PO4)2 + 1.111 LiZnPO4",
+                    "dG_eV_per_atom": -0.1271118954124265
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21403556935776977,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 1.125 Li2O -> LiZnPO4 + 0.125 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.11444671257641045
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21412742756854328,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5 Li2O -> Li6ZnO4 + Li4Zn(PO4)2",
+                    "dG_eV_per_atom": -0.18504810949720213
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.25 Li6ZnO4 -> 0.25 Zn3(PO4)2 + 1.5 LiZnPO4",
+                    "dG_eV_per_atom": -0.1526086620832907
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2142428111792875,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "0.3333 ZnP4O11 + Li6ZnO4 -> 2.333 Li2O + 1.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.14622650340923715
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 2 Li2O -> 0.5 Li6ZnO4 + LiZnPO4",
+                    "dG_eV_per_atom": -0.10068657068524631
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21581513968869676,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 3.25 Li2O -> Li4Zn(PO4)2 + 0.25 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.2194895977436244
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li4Zn(PO4)2 -> 0.2 ZnP4O11 + 2.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.0022243015559013203
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21614465424947582,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5 Li2O -> Li6ZnO4 + Li4Zn(PO4)2",
+                    "dG_eV_per_atom": -0.18504810949720213
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.1111 Li10Zn4O9 -> 0.4444 Zn3(PO4)2 + 1.111 LiZnPO4",
+                    "dG_eV_per_atom": -0.1271118954124265
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.5714 Li6ZnO4 -> 2 LiZnPO4 + 0.1429 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.14930788775213266
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21634157693753456,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 5 Li2O -> Li6ZnO4 + Li4Zn(PO4)2",
+                    "dG_eV_per_atom": -0.18504810949720213
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li4Zn(PO4)2 -> 0.2 ZnP4O11 + 2.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.0022243015559013203
+                },
+                {
+                    "reaction_string": "0.3333 ZnP4O11 + Li6ZnO4 -> 2.333 Li2O + 1.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.14622650340923715
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21671076449747753,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 3.25 Li2O -> Li4Zn(PO4)2 + 0.25 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.2194895977436244
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.1111 Li10Zn4O9 -> 0.4444 Zn3(PO4)2 + 1.111 LiZnPO4",
+                    "dG_eV_per_atom": -0.1271118954124265
+                }
+            ]
+        },
+        {
+            "total_cost": 0.217562562003194,
+            "steps": [
+                {
+                    "reaction_string": "Li2O + Zn2P2O7 -> 2 LiZnPO4",
+                    "dG_eV_per_atom": -0.19483286931628915
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 5.5 Li2O -> 2 Li3PO4 + 0.5 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.22226925772726758
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li3PO4 -> 0.2 ZnP4O11 + 1.8 LiZnPO4",
+                    "dG_eV_per_atom": -0.007918487066312893
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21846290116540057,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5.5 Li2O -> 2 Li3PO4 + 0.5 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.22226925772726758
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li3PO4 -> 3 LiZnPO4",
+                    "dG_eV_per_atom": -0.02704525546896264
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.1111 Li10Zn4O9 -> 0.4444 Zn3(PO4)2 + 1.111 LiZnPO4",
+                    "dG_eV_per_atom": -0.1271118954124265
+                }
+            ]
+        },
+        {
+            "total_cost": 0.21947885793323937,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5 Li2O -> Li6ZnO4 + Li4Zn(PO4)2",
+                    "dG_eV_per_atom": -0.18504810949720213
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li4Zn(PO4)2 -> 0.2 ZnP4O11 + 2.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.0022243015559013203
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.5714 Li6ZnO4 -> 2 LiZnPO4 + 0.1429 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.14930788775213266
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22102320621842508,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 2 Li2O -> 0.5 Li6ZnO4 + LiZnPO4",
+                    "dG_eV_per_atom": -0.10068657068524631
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.5714 Li6ZnO4 -> 2 LiZnPO4 + 0.1429 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.14930788775213266
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2218768665801992,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 3.25 Li2O -> Li4Zn(PO4)2 + 0.25 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.2194895977436244
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li4Zn(PO4)2 -> 0.2 ZnP4O11 + 2.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.0022243015559013203
+                },
+                {
+                    "reaction_string": "0.3333 ZnP4O11 + Li6ZnO4 -> 2.333 Li2O + 1.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.14622650340923715
+                },
+                {
+                    "reaction_string": "ZnP4O11 + Li10Zn4O9 -> Li6ZnO4 + 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.21006321646258533
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22230428364772858,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 3.25 Li2O -> Li4Zn(PO4)2 + 0.25 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.2194895977436244
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li4Zn(PO4)2 -> 0.2 ZnP4O11 + 2.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.0022243015559013203
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2230207509554346,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5 Li2O -> Li6ZnO4 + Li4Zn(PO4)2",
+                    "dG_eV_per_atom": -0.18504810949720213
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li4Zn(PO4)2 -> 0.2 ZnP4O11 + 2.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.0022243015559013203
+                },
+                {
+                    "reaction_string": "0.3333 ZnP4O11 + Li6ZnO4 -> 2.333 Li2O + 1.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.14622650340923715
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22410094159184143,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "0.3333 ZnP4O11 + Li6ZnO4 -> 2.333 Li2O + 1.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.14622650340923715
+                },
+                {
+                    "reaction_string": "ZnP4O11 + Li10Zn4O9 -> Li6ZnO4 + 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.21006321646258533
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 1.125 Li2O -> LiZnPO4 + 0.125 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.11444671257641045
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2246556037046224,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 1.125 Li2O -> LiZnPO4 + 0.125 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.11444671257641045
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22465602856006717,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "0.3333 ZnP4O11 + Li6ZnO4 -> 2.333 Li2O + 1.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.14622650340923715
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 2 Li2O -> 0.5 Li6ZnO4 + LiZnPO4",
+                    "dG_eV_per_atom": -0.10068657068524631
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22479288772926778,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 3.25 Li2O -> Li4Zn(PO4)2 + 0.25 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.2194895977436244
+                },
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22498303616270965,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 5 Li2O -> Li6ZnO4 + Li4Zn(PO4)2",
+                    "dG_eV_per_atom": -0.18504810949720213
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "0.3333 ZnP4O11 + Li6ZnO4 -> 2.333 Li2O + 1.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.14622650340923715
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22546353895621304,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5.5 Li2O -> 2 Li3PO4 + 0.5 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.22226925772726758
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li3PO4 -> 0.2 ZnP4O11 + 1.8 LiZnPO4",
+                    "dG_eV_per_atom": -0.007918487066312893
+                },
+                {
+                    "reaction_string": "0.3333 ZnP4O11 + Li6ZnO4 -> 2.333 Li2O + 1.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.14622650340923715
+                },
+                {
+                    "reaction_string": "ZnP4O11 + Li10Zn4O9 -> Li6ZnO4 + 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.21006321646258533
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22583416104518703,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li3PO4 -> 3 LiZnPO4",
+                    "dG_eV_per_atom": -0.02704525546896264
+                },
+                {
+                    "reaction_string": "0.8 ZnP4O11 + Li6ZnO4 -> 1.4 Li3PO4 + 1.8 LiZnPO4",
+                    "dG_eV_per_atom": -0.35550329398479896
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 2 Li2O -> 0.5 Li6ZnO4 + LiZnPO4",
+                    "dG_eV_per_atom": -0.10068657068524631
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22615004438792555,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "0.8 ZnP4O11 + Li6ZnO4 -> 1.4 Li4Zn(PO4)2 + 0.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.3634078101151667
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 2 Li2O -> 0.5 Li6ZnO4 + LiZnPO4",
+                    "dG_eV_per_atom": -0.10068657068524631
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22634240180124465,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 5 Li2O -> Li6ZnO4 + Li4Zn(PO4)2",
+                    "dG_eV_per_atom": -0.18504810949720213
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "0.8 ZnP4O11 + Li6ZnO4 -> 1.4 Li4Zn(PO4)2 + 0.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.3634078101151667
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2263504222145431,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5.5 Li2O -> 2 Li3PO4 + 0.5 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.22226925772726758
+                },
+                {
+                    "reaction_string": "Zn2P2O7 + 0.6 Li3PO4 -> 0.2 ZnP4O11 + 1.8 LiZnPO4",
+                    "dG_eV_per_atom": -0.007918487066312893
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22658897189949723,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li3PO4 -> 3 LiZnPO4",
+                    "dG_eV_per_atom": -0.02704525546896264
+                },
+                {
+                    "reaction_string": "1.8 ZnP4O11 + Li10Zn4O9 -> 1.4 Li3PO4 + 5.8 LiZnPO4",
+                    "dG_eV_per_atom": -0.32149505480461493
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 1.125 Li2O -> LiZnPO4 + 0.125 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.11444671257641045
+                }
+            ]
+        },
+        {
+            "total_cost": 0.2267670767723906,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "1.8 ZnP4O11 + Li10Zn4O9 -> 1.4 Li4Zn(PO4)2 + 4.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.32512685951316206
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 1.125 Li2O -> LiZnPO4 + 0.125 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.11444671257641045
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22688003198254186,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 3.25 Li2O -> Li4Zn(PO4)2 + 0.25 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.2194895977436244
+                },
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li4Zn(PO4)2 -> 4 LiZnPO4",
+                    "dG_eV_per_atom": -0.015484771093998026
+                },
+                {
+                    "reaction_string": "1.8 ZnP4O11 + Li10Zn4O9 -> 1.4 Li4Zn(PO4)2 + 4.4 LiZnPO4",
+                    "dG_eV_per_atom": -0.32512685951316206
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22791819450887033,
+            "steps": [
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 2 Li2O -> 0.5 Li6ZnO4 + LiZnPO4",
+                    "dG_eV_per_atom": -0.10068657068524631
+                },
+                {
+                    "reaction_string": "0.5 Zn3(PO4)2 + 0.6429 Li6ZnO4 -> LiZnPO4 + 0.2857 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.071108856684027
+                }
+            ]
+        },
+        {
+            "total_cost": 0.22865164195494297,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5.5 Li2O -> 2 Li3PO4 + 0.5 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.22226925772726758
+                },
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li3PO4 -> 3 LiZnPO4",
+                    "dG_eV_per_atom": -0.02704525546896264
+                },
+                {
+                    "reaction_string": "1.333 ZnP4O11 + Li10Zn4O9 -> 2.333 Li2O + 5.333 LiZnPO4",
+                    "dG_eV_per_atom": -0.23866537588853448
+                }
+            ]
+        },
+        {
+            "total_cost": 0.23005441806929985,
+            "steps": [
+                {
+                    "reaction_string": "Zn2P2O7 + 5.5 Li2O -> 2 Li3PO4 + 0.5 Li10Zn4O9",
+                    "dG_eV_per_atom": -0.22226925772726758
+                },
+                {
+                    "reaction_string": "1.667 Zn2P2O7 -> 0.3333 ZnP4O11 + Zn3(PO4)2",
+                    "dG_eV_per_atom": 0.01960528393283314
+                },
+                {
+                    "reaction_string": "Zn3(PO4)2 + Li3PO4 -> 3 LiZnPO4",
+                    "dG_eV_per_atom": -0.02704525546896264
+                },
+                {
+                    "reaction_string": "1.8 ZnP4O11 + Li10Zn4O9 -> 1.4 Li3PO4 + 5.8 LiZnPO4",
+                    "dG_eV_per_atom": -0.32149505480461493
+                }
+            ]
+        }
+    ]
+}

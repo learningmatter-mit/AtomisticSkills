@@ -1,0 +1,46 @@
+{
+  "query": "tetrafluoropropene OR HFO-1234yf",
+  "limit": 5,
+  "results": [
+    {
+      "publication_number": "MX370935B",
+      "title": "\u2026 comprising 1,1,1,2,3-pentafluoropropane or 2,3,3,3-tetrafluoropropene.",
+      "assignee": "Du Pont",
+      "inventor": "N/A",
+      "priority_date": "2008-05-07",
+      "snippet": "N/A"
+    },
+    {
+      "publication_number": "US8252198B2",
+      "title": "Hydrofluoroolefin compositions",
+      "assignee": "Arkema France",
+      "inventor": "N/A",
+      "priority_date": "2008-06-11",
+      "snippet": "N/A"
+    },
+    {
+      "publication_number": "US20080121837A1",
+      "title": "Compositions containing fluorine substituted olefins",
+      "assignee": "Honeywell International, Inc.",
+      "inventor": "N/A",
+      "priority_date": "2003-10-27",
+      "snippet": "N/A"
+    },
+    {
+      "publication_number": "US8246850B2",
+      "title": "Hydrofluoroolefin compositions",
+      "assignee": "Arkema France",
+      "inventor": "N/A",
+      "priority_date": "2008-06-11",
+      "snippet": "N/A"
+    },
+    {
+      "publication_number": "ES2951493T3",
+      "title": "Compositions comprising 2,3,3,3-tetrafluoropropene",
+      "assignee": "Chemours Co Fc Llc",
+      "inventor": "N/A",
+      "priority_date": "2007-05-24",
+      "snippet": "N/A"
+    }
+  ]
+}

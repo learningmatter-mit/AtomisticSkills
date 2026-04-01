@@ -153,10 +153,12 @@ class TestMaterialsProjectQueries:
         
         result = get_structure_by_chemsys("Si", mock_mprester)
         
-        # Should return the most stable one
-        assert isinstance(result, Atoms)
+        # Should return a list containing the most stable one
+        assert isinstance(result, list)
+        assert len(result) > 0
+        assert isinstance(result[0], Atoms)
         # Check it's the stable structure (lattice constant should be 5.43, not 5.5)
-        assert abs(result.cell.lengths()[0] - 5.43) < 0.1
+        assert abs(result[0].cell.lengths()[0] - 5.43) < 0.1
     
     def test_get_structure_by_id(self, skip_if_wrong_env):
         """Test get_structure_by_id"""

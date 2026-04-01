@@ -1,0 +1,29 @@
+# Relaxation template for adsorption-energy components with FairChem ML-IAP.
+# Run with:
+#   -var datafile <path> -var energyfile <path> -var outdata <path>
+
+units           metal
+atom_style      atomic
+boundary        p p p
+
+read_data       ${datafile}
+
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes
+timestep        0.001
+
+# ---------------- FairChem model hookup (edit here if needed) --------------
+# The exact mliappy/Python bridge can vary between local setups.
+pair_style      mliap
+pair_coeff      * * mliap python fairchem uma-s-1p1 Cu C O
+# ---------------------------------------------------------------------------
+
+thermo          100
+thermo_style    custom step temp pe etotal press vol
+
+min_style       cg
+minimize        1.0e-8 1.0e-10 2000 10000
+
+variable        E equal pe
+print           "${E}" file ${energyfile}
+write_data      ${outdata}

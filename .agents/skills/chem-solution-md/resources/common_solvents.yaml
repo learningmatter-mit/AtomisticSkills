@@ -1,0 +1,92 @@
+# Common solvents for solution-phase MD
+# Each entry contains the SMILES string, density (g/cm³), and molecular weight (g/mol).
+# Densities are experimental values at 25°C, 1 atm.
+#
+# References:
+#   - CRC Handbook of Chemistry and Physics, 97th Edition (2016-2017)
+#   - PubChem Compound Database, https://pubchem.ncbi.nlm.nih.gov/
+#   - NIST Chemistry WebBook, https://webbook.nist.gov/chemistry/
+
+water:
+  smiles: "O"
+  density_g_cm3: 0.997
+  molecular_weight: 18.015
+  formula: H2O
+
+methanol:
+  smiles: "CO"
+  density_g_cm3: 0.791
+  molecular_weight: 32.04
+  formula: CH3OH
+
+ethanol:
+  smiles: "CCO"
+  density_g_cm3: 0.789
+  molecular_weight: 46.07
+  formula: C2H5OH
+
+acetonitrile:
+  smiles: "CC#N"
+  density_g_cm3: 0.786
+  molecular_weight: 41.05
+  formula: CH3CN
+
+dmso:
+  smiles: "CS(=O)C"
+  density_g_cm3: 1.100
+  molecular_weight: 78.13
+  formula: (CH3)2SO
+
+dmf:
+  smiles: "CN(C)C=O"
+  density_g_cm3: 0.944
+  molecular_weight: 73.09
+  formula: (CH3)2NC(O)H
+
+thf:
+  smiles: "C1CCOC1"
+  density_g_cm3: 0.889
+  molecular_weight: 72.11
+  formula: C4H8O
+
+toluene:
+  smiles: "Cc1ccccc1"
+  density_g_cm3: 0.867
+  molecular_weight: 92.14
+  formula: C7H8
+
+acetone:
+  smiles: "CC(=O)C"
+  density_g_cm3: 0.784
+  molecular_weight: 58.08
+  formula: (CH3)2CO
+
+dichloromethane:
+  smiles: "ClCCl"
+  density_g_cm3: 1.326
+  molecular_weight: 84.93
+  formula: CH2Cl2
+
+chloroform:
+  smiles: "ClC(Cl)Cl"
+  density_g_cm3: 1.489
+  molecular_weight: 119.38
+  formula: CHCl3
+
+hexane:
+  smiles: "CCCCCC"
+  density_g_cm3: 0.659
+  molecular_weight: 86.18
+  formula: C6H14
+
+ethylene_carbonate:
+  smiles: "C1COC(=O)O1"
+  density_g_cm3: 1.321
+  molecular_weight: 88.06
+  formula: C3H4O3
+
+dimethyl_carbonate:
+  smiles: "COC(=O)OC"
+  density_g_cm3: 1.069
+  molecular_weight: 90.08
+  formula: C3H6O3

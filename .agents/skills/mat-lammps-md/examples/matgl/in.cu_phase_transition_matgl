@@ -1,0 +1,32 @@
+# Cu phase-transition scan with MatGL/CHGNet through ML-IAP (template).
+# Edit only the "MatGL model hookup" block if your local mliappy API differs.
+
+units           metal
+atom_style      atomic
+boundary        p p p
+
+read_data       ./out-matgl-cu-phase-transition/cu_fcc.data
+
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes
+timestep        0.001
+
+# ---------------- MatGL model hookup (edit here if needed) ----------------
+# The exact mliappy/Python bridge can vary between local setups.
+# Keep the rest of this file unchanged.
+pair_style      mliap
+pair_coeff      * * mliap python chgnet CHGNet-MPtrj-2023.12.1-2.7M-PES Cu
+# --------------------------------------------------------------------------
+
+velocity        all create 300.0 12345 dist gaussian mom yes rot yes
+fix             int all npt temp 300.0 1700.0 0.1 iso 1.0 1.0 1.0
+
+thermo          200
+thermo_style    custom step temp pe etotal press vol density
+dump            trj all custom 500 ./out-matgl-cu-phase-transition/cu_heat.lammpstrj id type x y z
+
+run             60000
+
+unfix           int
+fix             hold all nvt temp 1700.0 1700.0 0.1
+run             20000

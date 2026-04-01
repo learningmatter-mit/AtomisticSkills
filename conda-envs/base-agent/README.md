@@ -10,10 +10,11 @@ bash install.sh
 ```
 
 This installs:
-- python 3.10
-- atomate2
+- python 3.11
 - pymatgen
 - ase
+- rdkit (SMILES → 3D geometry, molecular manipulation)
+- packmol (molecular packing for solution-phase simulations)
 
 ## Full Reproduction
 If you need to reproduce the exact environment state (including all pinned dependency versions), use the full example configuration:

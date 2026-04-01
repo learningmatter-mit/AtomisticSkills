@@ -1,0 +1,106 @@
+{
+    "name": "1IEP",
+    "input_file": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/protein-prep/examples/1iep_receptor/1IEP_raw.pdb",
+    "success": true,
+    "settings": {
+        "chains": [
+            "A"
+        ],
+        "heterogens": "none",
+        "keep_resname": [],
+        "delete_resname": [],
+        "missing_residues": "ignore",
+        "replace_nonstandard": true,
+        "ph": 7.0,
+        "gen_pdbqt": true
+    },
+    "chain_selection": {
+        "chains_kept": [
+            "A"
+        ],
+        "chains_removed": [
+            "B",
+            "B",
+            "B"
+        ]
+    },
+    "missing_residues": {
+        "missing_residues_mode": "ignore",
+        "missing_residues_detected": [
+            {
+                "chain_index": 0,
+                "chain_id": "A",
+                "insert_index": 0,
+                "residue_names": [
+                    "GLY",
+                    "ALA"
+                ]
+            },
+            {
+                "chain_index": 0,
+                "chain_id": "A",
+                "insert_index": 274,
+                "residue_names": [
+                    "GLU",
+                    "SER",
+                    "SER",
+                    "ILE",
+                    "SER",
+                    "ASP",
+                    "GLU",
+                    "VAL",
+                    "GLU",
+                    "LYS",
+                    "GLU",
+                    "LEU",
+                    "GLY",
+                    "LYS",
+                    "ARG",
+                    "GLY",
+                    "THR"
+                ]
+            }
+        ],
+        "missing_residues_detected_count": 2,
+        "missing_residues_will_be_built": false
+    },
+    "nonstandard_residues": {
+        "replace_nonstandard": true,
+        "nonstandard_residues": []
+    },
+    "heterogens_policy": {
+        "heterogens_mode": "none",
+        "keep_resname": [],
+        "delete_resname": [],
+        "policy_impl": "pdbfixer.removeHeterogens"
+    },
+    "atom_completion": {
+        "missing_atoms_count": 0,
+        "missing_terminals_count": 1,
+        "ph": 7.0
+    },
+    "final_counts": {
+        "chains": 1,
+        "residues": 274,
+        "atoms": 4411
+    },
+    "pdb_file": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/protein-prep/examples/1iep_receptor/1IEP_prepared.pdb",
+    "meeko_cmd": [
+        "/Users/matthewcox/miniforge3/envs/drugdisc-agent/bin/mk_prepare_receptor.py",
+        "--read_pdb",
+        "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/protein-prep/examples/1iep_receptor/1IEP_prepared.pdb",
+        "--write_pdbqt",
+        "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/protein-prep/examples/1iep_receptor/1IEP_prepared.pdbqt",
+        "--write_json",
+        "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/protein-prep/examples/1iep_receptor/1IEP_prepared.meeko.json"
+    ],
+    "meeko_log": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/protein-prep/examples/1iep_receptor/1IEP_meeko.log",
+    "pdbqt_file": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/protein-prep/examples/1iep_receptor/1IEP_prepared.pdbqt",
+    "meeko_json": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/protein-prep/examples/1iep_receptor/1IEP_prepared.meeko.json",
+    "rcsb_url": "https://files.rcsb.org/download/1IEP.pdb",
+    "versions": {
+        "openmm": "8.4.0.dev-4768436",
+        "pdbfixer": null,
+        "meeko": "0.7.1"
+    }
+}

@@ -1,3 +1,3 @@
 """
-DFT Utilities (VASP Parser/Writer)
+DFT Utilities (VASP Parser/Writer, ORCA/SCINE Wrapper)
 """

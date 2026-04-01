@@ -1,0 +1,154 @@
+{
+    "mode": "reaction",
+    "reaction": "2H2 + O2 -> 2H2O",
+    "temperature_K": 298.15,
+    "pressure_Pa": 101325,
+    "reactants": [
+        {
+            "coefficient": 2,
+            "species": "H2"
+        },
+        {
+            "coefficient": 1,
+            "species": "O2"
+        }
+    ],
+    "products": [
+        {
+            "coefficient": 2,
+            "species": "H2O"
+        }
+    ],
+    "species": {
+        "H2": {
+            "species": "H2",
+            "formula": "H2",
+            "n_atoms": 2,
+            "geometry": "linear",
+            "spin": 0.0,
+            "symmetrynumber": 2,
+            "potential_energy_eV": -31.589746414238235,
+            "zero_point_energy_eV": 0.2818733762689088,
+            "frequencies_cm1": [
+                0.0,
+                0.0,
+                0.0,
+                43.7,
+                43.7,
+                4459.6
+            ],
+            "real_vibrational_modes": [
+                {
+                    "index": 5,
+                    "frequency_cm1": 4459.6216231059825,
+                    "energy_meV": 552.9226076324579
+                }
+            ],
+            "n_real_modes": 1,
+            "enthalpy_eV": -31.22336111377148,
+            "enthalpy_kJmol": -3012.595364070575,
+            "entropy_eV_per_K": 0.00134971019967218,
+            "entropy_J_per_molK": 130.22719352843018,
+            "gibbs_energy_eV": -31.625777209803744,
+            "gibbs_energy_kJmol": -3051.422601821077,
+            "temperature_K": 298.15,
+            "pressure_Pa": 101325
+        },
+        "O2": {
+            "species": "O2",
+            "formula": "O2",
+            "n_atoms": 2,
+            "geometry": "linear",
+            "spin": 1.0,
+            "symmetrynumber": 2,
+            "potential_energy_eV": -4089.7789742930618,
+            "zero_point_energy_eV": 0.10496031588689968,
+            "frequencies_cm1": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1693.1
+            ],
+            "real_vibrational_modes": [
+                {
+                    "index": 5,
+                    "frequency_cm1": 1693.1196971007957,
+                    "energy_meV": 209.92008674109022
+                }
+            ],
+            "n_real_modes": 1,
+            "enthalpy_eV": -4089.5840308525685,
+            "enthalpy_kJmol": -394584.7420920193,
+            "entropy_eV_per_K": 0.0021227049693234097,
+            "entropy_J_per_molK": 204.80982577665998,
+            "gibbs_energy_eV": -4090.2169153391724,
+            "gibbs_energy_kJmol": -394645.80614157463,
+            "temperature_K": 298.15,
+            "pressure_Pa": 101325
+        },
+        "H2O": {
+            "species": "H2O",
+            "formula": "H2O",
+            "n_atoms": 3,
+            "geometry": "nonlinear",
+            "spin": 0.0,
+            "symmetrynumber": 2,
+            "potential_energy_eV": -2079.86505609533,
+            "zero_point_energy_eV": 0.5959983578969238,
+            "frequencies_cm1": [
+                0.0,
+                0.0,
+                0.2,
+                37.8,
+                45.4,
+                173.9,
+                1621.1,
+                3820.2,
+                3915.5
+            ],
+            "real_vibrational_modes": [
+                {
+                    "index": 5,
+                    "frequency_cm1": 173.85001726003875,
+                    "energy_meV": 21.554654857337443
+                },
+                {
+                    "index": 6,
+                    "frequency_cm1": 1621.0876594428446,
+                    "energy_meV": 200.98925236524138
+                },
+                {
+                    "index": 7,
+                    "frequency_cm1": 3820.185982476059,
+                    "energy_meV": 473.64269294229945
+                },
+                {
+                    "index": 8,
+                    "frequency_cm1": 3915.539449847981,
+                    "energy_meV": 485.46501606337165
+                }
+            ],
+            "n_real_modes": 4,
+            "enthalpy_eV": -2079.1821568015944,
+            "enthalpy_kJmol": -200610.51415364887,
+            "entropy_eV_per_K": 0.0019551488228859654,
+            "entropy_J_per_molK": 188.64312072079923,
+            "gibbs_energy_eV": -2079.765084423138,
+            "gibbs_energy_kJmol": -200666.75810009177,
+            "temperature_K": 298.15,
+            "pressure_Pa": 101325
+        }
+    },
+    "reaction_thermodynamics": {
+        "delta_H_eV": -6.333560523077267,
+        "delta_H_kJmol": -611.095487137267,
+        "delta_S_eV_per_K": -0.0009118277228958391,
+        "delta_S_J_per_molK": -87.9779713919219,
+        "delta_G_eV": -6.061699087495981,
+        "delta_G_kJmol": -584.864854966776
+    },
+    "model_type": "fairchem",
+    "model_name": "uma-s-1p1"
+}

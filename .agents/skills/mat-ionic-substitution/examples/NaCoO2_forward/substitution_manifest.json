@@ -1,0 +1,450 @@
+{
+  "source_structure": "/home/bdeng/projects/AtomisticSkills/.agents/test/NaCoO2_test.cif",
+  "source_formula": "NaCoO2",
+  "threshold": 0.001,
+  "num_substitutions": 47,
+  "substitutions": [
+    {
+      "index": 0,
+      "formula": "NaFeO2",
+      "substitution_map": {
+        "Co3+": "Fe3+"
+      },
+      "probability": 0.016159271765236058,
+      "cif_file": "000_NaFeO2.cif"
+    },
+    {
+      "index": 1,
+      "formula": "NaScO2",
+      "substitution_map": {
+        "Co3+": "Sc3+"
+      },
+      "probability": 0.011399551220982844,
+      "cif_file": "001_NaScO2.cif"
+    },
+    {
+      "index": 2,
+      "formula": "NaCrO2",
+      "substitution_map": {
+        "Co3+": "Cr3+"
+      },
+      "probability": 0.010363748420531681,
+      "cif_file": "002_NaCrO2.cif"
+    },
+    {
+      "index": 3,
+      "formula": "NaAlO2",
+      "substitution_map": {
+        "Co3+": "Al3+"
+      },
+      "probability": 0.01012486204834646,
+      "cif_file": "003_NaAlO2.cif"
+    },
+    {
+      "index": 4,
+      "formula": "NaMnO2",
+      "substitution_map": {
+        "Co3+": "Mn3+"
+      },
+      "probability": 0.00806742209334456,
+      "cif_file": "004_NaMnO2.cif"
+    },
+    {
+      "index": 5,
+      "formula": "NaVO2",
+      "substitution_map": {
+        "Co3+": "V3+"
+      },
+      "probability": 0.0074576771224888466,
+      "cif_file": "005_NaVO2.cif"
+    },
+    {
+      "index": 6,
+      "formula": "NaNiO2",
+      "substitution_map": {
+        "Co3+": "Ni3+"
+      },
+      "probability": 0.005835056729934747,
+      "cif_file": "006_NaNiO2.cif"
+    },
+    {
+      "index": 7,
+      "formula": "NaTiO2",
+      "substitution_map": {
+        "Co3+": "Ti3+"
+      },
+      "probability": 0.004394369173387024,
+      "cif_file": "007_NaTiO2.cif"
+    },
+    {
+      "index": 8,
+      "formula": "NaGaO2",
+      "substitution_map": {
+        "Co3+": "Ga3+"
+      },
+      "probability": 0.00321415337808518,
+      "cif_file": "008_NaGaO2.cif"
+    },
+    {
+      "index": 9,
+      "formula": "KFeO2",
+      "substitution_map": {
+        "Co3+": "Fe3+",
+        "Na+": "K+"
+      },
+      "probability": 0.0032078277287407235,
+      "cif_file": "009_KFeO2.cif"
+    },
+    {
+      "index": 10,
+      "formula": "KCoO2",
+      "substitution_map": {
+        "Na+": "K+"
+      },
+      "probability": 0.0026638807496867267,
+      "cif_file": "010_KCoO2.cif"
+    },
+    {
+      "index": 11,
+      "formula": "NaLuO2",
+      "substitution_map": {
+        "Co3+": "Lu3+"
+      },
+      "probability": 0.0025642267932315397,
+      "cif_file": "011_NaLuO2.cif"
+    },
+    {
+      "index": 12,
+      "formula": "NaInO2",
+      "substitution_map": {
+        "Co3+": "In3+"
+      },
+      "probability": 0.0025642267932315397,
+      "cif_file": "012_NaInO2.cif"
+    },
+    {
+      "index": 13,
+      "formula": "LiFeO2",
+      "substitution_map": {
+        "Co3+": "Fe3+",
+        "Na+": "Li+"
+      },
+      "probability": 0.0025610670499775124,
+      "cif_file": "013_LiFeO2.cif"
+    },
+    {
+      "index": 14,
+      "formula": "NaYbO2",
+      "substitution_map": {
+        "Co3+": "Yb3+"
+      },
+      "probability": 0.002388892783372717,
+      "cif_file": "014_NaYbO2.cif"
+    },
+    {
+      "index": 15,
+      "formula": "KScO2",
+      "substitution_map": {
+        "Co3+": "Sc3+",
+        "Na+": "K+"
+      },
+      "probability": 0.0022629606725557004,
+      "cif_file": "015_KScO2.cif"
+    },
+    {
+      "index": 16,
+      "formula": "LiCoO2",
+      "substitution_map": {
+        "Na+": "Li+"
+      },
+      "probability": 0.002126790398364156,
+      "cif_file": "016_LiCoO2.cif"
+    },
+    {
+      "index": 17,
+      "formula": "KCrO2",
+      "substitution_map": {
+        "Co3+": "Cr3+",
+        "Na+": "K+"
+      },
+      "probability": 0.002057340209389612,
+      "cif_file": "017_KCrO2.cif"
+    },
+    {
+      "index": 18,
+      "formula": "KAlO2",
+      "substitution_map": {
+        "Co3+": "Al3+",
+        "Na+": "K+"
+      },
+      "probability": 0.0020099181262755324,
+      "cif_file": "018_KAlO2.cif"
+    },
+    {
+      "index": 19,
+      "formula": "NaCeO2",
+      "substitution_map": {
+        "Co3+": "Ce3+"
+      },
+      "probability": 0.001982952683224808,
+      "cif_file": "019_NaCeO2.cif"
+    },
+    {
+      "index": 20,
+      "formula": "RbFeO2",
+      "substitution_map": {
+        "Co3+": "Fe3+",
+        "Na+": "Rb+"
+      },
+      "probability": 0.0018981770686123502,
+      "cif_file": "020_RbFeO2.cif"
+    },
+    {
+      "index": 21,
+      "formula": "LiScO2",
+      "substitution_map": {
+        "Co3+": "Sc3+",
+        "Na+": "Li+"
+      },
+      "probability": 0.001806703633724276,
+      "cif_file": "021_LiScO2.cif"
+    },
+    {
+      "index": 22,
+      "formula": "NaErO2",
+      "substitution_map": {
+        "Co3+": "Er3+"
+      },
+      "probability": 0.0017541299658576357,
+      "cif_file": "022_NaErO2.cif"
+    },
+    {
+      "index": 23,
+      "formula": "LiCrO2",
+      "substitution_map": {
+        "Co3+": "Cr3+",
+        "Na+": "Li+"
+      },
+      "probability": 0.0016425402691216168,
+      "cif_file": "023_LiCrO2.cif"
+    },
+    {
+      "index": 24,
+      "formula": "LiAlO2",
+      "substitution_map": {
+        "Co3+": "Al3+",
+        "Na+": "Li+"
+      },
+      "probability": 0.0016046794035219413,
+      "cif_file": "024_LiAlO2.cif"
+    },
+    {
+      "index": 25,
+      "formula": "KMnO2",
+      "substitution_map": {
+        "Co3+": "Mn3+",
+        "Na+": "K+"
+      },
+      "probability": 0.0016014892667477931,
+      "cif_file": "025_KMnO2.cif"
+    },
+    {
+      "index": 26,
+      "formula": "RbCoO2",
+      "substitution_map": {
+        "Na+": "Rb+"
+      },
+      "probability": 0.0015763057683145054,
+      "cif_file": "026_RbCoO2.cif"
+    },
+    {
+      "index": 27,
+      "formula": "NaRuO2",
+      "substitution_map": {
+        "Co3+": "Ru3+"
+      },
+      "probability": 0.00151603441484122,
+      "cif_file": "027_NaRuO2.cif"
+    },
+    {
+      "index": 28,
+      "formula": "NaYO2",
+      "substitution_map": {
+        "Co3+": "Y3+"
+      },
+      "probability": 0.00151603441484122,
+      "cif_file": "028_NaYO2.cif"
+    },
+    {
+      "index": 29,
+      "formula": "KVO2",
+      "substitution_map": {
+        "Co3+": "V3+",
+        "Na+": "K+"
+      },
+      "probability": 0.001480446879851431,
+      "cif_file": "029_KVO2.cif"
+    },
+    {
+      "index": 30,
+      "formula": "TlFeO2",
+      "substitution_map": {
+        "Co3+": "Fe3+",
+        "Na+": "Tl+"
+      },
+      "probability": 0.001350998553170361,
+      "cif_file": "030_TlFeO2.cif"
+    },
+    {
+      "index": 31,
+      "formula": "RbScO2",
+      "substitution_map": {
+        "Co3+": "Sc3+",
+        "Na+": "Rb+"
+      },
+      "probability": 0.0013390681854050402,
+      "cif_file": "031_RbScO2.cif"
+    },
+    {
+      "index": 32,
+      "formula": "NaRhO2",
+      "substitution_map": {
+        "Co3+": "Rh3+"
+      },
+      "probability": 0.0012807391702901042,
+      "cif_file": "032_NaRhO2.cif"
+    },
+    {
+      "index": 33,
+      "formula": "NaPrO2",
+      "substitution_map": {
+        "Co3+": "Pr3+"
+      },
+      "probability": 0.0012807391702901042,
+      "cif_file": "033_NaPrO2.cif"
+    },
+    {
+      "index": 34,
+      "formula": "NaDyO2",
+      "substitution_map": {
+        "Co3+": "Dy3+"
+      },
+      "probability": 0.0012807391702901042,
+      "cif_file": "034_NaDyO2.cif"
+    },
+    {
+      "index": 35,
+      "formula": "LiMnO2",
+      "substitution_map": {
+        "Co3+": "Mn3+",
+        "Na+": "Li+"
+      },
+      "probability": 0.0012785977735688845,
+      "cif_file": "035_LiMnO2.cif"
+    },
+    {
+      "index": 36,
+      "formula": "RbCrO2",
+      "substitution_map": {
+        "Co3+": "Cr3+",
+        "Na+": "Rb+"
+      },
+      "probability": 0.0012173958011549863,
+      "cif_file": "036_RbCrO2.cif"
+    },
+    {
+      "index": 37,
+      "formula": "RbAlO2",
+      "substitution_map": {
+        "Co3+": "Al3+",
+        "Na+": "Rb+"
+      },
+      "probability": 0.001189334596400605,
+      "cif_file": "037_RbAlO2.cif"
+    },
+    {
+      "index": 38,
+      "formula": "LiVO2",
+      "substitution_map": {
+        "Co3+": "V3+",
+        "Na+": "Li+"
+      },
+      "probability": 0.001181959894310762,
+      "cif_file": "038_LiVO2.cif"
+    },
+    {
+      "index": 39,
+      "formula": "KNiO2",
+      "substitution_map": {
+        "Co3+": "Ni3+",
+        "Na+": "K+"
+      },
+      "probability": 0.0011583354156669459,
+      "cif_file": "039_KNiO2.cif"
+    },
+    {
+      "index": 40,
+      "formula": "TlCoO2",
+      "substitution_map": {
+        "Na+": "Tl+"
+      },
+      "probability": 0.0011219115685049401,
+      "cif_file": "040_TlCoO2.cif"
+    },
+    {
+      "index": 41,
+      "formula": "CsFeO2",
+      "substitution_map": {
+        "Co3+": "Fe3+",
+        "Na+": "Cs+"
+      },
+      "probability": 0.001118819361784074,
+      "cif_file": "041_CsFeO2.cif"
+    },
+    {
+      "index": 42,
+      "formula": "NaBiO2",
+      "substitution_map": {
+        "Co3+": "Bi3+"
+      },
+      "probability": 0.00105082859183301,
+      "cif_file": "042_NaBiO2.cif"
+    },
+    {
+      "index": 43,
+      "formula": "NaMoO2",
+      "substitution_map": {
+        "Co3+": "Mo3+"
+      },
+      "probability": 0.0010501268727339385,
+      "cif_file": "043_NaMoO2.cif"
+    },
+    {
+      "index": 44,
+      "formula": "NaTbO2",
+      "substitution_map": {
+        "Co3+": "Tb3+"
+      },
+      "probability": 0.0010501268727339385,
+      "cif_file": "044_NaTbO2.cif"
+    },
+    {
+      "index": 45,
+      "formula": "NaLaO2",
+      "substitution_map": {
+        "Co3+": "La3+"
+      },
+      "probability": 0.0010501268727339385,
+      "cif_file": "045_NaLaO2.cif"
+    },
+    {
+      "index": 46,
+      "formula": "NaNdO2",
+      "substitution_map": {
+        "Co3+": "Nd3+"
+      },
+      "probability": 0.0010501268727339385,
+      "cif_file": "046_NaNdO2.cif"
+    }
+  ]
+}

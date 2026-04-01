@@ -16,7 +16,7 @@ This document lists the environment variables required for the MLIP agent to fun
 | `atomate2_remote_project` (or `ATOMATE2_REMOTE_PROJECT`) | Default project name for remote job submission (auto-detected). | `atomate2` | `remote_perlmutter` |
 | `VASP_CMD` or `ATOMATE2_VASP_CMD` | Command to run VASP (for local execution). | `atomate2` | `mpirun -np 1 vasp_std` |
 | `PMG_VASP_PSP_DIR` | Path to VASP POTCAR directory. | `pymatgen`, `atomate2` | `/path/to/vasp/potcar` |
-| `MP_API_KEY` | API Key for Materials Project access. | `materials_tools`, `pymatgen` | `abc123def456` |
+| `MP_API_KEY` | API Key for Materials Project access. | `base_tools`, `pymatgen` | `abc123def456` |
 
 ## Configuration Files
 

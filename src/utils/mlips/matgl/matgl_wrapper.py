@@ -60,28 +60,6 @@ try:
         
     MATGL_AVAILABLE = True
     
-    # Import training components
-    TRAINER_AVAILABLE = False
-    try:
-        from matgl.utils.training import PotentialLightningModule
-        from matgl.graph.data import MGLDataLoader, MGLDataset, collate_fn_pes
-        try:
-            from matgl.graph.data import split_dataset
-        except ImportError:
-            from dgl.data.utils import split_dataset
-        TRAINER_AVAILABLE = True
-    except ImportError as e:
-        logger.debug(f"Primary MatGL training imports failed: {e}")
-        try:
-             # MatGL < 1.0 or specific versions might have it here
-             from matgl.utils._training_dgl import PotentialLightningModule
-             from matgl.graph.data import MGLDataLoader, MGLDataset, collate_fn_pes
-             from dgl.data.utils import split_dataset
-             TRAINER_AVAILABLE = True
-        except ImportError as e2:
-             logger.debug(f"Secondary MatGL training imports failed: {e2}")
-             pass
-    
     from matgl.ext.pymatgen import Structure2Graph, get_element_list
     import lightning as pl
     if not TRAINER_AVAILABLE:
@@ -142,82 +120,8 @@ if os.environ.get("MATGL_BACKEND") == "DGL" and MATGL_AVAILABLE:
 STANDARD_MATGL_MODELS = ["M3GNet", "CHGNet", "TensorNet"]
 
 
-if MATGL_AVAILABLE and TRAINER_AVAILABLE:
-    class TrainingHistoryCallback(pl.Callback):
-        """Callback to collect training history during fine-tuning."""
-        
-        def __init__(self):
-            super().__init__()
-            self.training_history = {
-                'energy_distribution': [],
-                'force_distribution': [],
-                'stress_distribution': [],
-                'energy_mae_train': [],
-                'energy_mae_val': [],
-                'force_mae_train': [],
-                'force_mae_val': [],
-                'stress_mae_train': [],
-                'stress_mae_val': [],
-                'loss_train': [],
-                'loss_val': []
-            }
-        
-        def on_train_epoch_end(self, trainer, pl_module):
-            if trainer.sanity_checking: return
-            metrics = trainer.callback_metrics
-            
-            def get_metric(specific_keys, fallback_keys):
-                for key in specific_keys:
-                    if key in metrics:
-                        val = metrics[key]
-                        return float(val.item()) if hasattr(val, 'item') else float(val)
-                for key in fallback_keys:
-                    if key in metrics:
-                        val = metrics[key]
-                        return float(val.item()) if hasattr(val, 'item') else float(val)
-                return None
-            
-            loss = get_metric(['train_Total_Loss', 'train_loss'], ['loss'])
-            if loss is not None: self.training_history['loss_train'].append(loss)
-            
-            e_mae = get_metric(['train_Energy_MAE', 'train_energy_mae'], ['energy_mae'])
-            if e_mae is not None: self.training_history['energy_mae_train'].append(e_mae)
-            
-            f_mae = get_metric(['train_Force_MAE', 'train_force_mae'], ['force_mae'])
-            if f_mae is not None: self.training_history['force_mae_train'].append(f_mae)
-            
-            s_mae = get_metric(['train_Stress_MAE', 'train_stress_mae'], ['stress_mae'])
-            if s_mae is not None: self.training_history['stress_mae_train'].append(s_mae)
+if MATGL_AVAILABLE:
 
-        def on_validation_epoch_end(self, trainer, pl_module):
-            if trainer.sanity_checking: return
-            metrics = trainer.callback_metrics
-            
-            def get_metric(keys):
-                for key in keys:
-                    if key in metrics:
-                        val = metrics[key]
-                        return float(val.item()) if hasattr(val, 'item') else float(val)
-                return None
-            
-            loss = get_metric(['val_Total_Loss', 'val_loss', 'loss'])
-            if loss is not None: self.training_history['loss_val'].append(loss)
-            
-            e_mae = get_metric(['val_Energy_MAE', 'val_energy_mae', 'energy_mae'])
-            if e_mae is not None: self.training_history['energy_mae_val'].append(e_mae)
-            
-            f_mae = get_metric(['val_Force_MAE', 'val_force_mae', 'force_mae'])
-            if f_mae is not None: self.training_history['force_mae_val'].append(f_mae)
-            
-            s_mae = get_metric(['val_Stress_MAE', 'val_stress_mae', 'stress_mae'])
-            if s_mae is not None: self.training_history['stress_mae_val'].append(s_mae)
-
-        def collect_label_distributions(self, training_data: List[Dict[str, Any]]):
-             # Placeholder for distribution collection (implemented in base or locally)
-             from ..base import MLIPModel
-             # We can't easily call base._collect_label_distributions here without an instance
-             # but we can implement a simple version or just skip it if it's less critical
-             pass
 
     def move_to_device(obj, device):
         """Recursively move tensors/graphs in nested structures to device."""
@@ -301,7 +205,6 @@ if MATGL_AVAILABLE and TRAINER_AVAILABLE:
             except (ImportError, AttributeError): pass
     
     apply_matgl_patches()
-
 
 class MatGLWrapper(MLIPModel):
     """
@@ -601,13 +504,17 @@ class MatGLWrapper(MLIPModel):
 
             # Extract site features
             # CHGNet usually uses 'node_feat' or 'atom_feat' at top level
-            features = model_output.get("node_feat") or model_output.get("atom_feat")
+            features = model_output.get("node_feat")
+            if features is None:
+                 features = model_output.get("atom_feat")
             
             # M3GNet hides them in nested 'gc_X' layer outputs
             if features is None:
                 for k in reversed(list(model_output.keys())):
                     if k.startswith("gc_") and isinstance(model_output[k], dict):
-                        features = model_output[k].get("node_feat") or model_output[k].get("atom_feat")
+                        features = model_output[k].get("node_feat")
+                        if features is None:
+                            features = model_output[k].get("atom_feat")
                         if features is not None:
                             logger.info(f"Extracted MatGL features from layer: {k}")
                             break
@@ -628,190 +535,7 @@ class MatGLWrapper(MLIPModel):
             logger.error(f"Failed to predict atomic features (MatGL): {e}\n{traceback.format_exc()}")
             return {"error": f"Failed to predict atomic features: {str(e)}"}
 
-    def fine_tune(
-        self,
-        training_data: List[Dict[str, Any]],
-        validation_data: Optional[List[Dict[str, Any]]] = None,
-        training_config: Optional[Dict[str, Any]] = None,
-        output_dir: Optional[str] = None,
-        wandb_config: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
-        """Fine-tune the MatGL model using PyTorch Lightning."""
-        if not self.is_loaded:
-            raise RuntimeError("Model must be loaded before fine-tuning")
-        
-        if not TRAINER_AVAILABLE:
-            raise ImportError("Required fine-tuning components (lightning, dgl) are not available.")
 
-        config = {
-            "max_epochs": 10,
-            "learning_rate": 1e-3,
-            "batch_size": 4,
-            "val_split": 0.1,
-        }
-        if training_config: config.update(training_config)
-        
-        # Check for model/checkpoint override
-        if training_config:
-            new_model = training_config.get("foundation_model") or training_config.get("checkpoint_path")
-            if new_model and new_model != self.model_name:
-                logger.info(f"Reloading model for fine-tuning: {self.model_name} -> {new_model}")
-                self.model_name = new_model
-                self.is_loaded = False
-                self.load()
-
-        # 1. Prepare Data
-        train_atoms, train_energies, train_forces, train_stresses = self._prepare_training_data(training_data)
-        
-        from pymatgen.io.ase import AseAtomsAdaptor
-        adaptor = AseAtomsAdaptor()
-        structures = [adaptor.get_structure(a) for a in train_atoms]
-        element_types = get_element_list(structures)
-        
-        # Get cutoff from model
-        cutoff = getattr(self.model.model, 'cutoff', 5.0)
-        threebody_cutoff = getattr(self.model.model, 'threebody_cutoff', 4.0)
-        if not hasattr(self.model.model, 'threebody_cutoff') and hasattr(self.model.model, 'three_body_cutoff'):
-            threebody_cutoff = getattr(self.model.model, 'three_body_cutoff')
-            
-        converter = Structure2Graph(element_types=element_types, cutoff=cutoff)
-        
-        def to_list(obj):
-            if hasattr(obj, 'tolist'):
-                return obj.tolist()
-            return obj
-
-        labels = {
-            "energies": to_list(train_energies),
-            "forces": [to_list(f) for f in train_forces],
-            "stresses": [to_list(s) for s in train_stresses],
-        }
-        
-        import tempfile
-        dataset_dir = tempfile.mkdtemp(prefix="mgl_dataset_")
-        
-        is_chgnet = "CHGNet" in self.model_name
-        dataset = MGLDataset(
-            structures=structures,
-            converter=converter,
-            labels=labels,
-            threebody_cutoff=threebody_cutoff,
-            include_line_graph=True,
-            directed_line_graph=is_chgnet,
-            save_dir=dataset_dir,
-        )
-        
-        if validation_data:
-            val_atoms, val_energies, val_forces, val_stresses = self._prepare_training_data(validation_data)
-            val_structures = [adaptor.get_structure(a) for a in val_atoms]
-            val_dataset = MGLDataset(
-                structures=val_structures,
-                converter=converter,
-                labels={
-                    "energies": to_list(val_energies),
-                    "forces": [to_list(f) for f in val_forces],
-                    "stresses": [to_list(s) for s in val_stresses],
-                },
-                threebody_cutoff=threebody_cutoff,
-                include_line_graph=True,
-                directed_line_graph=is_chgnet,
-                save_dir=os.path.join(dataset_dir, "val"),
-            )
-            train_ds, val_ds = dataset, val_dataset
-        else:
-            if len(dataset) > 1:
-                train_ds, val_ds = split_dataset(dataset, [1.0 - config['val_split'], config['val_split']], shuffle=True)
-            else:
-                train_ds, val_ds = dataset, None
-
-        # Custom collate to move to device
-        def my_collate(batch):
-            return move_to_device(collate_fn_pes(batch, include_line_graph=True), self.device)
-
-        train_loader, val_loader = MGLDataLoader(
-            train_data=train_ds,
-            val_data=val_ds,
-            collate_fn=my_collate,
-            batch_size=config['batch_size'],
-            num_workers=0,
-        )
-
-        # 2. Setup Training Module
-        prop_offset = getattr(self.model, 'element_refs', None)
-        if prop_offset and hasattr(prop_offset, 'property_offset'):
-            prop_offset = prop_offset.property_offset
-            
-        # Freezing backbone (Default: True)
-        freeze_backbone = config.get("freeze_backbone", True)
-        if freeze_backbone:
-            # Freeze all parameters first
-            for param in self.model.model.parameters():
-                param.requires_grad = False
-            
-            # Unfreeze readout/head layers
-            unfrozen_count = 0
-            for name, module in self.model.model.named_modules():
-                # Target common readout layer names in MatGL models
-                if any(x in name.lower() for x in ["readout", "mlp_out", "final", "output"]):
-                    for param in module.parameters():
-                        param.requires_grad = True
-                        unfrozen_count += 1
-            
-            if unfrozen_count == 0:
-                logging.warning("No MatGL readout parameters found to unfreeze!")
-            else:
-                logging.info(f"MatGL backbone frozen. Unfrozen {unfrozen_count} parameters in readout layers.")
-
-        lit_model = PotentialLightningModule(
-            model=self.model.model,
-            element_refs=prop_offset,
-            lr=config['learning_rate'],
-            include_line_graph=True,
-            stress_weight=1.0 if np.any(train_stresses) else 0.0,
-        )
-        
-        # 3. Trainer
-        history_callback = TrainingHistoryCallback()
-        history_callback.training_history.update(self._collect_label_distributions(training_data))
-        
-        trainer = pl.Trainer(
-            max_epochs=config['max_epochs'],
-            accelerator="gpu" if self.device.startswith("cuda") else "cpu",
-            devices=1,
-            callbacks=[history_callback],
-            enable_checkpointing=True,
-            default_root_dir=output_dir,
-            logger=False,
-        )
-        
-        logger.info(f"Starting MatGL fine-tuning for {config['max_epochs']} epochs")
-        trainer.fit(lit_model, train_loader, val_loader)
-        
-        self.is_fine_tuned = True
-        self._training_history = history_callback.training_history
-        
-        if output_dir:
-            os.makedirs(output_dir, exist_ok=True)
-            self.save_checkpoint(os.path.join(output_dir, "fine_tuned_model.pth"))
-            
-            if self.is_fine_tuned:
-                 # Save numerical history to JSON
-                 json_path = Path(output_dir) / "training_history.json"
-                 self.save_training_history(str(json_path))
-                 
-                 plot_path = Path(output_dir) / "training_history.png"
-                 try:
-                     self.plot_training_history(save_path=str(plot_path), show=False)
-                     logger.info(f"Training history plot saved to {plot_path}")
-                 except Exception as e:
-                     logger.warning(f"Failed to generate training history plot: {e}")
-
-        
-        return {
-            "status": "success",
-            "epochs": trainer.current_epoch,
-            "final_loss": history_callback.training_history['loss_train'][-1] if history_callback.training_history['loss_train'] else None
-        }
 
     def save_checkpoint(self, checkpoint_path: str) -> None:
         """Save checkpoint."""
@@ -849,12 +573,16 @@ class MatGLWrapper(MLIPModel):
                 if hasattr(inner_model, 'element_types'):
                     return list(inner_model.element_types)
                     
-            # Fallback for standard models if not loaded but known
-            if self.model_name.startswith("M3GNet") or self.model_name.startswith("CHGNet"):
-                # Standard MP-trained models support 89 elements
-                return ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Ac", "Th", "Pa", "U", "Np", "Pu"]
-                
-        return []
+            # If we couldn't properly extract element_types from the inner model
+            raise RuntimeError(
+                f"Could not determine supported elements for {self.model_name}. "
+                f"Failed to extract 'element_types' from the loaded model architecture."
+            )
+            
+        raise RuntimeError(
+            f"Could not determine supported elements for {self.model_name}. "
+            f"Model not loaded. Call load() first before querying supported elements."
+        )
 
     def get_model_capabilities(self) -> Dict[str, bool]:
         """Get model capabilities."""
@@ -866,36 +594,4 @@ class MatGLWrapper(MLIPModel):
             "dipole": False
         }
 
-    def _prepare_training_data(self, training_data: List[Dict[str, Any]]) -> Tuple:
-        import ase.units
-        from pymatgen.core import Structure
-        from pymatgen.io.ase import AseAtomsAdaptor
-        adaptor = AseAtomsAdaptor()
-        
-        atoms_list, energies, forces, stresses = [], [], [], []
-        for d in training_data:
-            atoms = d['structure']
-            if isinstance(atoms, dict):
-                # Handle Pymatgen structure dict
-                try:
-                    struct = Structure.from_dict(atoms)
-                    atoms = adaptor.get_atoms(struct)
-                except Exception:
-                    continue
-            elif not isinstance(atoms, Atoms):
-                # Handle conversion if needed
-                continue
-            atoms_list.append(atoms)
-            energies.append(d.get('energy', 0.0))
-            forces.append(d.get('forces', np.zeros((len(atoms), 3))))
-            
-            s = d.get('stress')
-            if s is not None:
-                # MatGL's Potential module internally converts stress to GPa 
-                # (see matgl.apps._pes_dgl.py). Thus, labels should be in GPa.
-                # Project standard labels are in eV/A^3, so we convert to GPa for training.
-                stresses.append(np.array(s) / ase.units.GPa)
-            else:
-                stresses.append(np.zeros(6))
-                
-        return atoms_list, np.array(energies), forces, stresses
+

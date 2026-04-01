@@ -1,0 +1,7 @@
+{
+  "model_name": "mp_gen",
+  "generation_mode": "unconditional",
+  "num_structures_requested": 5,
+  "num_generated": 5,
+  "step_lr": 5e-06
+}

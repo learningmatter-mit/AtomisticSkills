@@ -1,14 +1,26 @@
 # Research results
 research/
+results/
 fairchem_repo/
 
 # Temporary storage and test results
 scratch/
-.agent/test/
-tests/.agent/test/
+.agents/tmp/
+.agents/test/
+tests/.agents/test/
 tests/tmp_*/
+tmp/
+papers/
+private_data/
+
+# Models and root scripts
+*.model
+*.pt
+/*.sh
+clean_root.sh
 
 # Python
+/*.py
 __pycache__/
 *.py[cod]
 *$py.class
@@ -64,3 +76,11 @@ Thumbs.db
 stdout.txt
 stderr.txt
 debug*
+*.log
+*out*.txt
+*_pid
+*_help.txt
+
+# cifs for phase search
+.agents/skills/mat-xrd-phase-analysis/exmples/*/phase_analysis_results/cifs
+dara_downloaded_cifs/

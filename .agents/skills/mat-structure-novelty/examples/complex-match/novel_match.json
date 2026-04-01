@@ -1,0 +1,12 @@
+[
+  {
+    "target": "novel_structure.cif",
+    "target_formula": "Li10Ge(PS6)2",
+    "matches": [],
+    "match_found": false,
+    "target_spacegroup": "P1",
+    "target_crystal_system": "triclinic",
+    "literature_reported": false,
+    "literature_matches": []
+  }
+]

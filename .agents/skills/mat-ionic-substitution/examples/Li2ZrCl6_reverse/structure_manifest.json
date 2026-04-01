@@ -1,0 +1,420 @@
+{
+  "target_composition": "Li2ZrCl6",
+  "threshold": 0.001,
+  "num_direct_matches": 0,
+  "num_substitution_derived": 26,
+  "total_structures": 26,
+  "structures": [
+    {
+      "index": 0,
+      "source": "substitution",
+      "material_id": "mp-542219",
+      "precursor_formula": "Li2ZrF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "F-": "Cl-"
+      },
+      "substitution_str": "F-\u2192Cl-",
+      "probability": 0.004529851214918533,
+      "precursor_energy_above_hull": 0.0,
+      "precursor_is_stable": true,
+      "cif_file": "000_Li2ZrCl6_from_Li2ZrF6_mp-542219.cif"
+    },
+    {
+      "index": 1,
+      "source": "substitution",
+      "material_id": "mp-556176",
+      "precursor_formula": "Li2ZrF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "F-": "Cl-"
+      },
+      "substitution_str": "F-\u2192Cl-",
+      "probability": 0.004529851214918533,
+      "precursor_energy_above_hull": 0.050096609444445,
+      "precursor_is_stable": false,
+      "cif_file": "001_Li2ZrCl6_from_Li2ZrF6_mp-556176.cif"
+    },
+    {
+      "index": 2,
+      "source": "substitution",
+      "material_id": "mp-4002",
+      "precursor_formula": "Li2ZrF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "F-": "Cl-"
+      },
+      "substitution_str": "F-\u2192Cl-",
+      "probability": 0.004529851214918533,
+      "precursor_energy_above_hull": 0.004588797222222001,
+      "precursor_is_stable": false,
+      "cif_file": "002_Li2ZrCl6_from_Li2ZrF6_mp-4002.cif"
+    },
+    {
+      "index": 3,
+      "source": "substitution",
+      "material_id": "mp-27831",
+      "precursor_formula": "Rb2ZrCl6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Rb+": "Li+"
+      },
+      "substitution_str": "Rb+\u2192Li+",
+      "probability": 0.002079129080158214,
+      "precursor_energy_above_hull": 0.0,
+      "precursor_is_stable": true,
+      "cif_file": "003_Li2ZrCl6_from_Rb2ZrCl6_mp-27831.cif"
+    },
+    {
+      "index": 4,
+      "source": "substitution",
+      "material_id": "mp-27307",
+      "precursor_formula": "Na2ZrF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Na+": "Li+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Na+\u2192Li+, F-\u2192Cl-",
+      "probability": 0.0019122663217867096,
+      "precursor_energy_above_hull": 0.0,
+      "precursor_is_stable": true,
+      "cif_file": "004_Li2ZrCl6_from_Na2ZrF6_mp-27307.cif"
+    },
+    {
+      "index": 5,
+      "source": "substitution",
+      "material_id": "mp-1180644",
+      "precursor_formula": "Li2SnO6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Sn4+": "Zr4+",
+        "O2-": "Cl-"
+      },
+      "substitution_str": "Sn4+\u2192Zr4+, O2-\u2192Cl-",
+      "probability": 0.0013679579693468586,
+      "precursor_energy_above_hull": 0.515223667555555,
+      "precursor_is_stable": false,
+      "cif_file": "005_Li2ZrCl6_from_Li2SnO6_mp-1180644.cif"
+    },
+    {
+      "index": 6,
+      "source": "substitution",
+      "material_id": "mp-777443",
+      "precursor_formula": "Li2FeF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Fe3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Fe3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0011541326327802082,
+      "precursor_energy_above_hull": 0.037503451111111,
+      "precursor_is_stable": false,
+      "cif_file": "006_Li2ZrCl6_from_Li2FeF6_mp-777443.cif"
+    },
+    {
+      "index": 7,
+      "source": "substitution",
+      "material_id": "mp-777463",
+      "precursor_formula": "Li2FeF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Fe3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Fe3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0011541326327802082,
+      "precursor_energy_above_hull": 0.023342733333334,
+      "precursor_is_stable": false,
+      "cif_file": "007_Li2ZrCl6_from_Li2FeF6_mp-777463.cif"
+    },
+    {
+      "index": 8,
+      "source": "substitution",
+      "material_id": "mp-755193",
+      "precursor_formula": "Li2FeF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Fe3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Fe3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0011541326327802082,
+      "precursor_energy_above_hull": 0.0,
+      "precursor_is_stable": true,
+      "cif_file": "008_Li2ZrCl6_from_Li2FeF6_mp-755193.cif"
+    },
+    {
+      "index": 9,
+      "source": "substitution",
+      "material_id": "mp-777860",
+      "precursor_formula": "Li2FeF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Fe3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Fe3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0011541326327802082,
+      "precursor_energy_above_hull": 0.005756367037037,
+      "precursor_is_stable": false,
+      "cif_file": "009_Li2ZrCl6_from_Li2FeF6_mp-777860.cif"
+    },
+    {
+      "index": 10,
+      "source": "substitution",
+      "material_id": "mp-7603",
+      "precursor_formula": "Li2TiF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Ti4+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Ti4+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.00112880448474287,
+      "precursor_energy_above_hull": 0.0,
+      "precursor_is_stable": true,
+      "cif_file": "010_Li2ZrCl6_from_Li2TiF6_mp-7603.cif"
+    },
+    {
+      "index": 11,
+      "source": "substitution",
+      "material_id": "mp-760229",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.028486745555555002,
+      "precursor_is_stable": false,
+      "cif_file": "011_Li2ZrCl6_from_Li2MnF6_mp-760229.cif"
+    },
+    {
+      "index": 12,
+      "source": "substitution",
+      "material_id": "mp-754648",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.060581616851851004,
+      "precursor_is_stable": false,
+      "cif_file": "012_Li2ZrCl6_from_Li2MnF6_mp-754648.cif"
+    },
+    {
+      "index": 13,
+      "source": "substitution",
+      "material_id": "mp-754966",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.0,
+      "precursor_is_stable": true,
+      "cif_file": "013_Li2ZrCl6_from_Li2MnF6_mp-754966.cif"
+    },
+    {
+      "index": 14,
+      "source": "substitution",
+      "material_id": "mp-759140",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.010729565185185001,
+      "precursor_is_stable": false,
+      "cif_file": "014_Li2ZrCl6_from_Li2MnF6_mp-759140.cif"
+    },
+    {
+      "index": 15,
+      "source": "substitution",
+      "material_id": "mp-756079",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.015648194629629002,
+      "precursor_is_stable": false,
+      "cif_file": "015_Li2ZrCl6_from_Li2MnF6_mp-756079.cif"
+    },
+    {
+      "index": 16,
+      "source": "substitution",
+      "material_id": "mp-758657",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.09735454907407401,
+      "precursor_is_stable": false,
+      "cif_file": "016_Li2ZrCl6_from_Li2MnF6_mp-758657.cif"
+    },
+    {
+      "index": 17,
+      "source": "substitution",
+      "material_id": "mp-752936",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.0021008325925930002,
+      "precursor_is_stable": false,
+      "cif_file": "017_Li2ZrCl6_from_Li2MnF6_mp-752936.cif"
+    },
+    {
+      "index": 18,
+      "source": "substitution",
+      "material_id": "mp-752557",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.028582178518519002,
+      "precursor_is_stable": false,
+      "cif_file": "018_Li2ZrCl6_from_Li2MnF6_mp-752557.cif"
+    },
+    {
+      "index": 19,
+      "source": "substitution",
+      "material_id": "mp-2755986",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.016974572777777003,
+      "precursor_is_stable": false,
+      "cif_file": "019_Li2ZrCl6_from_Li2MnF6_mp-2755986.cif"
+    },
+    {
+      "index": 20,
+      "source": "substitution",
+      "material_id": "mp-17754",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.033623882592592004,
+      "precursor_is_stable": false,
+      "cif_file": "020_Li2ZrCl6_from_Li2MnF6_mp-17754.cif"
+    },
+    {
+      "index": 21,
+      "source": "substitution",
+      "material_id": "mp-758464",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.082764625185185,
+      "precursor_is_stable": false,
+      "cif_file": "021_Li2ZrCl6_from_Li2MnF6_mp-758464.cif"
+    },
+    {
+      "index": 22,
+      "source": "substitution",
+      "material_id": "mp-2761607",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.005635131388888001,
+      "precursor_is_stable": false,
+      "cif_file": "022_Li2ZrCl6_from_Li2MnF6_mp-2761607.cif"
+    },
+    {
+      "index": 23,
+      "source": "substitution",
+      "material_id": "mp-753601",
+      "precursor_formula": "Li2MnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Mn3+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Mn3+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010805704483053645,
+      "precursor_energy_above_hull": 0.037955824629629,
+      "precursor_is_stable": false,
+      "cif_file": "023_Li2ZrCl6_from_Li2MnF6_mp-753601.cif"
+    },
+    {
+      "index": 24,
+      "source": "substitution",
+      "material_id": "mp-1205739",
+      "precursor_formula": "Li2SnF6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Sn4+": "Zr4+",
+        "F-": "Cl-"
+      },
+      "substitution_str": "Sn4+\u2192Zr4+, F-\u2192Cl-",
+      "probability": 0.0010551037407590153,
+      "precursor_energy_above_hull": 0.0,
+      "precursor_is_stable": true,
+      "cif_file": "024_Li2ZrCl6_from_Li2SnF6_mp-1205739.cif"
+    },
+    {
+      "index": 25,
+      "source": "substitution",
+      "material_id": "mp-638729",
+      "precursor_formula": "Cs2ZrCl6",
+      "formula": "Li2ZrCl6",
+      "substitution_map": {
+        "Cs+": "Li+"
+      },
+      "substitution_str": "Cs+\u2192Li+",
+      "probability": 0.001030072403639599,
+      "precursor_energy_above_hull": 0.0,
+      "precursor_is_stable": true,
+      "cif_file": "025_Li2ZrCl6_from_Cs2ZrCl6_mp-638729.cif"
+    }
+  ]
+}

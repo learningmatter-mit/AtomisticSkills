@@ -1,0 +1,125 @@
+{
+  "bulk_formula": "Mg1 O1",
+  "supercell_size": [
+    3,
+    3,
+    3
+  ],
+  "pristine_num_atoms": 54,
+  "charge_range": [
+    -2,
+    2
+  ],
+  "defects": [
+    {
+      "name": "vac_Mg_0_q-2",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_Mg_0_q-2.cif",
+      "charge": -2,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "Mg",
+      "defect_index": 0,
+      "multiplicity": 1,
+      "base_name": "vac_Mg_0"
+    },
+    {
+      "name": "vac_Mg_0_q-1",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_Mg_0_q-1.cif",
+      "charge": -1,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "Mg",
+      "defect_index": 0,
+      "multiplicity": 1,
+      "base_name": "vac_Mg_0"
+    },
+    {
+      "name": "vac_Mg_0_q0",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_Mg_0_q0.cif",
+      "charge": 0,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "Mg",
+      "defect_index": 0,
+      "multiplicity": 1,
+      "base_name": "vac_Mg_0"
+    },
+    {
+      "name": "vac_Mg_0_q+1",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_Mg_0_q+1.cif",
+      "charge": 1,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "Mg",
+      "defect_index": 0,
+      "multiplicity": 1,
+      "base_name": "vac_Mg_0"
+    },
+    {
+      "name": "vac_Mg_0_q+2",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_Mg_0_q+2.cif",
+      "charge": 2,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "Mg",
+      "defect_index": 0,
+      "multiplicity": 1,
+      "base_name": "vac_Mg_0"
+    },
+    {
+      "name": "vac_O_1_q-2",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_O_1_q-2.cif",
+      "charge": -2,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "O",
+      "defect_index": 1,
+      "multiplicity": 1,
+      "base_name": "vac_O_1"
+    },
+    {
+      "name": "vac_O_1_q-1",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_O_1_q-1.cif",
+      "charge": -1,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "O",
+      "defect_index": 1,
+      "multiplicity": 1,
+      "base_name": "vac_O_1"
+    },
+    {
+      "name": "vac_O_1_q0",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_O_1_q0.cif",
+      "charge": 0,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "O",
+      "defect_index": 1,
+      "multiplicity": 1,
+      "base_name": "vac_O_1"
+    },
+    {
+      "name": "vac_O_1_q+1",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_O_1_q+1.cif",
+      "charge": 1,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "O",
+      "defect_index": 1,
+      "multiplicity": 1,
+      "base_name": "vac_O_1"
+    },
+    {
+      "name": "vac_O_1_q+2",
+      "file": "/home/bdeng/projects/AtomisticSkills/research/2026-02-17_MgO_charged_vacancy/dft_defects/vac_O_1_q+2.cif",
+      "charge": 2,
+      "num_atoms": 53,
+      "type": "vacancy",
+      "site_element": "O",
+      "defect_index": 1,
+      "multiplicity": 1,
+      "base_name": "vac_O_1"
+    }
+  ]
+}

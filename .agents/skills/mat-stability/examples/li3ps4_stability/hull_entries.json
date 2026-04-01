@@ -1,0 +1,175 @@
+{
+  "chemical_system": "Li-P-S",
+  "target_formula": "Li3PS4",
+  "target_on_hull": true,
+  "num_hull_structures": 14,
+  "hull_entries": [
+    {
+      "material_id": "mp-2650-r2SCAN",
+      "formula": "P4S7",
+      "composition": {
+        "P": 16.0,
+        "S": 28.0
+      },
+      "energy_per_atom_eV": -8.607139174545454,
+      "is_target": false,
+      "structure_file": "mp-2650-r2SCAN.cif",
+      "num_atoms": 44
+    },
+    {
+      "material_id": "mp-542630-r2SCAN",
+      "formula": "P4S9",
+      "composition": {
+        "P": 16.0,
+        "S": 36.0
+      },
+      "energy_per_atom_eV": -8.550564723076924,
+      "is_target": false,
+      "structure_file": "mp-542630-r2SCAN.cif",
+      "num_atoms": 52
+    },
+    {
+      "material_id": "mp-1199938-r2SCAN",
+      "formula": "P2S7",
+      "composition": {
+        "P": 8.0,
+        "S": 28.0
+      },
+      "energy_per_atom_eV": -8.423256228888889,
+      "is_target": false,
+      "structure_file": "mp-1199938-r2SCAN.cif",
+      "num_atoms": 36
+    },
+    {
+      "material_id": "mp-1018134-r2SCAN",
+      "formula": "Li",
+      "composition": {
+        "Li": 3.0
+      },
+      "energy_per_atom_eV": -2.3867064133333336,
+      "is_target": false,
+      "structure_file": "mp-1018134-r2SCAN.cif",
+      "num_atoms": 3
+    },
+    {
+      "material_id": "mp-27687-r2SCAN",
+      "formula": "LiP7",
+      "composition": {
+        "Li": 8.0,
+        "P": 56.0
+      },
+      "energy_per_atom_eV": -8.3658560221875,
+      "is_target": false,
+      "structure_file": "mp-27687-r2SCAN.cif",
+      "num_atoms": 64
+    },
+    {
+      "material_id": "mp-28336-r2SCAN",
+      "formula": "Li3P7",
+      "composition": {
+        "Li": 12.0,
+        "P": 28.0
+      },
+      "energy_per_atom_eV": -7.4435614385,
+      "is_target": false,
+      "structure_file": "mp-28336-r2SCAN.cif",
+      "num_atoms": 40
+    },
+    {
+      "material_id": "mp-736-r2SCAN",
+      "formula": "Li3P",
+      "composition": {
+        "Li": 6.0,
+        "P": 2.0
+      },
+      "energy_per_atom_eV": -4.849909675,
+      "is_target": false,
+      "structure_file": "mp-736-r2SCAN.cif",
+      "num_atoms": 8
+    },
+    {
+      "material_id": "mp-568348-r2SCAN",
+      "formula": "P",
+      "composition": {
+        "P": 84.0
+      },
+      "energy_per_atom_eV": -9.00207631202381,
+      "is_target": false,
+      "structure_file": "mp-568348-r2SCAN.cif",
+      "num_atoms": 84
+    },
+    {
+      "material_id": "mp-541788-r2SCAN",
+      "formula": "P2S5",
+      "composition": {
+        "P": 8.0,
+        "S": 20.0
+      },
+      "energy_per_atom_eV": -8.526280050357142,
+      "is_target": false,
+      "structure_file": "mp-541788-r2SCAN.cif",
+      "num_atoms": 28
+    },
+    {
+      "material_id": "mp-1468-r2SCAN",
+      "formula": "P4S3",
+      "composition": {
+        "P": 32.0,
+        "S": 24.0
+      },
+      "energy_per_atom_eV": -8.741601223214285,
+      "is_target": false,
+      "structure_file": "mp-1468-r2SCAN.cif",
+      "num_atoms": 56
+    },
+    {
+      "material_id": "mp-77-r2SCAN",
+      "formula": "S",
+      "composition": {
+        "S": 32.0
+      },
+      "energy_per_atom_eV": -8.0340372271875,
+      "is_target": false,
+      "structure_file": "mp-77-r2SCAN.cif",
+      "num_atoms": 32
+    },
+    {
+      "material_id": "mp-9588-r2SCAN",
+      "formula": "LiP",
+      "composition": {
+        "Li": 8.0,
+        "P": 8.0
+      },
+      "energy_per_atom_eV": -6.3110585625,
+      "is_target": false,
+      "structure_file": "mp-9588-r2SCAN.cif",
+      "num_atoms": 16
+    },
+    {
+      "material_id": "mp-1153-r2SCAN",
+      "formula": "Li2S",
+      "composition": {
+        "Li": 2.0,
+        "S": 1.0
+      },
+      "energy_per_atom_eV": -5.794963296666666,
+      "is_target": false,
+      "structure_file": "mp-1153-r2SCAN.cif",
+      "num_atoms": 3
+    },
+    {
+      "material_id": "mp-985583-r2SCAN",
+      "formula": "Li3PS4",
+      "composition": {
+        "Li": 12.0,
+        "P": 4.0,
+        "S": 16.0
+      },
+      "energy_per_atom_eV": -7.113785584375,
+      "is_target": true,
+      "structure_file": "mp-985583-r2SCAN.cif",
+      "num_atoms": 32
+    }
+  ],
+  "output_directory": ".agents/test/Li3PS4_hull"
+}

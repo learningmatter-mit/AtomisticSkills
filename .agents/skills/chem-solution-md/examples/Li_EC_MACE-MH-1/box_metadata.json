@@ -1,0 +1,16 @@
+{
+  "box_size_angstrom": 15.2562,
+  "total_atoms": 321,
+  "num_solvent_molecules": 32,
+  "solvent_name": "ethylene_carbonate",
+  "solvent_density_g_cm3": 1.321,
+  "has_solute": true,
+  "solute_num_atoms": 1,
+  "solute_indices": [
+    0
+  ],
+  "tolerance_angstrom": 2.0,
+  "seed": 1,
+  "cif_path": "research/2026-02-18_Li_EC_solvation_md/solvation_box/solvated_box.cif",
+  "xyz_path": "research/2026-02-18_Li_EC_solvation_md/solvation_box/solvated_box.xyz"
+}

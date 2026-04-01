@@ -1,0 +1,18 @@
+[
+  {
+    "material_id": "mp-1153",
+    "formula": "Li2S",
+    "cif": "# generated using pymatgen\ndata_Li2S\n_symmetry_space_group_name_H-M   'P 1'\n_cell_length_a   4.00953374\n_cell_length_b   4.00953231\n_cell_length_c   4.00953300\n_cell_angle_alpha   59.99998603\n_cell_angle_beta   59.99999785\n_cell_angle_gamma   59.99999628\n_symmetry_Int_Tables_number   1\n_chemical_formula_structural   Li2S\n_chemical_formula_sum   'Li2 S1'\n_cell_volume   45.57916017\n_cell_formula_units_Z   1\nloop_\n _symmetry_equiv_pos_site_id\n _symmetry_equiv_pos_as_xyz\n  1  'x, y, z'\nloop_\n _atom_site_type_symbol\n _atom_site_label\n _atom_site_symmetry_multiplicity\n _atom_site_fract_x\n _atom_site_fract_y\n _atom_site_fract_z\n _atom_site_occupancy\n  Li  Li0  1  0.25000000  0.25000000  0.25000000  1\n  Li  Li1  1  0.75000000  0.75000000  0.75000000  1\n  S  S2  1  0.00000000  0.00000000  0.00000000  1\n",
+    "energy_above_hull": 0.0,
+    "formation_energy_per_atom": -1.503453288055556,
+    "band_gap": 3.3862
+  },
+  {
+    "material_id": "mp-995393",
+    "formula": "LiS4",
+    "cif": "# generated using pymatgen\ndata_LiS4\n_symmetry_space_group_name_H-M   'P 1'\n_cell_length_a   12.35602000\n_cell_length_b   12.86585511\n_cell_length_c   13.38132891\n_cell_angle_alpha   95.66762429\n_cell_angle_beta   92.33615182\n_cell_angle_gamma   89.87000746\n_symmetry_Int_Tables_number   1\n_chemical_formula_structural   LiS4\n_chemical_formula_sum   'Li2 S8'\n_cell_volume   2115.07846240\n_cell_formula_units_Z   2\nloop_\n _symmetry_equiv_pos_site_id\n _symmetry_equiv_pos_as_xyz\n  1  'x, y, z'\nloop_\n _atom_site_type_symbol\n _atom_site_label\n _atom_site_symmetry_multiplicity\n _atom_site_fract_x\n _atom_site_fract_y\n _atom_site_fract_z\n _atom_site_occupancy\n  Li  Li0  1  0.35250400  0.68277400  0.52381000  1\n  Li  Li1  1  0.47829500  0.51776000  0.46648600  1\n  S  S2  1  0.53634600  0.70209500  0.49244000  1\n  S  S3  1  0.56990100  0.63465900  0.62495800  1\n  S  S4  1  0.70468700  0.54241700  0.60532400  1\n  S  S5  1  0.66098600  0.41252600  0.50543400  1\n  S  S6  1  0.57881700  0.30974900  0.58829300  1\n  S  S7  1  0.41631000  0.30426200  0.54377600  1\n  S  S8  1  0.33211700  0.43044700  0.60975900  1\n  S  S9  1  0.28343400  0.51331100  0.48972100  1\n",
+    "energy_above_hull": 0.0,
+    "formation_energy_per_atom": -0.612184769666665,
+    "band_gap": 2.1989
+  }
+]

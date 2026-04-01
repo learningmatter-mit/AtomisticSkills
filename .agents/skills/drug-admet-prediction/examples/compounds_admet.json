@@ -1,0 +1,153 @@
+{
+    "meta": {
+        "generated_at": "2026-02-11T06:04:11.059909+00:00",
+        "rdkit_version": "2025.09.4",
+        "settings": {
+            "include_sandp_tpsa": false,
+            "ndigits": 3,
+            "lipinski_ro5_thresholds": {
+                "MW": 500,
+                "LogP": 5,
+                "HBD": 5,
+                "HBA": 10
+            },
+            "veber_thresholds": {
+                "rotatable_bonds": 10,
+                "tpsa": 140,
+                "hbd_plus_hba": 12
+            }
+        },
+        "n_input": 3
+    },
+    "results": [
+        {
+            "name": "caffeine",
+            "smiles_input": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+            "smiles": "Cn1c(=O)c2c(ncn2C)n(C)c1=O",
+            "valid": true,
+            "warnings": [],
+            "descriptors": {
+                "mol_wt": 194.194,
+                "exact_mol_wt": 194.08,
+                "logp_wc": -1.029,
+                "molar_refractivity": 51.196,
+                "tpsa": 61.82,
+                "tpsa_includes_sandp": false,
+                "hbd": 0,
+                "hba": 6,
+                "rotatable_bonds": 0,
+                "ring_count": 2,
+                "aromatic_rings": 2,
+                "heavy_atoms": 14,
+                "fraction_csp3": 0.375,
+                "qed": 0.538
+            },
+            "heuristics": {
+                "lipinski_ro5": {
+                    "violations": 0,
+                    "pass": true,
+                    "details": {
+                        "MW_le_500": true,
+                        "LogP_le_5": true,
+                        "HBD_le_5": true,
+                        "HBA_le_10": true
+                    },
+                    "notes": "Pass defined as <= 1 violation (common screening convention). Uses average MW (Descriptors.MolWt) per the original Ro5 paper."
+                },
+                "veber": {
+                    "pass": true,
+                    "rotatable_le_10": true,
+                    "tpsa_le_140": true,
+                    "hbd_plus_hba_le_12": true,
+                    "notes": "Primary pass uses RB<=10 and TPSA<=140; HBD+HBA<=12 is reported as an alternative criterion."
+                }
+            }
+        },
+        {
+            "name": "aspirin",
+            "smiles_input": "CC(=O)Oc1ccccc1C(=O)O",
+            "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+            "valid": true,
+            "warnings": [],
+            "descriptors": {
+                "mol_wt": 180.159,
+                "exact_mol_wt": 180.042,
+                "logp_wc": 1.31,
+                "molar_refractivity": 44.71,
+                "tpsa": 63.6,
+                "tpsa_includes_sandp": false,
+                "hbd": 1,
+                "hba": 3,
+                "rotatable_bonds": 2,
+                "ring_count": 1,
+                "aromatic_rings": 1,
+                "heavy_atoms": 13,
+                "fraction_csp3": 0.111,
+                "qed": 0.55
+            },
+            "heuristics": {
+                "lipinski_ro5": {
+                    "violations": 0,
+                    "pass": true,
+                    "details": {
+                        "MW_le_500": true,
+                        "LogP_le_5": true,
+                        "HBD_le_5": true,
+                        "HBA_le_10": true
+                    },
+                    "notes": "Pass defined as <= 1 violation (common screening convention). Uses average MW (Descriptors.MolWt) per the original Ro5 paper."
+                },
+                "veber": {
+                    "pass": true,
+                    "rotatable_le_10": true,
+                    "tpsa_le_140": true,
+                    "hbd_plus_hba_le_12": true,
+                    "notes": "Primary pass uses RB<=10 and TPSA<=140; HBD+HBA<=12 is reported as an alternative criterion."
+                }
+            }
+        },
+        {
+            "name": "ibuprofen",
+            "smiles_input": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
+            "smiles": "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+            "valid": true,
+            "warnings": [],
+            "descriptors": {
+                "mol_wt": 206.285,
+                "exact_mol_wt": 206.131,
+                "logp_wc": 3.073,
+                "molar_refractivity": 61.035,
+                "tpsa": 37.3,
+                "tpsa_includes_sandp": false,
+                "hbd": 1,
+                "hba": 1,
+                "rotatable_bonds": 4,
+                "ring_count": 1,
+                "aromatic_rings": 1,
+                "heavy_atoms": 15,
+                "fraction_csp3": 0.462,
+                "qed": 0.822
+            },
+            "heuristics": {
+                "lipinski_ro5": {
+                    "violations": 0,
+                    "pass": true,
+                    "details": {
+                        "MW_le_500": true,
+                        "LogP_le_5": true,
+                        "HBD_le_5": true,
+                        "HBA_le_10": true
+                    },
+                    "notes": "Pass defined as <= 1 violation (common screening convention). Uses average MW (Descriptors.MolWt) per the original Ro5 paper."
+                },
+                "veber": {
+                    "pass": true,
+                    "rotatable_le_10": true,
+                    "tpsa_le_140": true,
+                    "hbd_plus_hba_le_12": true,
+                    "notes": "Primary pass uses RB<=10 and TPSA<=140; HBD+HBA<=12 is reported as an alternative criterion."
+                }
+            }
+        }
+    ]
+}

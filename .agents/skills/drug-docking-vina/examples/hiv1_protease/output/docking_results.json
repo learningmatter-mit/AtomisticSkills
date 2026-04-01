@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "vina_python_package_version": "1.2.6",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "python": "3.11.0 | packaged by conda-forge | (main, Jan 14 2023, 12:26:40) [Clang 14.0.6 ]",
+    "config": {
+      "receptor": ".agents/skills/docking-vina/examples/hiv1_protease/inputs/1HSG_prepared.pdbqt",
+      "flex_receptor": null,
+      "scoring": "vina",
+      "center": [
+        16.0,
+        25.0,
+        2.0
+      ],
+      "box_size": [
+        20.0,
+        20.0,
+        20.0
+      ],
+      "spacing": 0.375,
+      "exhaustiveness": 32,
+      "n_poses": 5,
+      "energy_range": 3.0,
+      "min_rmsd": 1.0,
+      "max_evals": 0,
+      "seed": 42,
+      "cpu": 0,
+      "verbosity": 1,
+      "no_refine": false
+    },
+    "timestamp_unix": 1770789940
+  },
+  "results": [
+    {
+      "ligand": "indinavir",
+      "ligand_file": ".agents/skills/docking-vina/examples/hiv1_protease/inputs/indinavir/indinavir.pdbqt",
+      "success": true,
+      "poses": [
+        {
+          "pose": 1,
+          "total": -9.751,
+          "inter": -17.446,
+          "intra": -2.069,
+          "torsions": 7.695,
+          "intra_best_pose": -2.069,
+          "affinity_kcal_mol": -9.751
+        },
+        {
+          "pose": 2,
+          "total": -9.616,
+          "inter": -18.435,
+          "intra": -0.84,
+          "torsions": 7.589,
+          "intra_best_pose": -2.069,
+          "affinity_kcal_mol": -9.616
+        },
+        {
+          "pose": 3,
+          "total": -9.513,
+          "inter": -17.416,
+          "intra": -1.673,
+          "torsions": 7.508,
+          "intra_best_pose": -2.069,
+          "affinity_kcal_mol": -9.513
+        },
+        {
+          "pose": 4,
+          "total": -9.441,
+          "inter": -17.764,
+          "intra": -1.197,
+          "torsions": 7.451,
+          "intra_best_pose": -2.069,
+          "affinity_kcal_mol": -9.441
+        },
+        {
+          "pose": 5,
+          "total": -9.257,
+          "inter": -17.716,
+          "intra": -0.916,
+          "torsions": 7.306,
+          "intra_best_pose": -2.069,
+          "affinity_kcal_mol": -9.257
+        }
+      ],
+      "best_affinity_kcal_mol": -9.751,
+      "n_poses_returned": 5,
+      "runtime_s": 175.106,
+      "poses_file": ".agents/skills/docking-vina/examples/hiv1_protease/output/indinavir_docked.pdbqt"
+    }
+  ]
+}

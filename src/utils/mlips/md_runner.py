@@ -299,11 +299,21 @@ class CustomMDCalc(PropCalc):
         # --- KEY ADDITION ---
         if self.additional_callbacks:
             for callback, interval in self.additional_callbacks:
-                # Pass dyn=md to allow monitors to auto-configure
-                md.attach(callback, interval=interval, dyn=md)
+                # Pass dyn=md and md_runner=self to allow monitors to auto-configure
+                md.attach(callback, interval=interval, dyn=md, md_runner=self)
         # --------------------
 
-        md.run(self.steps)
+        try:
+            md.run(self.steps)
+        finally:
+            if self.additional_callbacks:
+                for callback, _ in self.additional_callbacks:
+                    if hasattr(callback, "finalize") and callable(getattr(callback, "finalize")):
+                        try:
+                            callback.finalize()
+                        except Exception as e:
+                            import logging
+                            logging.getLogger(__name__).warning(f"Error finalizing callback {callback}: {e}")
         
         final_atoms = Atoms(
             traj.atoms.get_chemical_symbols(),

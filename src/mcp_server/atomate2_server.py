@@ -54,7 +54,7 @@ def run_atomate2_vasp_calculation(
     Args:
         structures_path: Path to structure files or directory.
         output_dir: Directory to save results and logs.
-        preset_type: VASP input preset ("omat", "mp", "matpes-pbe", "matpes-r2scan").
+        preset_type: VASP input preset ("omat", "mp", "matpes-pbe", "matpes-r2scan", "mp-r2scan").
         calculation_type: "static", "relaxation", or "band_structure".
         config: Optional custom INCAR settings to override preset.
         execution_mode: "local" (blocking) or "remote".

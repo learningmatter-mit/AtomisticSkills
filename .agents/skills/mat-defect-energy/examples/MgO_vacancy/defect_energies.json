@@ -1,0 +1,31 @@
+{
+  "bulk_formula": "Mg27 O27",
+  "bulk_energy_per_atom_eV": -5.935863312073063,
+  "pristine_num_atoms": 54,
+  "elemental_energies_used": {
+    "Mg": -1.5072231077332743,
+    "O": -4.9814139157552075
+  },
+  "defects": [
+    {
+      "name": "vac_O_1",
+      "defect_energy_eV": -308.43063026645507,
+      "num_atoms_defect": 53,
+      "delta_n": {
+        "O": 1
+      },
+      "mu_correction_eV": -4.9814139157552075,
+      "formation_energy_eV": 7.124574669735101
+    },
+    {
+      "name": "vac_Mg_0",
+      "defect_energy_eV": -311.64447657754795,
+      "num_atoms_defect": 53,
+      "delta_n": {
+        "Mg": 1
+      },
+      "mu_correction_eV": -1.5072231077332743,
+      "formation_energy_eV": 7.3849191666641545
+    }
+  ]
+}

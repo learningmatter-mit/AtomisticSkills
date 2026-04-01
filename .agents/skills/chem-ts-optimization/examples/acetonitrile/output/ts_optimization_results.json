@@ -1,0 +1,48 @@
+{
+  "ts_guess": "ts_guess.xyz",
+  "output_dir": "output",
+  "model_type": "fairchem",
+  "model_name": "uma-s-1p1",
+  "task_name": "omol",
+  "device": "auto",
+  "fmax": 0.02,
+  "steps": 500,
+  "vib_delta": 0.01,
+  "vib_nfree": 2,
+  "imag_cutoff_cm1": -50.0,
+  "sella_converged": true,
+  "optimization_steps": 52,
+  "max_force_eV_per_A": 0.0034529014956206083,
+  "all_frequencies_cm1": [
+    -424.5318129382297,
+    -22.92223870754214,
+    -5.163639347444906,
+    -0.293254441005657,
+    0.048272453617758726,
+    0.3583774127055599,
+    7.28106258780728,
+    201.30931815672577,
+    631.2979722938055,
+    970.0071689147887,
+    989.4105730610335,
+    1318.115373402886,
+    1454.5332064813429,
+    1466.7358550813774,
+    2047.7463631349847,
+    3117.1387771498385,
+    3205.177469418229,
+    3240.5057409172086
+  ],
+  "imaginary_modes": [
+    {
+      "index": 0,
+      "frequency_cm1": -424.5318129382297
+    }
+  ],
+  "n_imag_below_cutoff": 1,
+  "is_first_order_saddle": true,
+  "keep_vib_cache": false,
+  "vib_cache_dir": null,
+  "optimized_ts_file": "ts_optimized.xyz",
+  "trajectory_file": "ts_opt.traj"
+}

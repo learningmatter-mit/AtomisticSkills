@@ -13,17 +13,15 @@ from pymatgen.core import PeriodicSite, Structure
 
 from pymatviz.enums import ElemColorScheme, SiteCoords
 from pymatviz.colors import ELEM_COLORS_VESTA
-from pymatviz.structure_viz.helpers import (
+from pymatviz.structure.helpers import (
     NO_SYM_MSG,
     draw_bonds,
-    draw_unit_cell,
+    draw_cell,
     draw_vector,
     get_atomic_radii,
     get_elem_colors,
     get_first_matching_site_prop,
     get_image_sites,
-    get_structures,
-    get_site_hover_text,
     generate_site_label,
     get_subplot_title,
 )
@@ -173,7 +171,14 @@ def draw_site_custom(
     site_radius = _atomic_radii.get(symbol, 1.0) * scale
     color = _elem_colors.get(symbol, "gray")
 
-    site_hover_text = get_site_hover_text(site, hover_text, species) # Pass species or majority_species
+    # Build hover text manually to avoid pymatviz species_string incompatibility
+    coords_cart = site.coords
+    coords_frac = site.frac_coords if hasattr(site, "frac_coords") else None
+    hover_parts = [f"<b>{symbol}</b>"]
+    hover_parts.append(f"Cart: ({coords_cart[0]:.3f}, {coords_cart[1]:.3f}, {coords_cart[2]:.3f})")
+    if coords_frac is not None:
+        hover_parts.append(f"Frac: ({coords_frac[0]:.3f}, {coords_frac[1]:.3f}, {coords_frac[2]:.3f})")
+    site_hover_text = "<br>".join(hover_parts)
 
     # Re-derive majority species for label generation if needed, or just pass species
     # Helpers.generate_site_label expects majority_species (Species object)
@@ -183,7 +188,7 @@ def draw_site_custom(
     else:
          majority_species = species
 
-    txt = generate_site_label(site_labels, site_idx, majority_species)
+    txt = generate_site_label(site_labels, site_idx, site)
 
     # Custom marker settings for 3D sphere look
     marker = dict(
@@ -234,7 +239,7 @@ def structure_3d_custom(
     show_sites: bool | dict[str, Any] = True,
     show_image_sites: bool | dict[str, Any] = False, # Disabled for cleaner multi-view
     show_bonds: bool | NearNeighbors = True, # Enable bonds by default
-    site_labels: Literal["symbol", "species", False] | dict[str, str] | Sequence[str] = "species",
+    site_labels: Literal["symbol", "species", False] | dict[str, str] | Sequence[str] = "symbol",
     standardize_struct: bool | None = None,
     n_cols: int = 3, # Only used if struct is a sequence
     subplot_title: Callable[[Structure, str | int], str | dict[str, Any]] | None | Literal[False] = None,
@@ -262,7 +267,7 @@ def structure_3d_custom(
         )
     else:
         # Sequence of structures (legacy/batch mode)
-        structs = get_structures(struct)
+        structs = list(struct) if not isinstance(struct, Structure) else [struct]
         if standardize_struct:
             structs = [s.get_primitive_structure() if standardize_struct is True else s for s in structs]
         n_rows = (len(structs) - 1) // n_cols + 1
@@ -288,7 +293,7 @@ def structure_3d_custom(
 
     # Determine vector_prop once for all structures if it's a sequence, or for the single structure
     vector_prop = get_first_matching_site_prop(
-        list(structures.values()) if not isinstance(struct, Structure) else [struct],
+        list(structs) if not isinstance(struct, Structure) else [struct],
         show_site_vectors,
         warn_if_none=show_site_vectors != ("force", "magmom"),
         filter_callback=lambda _prop, value: (np.array(value).shape or [None])[-1] == 3,
@@ -302,14 +307,14 @@ def structure_3d_custom(
         # We need to call drawing functions with row/col or scene name.
         scene_name = f"scene{idx+1}" if idx > 0 else "scene"
 
-        visible_image_atoms: set[tuple[float, float, float]] = set()
+        plotted_sites_coords: set[tuple[float, float, float]] = set()
 
         if show_image_sites and show_sites:
             for site_idx, site in enumerate(struct_i):
                 image_atoms = get_image_sites(site, struct_i.lattice)
                 if len(image_atoms) > 0:
                     for image_coords in image_atoms:
-                        visible_image_atoms.add(tuple(image_coords))
+                        plotted_sites_coords.add(tuple(image_coords))
                         draw_site_custom(
                             fig,
                             site,
@@ -334,7 +339,7 @@ def structure_3d_custom(
                 is_3d=True,
                 bond_kwargs=bond_kwargs,
                 scene=scene_name,
-                visible_image_atoms=visible_image_atoms,
+                plotted_sites_coords=plotted_sites_coords,
                 elem_colors=_elem_colors,
             )
 
@@ -383,10 +388,10 @@ def structure_3d_custom(
             if isinstance(show_unit_cell, dict):
                 uc_kwargs.update(show_unit_cell)
             
-            draw_unit_cell(
+            draw_cell(
                 fig,
                 struct_i,
-                unit_cell_kwargs=uc_kwargs,
+                cell_kwargs=uc_kwargs,
                 is_3d=True,
                 scene=scene_name,
             )

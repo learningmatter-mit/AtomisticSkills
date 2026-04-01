@@ -1,0 +1,44 @@
+{
+    "query": {
+        "timestamp_utc": "2026-02-11T05:35:50.857612+00:00",
+        "type": "name",
+        "value": "aspirin",
+        "name_type": "complete"
+    },
+    "cids": [
+        2244
+    ],
+    "results": [
+        {
+            "CID": 2244,
+            "properties": {
+                "CID": 2244,
+                "MolecularFormula": "C9H8O4",
+                "MolecularWeight": "180.16",
+                "SMILES": "CC(=O)OC1=CC=CC=C1C(=O)O",
+                "ConnectivitySMILES": "CC(=O)OC1=CC=CC=C1C(=O)O",
+                "InChI": "InChI=1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)",
+                "InChIKey": "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
+                "IUPACName": "2-acetyloxybenzoic acid",
+                "XLogP": 1.2,
+                "ExactMass": "180.04225873",
+                "TPSA": 63.6,
+                "HBondDonorCount": 1,
+                "HBondAcceptorCount": 4,
+                "RotatableBondCount": 3
+            },
+            "synonyms": [
+                "aspirin",
+                "ACETYLSALICYLIC ACID",
+                "50-78-2",
+                "2-Acetoxybenzoic acid",
+                "2-(Acetyloxy)benzoic acid",
+                "Acylpyrin",
+                "O-Acetylsalicylic acid",
+                "o-Acetoxybenzoic acid",
+                "Acenterine",
+                "Acetophen"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+[
+    {"name": "(001)", "2theta": 8.0, "intensity": 0.05, "fwhm": 0.3},
+    {"name": "(002)", "2theta": 15.6, "intensity": 0.08, "fwhm": 0.3},
+    {"name": "(003)", "2theta": 23.3, "intensity": 0.25, "fwhm": 0.3},
+    {"name": "(013)", "2theta": 33.1, "intensity": 1.00, "fwhm": 0.3},
+    {"name": "(014)", "2theta": 38.6, "intensity": 0.35, "fwhm": 0.3},
+    {"name": "(113)", "2theta": 40.8, "intensity": 0.25, "fwhm": 0.3},
+    {"name": "(006)", "2theta": 47.1, "intensity": 0.32, "fwhm": 0.3},
+    {"name": "(200)", "2theta": 47.8, "intensity": 0.22, "fwhm": 0.3},
+    {"name": "(123)", "2theta": 58.5, "intensity": 0.28, "fwhm": 0.3},
+    {"name": "(213)", "2theta": 59.2, "intensity": 0.18, "fwhm": 0.3},
+    {"name": "(026)", "2theta": 68.5, "intensity": 0.10, "fwhm": 0.3},
+    {"name": "(220)", "2theta": 69.3, "intensity": 0.16, "fwhm": 0.3},
+    {"name": "unnamed_end", "2theta": 78.4, "intensity": 0.12, "fwhm": 0.3}
+]

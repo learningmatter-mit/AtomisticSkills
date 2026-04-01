@@ -1,0 +1,9 @@
+{
+  "num_generated": 10,
+  "num_attempted": 10,
+  "generation_type": "molecules",
+  "dataset": "qm9",
+  "cfg_scale": 2.0,
+  "batch_size": 100,
+  "device": "cuda"
+}

@@ -1,0 +1,59 @@
+{
+  "rwp": 5.24,
+  "refined_cif": null,
+  "instrument_profile": "Aeris-fds-Pixcel1d-Medipix3",
+  "phase_params": null,
+  "refinement_params": null,
+  "phases": [
+    {
+      "name": "CaNi(PO3)4_15_sym",
+      "gewicht": [
+        0.2163,
+        0.0019
+      ],
+      "lattice": {
+        "a": [
+          1.20707,
+          0.0001
+        ],
+        "b": [
+          0.869242,
+          9.2e-05
+        ],
+        "c": [
+          0.97908,
+          0.00011
+        ],
+        "alpha": null,
+        "beta": [
+          117.9527,
+          0.0055
+        ],
+        "gamma": null
+      }
+    },
+    {
+      "name": "NiO_225_sym",
+      "gewicht": [
+        0.02037,
+        0.00052
+      ],
+      "lattice": {
+        "a": [
+          0.418439,
+          2.6e-05
+        ],
+        "b": null,
+        "c": null,
+        "alpha": null,
+        "beta": null,
+        "gamma": null
+      }
+    }
+  ],
+  "plots": {
+    "html": null,
+    "png": ".agents/skills/mat-xrd-refinement/examples/CaNi(PO3)4_800_240_Ca(OH)2_(NH4)2HPO4_NiO/refinement_results/CaNi(PO3)4_800_240_Ca(OH)2_(NH4)2HPO4_NiO/CaNi(PO3)4_800_240_Ca(OH)2_(NH4)2HPO4_NiO_refinement.png"
+  },
+  "peak_data": ".agents/skills/mat-xrd-refinement/examples/CaNi(PO3)4_800_240_Ca(OH)2_(NH4)2HPO4_NiO/refinement_results/CaNi(PO3)4_800_240_Ca(OH)2_(NH4)2HPO4_NiO/CaNi(PO3)4_800_240_Ca(OH)2_(NH4)2HPO4_NiO_peak_data.csv"
+}

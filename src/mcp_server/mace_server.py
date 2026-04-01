@@ -91,12 +91,12 @@ def load_model(model_name: str = "MACE-OMAT-0-small", device: str = "auto", task
         return f"Error loading model: {str(e)}"
 
 @mcp.tool()
-def predict_structure(structure_data: Union[Dict[str, Any], str]) -> Dict[str, Any]:
+def predict_structure(structure_data: Union[Dict[str, Any], str, List[Union[Dict[str, Any], str]]]) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
     """
-    Predict energy, forces, and stress for a structure.
+    Predict energy, forces, and stress for a structure or a batch of structures.
     
     Args:
-        structure_data: Structure data (dict, ASE Atoms, pymatgen Structure, or file path).
+        structure_data: Single structure or batch (directory path, list of dicts/paths).
     
     Returns:
         Dict: {'energy': eV, 'forces': eV/A, 'stress': eV/A^3}
@@ -115,7 +115,7 @@ def predict_atomic_features(structure_data: Union[Dict[str, Any], str], output_p
     Automatically saves features to the current research directory.
     
     Args:
-        structure_data: Structure data (dict, ASE Atoms, pymatgen Structure, or file path).
+        structure_data: Single structure or batch (directory path, list of dicts/paths).
         output_path: Optional custom path for saving features. If not provided, auto-generates
                      based on structure filename (e.g., 'solid.cif' -> 'solid_features.json').
     
@@ -191,11 +191,7 @@ def relax_structure(
     Relax one or multiple structures using the loaded MACE model.
     
     Args:
-        structure_data: Can be:
-            - Single structure (dict, ASE Atoms, pymatgen Structure, or file path)
-            - Directory path containing CIF/POSCAR files (batch mode)
-            - List of file paths (batch mode)
-            - List of structure dicts (batch mode)
+        structure_data: Single structure or batch (directory path, list of dicts/paths).
         fmax: Force convergence criterion (eV/Ang).
         steps: Maximum number of optimization steps.
         optimizer: Optimizer to use ("FIRE", "BFGS", "LBFGS").
@@ -224,7 +220,7 @@ def relax_structure(
 
 @mcp.tool()
 def run_md(
-    structure_data: Union[Dict[str, Any], str],
+    structure_data: Union[Dict[str, Any], str, List[Union[Dict[str, Any], str]]],
     temperature: float = 300.0,
     steps: int = 1000,
     timestep: float = 1.0,
@@ -236,12 +232,13 @@ def run_md(
     monitor: bool = False,
     monitor_type: Optional[Union[str, List[str]]] = None,
     monitor_params: Optional[Dict[str, Any]] = None,
+    supercell_min_length: Optional[float] = None
 ) -> Dict[str, Any]:
     """
     Run molecular dynamics simulation using MatCalc.
     
     Args:
-        structure_data: Structure data.
+        structure_data: Single structure or batch (directory path, list of dicts/paths).
         temperature: Temperature in Kelvin.
         steps: Number of steps.
         timestep: Timestep in fs.
@@ -256,6 +253,7 @@ def run_md(
                      or a list of types.
         monitor_params: Optional dictionary of parameters for the monitors 
                         (e.g., {"upper_limit_ratio": 4.0}).
+        supercell_min_length: Minimum length (Å) for each lattice vector. Automatically expands supercell.
         
     Returns:
         Dictionary with MD results.
@@ -286,7 +284,8 @@ def run_md(
             output_dir=output_dir,
             monitor=monitor,
             monitor_type=monitor_type,
-            monitor_params=monitor_params
+            monitor_params=monitor_params,
+            supercell_min_length=supercell_min_length
         )
         
         if "error" in result:
@@ -297,64 +296,6 @@ def run_md(
     except Exception as e:
         traceback.print_exc(file=sys.stderr) # Reverted to original traceback.print_exc
         return {"error": f"MD execution failed: {str(e)}", "traceback": traceback.format_exc()}
-
-
-
-@mcp.tool()
-def fine_tune_model(
-    training_data_path: str,
-    epochs: int = 10,
-    learning_rate: float = 1e-4,
-    output_dir: Optional[str] = None,
-    training_config: Optional[Dict[str, Any]] = None
-) -> Dict[str, Any]:
-    """
-    Fine-tune the current MACE model.
-    
-    Args:
-        training_data_path: Path to a JSON file containing the training data list.
-                             Each sample must have:
-                               - 'structure': Dict (ASE atoms or pymatgen format)
-                               - 'energy': Total potential energy (float, eV)
-                               - 'forces': Atomic forces (list/array, eV/A)
-                               - 'stress': (Optional) Stress tensor (list/array) in eV/A^3.
-        epochs: Number of training epochs.
-        learning_rate: Learning rate.
-        output_dir: Directory to save the fine-tuned model.
-        training_config: Optional dictionary for advanced configuration.
-        
-    Returns:
-        Dictionary with fine-tuning results.
-    """
-    import json
-    import contextlib
-    global wrapper
-    if wrapper is None or not wrapper.is_loaded:
-        return {"error": "Model not loaded. Please call load_model first."}
-    
-    if not output_dir:
-        output_dir = str(get_current_research_dir() / "mace" / "fine_tuning")
-        
-    # Load training data
-    try:
-        with open(training_data_path, 'r') as f:
-            training_data = json.load(f)
-    except Exception as e:
-        return {"error": f"Failed to load training data from {training_data_path}: {e}"}
-        
-    # Prepare config
-    config = training_config or {}
-    config.update({
-        "max_epochs": epochs,
-        "learning_rate": learning_rate
-    })
-        
-    result = wrapper.fine_tune(
-        training_data=training_data,
-        output_dir=output_dir,
-        training_config=config
-    )
-    return recursive_tolist(result)
 
 @mcp.tool()
 def get_info() -> Dict[str, Any]:
