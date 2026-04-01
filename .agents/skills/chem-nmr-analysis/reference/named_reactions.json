@@ -1,0 +1,191 @@
+{
+  "_description": "Named reaction lookup: maps common reaction names to their implied reagents, solvents, and NMR-relevant compounds that may appear in crude spectra. The agent should use this to determine what additional reference spectra to fetch beyond the stated reactants and ReactionT5-predicted products.",
+  "_usage": "When a user describes a reaction by name (e.g., 'hydroboration of X'), look up the reaction name here. Fetch NMR references for: (1) stated reactants, (2) ReactionT5-predicted products, (3) any solvents/reagents from this table that are NMR-visible and likely present in the crude mixture.",
+
+  "hydroboration": {
+    "typical_reagents": ["BH3·THF", "BH3·SMe2", "9-BBN"],
+    "typical_solvents": ["THF"],
+    "nmr_visible_species": ["THF", "dimethyl sulfide"],
+    "notes": "Usually followed by oxidation (H2O2/NaOH) to give alcohol. Without oxidation, intermediate is trialkylborane. THF is the most common solvent and will dominate the NMR if not removed."
+  },
+  "hydroboration-oxidation": {
+    "typical_reagents": ["BH3·THF", "H2O2", "NaOH"],
+    "typical_solvents": ["THF"],
+    "nmr_visible_species": ["THF"],
+    "notes": "Anti-Markovnikov addition of OH. Products are alcohols."
+  },
+  "grignard": {
+    "typical_reagents": ["RMgBr", "RMgCl"],
+    "typical_solvents": ["diethyl ether", "THF"],
+    "nmr_visible_species": ["diethyl ether", "THF"],
+    "notes": "Grignard reagent + carbonyl -> alcohol after aqueous workup. Ether solvents are very NMR-visible."
+  },
+  "wittig": {
+    "typical_reagents": ["Ph3P=CHR", "n-BuLi"],
+    "typical_solvents": ["THF", "diethyl ether"],
+    "nmr_visible_species": ["THF", "triphenylphosphine oxide"],
+    "notes": "Produces alkene + Ph3P=O (triphenylphosphine oxide). Ph3P=O is a common NMR-visible byproduct."
+  },
+  "aldol": {
+    "typical_reagents": ["LDA", "NaOH", "KOH"],
+    "typical_solvents": ["THF", "water", "ethanol"],
+    "nmr_visible_species": ["THF", "ethanol"],
+    "notes": "Can be acid or base catalyzed. Solvent depends on conditions."
+  },
+  "diels-alder": {
+    "typical_reagents": [],
+    "typical_solvents": ["toluene", "dichloromethane", "neat"],
+    "nmr_visible_species": ["toluene", "dichloromethane"],
+    "notes": "Thermal [4+2] cycloaddition. Often run neat or in non-polar solvent."
+  },
+  "fischer-esterification": {
+    "typical_reagents": ["H2SO4", "HCl", "p-TsOH"],
+    "typical_solvents": ["toluene", "neat"],
+    "nmr_visible_species": ["water", "toluene"],
+    "notes": "Acid-catalyzed: carboxylic acid + alcohol -> ester + water."
+  },
+  "suzuki-coupling": {
+    "typical_reagents": ["Pd(PPh3)4", "Pd(dppf)Cl2", "K2CO3", "Na2CO3"],
+    "typical_solvents": ["THF", "DMF", "dioxane", "toluene"],
+    "nmr_visible_species": ["THF", "DMF", "dioxane", "toluene"],
+    "notes": "Pd-catalyzed cross-coupling: ArB(OH)2 + ArX -> Ar-Ar. DMF and dioxane are common NMR contaminants."
+  },
+  "heck-reaction": {
+    "typical_reagents": ["Pd(OAc)2", "PPh3", "Et3N"],
+    "typical_solvents": ["DMF", "acetonitrile", "toluene"],
+    "nmr_visible_species": ["DMF", "triethylamine", "acetonitrile", "toluene"],
+    "notes": "Pd-catalyzed: ArX + alkene -> substituted alkene. Triethylamine base is NMR-visible."
+  },
+  "sonogashira-coupling": {
+    "typical_reagents": ["PdCl2(PPh3)2", "CuI", "Et3N"],
+    "typical_solvents": ["THF", "DMF", "triethylamine"],
+    "nmr_visible_species": ["THF", "DMF", "triethylamine"],
+    "notes": "Pd/Cu-catalyzed: ArX + terminal alkyne -> internal alkyne."
+  },
+  "nabh4-reduction": {
+    "typical_reagents": ["NaBH4"],
+    "typical_solvents": ["methanol", "ethanol", "THF"],
+    "nmr_visible_species": ["methanol", "ethanol", "THF"],
+    "notes": "Mild reducing agent for ketones/aldehydes -> alcohols. Protic solvents (MeOH, EtOH) are very NMR-visible."
+  },
+  "lialh4-reduction": {
+    "typical_reagents": ["LiAlH4"],
+    "typical_solvents": ["diethyl ether", "THF"],
+    "nmr_visible_species": ["diethyl ether", "THF"],
+    "notes": "Strong reducing agent. Strictly anhydrous conditions, ether solvents."
+  },
+  "jones-oxidation": {
+    "typical_reagents": ["CrO3", "H2SO4"],
+    "typical_solvents": ["acetone"],
+    "nmr_visible_species": ["acetone"],
+    "notes": "Oxidizes primary/secondary alcohols. Acetone is both solvent and NMR-visible."
+  },
+  "swern-oxidation": {
+    "typical_reagents": ["(COCl)2", "DMSO", "Et3N"],
+    "typical_solvents": ["dichloromethane"],
+    "nmr_visible_species": ["DMSO", "triethylamine", "dichloromethane"],
+    "notes": "Mild oxidation of alcohols to aldehydes/ketones. DMSO is a key reagent AND NMR contaminant."
+  },
+  "dess-martin-oxidation": {
+    "typical_reagents": ["Dess-Martin periodinane"],
+    "typical_solvents": ["dichloromethane"],
+    "nmr_visible_species": ["dichloromethane", "acetic acid"],
+    "notes": "Mild oxidation. Acetic acid is a byproduct and NMR-visible."
+  },
+  "epoxidation": {
+    "typical_reagents": ["mCPBA", "H2O2", "t-BuOOH"],
+    "typical_solvents": ["dichloromethane", "chloroform"],
+    "nmr_visible_species": ["dichloromethane", "chloroform", "m-chlorobenzoic acid"],
+    "notes": "mCPBA epoxidation produces m-chlorobenzoic acid byproduct (NMR-visible)."
+  },
+  "bromination": {
+    "typical_reagents": ["Br2", "NBS"],
+    "typical_solvents": ["dichloromethane", "CCl4", "acetic acid"],
+    "nmr_visible_species": ["dichloromethane", "acetic acid"],
+    "notes": "Br2 in CCl4 for alkene bromination; NBS for allylic/benzylic. CCl4 is NMR-silent."
+  },
+  "friedel-crafts-acylation": {
+    "typical_reagents": ["AlCl3", "RCOCl"],
+    "typical_solvents": ["dichloromethane", "nitrobenzene", "CS2"],
+    "nmr_visible_species": ["dichloromethane", "nitrobenzene"],
+    "notes": "Lewis acid catalyzed. Nitrobenzene solvent is NMR-visible."
+  },
+  "friedel-crafts-alkylation": {
+    "typical_reagents": ["AlCl3", "RCl", "BF3·Et2O"],
+    "typical_solvents": ["dichloromethane", "nitrobenzene"],
+    "nmr_visible_species": ["dichloromethane", "nitrobenzene"],
+    "notes": "Prone to polyalkylation and rearrangement."
+  },
+  "michael-addition": {
+    "typical_reagents": ["NaOEt", "DBU", "LDA"],
+    "typical_solvents": ["THF", "ethanol", "DMF"],
+    "nmr_visible_species": ["THF", "ethanol", "DMF"],
+    "notes": "1,4-conjugate addition of nucleophile to enone."
+  },
+  "claisen-condensation": {
+    "typical_reagents": ["NaOEt", "LDA"],
+    "typical_solvents": ["ethanol", "THF"],
+    "nmr_visible_species": ["ethanol", "THF"],
+    "notes": "Ester + base -> beta-keto ester."
+  },
+  "beckmann-rearrangement": {
+    "typical_reagents": ["H2SO4", "PCl5", "SOCl2"],
+    "typical_solvents": ["diethyl ether", "dichloromethane"],
+    "nmr_visible_species": ["diethyl ether", "dichloromethane"],
+    "notes": "Oxime -> amide rearrangement."
+  },
+  "mitsunobu": {
+    "typical_reagents": ["DIAD", "DEAD", "PPh3"],
+    "typical_solvents": ["THF"],
+    "nmr_visible_species": ["THF", "diisopropyl hydrazinedicarboxylate", "triphenylphosphine oxide"],
+    "notes": "Inverts alcohol stereochemistry. PPh3=O and reduced DIAD/DEAD are NMR-visible byproducts."
+  },
+  "olefin-metathesis": {
+    "typical_reagents": ["Grubbs catalyst (1st or 2nd gen)", "Hoveyda-Grubbs"],
+    "typical_solvents": ["dichloromethane", "toluene"],
+    "nmr_visible_species": ["dichloromethane", "toluene", "ethylene"],
+    "notes": "RCM/CM/ROMP. Ethylene is a gaseous byproduct (usually removed)."
+  },
+  "amide-coupling": {
+    "typical_reagents": ["EDC", "HOBt", "HATU", "DCC", "DIPEA"],
+    "typical_solvents": ["DMF", "dichloromethane", "acetonitrile"],
+    "nmr_visible_species": ["DMF", "dichloromethane", "DIPEA", "urea byproduct"],
+    "notes": "Peptide/amide bond formation. DMF and DIPEA are common NMR contaminants."
+  },
+  "birch-reduction": {
+    "typical_reagents": ["Na", "Li"],
+    "typical_solvents": ["liquid ammonia", "THF", "t-BuOH"],
+    "nmr_visible_species": ["THF", "t-butanol"],
+    "notes": "Dissolving metal reduction of aromatics. t-BuOH is a proton source and NMR-visible."
+  },
+  "williamson-ether-synthesis": {
+    "typical_reagents": ["NaH", "K2CO3"],
+    "typical_solvents": ["DMF", "THF", "acetone"],
+    "nmr_visible_species": ["DMF", "THF", "acetone"],
+    "notes": "Alkoxide + alkyl halide -> ether. SN2 mechanism."
+  },
+
+  "_common_nmr_solvents": {
+    "_description": "Common NMR-visible solvents and their 1H chemical shifts. If any of these appear as reaction solvents, their signals will likely be present in crude mixture NMR unless the sample was dried/stripped.",
+    "THF": {"shifts_ppm": [1.85, 3.76], "smiles": "C1CCOC1"},
+    "diethyl ether": {"shifts_ppm": [1.21, 3.48], "smiles": "CCOCC"},
+    "dichloromethane": {"shifts_ppm": [5.30], "smiles": "ClCCl"},
+    "chloroform": {"shifts_ppm": [7.26], "smiles": "ClC(Cl)Cl"},
+    "DMF": {"shifts_ppm": [2.88, 2.97, 8.02], "smiles": "CN(C)C=O"},
+    "DMSO": {"shifts_ppm": [2.62], "smiles": "CS(C)=O"},
+    "acetone": {"shifts_ppm": [2.17], "smiles": "CC(C)=O"},
+    "methanol": {"shifts_ppm": [3.49, 1.09], "smiles": "CO"},
+    "ethanol": {"shifts_ppm": [1.25, 3.72], "smiles": "CCO"},
+    "toluene": {"shifts_ppm": [2.36, 7.17, 7.25], "smiles": "Cc1ccccc1"},
+    "acetonitrile": {"shifts_ppm": [2.10], "smiles": "CC#N"},
+    "triethylamine": {"shifts_ppm": [1.03, 2.53], "smiles": "CCN(CC)CC"},
+    "acetic acid": {"shifts_ppm": [2.10], "smiles": "CC(O)=O"},
+    "water": {"shifts_ppm": [1.56], "smiles": "O"},
+    "t-butanol": {"shifts_ppm": [1.28], "smiles": "CC(C)(C)O"},
+    "dioxane": {"shifts_ppm": [3.71], "smiles": "C1COCCO1"},
+    "dimethyl sulfide": {"shifts_ppm": [2.09], "smiles": "CSC"},
+    "DIPEA": {"shifts_ppm": [1.01, 1.27, 2.63, 3.58], "smiles": "CCN(CC)C(C)C"},
+    "triphenylphosphine oxide": {"shifts_ppm": [7.4, 7.5, 7.6], "smiles": "O=P(c1ccccc1)(c1ccccc1)c1ccccc1"},
+    "nitrobenzene": {"shifts_ppm": [7.52, 7.68, 8.22], "smiles": "[O-][N+](=O)c1ccccc1"}
+  }
+}

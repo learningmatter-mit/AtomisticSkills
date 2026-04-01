@@ -145,7 +145,7 @@ class Atomate2Handler:
         from atomate2.vasp.flows.matpes import MatPesStaticFlowMaker
         from atomate2.vasp.jobs.matpes import MatPesGGAStaticMaker, MatPesMetaGGAStaticMaker
         from atomate2.vasp.jobs.core import StaticMaker, RelaxMaker
-        from atomate2.vasp.flows.core import BandStructureMaker
+        from atomate2.vasp.flows.core import BandStructureMaker, OpticsMaker
 
         preset = preset_type.lower()
         user_incar = config or {}
@@ -189,6 +189,8 @@ class Atomate2Handler:
                 # Config can contain 'bandstructure_type' (line, uniform, both)
                 bs_type = user_incar.pop("bandstructure_type", "line")
                 maker = BandStructureMaker(bandstructure_type=bs_type)
+            elif calculation_type == "optics":
+                maker = OpticsMaker()
             else:
                 raise ValueError(f"Unknown calculation_type: {calculation_type}")
             
@@ -198,6 +200,11 @@ class Atomate2Handler:
                          maker.static_maker.input_set_generator.user_incar_settings.update(user_incar)
                      if hasattr(maker.bs_maker, "input_set_generator"):
                          maker.bs_maker.input_set_generator.user_incar_settings.update(user_incar)
+                elif calculation_type == "optics":
+                    if hasattr(maker.static_maker, "input_set_generator"):
+                        maker.static_maker.input_set_generator.user_incar_settings.update(user_incar)
+                    if hasattr(maker.optics_maker, "input_set_generator"):
+                        maker.optics_maker.input_set_generator.user_incar_settings.update(user_incar)
                 else:
                     maker.input_set_generator.user_incar_settings.update(user_incar)
             return maker

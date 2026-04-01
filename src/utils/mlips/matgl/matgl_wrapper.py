@@ -584,6 +584,14 @@ class MatGLWrapper(MLIPModel):
             f"Model not loaded. Call load() first before querying supported elements."
         )
 
+    @property
+    def supports_charge_spin(self) -> bool:
+        """
+        MatGL models are electron-agnostic and do not honour charge/spin multiplicity.
+        Always returns False.
+        """
+        return False
+
     def get_model_capabilities(self) -> Dict[str, bool]:
         """Get model capabilities."""
         return {
@@ -591,7 +599,8 @@ class MatGLWrapper(MLIPModel):
             "forces": True,
             "stress": True,
             "charges": self.model_name.startswith("CHGNet") if self.is_loaded else False,
-            "dipole": False
+            "dipole": False,
+            "charge_spin": False,
         }
 
 

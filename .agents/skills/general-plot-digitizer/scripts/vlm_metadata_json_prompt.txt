@@ -1,0 +1,55 @@
+You are extracting metadata for a scientific plot digitization pipeline (OpenCV color masking + axis calibration).
+
+OUTPUT RULES (critical):
+- Respond with exactly ONE JSON object and nothing else before or after (no markdown fences unless the whole payload is inside a single ```json block).
+- Use only keys documented below. Pixel coordinates use the image coordinate system: origin top-left, x rightward, y downward.
+- All numbers must be JSON numbers (not strings). Use integers for pixel bbox edges where possible.
+
+REQUIRED keys (always include):
+- plot_title: string (empty "" if none)
+- x_axis_label: string
+- y_axis_label: string
+- x_tick_min, x_tick_max: numbers (axis data range)
+- y_tick_min, y_tick_max: numbers (use 0 and 1 if the Y axis has no numeric ticks)
+- x_scale, y_scale: each "linear" or "log"
+- bounding_box: { "x_min", "y_min", "x_max", "y_max" } integers — inner data area only (exclude outer figure labels if they sit outside the plot frame; include the area where curves are drawn)
+
+RECOMMENDED for accurate X mapping:
+- x_calibration_points: [ { "pixel": <x pixel>, "value": <data value at that pixel> }, ... ] with at least two points on the X axis (e.g. left and right major tick positions). Prefer this over relying on bbox edges alone when tick marks are visible.
+
+OPTIONAL keys (include when applicable):
+- x_reversed, y_reversed: booleans (default false)
+- y_calibration: "axis" OR "per_curve_normalized" (use per_curve_normalized for stacked spectra with no numeric Y ticks)
+- y_calibration_points: same shape as x_calibration_points for Y
+- spectrum_type: short string (e.g. "XRD", "Raman", "UV-Vis")
+- notes: string
+- image_width, image_height: integers if you can infer from the image
+- low_resolution: boolean (true if plot is small or heavily compressed)
+- curves: [ { "label": string, "color_hint": "#rrggbb", "region": { "y_min", "y_max" } optional, "mask_regions": [ bbox... ] optional } ] — for multi-curve or stacked plots, one entry per trace to extract; color_hint is the LINE color in the image (not legend symbol colors if they differ)
+- text_regions, mask_regions: arrays of { "x_min", "y_min", "x_max", "y_max", "label"?: string } in full-image pixels — legends, peak labels, gridlines, or other features that overlap traces and should be masked before extraction
+- cli_hints: { "curve_is_black"?, "text_overlaps_curve"?, "thin_lines"?, "extraction_method"?: "color"|"edge"|"edge+color", "smooth"? } booleans except extraction_method
+- annotations: optional array of small objects for visible peak labels (type, value, x_value, etc.)
+
+IMPORTANT:
+- For stacked plots, set y_calibration to "per_curve_normalized" and give each curve a vertical "region" (y_min/y_max in full-image pixels) that tightly bounds ONE trace so neighboring curves are not included.
+- Legend text color (e.g. "phase A" printed in black) is NOT necessarily the same as the data line color. Set color_hint from the actual plotted line pixels.
+- If the data line is black like the axes, set cli_hints.curve_is_black to true.
+
+Example minimal shape (replace values):
+{
+  "plot_title": "",
+  "x_axis_label": "2θ (°)",
+  "y_axis_label": "Intensity (a.u.)",
+  "x_tick_min": 10,
+  "x_tick_max": 90,
+  "y_tick_min": 0,
+  "y_tick_max": 1,
+  "x_scale": "linear",
+  "y_scale": "linear",
+  "bounding_box": { "x_min": 80, "y_min": 60, "x_max": 800, "y_max": 550 },
+  "x_calibration_points": [ { "pixel": 85, "value": 10 }, { "pixel": 780, "value": 90 } ],
+  "curves": [ { "label": "sample_a", "color_hint": "#2ca02c" } ],
+  "text_regions": [ { "x_min": 0, "y_min": 0, "x_max": 200, "y_max": 100, "label": "legend" } ]
+}
+
+Now analyze the attached plot image and output the JSON object.

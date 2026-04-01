@@ -320,6 +320,19 @@ class MACEWrapper(MLIPModel):
             logger.error(f"Failed to load checkpoint: {e}")
             raise RuntimeError(f"Failed to load checkpoint: {e}")
     
+    @property
+    def supports_charge_spin(self) -> bool:
+        """
+        Return True for models trained with joint_embedding on charge/spin.
+
+        Supported: MACE-OMOL, MACE-MH (omol head).
+        The calculator reads charge and spin from atoms.info via the default
+        info_keys mapping:  {"total_charge": "charge", "total_spin": "spin"}.
+        i.e. set atoms.info["charge"] and atoms.info["spin"].
+        """
+        name_upper = self.model_name.upper()
+        return "OMOL" in name_upper or "MACE-MH" in name_upper
+
     def get_model_capabilities(self) -> Dict[str, bool]:
         """
         Get model capabilities.
@@ -332,7 +345,8 @@ class MACEWrapper(MLIPModel):
             "forces": True,
             "stress": True,
             "optimization": True,
-            "relaxation": True
+            "relaxation": True,
+            "charge_spin": self.supports_charge_spin,
         }
     
 

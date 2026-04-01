@@ -87,7 +87,24 @@ class MLIPModel(ABC):
             RuntimeError: If calculator creation fails.
         """
         pass
-    
+
+    @property
+    def supports_charge_spin(self) -> bool:
+        """
+        Whether this model accepts per-calculation charge and spin multiplicity.
+
+        Models that return ``True`` read charge / spin from ``atoms.info`` during
+        each ``calculate()`` call (e.g. MACE-OMOL, FairChem omol task), enabling
+        reliable heterolytic BDE probing.  Models that return ``False`` are
+        electron-agnostic and should only be used for homolytic BDE.
+
+        Subclasses must override this property.  The default is ``False`` so that
+        new wrappers are safe-by-default.
+
+        Returns:
+            bool: True when charge/spin are honoured by the model.
+        """
+        return False
 
     
     @abstractmethod
@@ -143,7 +160,8 @@ class MLIPModel(ABC):
             "model_version": self.model_version,
             "is_loaded": self.is_loaded,
             "is_fine_tuned": self.is_fine_tuned,
-            "model_type": self.__class__.__name__
+            "model_type": self.__class__.__name__,
+            "supports_charge_spin": self.supports_charge_spin,
         }
     
     def validate_structure(self, structure: Any) -> bool:

@@ -1,0 +1,232 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Plot Metadata",
+  "description": "Semantic metadata extracted from an experimental spectrum plot image by VLM",
+  "type": "object",
+  "required": [
+    "plot_title",
+    "x_axis_label",
+    "y_axis_label",
+    "x_tick_min",
+    "x_tick_max",
+    "y_tick_min",
+    "y_tick_max",
+    "x_scale",
+    "y_scale",
+    "bounding_box"
+  ],
+  "properties": {
+    "plot_title": {
+      "type": "string",
+      "description": "Title of the plot, if visible"
+    },
+    "x_axis_label": {
+      "type": "string",
+      "description": "Label of the X axis (e.g., Raman shift (cm⁻¹), Wavelength (nm))"
+    },
+    "y_axis_label": {
+      "type": "string",
+      "description": "Label of the Y axis (e.g., Intensity, Absorbance)"
+    },
+    "x_tick_min": {
+      "type": "number",
+      "description": "Minimum tick value on the X axis"
+    },
+    "x_tick_max": {
+      "type": "number",
+      "description": "Maximum tick value on the X axis"
+    },
+    "y_tick_min": {
+      "type": "number",
+      "description": "Minimum tick value on the Y axis"
+    },
+    "y_tick_max": {
+      "type": "number",
+      "description": "Maximum tick value on the Y axis"
+    },
+    "x_scale": {
+      "type": "string",
+      "enum": ["linear", "log"],
+      "description": "Scale of the X axis"
+    },
+    "y_scale": {
+      "type": "string",
+      "enum": ["linear", "log"],
+      "description": "Scale of the Y axis"
+    },
+    "bounding_box": {
+      "type": "object",
+      "description": "Pixel coordinates of the inner plot area (excluding title, legend, axis labels)",
+      "required": ["x_min", "y_min", "x_max", "y_max"],
+      "properties": {
+        "x_min": { "type": "integer", "description": "Left edge of plot area in pixels" },
+        "y_min": { "type": "integer", "description": "Top edge of plot area in pixels (image coordinates)" },
+        "x_max": { "type": "integer", "description": "Right edge of plot area in pixels" },
+        "y_max": { "type": "integer", "description": "Bottom edge of plot area in pixels" }
+      }
+    },
+    "x_reversed": {
+      "type": "boolean",
+      "description": "True if X values increase from right to left (left edge has larger value than right)"
+    },
+    "y_reversed": {
+      "type": "boolean",
+      "description": "True if Y values increase from top to bottom (top edge has larger value than bottom)"
+    },
+    "y_calibration": {
+      "type": "string",
+      "enum": ["axis", "per_curve_normalized"],
+      "description": "Y mapping: axis ticks, or per-curve normalized (baseline=0, peak=1) for stacked spectra without y-axis numbers"
+    },
+    "x_calibration_points": {
+      "type": "array",
+      "description": "Optional array of exact {pixel, value} pairs for X-axis. Overrides x_tick_min/max mapping to bounding_box edges.",
+      "items": {
+        "type": "object",
+        "required": ["pixel", "value"],
+        "properties": {
+          "pixel": { "type": "number", "description": "X pixel coordinate image space" },
+          "value": { "type": "number", "description": "Data value at this pixel" }
+        }
+      }
+    },
+    "y_calibration_points": {
+      "type": "array",
+      "description": "Optional array of exact {pixel, value} pairs for Y-axis. Overrides y_tick_min/max mapping to bounding_box edges.",
+      "items": {
+        "type": "object",
+        "required": ["pixel", "value"],
+        "properties": {
+          "pixel": { "type": "number", "description": "Y pixel coordinate image space (origin top-left)" },
+          "value": { "type": "number", "description": "Data value at this pixel" }
+        }
+      }
+    },
+    "spectrum_type": {
+      "type": "string",
+      "description": "Type of measurement: Raman, SERS, XRD, IR, NMR, UV-Vis, SRD, etc."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Uncertain values, blurry labels, or layout quirks"
+    },
+    "image_width": {
+      "type": "integer",
+      "description": "Image width in pixels (optional, for resolution hints)"
+    },
+    "image_height": {
+      "type": "integer",
+      "description": "Image height in pixels (optional, for resolution hints)"
+    },
+    "low_resolution": {
+      "type": "boolean",
+      "description": "True if image is low resolution; triggers pre-upscale when auto-detecting"
+    },
+    "curves": {
+      "type": "array",
+      "description": "For multi-curve/stacked plots: per-curve label, color_hint, region",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "color_hint": { "type": "string" },
+          "region": {
+            "type": "object",
+            "properties": {
+              "y_min": { "type": "integer" },
+              "y_max": { "type": "integer" }
+            }
+          },
+          "mask_regions": {
+            "type": "array",
+            "description": "Per-curve mask regions (full-image coords) applied only when extracting this curve. Use to exclude other curves' baselines, nearby features, etc.",
+            "items": {
+              "type": "object",
+              "required": ["x_min", "y_min", "x_max", "y_max"],
+              "properties": {
+                "x_min": { "type": "integer" },
+                "y_min": { "type": "integer" },
+                "x_max": { "type": "integer" },
+                "y_max": { "type": "integer" },
+                "label": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "text_regions": {
+      "type": "array",
+      "description": "Bounding boxes of in-plot text labels (curve names, annotations) in full-image pixel coordinates. Used to mask out text that shares color with the curve before extraction.",
+      "items": {
+        "type": "object",
+        "required": ["x_min", "y_min", "x_max", "y_max"],
+        "properties": {
+          "x_min": { "type": "integer", "description": "Left edge in pixels" },
+          "y_min": { "type": "integer", "description": "Top edge in pixels" },
+          "x_max": { "type": "integer", "description": "Right edge in pixels" },
+          "y_max": { "type": "integer", "description": "Bottom edge in pixels" },
+          "label": { "type": "string", "description": "The text content (optional, for documentation)" }
+        }
+      }
+    },
+    "mask_regions": {
+      "type": "array",
+      "description": "Additional bounding boxes (full-image pixel coords) to mask out during extraction — axis tick marks, other curves' baselines, legends, or any non-data feature. Same format as text_regions.",
+      "items": {
+        "type": "object",
+        "required": ["x_min", "y_min", "x_max", "y_max"],
+        "properties": {
+          "x_min": { "type": "integer" },
+          "y_min": { "type": "integer" },
+          "x_max": { "type": "integer" },
+          "y_max": { "type": "integer" },
+          "label": { "type": "string", "description": "Optional description (e.g. 'tick marks', 'red curve baseline')" }
+        }
+      }
+    },
+    "cli_hints": {
+      "type": "object",
+      "description": "VLM-provided hints that map 1:1 to extraction pipeline CLI flags. Agent reads these and builds the command mechanically.",
+      "properties": {
+        "curve_is_black": {
+          "type": "boolean",
+          "description": "True if any data curve is black (same color as axes/frame). Maps to --allow-black --spatial-filter --cluster-centroid."
+        },
+        "text_overlaps_curve": {
+          "type": "boolean",
+          "description": "True if in-plot text shares color with a curve and overlaps it. Maps to --morph-open."
+        },
+        "thin_lines": {
+          "type": "boolean",
+          "description": "True if data curves are thin (1-2 px) or anti-aliased. Maps to --extraction-method edge+color."
+        },
+        "extraction_method": {
+          "type": "string",
+          "enum": ["color", "edge", "edge+color"],
+          "description": "Recommended extraction method. Maps to --extraction-method."
+        },
+        "smooth": {
+          "type": "boolean",
+          "description": "True if curves are noisy, jagged, or have many overlapping text labels. Maps to --smooth."
+        }
+      }
+    },
+    "annotations": {
+      "type": "array",
+      "description": "Measurement-specific in-plot labels (NMR integrations, IR functional groups, Raman band names, XRD Miller indices, etc.)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "value": { "type": "string" },
+          "x_value": { "type": "number" },
+          "units": { "type": "string" },
+          "context": { "type": "string" },
+          "symbol": { "type": "string" },
+          "phase_name": { "type": "string" }
+        }
+      }
+    }
+  }
+}

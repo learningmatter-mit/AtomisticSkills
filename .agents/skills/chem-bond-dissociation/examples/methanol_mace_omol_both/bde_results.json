@@ -1,0 +1,240 @@
+{
+    "metadata": {
+        "smiles": "CO",
+        "structure_file": null,
+        "formula": "CH4O",
+        "n_atoms": 6,
+        "model_type": "mace",
+        "model_name": "MACE-OMOL-extra-large",
+        "supports_charge_spin": true,
+        "fmax": 0.01,
+        "include_h_bonds": true,
+        "cleavage": "both"
+    },
+    "intact_energy_eV": -3148.8236353252432,
+    "bonds": [
+        {
+            "bond_idx": 0,
+            "atom_indices": [
+                0,
+                1
+            ],
+            "atom_symbols": [
+                "C",
+                "O"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "CH3",
+            "frag2_formula": "HO",
+            "frag1_energy_eV": -1082.54426157771,
+            "frag2_energy_eV": -2060.0773682596687,
+            "bde_eV": 6.202005487864881,
+            "bde_kJ_mol": 598.400499496643,
+            "bde_kcal_mol": 143.02134755290808,
+            "frag1_file": "frag_bond0_homo_1.xyz",
+            "frag2_file": "frag_bond0_homo_2.xyz",
+            "heterolytic_bde_eV": 3.9047032416092406,
+            "heterolytic_bde_kJ_mol": 376.7452922666676,
+            "heterolytic_bde_kcal_mol": 90.0444091031299,
+            "heterolytic_best_variant": "frag1+ / frag2-",
+            "heterolytic_variants": [
+                {
+                    "variant": "frag1+ / frag2-",
+                    "frag1_charge": 1,
+                    "frag2_charge": -1,
+                    "frag1_energy_eV": -1082.1165977952464,
+                    "frag2_energy_eV": -2062.8023342883876,
+                    "bde_eV": 3.9047032416092406,
+                    "bde_kJ_mol": 376.7452922666676,
+                    "bde_kcal_mol": 90.0444091031299,
+                    "frag1_file": "frag_bond0_hetero_pos_neg_1.xyz",
+                    "frag2_file": "frag_bond0_hetero_pos_neg_2.xyz"
+                },
+                {
+                    "variant": "frag1- / frag2+",
+                    "frag1_charge": -1,
+                    "frag2_charge": 1,
+                    "frag1_energy_eV": -1083.052326120145,
+                    "frag2_energy_eV": -2060.312791770871,
+                    "bde_eV": 5.45851743422736,
+                    "bde_kJ_mol": 526.6650546414269,
+                    "bde_kcal_mol": 125.87614129200004,
+                    "frag1_file": "frag_bond0_hetero_neg_pos_1.xyz",
+                    "frag2_file": "frag_bond0_hetero_neg_pos_2.xyz"
+                }
+            ]
+        },
+        {
+            "bond_idx": 1,
+            "atom_indices": [
+                0,
+                2
+            ],
+            "atom_symbols": [
+                "C",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "CH3O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -3130.2434577926033,
+            "frag2_energy_eV": -10.79576722373131,
+            "bde_eV": 7.784410308908718,
+            "bde_kJ_mol": 751.0788286550577,
+            "bde_kcal_mol": 179.51239392858952,
+            "frag1_file": "frag_bond1_homo_1.xyz",
+            "frag2_file": "frag_bond1_homo_2.xyz",
+            "skipped_heterolytic": true,
+            "skip_reason_heterolytic": "single_atom_fragment",
+            "heterolytic_bde_eV": null,
+            "heterolytic_bde_kJ_mol": null,
+            "heterolytic_bde_kcal_mol": null,
+            "heterolytic_best_variant": null,
+            "heterolytic_variants": []
+        },
+        {
+            "bond_idx": 2,
+            "atom_indices": [
+                0,
+                3
+            ],
+            "atom_symbols": [
+                "C",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "CH3O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -3130.2434577789195,
+            "frag2_energy_eV": -10.79576722373131,
+            "bde_eV": 7.784410322592521,
+            "bde_kJ_mol": 751.0788299753394,
+            "bde_kcal_mol": 179.51239424414484,
+            "frag1_file": "frag_bond2_homo_1.xyz",
+            "frag2_file": "frag_bond2_homo_2.xyz",
+            "skipped_heterolytic": true,
+            "skip_reason_heterolytic": "single_atom_fragment",
+            "heterolytic_bde_eV": null,
+            "heterolytic_bde_kJ_mol": null,
+            "heterolytic_bde_kcal_mol": null,
+            "heterolytic_best_variant": null,
+            "heterolytic_variants": []
+        },
+        {
+            "bond_idx": 3,
+            "atom_indices": [
+                0,
+                4
+            ],
+            "atom_symbols": [
+                "C",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "CH3O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -3129.6925366871633,
+            "frag2_energy_eV": -10.79576722373131,
+            "bde_eV": 8.33533141434873,
+            "bde_kJ_mol": 804.2344515134372,
+            "bde_kcal_mol": 192.2169100805889,
+            "frag1_file": "frag_bond3_homo_1.xyz",
+            "frag2_file": "frag_bond3_homo_2.xyz",
+            "skipped_heterolytic": true,
+            "skip_reason_heterolytic": "single_atom_fragment",
+            "heterolytic_bde_eV": null,
+            "heterolytic_bde_kJ_mol": null,
+            "heterolytic_bde_kcal_mol": null,
+            "heterolytic_best_variant": null,
+            "heterolytic_variants": []
+        },
+        {
+            "bond_idx": 4,
+            "atom_indices": [
+                1,
+                5
+            ],
+            "atom_symbols": [
+                "O",
+                "H"
+            ],
+            "in_ring": false,
+            "bond_type": "SINGLE",
+            "skipped": false,
+            "frag1_formula": "CH3O",
+            "frag2_formula": "H",
+            "frag1_energy_eV": -3129.364761119967,
+            "frag2_energy_eV": -10.79576722373131,
+            "bde_eV": 8.663106981544843,
+            "bde_kJ_mol": 835.8598771143542,
+            "bde_kcal_mol": 199.77557854791485,
+            "frag1_file": "frag_bond4_homo_1.xyz",
+            "frag2_file": "frag_bond4_homo_2.xyz",
+            "skipped_heterolytic": true,
+            "skip_reason_heterolytic": "single_atom_fragment",
+            "heterolytic_bde_eV": null,
+            "heterolytic_bde_kJ_mol": null,
+            "heterolytic_bde_kcal_mol": null,
+            "heterolytic_best_variant": null,
+            "heterolytic_variants": []
+        }
+    ],
+    "bonds_ranked_by_homolytic_bde": [
+        {
+            "bond_label": "C(0)-O(1)",
+            "bde_kcal_mol": 143.02134755290808,
+            "bde_kJ_mol": 598.400499496643,
+            "bde_eV": 6.202005487864881
+        },
+        {
+            "bond_label": "C(0)-H(2)",
+            "bde_kcal_mol": 179.51239392858952,
+            "bde_kJ_mol": 751.0788286550577,
+            "bde_eV": 7.784410308908718
+        },
+        {
+            "bond_label": "C(0)-H(3)",
+            "bde_kcal_mol": 179.51239424414484,
+            "bde_kJ_mol": 751.0788299753394,
+            "bde_eV": 7.784410322592521
+        },
+        {
+            "bond_label": "C(0)-H(4)",
+            "bde_kcal_mol": 192.2169100805889,
+            "bde_kJ_mol": 804.2344515134372,
+            "bde_eV": 8.33533141434873
+        },
+        {
+            "bond_label": "O(1)-H(5)",
+            "bde_kcal_mol": 199.77557854791485,
+            "bde_kJ_mol": 835.8598771143542,
+            "bde_eV": 8.663106981544843
+        }
+    ],
+    "weakest_bond_homolytic": {
+        "bond_label": "C(0)-O(1)",
+        "bde_kcal_mol": 143.02134755290808
+    },
+    "bonds_ranked_by_heterolytic_bde": [
+        {
+            "bond_label": "C(0)-O(1)",
+            "heterolytic_bde_kcal_mol": 90.0444091031299,
+            "heterolytic_bde_kJ_mol": 376.7452922666676,
+            "heterolytic_bde_eV": 3.9047032416092406,
+            "best_variant": "frag1+ / frag2-"
+        }
+    ],
+    "weakest_bond_heterolytic": {
+        "bond_label": "C(0)-O(1)",
+        "heterolytic_bde_kcal_mol": 90.0444091031299,
+        "best_variant": "frag1+ / frag2-"
+    }
+}

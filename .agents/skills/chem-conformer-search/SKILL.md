@@ -31,7 +31,7 @@ Generate a diverse ensemble of low-energy conformers for a given molecule. The w
 
 1.  **Generation**: Generate `N` initial conformers using RDKit's `EmbedMultipleConfs` with ETKDGv3.
 2.  **Relaxation**: Optimize the geometry of *each* conformer using the selected MLIP (fmax = 0.01 eV/Å).
-3.  **Deduplication**: Compare relaxed conformers by RMSD (Root Mean Square Deviation). If RMSD < threshold (default 0.1 Å), keep only the lower-energy one.
+3.  **Deduplication/Clustering**: Filter redundant conformers by simple RMSD thresholding (default), Hierarchical clustering, or K-Means clustering. Only the lowest-energy conformer in each cluster is kept.
 4.  **Ranking**: Sort unique conformers by energy.
 5.  **Boltzmann Weighting**: Calculate population probability $P_i$ at temperature $T$:
     $$P_i = \frac{e^{-(E_i - E_{min}) / k_B T}}{\sum_j e^{-(E_j - E_{min}) / k_B T}}$$
@@ -74,7 +74,10 @@ python .agents/skills/chem-conformer-search/scripts/conformer_search.py \
 | `--structure` | - | Path to input structure file (alternative to SMILES) |
 | `--num_conformers` | 50 | Number of initial conformers to generate with RDKit |
 | `--rms_threshold` | 0.2 | RDKit pruning threshold (Å) to discard similar initial conformers |
-| `--dedup_threshold` | 0.1 | Post-relaxation RMSD threshold (Å) to merge identical conformers |
+| `--clustering` | `rmsd` | Method to filter conformers: `rmsd`, `hierarchical`, or `kmeans` |
+| `--dedup_threshold` | 0.1 | Post-relaxation RMSD threshold (Å) to merge identical conformers or cut for hierarchical |
+| `--num_clusters` | 5 | Number of clusters if `--clustering kmeans` is used |
+| `--energy_threshold` | 0.5 | Max energy above global minimum (eV) to keep before RMSD comparison. Set to 0 to disable |
 | `--fmax` | 0.01 | Force convergence criterion for relaxation (eV/Å) |
 | `--temperature` | 298.15 | Temperature (K) for Boltzmann weighting |
 | `--model_type` | `mace` | MLIP backend (`mace`, `matgl`, `fairchem`) |

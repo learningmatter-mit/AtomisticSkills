@@ -1,0 +1,60 @@
+{
+    "metadata": {
+        "smiles": "CC(C)CC1=CC=C(C=C1)C(C)C(=O)O",
+        "structure_file": null,
+        "model": "MACE-OFF23-small",
+        "temperature_K": 298.15,
+        "num_initial": 25,
+        "num_unique": 5,
+        "clustering_method": "kmeans",
+        "dedup_threshold": 0.1,
+        "num_clusters_arg": 5
+    },
+    "conformers": [
+        {
+            "id": 0,
+            "filename": "conf_000.xyz",
+            "energy_eV": -17882.33870963526,
+            "relative_energy_eV": 0.0,
+            "relative_energy_kcal_mol": 0.0,
+            "boltzmann_weight": 0.26729920598153095,
+            "original_id": 13
+        },
+        {
+            "id": 1,
+            "filename": "conf_001.xyz",
+            "energy_eV": -17882.336452614487,
+            "relative_energy_eV": 0.00225702077295864,
+            "relative_energy_kcal_mol": 0.05204802753481272,
+            "boltzmann_weight": 0.2448195569529762,
+            "original_id": 8
+        },
+        {
+            "id": 2,
+            "filename": "conf_002.xyz",
+            "energy_eV": -17882.331093505843,
+            "relative_energy_eV": 0.007616129416419426,
+            "relative_energy_kcal_mol": 0.1756317524073402,
+            "boltzmann_weight": 0.19872769261370646,
+            "original_id": 18
+        },
+        {
+            "id": 3,
+            "filename": "conf_003.xyz",
+            "energy_eV": -17882.323283870486,
+            "relative_energy_eV": 0.015425764773681294,
+            "relative_energy_kcal_mol": 0.3557258485634775,
+            "boltzmann_weight": 0.14663855855425492,
+            "original_id": 3
+        },
+        {
+            "id": 4,
+            "filename": "conf_004.xyz",
+            "energy_eV": -17882.322551025492,
+            "relative_energy_eV": 0.016158609767444432,
+            "relative_energy_kcal_mol": 0.3726256205421523,
+            "boltzmann_weight": 0.14251498589753153,
+            "original_id": 19
+        }
+    ]
+}

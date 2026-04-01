@@ -501,6 +501,21 @@ class FAIRCHEMWrapper(MLIPModel):
         self.is_loaded = True
         logging.info(f"Model checkpoint loaded from {checkpoint_path}")
     
+    @property
+    def supports_charge_spin(self) -> bool:
+        """
+        Return True when the effective task is ``omol``.
+
+        The FairChem ``FAIRChemCalculator`` reads ``charge`` and ``spin``
+        (spin multiplicity) from ``atoms.info`` only when ``task_name="omol"``.
+        For all other tasks (omat, oc22, odac, omc) the values are ignored.
+        """
+        # Determine the resolved task (mirrors create_calculator logic)
+        resolved = self.task_name
+        if resolved is None:
+            resolved = "omol" if "esen" in self.model_name.lower() else "omat"
+        return resolved == "omol"
+
     def get_model_capabilities(self) -> Dict[str, bool]:
         """
         Get model capabilities.
@@ -513,7 +528,8 @@ class FAIRCHEMWrapper(MLIPModel):
             "forces": True,
             "stress": True,
             "optimization": True,
-            "relaxation": True
+            "relaxation": True,
+            "charge_spin": self.supports_charge_spin,
         }
         
 
