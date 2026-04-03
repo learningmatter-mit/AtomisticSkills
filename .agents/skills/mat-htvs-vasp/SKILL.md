@@ -55,30 +55,15 @@ The research plan should include:
 
 ### 3. Save Structures to Database
 
-Use the `save_htvs_structure` MCP tool or `HTVSDbHandler`:
+Use the **`save_htvs_structure`** MCP tool:
 
-**Using MCP tool:**
 ```python
 save_htvs_structure(
     structure_file="/path/to/structure.cif",
     config_name="agent_generated",
     group_name="agent",
-    settings_module="djangochem.settings.orgel",
+    settings_module="orgel",
     structure_type="auto"  # Auto-detects Crystal vs Surface
-)
-```
-
-**Using HTVSDbHandler:**
-```python
-from src.utils.htvs import HTVSDbHandler
-
-handler = HTVSDbHandler("djangochem.settings.orgel")
-
-# Batch save from directory
-result = handler.save_structures(
-    structure_path="./structures",
-    config_name="agent_generated",
-    group_name="agent"
 )
 ```
 
@@ -89,44 +74,20 @@ Use the **`prepare_vasp_job_details`** MCP tool to generate standard VASP parame
 ```python
 details_json = prepare_vasp_job_details(
     structure_file="structure.cif",
-    preset_type="omat",  # or "mp", "matpes-pbe", "matpes-r2scan"
+    preset_type="mp",          # or "omat", "matpes-pbe", "matpes-r2scan"
     calculation_type="static",  # or "relaxation"
-    custom_settings=None,
-    magnetism=True
+    magnetism=True,
+    magnetism_scheme="fm"       # or "afm", "nm"
 )
 ```
 
-Then add mandatory platform-specific fields:
-```json
-{
-  "priority": 50,
-  "compute_platform": "supercloud",
-  "pseudo_dir": "/path/to/potcar",
-  "requester": "hojechun"
-}
-```
+### 5. Submit Jobs
 
-### 5. Submit Jobs & Build
-
-Use `HTVSJobHandler` directly for job operations:
+Use the **`htvs_request_job`** or **`htvs_request_followup_job`** MCP tools:
 
 ```python
-from src.utils.htvs import HTVSJobHandler, HTVSVaspHandler
-
-#Initialize handlers
-job_handler = HTVSJobHandler("djangochem.settings.orgel")
-vasp_handler = HTVSVaspHandler()
-
-# Generate VASP details
-details_json = vasp_handler.generate_details(
-    structure_file="structure.cif",
-    preset_type="omat",
-    calculation_type="static",
-    magnetism=True
-)
+# 1. Generate details
 details = json.loads(details_json)
-
-# Add platform-specific settings
 details.update({
     "compute_platform": "perlmutter",
     "pseudo_dir": "/path/to/potcar",
@@ -134,60 +95,70 @@ details.update({
     "project_name": "m5068"
 })
 
-# Request jobs
-result = job_handler.request_job(
+# 2. Request job via MCP tool
+htvs_request_job(
+    settings_module="orgel",
     group_name="agent",
     chem_config="pbe_d3_paw_opt_vasp",
-    details=details,
-    requester="hojechun"
+    details=details
 )
 
-# Build jobs
-result = job_handler.build_jobs(
+# 3. Request follow-up (e.g. Static after Relaxation)
+htvs_request_followup_job(
+    settings_module="orgel",
     group_name="agent",
-    inbox_path="/path/to/inbox",
-    config_name="pbe_d3_paw_opt_vasp",
-    compute_platform="perlmutter"
+    chem_config="pbe_d3_paw_static_vasp",
+    parent_job_pks=[123], # PK of finalized relaxation job
+    details=static_details
 )
 ```
 
-**Or use submit_jobs.py script** for convenience:
-```bash
-python scripts/submit_jobs.py \
-    --group_name "agent" \
-    --chem_config "pbe_d3_paw_opt_vasp" \
-    --parent_config "agent_generated" \
-    --compute_platform "perlmutter" \
-    --requester "hojechun" \
-    --settings_module "djangochem.settings.orgel" \
-    --inbox_path "/path/to/inbox" \
-    --project_name "m5068" \
-    --potcar_path "/path/to/potcar" \
-    --preset_type "omat" \
-    --calculation_type "static"
-```
+### 6. Build and Parse Jobs
 
-### 6. Monitor Job Status
-Before parsing, ensure jobs are complete. Use the `monitor_jobs.py` script:
-
-```bash
-python scripts/monitor_jobs.py \
-    --tracking_file job_tracking.json \
-    --completed_path "/path/to/completed"
-```
-
-### 7. Parse Jobs
-
-Use `HTVSJobHandler` directly:
+Use the **`htvs_build_jobs`** and **`htvs_parse_jobs`** MCP tools:
 
 ```python
-from src.utils.htvs import HTVSJobHandler
-
-handler = HTVSJobHandler("djangochem.settings.orgel")
-result = handler.parse_jobs(
+# Build jobs into inbox
+htvs_build_jobs(
+    settings_module="orgel",
     group_name="agent",
-    completed_path="/path/to/completed",
-    config_name="pbe_d3_paw_opt_vasp"
+    inbox_path="/path/to/inbox",
+    compute_platform="perlmutter"
+)
+
+# Parse completed jobs into database
+htvs_parse_jobs(
+    settings_module="orgel",
+    group_name="agent",
+    completed_path="/path/to/completed"
+)
+```
+
+### 7. Fetching Results from DB
+
+Use the **`htvs_query_results`**, **`htvs_query_structures`**, or **`htvs_get_structure`** MCP tools:
+
+```python
+# Query results for a group
+results = htvs_query_results(
+    settings_module="orgel",
+    group_name="agent",
+    formula="LiFePO4"
+)
+
+# Find structures by formula
+structures = htvs_query_structures(
+    settings_module="orgel",
+    group_name="agent",
+    formula="LiFePO4",
+    structure_type="crystal"
+)
+
+# Get ASE-compatible atoms data for a specific record
+atoms_json = htvs_get_structure(
+    settings_module="orgel",
+    structure_id=456,
+    structure_type="crystal"
 )
 ```
 
@@ -212,32 +183,13 @@ Select the `chem_config` based on the material type and desired accuracy. For de
 
 *Note: For MLIP training labels, `pbe_d3_paw_engrad_vasp` is often the standard choice.*
 
-
-### 8. Fetching Results from DB
-
-After parsing, retrieve results (energies, structures) directly from the database using a custom script via `run_htvs_script` or `HTVSDbHandler`.
-
-See the example script for a complete query template.
-
-## Example Workflow
-
-A complete, runnable example of the pipeline (Save -> Submit -> Build -> Parse -> Query) is available in:
-- [examples/run_workflow.py](examples/run_workflow.py)
-
-To run the example:
-```bash
-python .agent/skills/htvs-vasp/examples/run_workflow.py
-```
-
 ## Constraints
-- **Environments**: All scripts require the **htvs-agent** conda environment.
+- **Environments**: All MCP tools and scripts require the **htvs-agent** conda environment.
 - **Structure files** must be readable by `ase.io`.
 
 ## Files
 - [SKILL.md](SKILL.md): This documentation.
 - [chemconfig-standards.md](chemconfig-standards.md): Detailed HTVS configuration standards and naming conventions.
-- [submit_jobs.py](scripts/submit_jobs.py): Submit jobs using HTVSJobHandler and HTVSVaspHandler.
-- [monitor_jobs.py](scripts/monitor_jobs.py): Status tracking.
-- [examples/run_workflow.py](examples/run_workflow.py): Full Python workflow example.
+- [src/mcp_server/htvs_server.py](file:///home/hojechun/ssd_mnt/repos/AtomisticSkills/src/mcp_server/htvs_server.py): The primary interface for all HTVS operations.
 
 

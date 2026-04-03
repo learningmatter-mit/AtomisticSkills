@@ -224,5 +224,37 @@ class HTVSJobHandler:
         
         return self._run_command(cmd)
 
+    def request_followup_job(
+        self,
+        group_name: str,
+        chem_config: str,
+        parent_job_pks: List[int],
+        details: Dict[str, Any],
+        requester: Optional[str] = None,
+        parent_config: Optional[str] = None
+    ) -> str:
+        """
+        Request follow-up jobs based on parent job primary keys.
+        
+        Args:
+            group_name: Name of the project/group
+            chem_config: New chemical configuration name
+            parent_job_pks: List of parent job PKs
+            details: Job details dictionary
+            requester: Optional requester name
+            parent_config: Optional parent configuration name
+        
+        Returns:
+            Command output string
+        """
+        return self.request_job(
+            group_name=group_name,
+            chem_config=chem_config,
+            details=details,
+            requester=requester,
+            parent_pks=parent_job_pks,
+            parent_config=parent_config
+        )
+
 
 # Backward-compatible wrapper functions for existing API

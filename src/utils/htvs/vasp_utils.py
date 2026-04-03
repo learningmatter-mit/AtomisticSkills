@@ -207,6 +207,7 @@ class HTVSVaspHandler:
         calculation_type: str = "static",
         custom_settings: Optional[Dict[str, Any]] = None,
         magnetism: bool = True,
+        magnetism_scheme: str = "fm",
     ) -> str:
         """
         Generate VASP details dictionary (INCAR parameters) using Pymatgen presets.
@@ -220,7 +221,8 @@ class HTVSVaspHandler:
             preset_type: Pymatgen preset to use ("mp", "omat", "matpes-pbe", "matpes-r2scan")
             calculation_type: "static" or "relaxation"
             custom_settings: Dictionary of custom settings to override defaults
-            magnetism: Whether to apply default magnetic moments (Cr, Co, Ni)
+            magnetism: Whether to apply default magnetic moments
+            magnetism_scheme: "fm" (ferromagnetic), "afm" (antiferromagnetic), or "nm" (non-magnetic)
         
         Returns:
             JSON string of the 'details' dictionary ready for HTVS submission
@@ -280,12 +282,30 @@ class HTVSVaspHandler:
                 job_details['kpoints_density'] = 3000
 
             # 3. Magnetism
-            if magnetism:
-                mag_map = {"Cr": 5.0, "Co": 1.6, "Ni": 0.6}
-                magmoms = [mag_map.get(s, 0.0) for s in atoms.get_chemical_symbols()]
-                if any(m > 0 for m in magmoms):
+            if magnetism and magnetism_scheme != "nm":
+                # Basic magnetic moment mapping
+                mag_map = {
+                    "Cr": 5.0, "Mn": 5.0, "Fe": 4.0, "Co": 1.6, "Ni": 0.6,
+                    "V": 3.0, "Ti": 2.0, "Cu": 0.6, "Mo": 4.0, "W": 4.0
+                }
+                
+                symbols = atoms.get_chemical_symbols()
+                magmoms = []
+                
+                for i, s in enumerate(symbols):
+                    base_moment = mag_map.get(s, 0.0)
+                    if magnetism_scheme == "afm" and i % 2 == 1:
+                        magmoms.append(-base_moment)
+                    else:
+                        magmoms.append(base_moment)
+                
+                if any(abs(m) > 0 for m in magmoms):
                     job_details["magmom"] = magmoms
                     job_details["ispin"] = 2
+                else:
+                    job_details["ispin"] = 1
+            else:
+                job_details["ispin"] = 1
 
             # 4. MatPES Relaxation Overrides (Applied as defaults)
             if calculation_type == "relaxation" and "matpes" in preset_type:
@@ -302,3 +322,31 @@ class HTVSVaspHandler:
         except Exception as e:
             import traceback
             return json.dumps({"error": str(e), "traceback": traceback.format_exc()})
+
+    def validate_details(self, details: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Validate that the details dictionary contains all mandatory HTVS/VASP fields.
+        
+        Args:
+            details: Dictionary of HTVS parameters
+            
+        Returns:
+            Dictionary with 'valid' boolean and list of 'errors'
+        """
+        mandatory_fields = ["encut", "ismear", "sigma", "kppa"]
+        errors = []
+        
+        for field in mandatory_fields:
+            if field not in details and f"{field}s" not in details: # handles kpoints vs kppa
+                if field == "kppa" and "kpoints" in details:
+                    continue
+                errors.append(f"Missing mandatory field: {field}")
+        
+        # Check for consistency
+        if details.get("ispin") == 2 and "magmom" not in details:
+            errors.append("ISPIN=2 requested but no MAGMOM provided.")
+            
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors
+        }

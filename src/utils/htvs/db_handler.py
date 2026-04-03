@@ -470,3 +470,308 @@ result = {{
 print(json.dumps(result))
 """
         return self._run_script(script)
+
+    def query_results(
+        self,
+        group_name: str,
+        config_name: Optional[str] = None,
+        formula: Optional[str] = None,
+        limit: Optional[int] = None
+    ) -> str:
+        """
+        Query final calculation results (energies, forces, etc.) from the DB.
+        
+        Args:
+            group_name: Project group name
+            config_name: Optional filter by JobConfig name
+            formula: Optional filter by chemical formula
+            limit: Optional limit on number of results
+            
+        Returns:
+            JSON string containing list of result records
+        """
+        script = f"""
+import json
+from jobs.models import Job
+from pgmols.models import Crystal, Surface
+from db_handler import get_project_group
+
+group_name = "{group_name}"
+config_name = {repr(config_name)}
+formula = {repr(formula)}
+limit = {limit}
+
+group = get_project_group(group_name)
+if not group:
+    print(json.dumps({{"error": f"Group '{{group_name}}' not found"}}))
+    exit(0)
+
+# Filter Jobs that belong to this group and are 'done'
+jobs = Job.objects.filter(group=group, status="done").select_related('config')
+
+if config_name:
+    jobs = jobs.filter(config__name=config_name)
+
+if limit:
+    jobs = jobs[:limit]
+
+results = []
+for job in jobs:
+    # A job can have a Crystal or Surface as parent
+    parent = job.parent
+    if not parent:
+        continue
+        
+    # Check formula if provided
+    if formula and hasattr(parent, 'stoichiometry') and parent.stoichiometry:
+        if parent.stoichiometry.formula != formula:
+            continue
+
+    data = {{
+        "job_id": job.id,
+        "uuid": str(job.uuid),
+        "config": job.config.name if job.config else "Unknown",
+        "formula": parent.stoichiometry.formula if hasattr(parent, 'stoichiometry') and parent.stoichiometry else "Unknown",
+        "structure_id": parent.id,
+        "structure_type": "surface" if isinstance(parent, Surface) else "crystal",
+        "energy": job.energy,
+        "forces": job.forces,
+        "stress": job.stress,
+        "completetime": job.completetime.isoformat() if job.completetime else None
+    }}
+    results.append(data)
+
+print(json.dumps(results))
+"""
+        return self._run_script(script)
+
+    def query_structures(
+        self,
+        group_name: str,
+        structure_type: str = "crystal",
+        config_name: Optional[str] = None,
+        formula: Optional[str] = None,
+        limit: Optional[int] = None
+    ) -> str:
+        """
+        Query Crystals or Surfaces from the DB.
+        
+        Args:
+            group_name: Project group name
+            structure_type: "crystal" or "surface"
+            config_name: Optional filter by JobConfig name via parentjob
+            formula: Optional filter by chemical formula
+            limit: Optional limit on number of results
+            
+        Returns:
+            JSON string containing list of structure metadata
+        """
+        model_name = "Crystal" if structure_type.lower() == "crystal" else "Surface"
+        script = f"""
+import json
+from pgmols.models import Crystal, Surface
+from db_handler import get_project_group
+
+group_name = "{group_name}"
+config_name = {repr(config_name)}
+formula = {repr(formula)}
+limit = {limit}
+
+group = get_project_group(group_name)
+if not group:
+    print(json.dumps({{"error": f"Group '{{group_name}}' not found"}}))
+    exit(0)
+
+# Filter by group via parentjob
+query = {model_name}.objects.filter(parentjob__group=group).select_related('stoichiometry', 'parentjob')
+
+if config_name:
+    query = query.filter(parentjob__config__name=config_name)
+
+if formula:
+    query = query.filter(stoichiometry__formula=formula)
+
+if limit:
+    query = query[:limit]
+
+results = []
+for obj in query:
+    data = {{
+        "id": obj.id,
+        "formula": obj.stoichiometry.formula if obj.stoichiometry else "Unknown",
+        "num_atoms": len(obj.xyz),
+        "job_uuid": str(obj.parentjob.uuid) if obj.parentjob else None
+    }}
+    if hasattr(obj, "spacegroup") and obj.spacegroup:
+        data["spacegroup"] = obj.spacegroup.symbol
+    if hasattr(obj, "miller_index") and obj.miller_index:
+        data["miller_index"] = obj.miller_index.hkl
+        
+    results.append(data)
+
+print(json.dumps(results))
+"""
+        return self._run_script(script)
+
+    def query_jobs(
+        self,
+        group_name: str,
+        status: Optional[str] = None,
+        config_name: Optional[str] = None,
+        limit: Optional[int] = None
+    ) -> str:
+        """
+        Query HTVS Jobs from the DB.
+        
+        Args:
+            group_name: Project group name
+            status: Filter by status (done, error, claimed, requested)
+            config_name: Filter by JobConfig name
+            limit: Optional limit
+            
+        Returns:
+            JSON string containing list of job records
+        """
+        script = f"""
+import json
+from jobs.models import Job
+from db_handler import get_project_group
+
+group_name = "{group_name}"
+status = {repr(status)}
+config_name = {repr(config_name)}
+limit = {limit}
+
+group = get_project_group(group_name)
+if not group:
+    print(json.dumps({{"error": f"Group '{{group_name}}' not found"}}))
+    exit(0)
+
+jobs = Job.objects.filter(group=group).select_related('config')
+
+if status:
+    jobs = jobs.filter(status=status)
+if config_name:
+    jobs = jobs.filter(config__name=config_name)
+if limit:
+    jobs = jobs[:limit]
+
+results = []
+for job in jobs:
+    results.append({{
+        "job_id": job.id,
+        "uuid": str(job.uuid),
+        "config": job.config.name if job.config else "Unknown",
+        "status": job.status,
+        "priority": job.priority,
+        "createtime": job.createtime.isoformat() if job.createtime else None,
+        "duration": job.duration
+    }})
+
+print(json.dumps(results))
+"""
+        return self._run_script(script)
+
+    def get_structure_as_json(
+        self,
+        structure_id: int,
+        structure_type: str = "crystal"
+    ) -> str:
+        """
+        Retrieve a specific structure and return its Atoms data as JSON.
+        
+        Args:
+            structure_id: ID of the Crystal or Surface
+            structure_type: "crystal" or "surface"
+            
+        Returns:
+            JSON string containing atoms data (positions, numbers, cell, pbc)
+        """
+        model_name = "Crystal" if structure_type.lower() == "crystal" else "Surface"
+        script = f"""
+import json
+import numpy as np
+from pgmols.models import {model_name}
+
+try:
+    obj = {model_name}.objects.get(id={structure_id})
+    atoms = obj.to_ase_atoms()
+    
+    data = {{
+        "id": obj.id,
+        "numbers": atoms.get_atomic_numbers().tolist(),
+        "positions": atoms.get_positions().tolist(),
+        "cell": atoms.get_cell().tolist(),
+        "pbc": atoms.get_pbc().tolist(),
+        "info": {{}}
+    }}
+    
+    # Add surface specific info
+    if "{model_name}" == "Surface":
+        data["info"]["surface_atoms"] = obj.surface_atoms
+        data["info"]["adsorbate_atoms"] = obj.adsorbate_atoms
+        if obj.miller_index:
+            data["info"]["miller_index"] = obj.miller_index.hkl
+
+    print(json.dumps(data))
+except Exception as e:
+    print(json.dumps({{"error": str(e)}}))
+"""
+        return self._run_script(script)
+
+
+def setup_query_parser(description: str):
+    """
+    Setup a standard argparse argument parser for HTVS query scripts.
+    """
+    import argparse
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument("--group", required=True, help="HTVS Project Group name")
+    parser.add_argument("--db", default="orgel", help="Database settings module (e.g. orgel, toy)")
+    parser.add_argument("--limit", type=int, help="Limit number of results")
+    parser.add_argument("--output", help="Output file path (.json or .csv)")
+    return parser
+
+def get_project_group(group_name: str):
+    """
+    Retrieve the Group object robustly with case-insensitive and plural matching.
+    Must be called within a Django script context.
+    """
+    from django.contrib.auth.models import Group
+
+    try:
+        group = Group.objects.get(name=group_name)
+        return group
+    except Group.DoesNotExist:
+        potential_groups = Group.objects.filter(name__icontains=group_name.rstrip('s'))
+        if potential_groups.exists():
+            group = potential_groups.first()
+            print(f"Warning: Group '{group_name}' not found. Using '{group.name}' instead.")
+            return group
+        else:
+            print(f"Error: Group matching '{group_name}' not found.")
+            return None
+
+def save_query_results(results: List[Dict[str, Any]], output_file: Optional[str] = None) -> None:
+    """
+    Take a list of result dictionaries and standardly save them to JSON or CSV.
+    """
+    import os, json, csv
+    if output_file:
+        ext = os.path.splitext(output_file)[1].lower()
+        if ext == '.json':
+            with open(output_file, 'w') as f:
+                json.dump(results, f, indent=2)
+            print(f"Full results saved to {output_file}")
+        elif ext == '.csv':
+            if not results:
+                print("No results to save.")
+                return
+            keys = results[0].keys()
+            with open(output_file, 'w', newline='') as f:
+                dict_writer = csv.DictWriter(f, fieldnames=keys)
+                dict_writer.writeheader()
+                dict_writer.writerows(results)
+            print(f"Full results saved to {output_file}")
+        else:
+            print(f"Unsupported file format: {ext}. Use .json or .csv")

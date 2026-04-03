@@ -7,7 +7,7 @@
                 "src.mcp_server.matgl_server"
             ],
             "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp",
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills",
                 "MATGL_BACKEND": "DGL"
             }
         },
@@ -18,7 +18,7 @@
                 "src.mcp_server.mace_server"
             ],
             "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
             }
         },
         "fairchem": {
@@ -28,7 +28,7 @@
                 "src.mcp_server.fairchem_server"
             ],
             "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
             }
         },
         "htvs": {
@@ -38,7 +38,7 @@
                 "src.mcp_server.htvs_server"
             ],
             "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp",
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills",
                 "HTVS_DJANGOCHEM_DIR": "/mnt/data0/hojechun/repos/htvs/djangochem",
                 "HTVS_DIR": "/mnt/data0/hojechun/repos/htvs"
             }
@@ -50,7 +50,7 @@
                 "src.mcp_server.atomate2_server"
             ],
             "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
             }
         },
         "smol": {
@@ -60,7 +60,7 @@
                 "src.mcp_server.smol_server"
             ],
             "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/simulation_mcp"
+                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
             }
         }
     }
