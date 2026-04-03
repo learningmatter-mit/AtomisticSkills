@@ -2,7 +2,8 @@
 HTVS Django Script Execution.
 
 This module provides utilities for executing Python scripts within the
-HTVS Django environment.
+HTVS Django environment, either via in-process Django setup or subprocess
+execution with the Django boilerplate injected automatically.
 """
 
 import os
@@ -15,6 +16,67 @@ from typing import Optional
 from .config_handler import HTVSConfigHandler
 
 logger = logging.getLogger(__name__)
+
+
+def setup_django(
+    settings_module: str,
+    djangochem_dir: Optional[str] = None,
+    htvs_dir: Optional[str] = None,
+) -> None:
+    """Initialize the Django environment in-process.
+
+    Resolves ``djangochem_dir`` and ``htvs_dir`` from
+    :class:`HTVSConfigHandler` when not provided explicitly.  The
+    settings module is normalized so that short names like ``"orgel"``
+    are automatically expanded to ``"djangochem.settings.orgel"``.
+
+    Must be called **once** before any Django ORM imports in a script.
+
+    Args:
+        settings_module: Django settings module.  Short aliases such as
+            ``"orgel"`` or ``"toy"`` are accepted in addition to the
+            fully-qualified ``"djangochem.settings.orgel"`` form.
+        djangochem_dir: Absolute path to the djangochem project root.  If
+            *None*, the value stored in ``HTVSConfigHandler`` is used.
+        htvs_dir: Absolute path to the HTVS repository root.  If *None*,
+            the value stored in ``HTVSConfigHandler`` is used.
+
+    Raises:
+        RuntimeError: If neither the caller nor ``HTVSConfigHandler``
+            provides a valid ``djangochem_dir``.
+    """
+    # Resolve paths from config when not explicitly passed
+    if not djangochem_dir or not htvs_dir:
+        config = HTVSConfigHandler().load_config()
+        djangochem_dir = djangochem_dir or config.get("htvs_djangochem_dir")
+        htvs_dir = htvs_dir or config.get("htvs_dir")
+
+    if not djangochem_dir:
+        raise RuntimeError(
+            "djangochem_dir is required but not configured. "
+            "Pass --djangochem or set htvs_djangochem_dir in the HTVS config."
+        )
+
+    # Inject paths so Django apps and htvs packages are importable
+    for path in [
+        os.path.abspath(djangochem_dir),
+        os.path.abspath(os.path.join(djangochem_dir, "..")),
+    ]:
+        if path not in sys.path:
+            sys.path.insert(0, path)
+
+    if htvs_dir and os.path.abspath(htvs_dir) not in sys.path:
+        sys.path.insert(0, os.path.abspath(htvs_dir))
+
+    # Normalize settings module
+    if not settings_module.startswith("djangochem.settings."):
+        settings_module = f"djangochem.settings.{settings_module}"
+
+    os.environ["DJANGO_SETTINGS_MODULE"] = settings_module
+
+    import django
+    django.setup()
+    logger.debug("Django configured with settings: %s", settings_module)
 
 
 def run_htvs_script(

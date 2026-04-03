@@ -12,7 +12,7 @@ This module provides convenient access to HTVS utilities:
 from .config_handler import HTVSConfigHandler, PYMATGEN_AVAILABLE
 
 # Script execution
-from .script_runner import run_htvs_script
+from .script_runner import run_htvs_script, setup_django
 
 # VASP utilities
 from .vasp_utils import HTVSVaspHandler
@@ -30,6 +30,7 @@ __all__ = [
     "PYMATGEN_AVAILABLE",
     # Script runner
     "run_htvs_script",
+    "setup_django",
     # VASP
     "HTVSVaspHandler",
     # Jobs
