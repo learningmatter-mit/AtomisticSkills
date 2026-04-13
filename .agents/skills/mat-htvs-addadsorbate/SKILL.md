@@ -8,10 +8,25 @@ category: materials
 ## Goal
 Place adsorbate species at B-top sites on clean surface slabs already stored in the HTVS database and save the resulting adsorbate-decorated surfaces as new records.
 
+## Configuration & Safety (CRITICAL)
+
+Wait! HTVS operations directly interact with research databases. Before running any commands:
+1.  **Expose the Context**: Explicitly state the `settings_module` and `group_name` you are about to use.
+2.  **Request Confirmation**: Ask the user: *"I am about to perform this operation on the [GROUP_NAME] project within the [SETTINGS_MODULE] database. Is this correct?"*
+3.  **Do NOT proceed** until the user gives explicit approval.
+4.  **Track DB IDs**: Use the `--output_log` parameter to dump generated IDs. (Note: This is partially automated in newer MCP tools).
+
 ## Instructions
 
-### 1. Ensure Clean Surfaces Exist
+### 1. Ensure Clean Surfaces and Group Exist
 Run the [mat-htvs-cutcleansurface](../mat-htvs-cutcleansurface/SKILL.md) skill first to generate the parent clean surfaces.
+Also ensure the HTVS project group exists:
+```python
+mcp_htvs_create_group(
+    settings_module="orgel",
+    group_name="my_project"
+)
+```
 
 ### 2. Prepare a Bulk ID Pickle
 The bulk IDs are used to filter the set of clean surfaces:
@@ -25,7 +40,7 @@ pickle.dump(bulk_ids, open("bulk_ids.pkl", "wb"))
 ### 3. Run the Script
 ```bash
 # Env: htvs-agent
-python .agents/skills/mat-htvs-addadsorbate/scripts/run.py \
+python .agents/skills/mat-htvs-addadsorbate/scripts/add_adsorbate.py \
     --group my_project \
     --config_name clean_surface_cut \
     --species OH \
@@ -41,6 +56,7 @@ python .agents/skills/mat-htvs-addadsorbate/scripts/run.py \
 | `--species` | ✅ | Adsorbate species: `O`, `OH`, or `OOH` |
 | `--bulk_pkl` | ✅ | Pickle file of bulk IDs to filter surfaces |
 | `--settings` | ✅ | Django settings module |
+| `--output_log` | ❌ | JSON file path to save created surface IDs |
 | `--limit` | ❌ | Max number of surfaces to process (default: 10000) |
 | `--dry_run` | ❌ | Simulate without writing to DB |
 | `--djangochem` | ❌ | Path to the djangochem project root if needed |
@@ -61,7 +77,8 @@ mcp_htvs_query_structures(
 - **Environment**: `htvs-agent`
 
 ## References
-- Nørskov et al., *J. Electrochem. Soc.*, 2004. [DOI](https://doi.org/10.1149/1.1612015)
+- J. Lunger et al., *npj Comput. Mater.*, 2024. [DOI](https://doi.org/10.1038/s41524-024-01273-y)
+- H. Chun et al., *npj Comput. Mater.*, 2024. [DOI](https://doi.org/10.1038/s41524-024-01432-1)
 
 ---
 

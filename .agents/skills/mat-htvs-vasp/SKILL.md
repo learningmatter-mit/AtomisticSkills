@@ -1,9 +1,9 @@
 ---
-name: htvs-submission
+name: htvs-vasp-jobs
 description: Submit DFT jobs using VASP to the High-Throughput Virtual Screening (HTVS) system.
 ---
 
-# HTVS Submission Skill
+# HTVS VASP Jobs Skill
 
 **Goal**: Submit crystal structures (e.g., xyz/cif) to the HTVS system for DFT calculations using VASP.
 
@@ -14,13 +14,12 @@ Use the HTVS tools (`htvs_server` MCP tools, the included scripts, or the utilit
 2.  **Save to Database**: Save DFT results to the database.
 3.  **Monitor Jobs**: Monitor running jobs in the cluster.
 
-## Research Planning
+## Configuration & Safety (CRITICAL)
 
-For every HTVS-based research task, you **MUST** create a Research Plan and get user approval via `notify_user` before proceeding. 
-
-The research plan should include:
-- **Objective**: Detailed goal (e.g., ground truth labeling for Pt bulk).
-- **HTVS Parameters**: `group_name`, `chem_config`, `compute_platform`, `inbox_path`, `requester`, `settings_module`, `potcar_path`, `completed_path`.
+Wait! HTVS operations directly interact with research databases. Before running any commands:
+1.  **Expose the Context**: Explicitly state the `settings_module` and `group_name` you are about to use.
+2.  **Request Confirmation**: Ask the user: *"I am about to perform this operation on the [GROUP_NAME] project within the [SETTINGS_MODULE] database. Is this correct?"*
+3.  **Do NOT proceed** until the user gives explicit approval.
 
 ## Workflow
 
@@ -28,26 +27,41 @@ The research plan should include:
 > - `HTVSJobHandler`: Job lifecycle (request, build, parse)
 > - `HTVSVaspHandler`: VASP input generation
 > - `HTVSDbHandler`: Database operations (save structures, create groups)
+> 
+> **CRITICAL AGENT INSTRUCTION**: Do not write temporary `python` scripts to perform these steps. Use the native `mcp_htvs_*` tool APIs provided to you directly in-memory, parse the JSON outputs, and chain them to the next MCP tools.
+> **ID Tracking Requirement**: Tools that create database records (e.g., `mcp_htvs_request_job` or `mcp_save_htvs_structure`) automatically log their results and IDs to tracking JSON files (e.g., `htvs_request_job_tracking.json`) in the active research directory. You no longer need to write manual scripts for this purpose. Use the **`mat-htvs-monitor-db`** skill to track progress and parse results.
 
 ### 1. Gather Mandatory Inputs
-**STOP** and ask the user to confirm the following variables. **DO NOT** assume defaults.
+The HTVS operations are driven by global project parameters. These are loaded directly from `~/.atomistic_skills.yaml` to ensure reproducibility across agent sessions. 
 
-- **Settings Module** (`settings_module`): Django Settings Module (e.g., `djangochem.settings.orgel`). **MANDATORY**.
-- **Group Name** (`group_name`): HTVS Group/Project Name (e.g., `agent`). **MANDATORY**.
-- **Chemical Config** (`chem_config`): VASP calculation protocol (e.g., `pbe_d3_paw_opt_vasp`).
-- **Compute Platform** (`compute_platform`): Cluster Name (e.g., `supercloud`, `perlmutter`). **MANDATORY**.
-- **Requester** (`requester`): User ID (e.g., `hojechun`). **MANDATORY**.
-- **Inbox Path** (`inbox_path`): Directory where job folders are created. **MANDATORY**.
-- **Potcar Path** (`potcar_path`): Path to the POTCAR files. This should be the absolute path to the directory containing the POTCAR files in the cluster. **MANDATORY**.
-- **Project Name** (`project_name`): Compute project account (e.g., `m5068`). **MANDATORY for Perlmutter**.
+Before proceeding, **STOP** and ensure these variables are defined in the user's `~/.atomistic_skills.yaml` file. If they are missing, ask the user to configure them and verify:
+
+- **Settings Module** (`settings_module`): Django Settings Module (e.g., `djangochem.settings.orgel`). 
+- **Group Name** (`group_name`): HTVS Group/Project Name (e.g., `agent`). 
+- **Chemical Config** (`chem_config`): VASP calculation protocol (e.g., `pbe_d3_paw_opt_vasp`). *(Passed via Tool argument)*
+- **Compute Platform** (`compute_platform`): Cluster Name (e.g., `supercloud`, `perlmutter`). 
+- **Requester** (`requester`): User ID (e.g., `hojechun`).
+- **Inbox Path** (`inbox_path`): Directory where job folders are created.
+- **Potcar Path** (`potcar_path`): Absolute path to the POTCAR files in the cluster.
+- **Project Name** (`project_name`): Compute project account (e.g., `m5068`).
 - **Completed Path** (`completed_path`): Directory where finished results are stored.
 
+*Note: All HTVS MCP Tools will automatically pull these values directly from the YAML config. You do not need to use `htvs_set_project_context` if these are defined globally.*
+
+### Configuration & Logging
+
+Whenever you use this skill, you **MUST**:
+1. Explicitly **tell the user** the above HTVS configuration parameters in your response.
+2. **Ask the user** if they want to change any of these settings before proceeding.
+3. Once confirmed, **log the configuration** for the run into the research plan or task artifact.
+
 ### 2. Verify Prerequisites
-- **Check Group**: Ensure the `group_name` exists. Use `HTVSDbHandler` to create if needed:
+- **Check Group**: Ensure the `group_name` exists. Use the `htvs_create_group` MCP tool to create if needed:
   ```python
-  from src.utils.htvs import HTVSDbHandler
-  handler = HTVSDbHandler("djangochem.settings.orgel")
-  handler.create_group("my_group")
+  mcp_htvs_create_group(
+      settings_module="orgel",
+      group_name="my_group"
+  )
   ```
 - **Check Config**: Verify the `chem_config` supports the chosen `compute_platform` (e.g. via `HTVSConfigHandler.inspect_chemconfig`).
 - **Check Potcar Path**: Verify the `potcar_path` is valid and accessible.
@@ -185,6 +199,7 @@ Select the `chem_config` based on the material type and desired accuracy. For de
 
 ## Constraints
 - **Environments**: All MCP tools and scripts require the **htvs-agent** conda environment.
+- **Data ID Tracking**: Every tool or script execution that creates database records MUST output a JSON block with the related Database IDs for agentic tracking.
 - **Structure files** must be readable by `ase.io`.
 
 ## Files
@@ -192,4 +207,5 @@ Select the `chem_config` based on the material type and desired accuracy. For de
 - [chemconfig-standards.md](chemconfig-standards.md): Detailed HTVS configuration standards and naming conventions.
 - [src/mcp_server/htvs_server.py](file:///home/hojechun/ssd_mnt/repos/AtomisticSkills/src/mcp_server/htvs_server.py): The primary interface for all HTVS operations.
 
-
+**Author**: Hoje Chun
+**Contact**: [GitHub @hojechun](https://github.com/hojechun)

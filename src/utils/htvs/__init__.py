@@ -23,7 +23,8 @@ from .job_handler import HTVSJobHandler
 # Database operations
 from .db_handler import HTVSDbHandler
 
-
+from .surface_utils import SurfaceHelper
+from .adsorbate_utils import get_adsorbate
 __all__ = [
     # Config
     "HTVSConfigHandler",
@@ -35,6 +36,10 @@ __all__ = [
     "HTVSVaspHandler",
     # Jobs
     "HTVSJobHandler",
-    # Database
+# Database
     "HTVSDbHandler",
+    
+    # Adsorbates
+    "get_adsorbate",
+    "SurfaceHelper",
 ]

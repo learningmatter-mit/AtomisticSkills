@@ -18,11 +18,22 @@ This document lists the environment variables required for the MLIP agent to fun
 | `PMG_VASP_PSP_DIR` | Path to VASP POTCAR directory. | `pymatgen`, `atomate2` | `/path/to/vasp/potcar` |
 | `MP_API_KEY` | API Key for Materials Project access. | `base_tools`, `pymatgen` | `abc123def456` |
 
+## HTVS Framework
+
+| Variable | Description | Required By | Example |
+| :--- | :--- | :--- | :--- |
+| `HTVS_DIR` | Absolute path to the main HTVS code directory | `htvs_server` | `/path/to/htvs` |
+| `HTVS_DJANGOCHEM_DIR` | Absolute path to the HTVS Djangochem directory | `htvs_server` | `/path/to/htvs/djangochem` |
+| `settings_module` | Django Settings Module for database | `htvs_server` | `djangochem.settings.orgel` |
+| `group_name` | Default group/project name in HTVS | `htvs_server` | `my_agent_group` |
+| `compute_platform` | Computing cluster name (e.g., perlmutter, supercloud) | `htvs_server` | `perlmutter_cpu` |
+| `potcar_path` | Absolute path to POTCAR directory on the cluster | `htvs_server` | `/global/homes/.../potcar` |
+
 ## Configuration Files
 
 Instead of setting variables manually, it is recommended to use standard configuration files where possible:
 
-- **MLIP Agent**: `~/.mlip_agent.yaml` or `~/.config/mlip_agent.yaml`
+- **MLIP Agent**: `~/.atomistic_skills.yaml` or `~/.config/atomistic_skills.yaml`
     - This is the main configuration for the agent. Any key defined here will be injected into the environment.
     - Example:
       ```yaml

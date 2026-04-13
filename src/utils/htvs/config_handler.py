@@ -56,9 +56,46 @@ class HTVSConfigHandler:
             repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
             config_path = os.path.join(repo_root, "mcp_config.json")
         
-        htvs_dir = os.environ.get("HTVSDIR")
-        htvs_djangochem_dir = os.environ.get("DJANGOCHEMDIR")
+        # 1. First check environment variables
+        # Base paths
+        htvs_dir = os.environ.get("HTVS_DIR") or os.environ.get("HTVSDIR")
+        htvs_djangochem_dir = os.environ.get("HTVS_DJANGOCHEM_DIR") or os.environ.get("DJANGOCHEMDIR")
         
+        # New cluster/project defaults
+        settings_module = os.environ.get("HTVS_SETTINGS_MODULE")
+        group_name = os.environ.get("HTVS_GROUP_NAME")
+        compute_platform = os.environ.get("HTVS_COMPUTE_PLATFORM")
+        requester = os.environ.get("HTVS_REQUESTER")
+        inbox_path = os.environ.get("HTVS_INBOX_PATH")
+        potcar_path = os.environ.get("HTVS_POTCAR_PATH")
+        project_name = os.environ.get("HTVS_PROJECT_NAME")
+        completed_path = os.environ.get("HTVS_COMPLETED_PATH")
+        
+        # 2. Check ~/.atomistic_skills.yaml (Primary global config)
+        yaml_config_path = os.path.expanduser("~/.atomistic_skills.yaml")
+        if os.path.exists(yaml_config_path):
+            try:
+                import yaml
+                with open(yaml_config_path, 'r') as f:
+                    yaml_config = yaml.safe_load(f) or {}
+                    if not htvs_dir:
+                        htvs_dir = yaml_config.get("HTVS_DIR", yaml_config.get("HTVSDIR"))
+                    if not htvs_djangochem_dir:
+                        htvs_djangochem_dir = yaml_config.get("HTVS_DJANGOCHEM_DIR", yaml_config.get("DJANGOCHEMDIR"))
+                    
+                    # Fetch extra configuration keys if present
+                    settings_module = settings_module or yaml_config.get("settings_module")
+                    group_name = group_name or yaml_config.get("group_name")
+                    compute_platform = compute_platform or yaml_config.get("compute_platform")
+                    requester = requester or yaml_config.get("requester")
+                    inbox_path = inbox_path or yaml_config.get("inbox_path")
+                    potcar_path = potcar_path or yaml_config.get("potcar_path")
+                    project_name = project_name or yaml_config.get("project_name")
+                    completed_path = completed_path or yaml_config.get("completed_path")
+            except Exception as e:
+                logger.warning(f"Failed to load config from {yaml_config_path}: {e}")
+        
+        # 3. Fallback to mcp_config.json
         if os.path.exists(config_path):
             try:
                 with open(config_path, 'r') as f:
@@ -72,9 +109,20 @@ class HTVSConfigHandler:
                 logger.warning(f"Failed to load config from {config_path}: {e}")
         
         if not htvs_dir or not htvs_djangochem_dir:
-            logger.warning("HTVS environment variables (HTVSDIR, DJANGOCHEMDIR) not found in environment or config file.")
+            logger.warning("HTVS environment variables (HTVS_DIR, HTVS_DJANGOCHEM_DIR) not found in environment or config files.")
         
-        return {"htvs_dir": htvs_dir, "htvs_djangochem_dir": htvs_djangochem_dir}
+        return {
+            "htvs_dir": htvs_dir, 
+            "htvs_djangochem_dir": htvs_djangochem_dir,
+            "settings_module": settings_module,
+            "group_name": group_name,
+            "compute_platform": compute_platform,
+            "requester": requester,
+            "inbox_path": inbox_path,
+            "potcar_path": potcar_path,
+            "project_name": project_name,
+            "completed_path": completed_path
+        }
     
     def check_environment(self) -> Dict[str, Any]:
         """

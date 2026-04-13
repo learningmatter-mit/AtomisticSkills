@@ -123,6 +123,9 @@ import json
 sys.path.append("{htvs_dir}")
 sys.path.append("{djangochem_dir}")
 sys.path.append(os.path.abspath(os.path.join("{djangochem_dir}", "..")))
+sys.path.append("{os.path.dirname(os.path.abspath(__file__))}")
+# Ensure the root of AtomisticSkills is in the path to allow 'src.*' imports
+sys.path.append(os.path.abspath(os.path.join("{os.path.dirname(os.path.abspath(__file__))}", "../../..")))
 
 settings_mod = "{settings_module}"
 if not settings_mod.startswith("djangochem.settings."):

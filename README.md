@@ -175,8 +175,22 @@ MP_API_KEY: "your_mp_api_key_here"
 # Atomate2 Remote Project (Required for remote job monitoring)
 ATOMATE2_REMOTE_PROJECT: "remote_perlmutter"
 
-#Required for running molecular DFT calculations with ORCA
+# Required for running molecular DFT calculations with ORCA
 ORCA_BINARY_PATH: /path/to/orca_directory/orca
+
+# HTVS Framework Core Config
+HTVS_DIR: "/path/to/htvs"
+HTVS_DJANGOCHEM_DIR: "/path/to/htvs/djangochem"
+
+# Pre-configured HTVS Defaults (Optional, streamlines HTVS MCP tools)
+settings_module: djangochem.settings.orgel
+group_name: my_agent_group
+compute_platform: perlmutter_cpu
+potcar_path: /global/homes/user/scratch/vasp_potentials
+inbox_path: /home/user/mnt/perlmutter_m5068/jobs/inbox
+completed_path: /home/user/mnt/perlmutter_m5068/jobs/completed
+project_name: m5068
+requester: username
 ```
 
 ### 2. Environment Variables

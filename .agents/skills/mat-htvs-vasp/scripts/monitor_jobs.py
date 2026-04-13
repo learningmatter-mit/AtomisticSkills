@@ -1,22 +1,80 @@
+"""
+Monitor HTVS job completion.
+
+Author: Hoje Chun
+Contact: GitHub @hojechun
+"""
 import os
 import sys
 import json
 import argparse
-import glob
+import traceback
 from pathlib import Path
+from typing import Any, Dict
 
-def setup_django(settings_module, djangochem_dir):
-    """Sets up Django environment for HTVS and returns if successful."""
-    try:
-        sys.path.append(djangochem_dir)
-        sys.path.append(os.path.abspath(os.path.join(djangochem_dir, "..")))
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
-        import django
-        django.setup()
-        return True
-    except Exception as e:
-        print(f"Error setting up Django: {e}")
-        return False
+# Add repo root to find src
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
+if repo_root not in sys.path:
+    sys.path.append(repo_root)
+
+from src.utils.htvs.script_runner import setup_django
+
+def run_monitor_jobs(args: argparse.Namespace) -> Dict[str, Any]:
+    if not os.path.exists(args.tracking_file):
+        raise FileNotFoundError(f"Tracking file not found: {args.tracking_file}")
+        
+    with open(args.tracking_file, 'r') as f:
+        tracking_data = json.load(f)
+        
+    group_name = tracking_data.get("group_name")
+    chem_config = tracking_data.get("chem_config")
+    # For backward compatibility and robustness
+    job_dirs = tracking_data.get("job_dirs") or tracking_data.get("submitted_ids")
+    
+    if not job_dirs:
+        return {"status": "warning", "message": "No jobs found in tracking file."}
+        
+    completed = []
+    pending = []
+    
+    # Simple check for directory presence. In reality, we might check for specific files.
+    for job_id in job_dirs:
+        # Check if directory exists for the job
+        # Note: job directory usually follows some naming convention
+        # For simplicity, we assume we check against completed_path provided by user
+        path = os.path.join(args.completed_path, str(job_id))
+        if os.path.exists(path):
+            completed.append(job_id)
+        else:
+            pending.append(job_id)
+            
+    parse_result = None
+    if args.parse and completed:
+        if not args.settings_module:
+            raise ValueError("--settings_module is required for parsing.")
+            
+        setup_django(args.settings_module)
+        from django.core.management import call_command
+        
+        # Use stdout redirection if needed, but here we just call it
+        call_command(
+            'parsejobs',
+            group_name,
+            args.completed_path,
+            settings=args.settings_module,
+            config=chem_config
+        )
+        parse_result = "Parse complete."
+
+    return {
+        "status": "success",
+        "total": len(job_dirs),
+        "completed_count": len(completed),
+        "pending_count": len(pending),
+        "completed": completed,
+        "pending": pending,
+        "parse_result": parse_result
+    }
 
 def main():
     parser = argparse.ArgumentParser(description="Monitor HTVS job completion.")
@@ -27,74 +85,17 @@ def main():
     
     args = parser.parse_args()
     
-    if not os.path.exists(args.tracking_file):
-        print(f"Tracking file not found: {args.tracking_file}")
-        return
-        
-    with open(args.tracking_file, 'r') as f:
-        tracking_data = json.load(f)
-        
-    group_name = tracking_data.get("group_name")
-    chem_config = tracking_data.get("chem_config")
-    job_dirs = tracking_data.get("job_dirs", [])
-    
-    if not job_dirs:
-        print("No jobs found in tracking file.")
-        return
-        
-    print(f"Monitoring {len(job_dirs)} jobs in {args.completed_path}")
-    
-    completed = []
-    pending = []
-    
-    for job_name in job_dirs:
-        path = os.path.join(args.completed_path, job_name)
-        if os.path.exists(path):
-            completed.append(job_name)
-        else:
-            pending.append(job_name)
-            
-    print(f"\nStatus Summary:")
-    print(f"  Total:     {len(job_dirs)}")
-    print(f"  Completed: {len(completed)}")
-    print(f"  Pending:   {len(pending)}")
-    
-    if completed:
-        print("\nCompleted Jobs:")
-        for job in completed[:10]:
-            print(f"  [x] {job}")
-        if len(completed) > 10:
-            print(f"  ... and {len(completed) - 10} more.")
-            
-    if pending:
-        print("\nPending Jobs:")
-        for job in pending[:10]:
-            print(f"  [ ] {job}")
-        if len(pending) > 10:
-            print(f"  ... and {len(pending) - 10} more.")
-            
-    if args.parse and completed:
-        if not args.settings_module:
-            print("\nError: --settings_module is required for parsing.")
-            return
-            
-        htvs_repo = os.environ.get("HTVS_DIR")
-        if not htvs_repo:
-            print("\nError: HTVS_DIR environment variable not set.")
-            return
-            
-        djangochem_dir = os.path.join(htvs_repo, "djangochem")
-        if setup_django(args.settings_module, djangochem_dir):
-            from django.core.management import call_command
-            print(f"\nRunning parsejobs for {len(completed)} jobs...")
-            call_command(
-                'parsejobs',
-                group_name,
-                args.completed_path,
-                settings=args.settings_module,
-                config=chem_config
-            )
-            print("Parsing complete.")
+    try:
+        results = run_monitor_jobs(args)
+        print(json.dumps(results, indent=2))
+    except Exception as e:
+        error_results = {
+            "status": "error",
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }
+        print(json.dumps(error_results, indent=2))
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

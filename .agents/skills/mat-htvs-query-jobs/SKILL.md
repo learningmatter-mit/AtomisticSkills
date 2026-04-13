@@ -7,6 +7,13 @@ category: DB Query
 
 **Goal**: Monitor the progress of submitted DFT calculations, find job IDs, and check for specific pipeline states (e.g., "done", "error", "claimed").
 
+## Configuration & Safety (CRITICAL)
+
+Wait! HTVS operations directly interact with research databases. Before running any commands:
+1.  **Expose the Context**: Explicitly state the `settings_module` and `group_name` you are about to use.
+2.  **Request Confirmation**: Ask the user: *"I am about to perform this operation on the [GROUP_NAME] project within the [SETTINGS_MODULE] database. Is this correct?"*
+3.  **Do NOT proceed** until the user gives explicit approval.
+
 ## Guidelines
 
 1. You **MUST** use the **`htvs_query_jobs`** MCP tool to check job status.
@@ -45,6 +52,11 @@ specific_jobs = htvs_query_jobs(
 - `status`: Filter exactly by string status ("error", "done", "claimed").
 - `config_name`: Filter by applied job config (e.g. `pbe_d3_opt_vasp`).
 - `settings_module`: Django settings module Choice (default "orgel").
+
+## Constraints
+- **Environment**: All MCP tools invoked by this skill run inherently through the `htvs-agent` runtime via the gemini MCP maps.
+- **Data ID Tracking**: Every tool execution will return structured data containing Database IDs for agentic tracking.
+- **Dependencies**: Native MCP Server connection required; no standalone python wrappers are used.
 
 **Author**: Hoje Chun
 **Contact**: [GitHub @hojechun](https://github.com/hojechun)

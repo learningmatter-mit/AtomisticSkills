@@ -123,6 +123,12 @@ class HTVSJobHandler:
         Returns:
             Command output string
         """
+        # Pre-flight validation for Perlmutter
+        cp = details.get("compute_platform", "")
+        if cp and "perlmutter" in cp.lower():
+            if not details.get("project_name"):
+                return "Error: 'project_name' is missing but compute_platform is Perlmutter. Please provide it in ~/.atomistic_skills.yaml or tool details."
+        
         cmd = [
             sys.executable, self.manage_py, "requestjobs",
             group_name,

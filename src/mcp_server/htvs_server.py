@@ -1,8 +1,11 @@
 import os
 import sys
 import json
+import re
 import subprocess
+from datetime import datetime
 from typing import Optional, Dict, Any, List
+from pathlib import Path
 
 try:
     from mcp.server.fastmcp import FastMCP
@@ -26,13 +29,107 @@ try:
 except ImportError:
     HTVS_UTILS_AVAILABLE = False
 
+# --- GLOBAL HTVS CONTEXT ---
+GLOBAL_HTVS_CONTEXT = {
+    "settings_module": None,
+    "group_name": None
+}
+
+def _log_to_research_dir(tool_name: str, data: Dict[str, Any]):
+    """Helper to log tool results to the current research directory if active."""
+    try:
+        from src.utils.research_utils import get_current_research_dir
+        res_dir = get_current_research_dir()
+        if res_dir:
+            log_file = Path(res_dir) / f"{tool_name}_tracking.json"
+            
+            # Load existing if available
+            history = []
+            if log_file.exists():
+                try:
+                    with open(log_file, "r") as f:
+                        history = json.load(f)
+                        if not isinstance(history, list):
+                            history = [history]
+                except Exception:
+                    history = []
+            
+            history.append(data)
+            
+            with open(log_file, "w") as f:
+                json.dump(history, f, indent=2)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning(f"Failed to log {tool_name} to research dir: {e}")
 
 @mcp.tool()
+def htvs_set_project_context(settings_module: Optional[str] = None, group_name: Optional[str] = None) -> str:
+    """
+    Set the global database configuration and project group for all subsequent HTVS operations.
+    Must be called before using most HTVS tools so you don't have to provide settings_module and group_name repeatedly.
+    
+    Args:
+        settings_module: Django settings module name (e.g., 'orgel').
+        group_name: HTVS project group name.
+    """
+    GLOBAL_HTVS_CONTEXT["settings_module"] = settings_module
+    GLOBAL_HTVS_CONTEXT["group_name"] = group_name
+    return f"Successfully set global HTVS context: settings_module='{settings_module}', group_name='{group_name}'"
+
+def _get_context(settings_module: Optional[str] = None, group_name: Optional[str] = None):
+    s = settings_module if settings_module is not None else GLOBAL_HTVS_CONTEXT.get("settings_module")
+    g = group_name if group_name is not None else GLOBAL_HTVS_CONTEXT.get("group_name")
+    
+    if not s or not g:
+        config = HTVSConfigHandler().load_config()
+        s = s or config.get("settings_module")
+        g = g or config.get("group_name")
+        
+    if not s:
+        raise ValueError("settings_module is required. Pass it via argument, call htvs_set_project_context, or set it in ~/.atomistic_skills.yaml.")
+    if not g:
+        raise ValueError("group_name is required. Pass it via argument, call htvs_set_project_context, or set it in ~/.atomistic_skills.yaml.")
+        
+    return s, g
+
+
+import functools
+import inspect
+
+def require_htvs_context(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if not HTVS_UTILS_AVAILABLE:
+            import json
+            return json.dumps({"error": "HTVS utilities not available"})
+        
+        sig = inspect.signature(func)
+        bound = sig.bind(*args, **kwargs)
+        bound.apply_defaults()
+        
+        sm = bound.arguments.get('settings_module')
+        gn = bound.arguments.get('group_name')
+        
+        try:
+            s, g = _get_context(sm, gn)
+            if 'settings_module' in bound.arguments:
+                bound.arguments['settings_module'] = s
+            if 'group_name' in bound.arguments:
+                bound.arguments['group_name'] = g
+        except ValueError as e:
+            return f"Error: {e}"
+            
+        return func(*bound.args, **bound.kwargs)
+    return wrapper
+
+
+@mcp.tool()
+@require_htvs_context
 def save_htvs_structure(
     structure_file: str,
     config_name: str,
-    group_name: str,
-    settings_module: str,
+    group_name: Optional[str] = None,
+    settings_module: Optional[str] = None,
     structure_type: str = "auto",
     parent_bulk_id: Optional[int] = None,
     miller_index: Optional[List[int]] = None,
@@ -72,8 +169,6 @@ def save_htvs_structure(
         - Otherwise → Crystal
         - Future: Molecule detection based on lack of periodicity
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
     
     # Auto-detect structure type
     if structure_type == "auto":
@@ -98,7 +193,7 @@ def save_htvs_structure(
     
     # Dispatch to appropriate method
     if structure_type == "crystal":
-        return handler.save_crystals(
+        result = handler.save_crystals(
             structure_file=structure_file,
             config_name=config_name,
             group_name=group_name,
@@ -111,7 +206,7 @@ def save_htvs_structure(
         if parent_bulk_id is None:
             import json
             return json.dumps({"error": "parent_bulk_id required for surface structures"})
-        return handler.save_surfaces(
+        result = handler.save_surfaces(
             structure_file=structure_file,
             config_name=config_name,
             parent_bulk_id=parent_bulk_id,
@@ -126,8 +221,25 @@ def save_htvs_structure(
         import json
         return json.dumps({"error": f"Unknown structure_type: {structure_type}. Use 'auto', 'crystal', 'surface', or 'molecule'"})
 
+    # Log to research dir
+    try:
+        ids_data = json.loads(result)
+        _log_to_research_dir("save_htvs_structure", {
+            "timestamp": datetime.now().isoformat(),
+            "structure_file": structure_file,
+            "structure_type": structure_type,
+            "config_name": config_name,
+            "group_name": group_name,
+            "ids": ids_data
+        })
+    except Exception:
+        pass
+
+    return result
+
 
 @mcp.tool()
+@require_htvs_context
 def prepare_vasp_job_details(
     structure_file: str,
     preset_type: str = "mp",
@@ -154,9 +266,6 @@ def prepare_vasp_job_details(
     Returns:
         JSON string of the 'details' dictionary ready for HTVS submission.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        import json
-        return json.dumps({"error": "HTVS utilities not available"})
     
     handler = HTVSVaspHandler()
     return handler.generate_details(
@@ -170,9 +279,10 @@ def prepare_vasp_job_details(
 
 
 @mcp.tool()
+@require_htvs_context
 def htvs_query_results(
-    settings_module: str,
-    group_name: str,
+    settings_module: Optional[str] = None,
+    group_name: Optional[str] = None,
     config_name: Optional[str] = None,
     formula: Optional[str] = None,
     limit: Optional[int] = None,
@@ -191,16 +301,15 @@ def htvs_query_results(
         djangochem_dir: Optional override for DJANGOCHEM_DIR.
         htvs_dir: Optional override for HTVS_DIR.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
     handler = HTVSDbHandler(settings_module, djangochem_dir, htvs_dir)
     return handler.query_results(group_name, config_name, formula, limit)
 
 
 @mcp.tool()
+@require_htvs_context
 def htvs_query_structures(
-    settings_module: str,
-    group_name: str,
+    settings_module: Optional[str] = None,
+    group_name: Optional[str] = None,
     structure_type: str = "crystal",
     config_name: Optional[str] = None,
     formula: Optional[str] = None,
@@ -221,16 +330,15 @@ def htvs_query_structures(
         djangochem_dir: Optional override for DJANGOCHEM_DIR.
         htvs_dir: Optional override for HTVS_DIR.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
     handler = HTVSDbHandler(settings_module, djangochem_dir, htvs_dir)
     return handler.query_structures(group_name, structure_type, config_name, formula, limit)
 
 
 @mcp.tool()
+@require_htvs_context
 def htvs_get_structure(
-    settings_module: str,
     structure_id: int,
+    settings_module: Optional[str] = None,
     structure_type: str = "crystal",
     djangochem_dir: Optional[str] = None,
     htvs_dir: Optional[str] = None,
@@ -245,16 +353,15 @@ def htvs_get_structure(
         djangochem_dir: Optional override for DJANGOCHEM_DIR.
         htvs_dir: Optional override for HTVS_DIR.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
     handler = HTVSDbHandler(settings_module, djangochem_dir, htvs_dir)
     return handler.get_structure_as_json(structure_id, structure_type)
 
 
 @mcp.tool()
+@require_htvs_context
 def htvs_query_jobs(
-    settings_module: str,
-    group_name: str,
+    settings_module: Optional[str] = None,
+    group_name: Optional[str] = None,
     status: Optional[str] = None,
     config_name: Optional[str] = None,
     limit: Optional[int] = None,
@@ -271,18 +378,58 @@ def htvs_query_jobs(
         limit: Optional limit.
         djangochem_dir: Optional override for DJANGOCHEM_DIR.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
+        
     handler = HTVSDbHandler(settings_module, djangochem_dir)
-    return handler.query_jobs(group_name, status, config_name, limit)
+    result_str = handler.query_jobs(group_name, status, config_name, limit)
+    
+    # Attempt to log to the current research directory if available
+    try:
+        import json
+        from pathlib import Path
+        from src.utils.research_utils import get_current_research_dir
+        
+        res_dir = get_current_research_dir()
+        if res_dir:
+            jobs = json.loads(result_str)
+            if isinstance(jobs, list):
+                from collections import Counter
+                counts = Counter([j.get('status', 'unknown') for j in jobs])
+                
+                log_file = Path(res_dir) / f"{group_name}_jobs_status.json"
+                log_data = {
+                    "group_name": group_name,
+                    "status_filter": status,
+                    "config_filter": config_name,
+                    "total_jobs": len(jobs),
+                    "status_counts": dict(counts),
+                    "jobs": jobs
+                }
+                with open(log_file, "w") as f:
+                    json.dump(log_data, f, indent=2)
+                    
+                # Prepend a small readable summary since full JSON is logged
+                summary = f"Queried {len(jobs)} jobs. Log saved to {log_file}\\nStatus counts: {dict(counts)}\\n"
+                # Still return the full json but we can add summary at start if needed, 
+                # but returning JSON string is standard. We will return the plain JSON
+                # so other tools can parse it, but print a note. Wait, if we prepend text,
+                # it breaks JSON parsing for AI! So we should just write to log, and return the original JSON.
+                # OR we return a new structure.
+                # Since MCP tools text output goes to the LLM, returning a text summary + JSON output works.
+                # Actually, just returning the original JSON is safer so we don't break expected standard structure.
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning("Failed to log query_jobs to research dir: %s", e)
+
+    return result_str
 
 
 @mcp.tool()
+@require_htvs_context
 def htvs_request_job(
-    settings_module: str,
-    group_name: str,
     chem_config: str,
     details: Dict[str, Any],
+    settings_module: Optional[str] = None,
+    group_name: Optional[str] = None,
     requester: Optional[str] = None,
     parent_pks: Optional[List[int]] = None,
     parent_config: Optional[str] = None,
@@ -301,19 +448,51 @@ def htvs_request_job(
         parent_config: Optional parent configuration name filter for parents.
         djangochem_dir: Optional override for DJANGOCHEM_DIR.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
+    
+    config = HTVSConfigHandler().load_config()
+    details.setdefault("compute_platform", config.get("compute_platform"))
+    details.setdefault("pseudo_dir", config.get("potcar_path"))
+    details.setdefault("requester", config.get("requester"))
+    details.setdefault("project_name", config.get("project_name"))
+    
     handler = HTVSJobHandler(settings_module, djangochem_dir)
-    return handler.request_job(group_name, chem_config, details, requester, parent_pks, parent_config)
+    result = handler.request_job(group_name, chem_config, details, requester, parent_pks, parent_config)
+    
+    # Log to research dir
+    try:
+        # Extract Job IDs (PKs) from output string
+        # Standard output usually looks like "Success: Created job(s): [123, 124]" or lists them
+        pks = []
+        pk_matches = re.findall(r"PK[:\s]*(\d+)", result)
+        if not pk_matches:
+            pk_matches = re.findall(r"\[([\d,\s]+)\]", result)
+            if pk_matches:
+                pks = [int(x.strip()) for x in pk_matches[0].split(",")]
+        else:
+            pks = [int(x) for x in pk_matches]
+            
+        if pks:
+            _log_to_research_dir("htvs_request_job", {
+                "timestamp": datetime.now().isoformat(),
+                "group_name": group_name,
+                "chem_config": chem_config,
+                "job_pks": pks,
+                "details": details
+            })
+    except Exception:
+        pass
+        
+    return result
 
 
 @mcp.tool()
+@require_htvs_context
 def htvs_request_followup_job(
-    settings_module: str,
-    group_name: str,
     chem_config: str,
     parent_job_pks: List[int],
     details: Dict[str, Any],
+    settings_module: Optional[str] = None,
+    group_name: Optional[str] = None,
     requester: Optional[str] = None,
     parent_config: Optional[str] = None,
     djangochem_dir: Optional[str] = None,
@@ -331,16 +510,48 @@ def htvs_request_followup_job(
         parent_config: Optional parent configuration name filter for parents.
         djangochem_dir: Optional override for DJANGOCHEM_DIR.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
+        
+    config = HTVSConfigHandler().load_config()
+    details.setdefault("compute_platform", config.get("compute_platform"))
+    details.setdefault("pseudo_dir", config.get("potcar_path"))
+    details.setdefault("requester", config.get("requester"))
+    details.setdefault("project_name", config.get("project_name"))
+    
     handler = HTVSJobHandler(settings_module, djangochem_dir)
-    return handler.request_followup_job(group_name, chem_config, parent_job_pks, details, requester, parent_config)
+    result = handler.request_followup_job(group_name, chem_config, parent_job_pks, details, requester, parent_config)
+    
+    # Log to research dir
+    try:
+        # Extract Job IDs (PKs) from output string
+        pks = []
+        pk_matches = re.findall(r"PK[:\s]*(\d+)", result)
+        if not pk_matches:
+            pk_matches = re.findall(r"\[([\d,\s]+)\]", result)
+            if pk_matches:
+                pks = [int(x.strip()) for x in pk_matches[0].split(",")]
+        else:
+            pks = [int(x) for x in pk_matches]
+            
+        if pks:
+            _log_to_research_dir("htvs_request_job", {
+                "timestamp": datetime.now().isoformat(),
+                "group_name": group_name,
+                "chem_config": chem_config,
+                "job_pks": pks,
+                "parent_pks": parent_job_pks,
+                "details": details
+            })
+    except Exception:
+        pass
+        
+    return result
 
 
 @mcp.tool()
+@require_htvs_context
 def htvs_build_jobs(
-    settings_module: str,
-    group_name: str,
+    settings_module: Optional[str] = None,
+    group_name: Optional[str] = None,
     inbox_path: Optional[str] = None,
     config_name: Optional[str] = None,
     limit: Optional[int] = None,
@@ -359,17 +570,24 @@ def htvs_build_jobs(
         compute_platform: Optional compute platform filter.
         djangochem_dir: Optional override for DJANGOCHEM_DIR.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
+        
+    config = HTVSConfigHandler().load_config()
+    inbox_path = inbox_path or config.get("inbox_path")
+    compute_platform = compute_platform or config.get("compute_platform")
+    
+    if not inbox_path:
+        return "Error: inbox_path is required. Pass it via argument or set it in ~/.atomistic_skills.yaml."
+        
     handler = HTVSJobHandler(settings_module, djangochem_dir)
     return handler.build_jobs(group_name, inbox_path, config_name, limit, compute_platform)
 
 
 @mcp.tool()
+@require_htvs_context
 def htvs_parse_jobs(
-    settings_module: str,
-    group_name: str,
     completed_path: str,
+    settings_module: Optional[str] = None,
+    group_name: Optional[str] = None,
     config_name: Optional[str] = None,
     limit: Optional[int] = None,
     djangochem_dir: Optional[str] = None,
@@ -385,10 +603,41 @@ def htvs_parse_jobs(
         limit: Optional job limit.
         djangochem_dir: Optional override for DJANGOCHEM_DIR.
     """
-    if not HTVS_UTILS_AVAILABLE:
-        return "Error: HTVS utilities not available"
+        
+    config = HTVSConfigHandler().load_config()
+    completed_path = completed_path or config.get("completed_path")
+    
+    if not completed_path:
+        return "Error: completed_path is required. Pass it via argument or set it in ~/.atomistic_skills.yaml."
+        
     handler = HTVSJobHandler(settings_module, djangochem_dir)
     return handler.parse_jobs(group_name, completed_path, config_name, limit)
 
+
+
+
+
+@mcp.tool()
+@require_htvs_context
+def htvs_create_group(
+    settings_module: Optional[str] = None,
+    group_name: Optional[str] = None,
+    djangochem_dir: Optional[str] = None,
+) -> str:
+    """
+    Create a new project Group in the HTVS database.
+    
+    Args:
+        settings_module: Django settings module.
+        group_name: Project group name to create.
+        djangochem_dir: Optional override for DJANGOCHEM_DIR.
+    """
+        
+    handler = HTVSDbHandler(settings_module, djangochem_dir)
+    return handler.create_group(group_name)
+
+
 if __name__ == "__main__":
     mcp.run()
+
+

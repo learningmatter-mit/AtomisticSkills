@@ -1,72 +1,49 @@
 ---
-name: mat-htvs-genbindingenergy
-description: Calculate and store surface adsorption binding energies for OER intermediates (O, OH, OOH) using DFT total energies from the HTVS database.
-category: materials
+name: Generating Binding Energies in HTVS
+description: Retrieves completed DFT surface calculations, generates dynamic Binding Energies, and dumps JSON generic data payloads for downsteam analysis.
+category: htvs, analysis
 ---
-# Generate Surface Binding Energies (HTVS)
 
-## Goal
-Compute the binding energy $\Delta E$ for OER adsorbates (O, OH, OOH) on relaxed surface slabs relative to H₂O and H₂ gas-phase references, and store the results as `BindingEnergy` records in the HTVS database.
+# Generating Binding Energies in HTVS
 
-$$
-\Delta E_{ads} = E_{slab+ads} - E_{slab} - n_{H_2O} E_{H_2O} - \frac{n_H}{2} E_{H_2}
-$$
+This skill extracts targeted adsorbate-containing surface slabs from the database, computes `BindingEnergy` metrics linking them dynamically back to gas-phase thermodynamic points, and produces a decoupled `<group>_binding_energies.json` mapping.
 
-## Instructions
+## Configuration & Safety (CRITICAL)
 
-### 1. Prerequisites
-- Clean surfaces with `clean_surface_cut` config must be relaxed and their energies stored in HTVS.
-- Adsorbate surfaces with `add_adsorbate` config must be relaxed and energies stored.
-- Gas-phase reference crystals (H₂O, H₂) must exist in the reference group.
+Wait! HTVS operations directly interact with research databases. Before running any commands:
+1.  **Expose the Context**: Explicitly state the `settings_module` and `group_name` you are about to use.
+2.  **Request Confirmation**: Ask the user: *"I am about to perform this operation on the [GROUP_NAME] project within the [SETTINGS_MODULE] database. Is this correct?"*
+3.  **Do NOT proceed** until the user gives explicit approval.
 
-### 2. Run the Script
+This file serves as the generic property bridge feeding directly into `.agents/skills/mat-htvs-catalysis-activity-analysis` to evaluate OER/ORR/CO2RR/NRR scaling laws.
+
+### 1. Execute the Pipeline
+Run the generator using the specific group configuration parameters:
+
 ```bash
 # Env: htvs-agent
-python .agents/skills/mat-htvs-genbindingenergy/scripts/run.py \
+python .agents/skills/mat-htvs-genbindingenergy/scripts/generate_binding_energy.py \
     --group my_project \
-    --config_name pbe_u_paw_spinpol_opt_vasp \
+    --config_name pbe_paw_opt_vasp \
     --ref_group surface_binding_energy_references \
     --ref_config pbe_u_paw_spinpol_opt_vasp \
-    --method dft_d3_paw_gga_pbe \
-    --metric surface_binding_dE \
-    --settings djangochem.settings.orgel
+    --settings djangochem.settings.orgel \
+    --output_data ./research/current_research_dir/binding_energies.json
 ```
 
-#### Parameters
-| Flag | Required | Default | Description |
-|---|---|---|---|
-| `--group` | ✅ | — | HTVS project group name |
-| `--config_name` | ✅ | — | JobConfig name for adsorbate-surface DFT calcs |
-| `--settings` | ✅ | — | Django settings module |
-| `--ref_group` | ❌ | `surface_binding_energy_references` | Group name of gas reference crystals |
-| `--ref_config` | ❌ | `pbe_u_paw_spinpol_opt_vasp` | Config name of gas reference calcs |
-| `--method` | ❌ | `dft_d3_paw_gga_pbe` | Method name for energy lookups |
-| `--metric` | ❌ | `surface_binding_dE` | AffinityType name for stored binding energies |
-| `--limit` | ❌ | 10000 | Max number of surfaces to process |
-| `--dry_run` | ❌ | — | Simulate without writing to DB |
-| `--djangochem` | ❌ | — | Path to the djangochem project root if needed |
-
-### 3. Verify Results
-After the run, verify binding energies were saved:
-```python
-mcp_htvs_query_results(
-    settings_module="orgel",
-    group_name="my_project",
-    config_name="pbe_u_paw_spinpol_opt_vasp",
-)
+### 2. Connect into Analytics
+Navigate back into the standard analysis module (`mat-htvs-catalysis-activity-analysis`) and parse your newly created JSON:
+```bash
+python .agents/skills/mat-htvs-catalysis-activity-analysis/scripts/run.py \
+    --reaction OER \
+    --data_file ./research/current_research_dir/binding_energies.json
 ```
 
 ## Constraints
-- Supported adsorbates: `O`, `HO` (OH), `HOO` (OOH).
-- The script skips surfaces that already have a `BindingEnergy` record for the given metric.
-- The `--ref_group` and `--ref_config` flags make gas-phase references fully configurable with no hardcoded names.
-- **Environment**: `htvs-agent`
+- **Environment**: Requires `htvs-agent` conda environment to map and interact with the Django Models and HTVS database schemas.
+- **Dependencies**: Django backend configurations MUST be supplied dynamically during runtime to correctly initialize PostgreSQL connections.
+- **Data Integrity**: Ensure the JSON export is structurally intact before dropping it into decoupled analysis endpoints.
+- **Data ID Tracking**: Every script execution will output a JSON block with the related Database IDs (Job IDs, Result IDs) for agentic tracking.
 
-## References
-- Nørskov et al., *J. Electrochem. Soc.*, 2004. [DOI](https://doi.org/10.1149/1.1612015)
-- Man et al., *ChemCatChem*, 2011. [DOI](https://doi.org/10.1002/cctc.201000397)
-
----
-
-**Author:** Hoje Chun  
-**Contact:** [GitHub @hojechun](https://github.com/hojechun)
+**Author**: Hoje Chun
+**Contact**: [GitHub @hojechun](https://github.com/hojechun)
