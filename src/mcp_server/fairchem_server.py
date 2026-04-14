@@ -116,7 +116,8 @@ def relax_structure(
     steps: int = 500,
     optimizer: str = "FIRE",
     relax_cell: bool = True,
-    output_dir: Optional[str] = None
+    output_dir: Optional[str] = None,
+    fixed_atoms: Optional[List[int]] = None
 ) -> Dict[str, Any]:
     """
     Relax one or multiple structures using the loaded FAIRCHEM model.
@@ -128,6 +129,7 @@ def relax_structure(
         optimizer: Optimizer to use ("FIRE", "BFGS", "LBFGS").
         relax_cell: Whether to relax the unit cell (default: True).
         output_dir: Directory to save results. For batch mode, each structure gets a subdirectory.
+        fixed_atoms: List of indices of atoms to keep fixed during relaxation.
         
     Returns:
         For single: Dict with energy, trajectory_path, cif_path, json_path
@@ -144,7 +146,8 @@ def relax_structure(
         steps=steps,
         optimizer=optimizer,
         relax_cell=relax_cell,  # Use passed argument
-        output_dir=output_dir
+        output_dir=output_dir,
+        fixed_atoms=fixed_atoms
     ))
 
 @mcp.tool()
