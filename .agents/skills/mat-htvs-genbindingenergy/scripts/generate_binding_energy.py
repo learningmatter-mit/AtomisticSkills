@@ -43,8 +43,12 @@ def get_adsorbate_formula(surface_obj) -> str:
     return mapping.get(formula, formula)
 
 def get_energy(geom_obj, method_obj) -> float:
-    calc = geom_obj.calcs.get(totalenergy__isnull=False, method=method_obj)
-    return calc.totalenergy
+    # Check if geom_obj is Surface or Crystal
+    if hasattr(geom_obj, 'calcs'):
+        calc = geom_obj.calcs.filter(totalenergy__isnull=False, method=method_obj).first()
+        if calc:
+            return calc.totalenergy
+    return None
 
 def get_optimized_clean(surface_obj, config_obj):
     # Find the original 'clean_surface_cut' ancestor
@@ -92,10 +96,13 @@ def run_generate_binding_energy(args: argparse.Namespace) -> Dict[str, Any]:
     
     # Try Database First
     try:
-        h2o_ref = get_energy(ref_crystals.get(stoichiometry__formula="H2O"), method_obj)
-        h2_ref = get_energy(ref_crystals.get(stoichiometry__formula="H2"), method_obj)
-        from_db = True
-        log(f"Gas references loaded from database '{args.settings}'")
+        h2o_obj = ref_crystals.get(stoichiometry__formula="H2O")
+        h2_obj = ref_crystals.get(stoichiometry__formula="H2")
+        h2o_ref = get_energy(h2o_obj, method_obj)
+        h2_ref = get_energy(h2_obj, method_obj)
+        if h2o_ref is not None and h2_ref is not None:
+            from_db = True
+            log(f"Gas references loaded from database '{args.settings}'")
     except Exception as e:
         log(f"Database references not found, attempting centralized JSON fallback... ({e})")
 
@@ -203,6 +210,9 @@ def run_generate_binding_energy(args: argparse.Namespace) -> Dict[str, Any]:
             energy_w_ads = get_energy(surface, method_obj)
             energy_clean = get_energy(clean_surface, method_obj)
             
+            if energy_w_ads is None or energy_clean is None:
+                continue
+
             # HTVS VASP parsers save totalenergy in Hartree, while MLIPs save in eV.
             if "dft" in method_obj.name.lower() or "vasp" in method_obj.name.lower():
                 energy_w_ads *= ha_to_ev

@@ -149,5 +149,9 @@ def main():
         except Exception as e:
             print(f"Could not generate training plot: {e}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.results_dir)
+
 if __name__ == "__main__":
     main()

@@ -73,5 +73,9 @@ def run_ordering():
     
     logger.info(f"Successfully generated {len(structures)} structures in {args.output_dir}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 if __name__ == "__main__":
     run_ordering()

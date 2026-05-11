@@ -57,9 +57,9 @@ UMA overestimates homolytic BDEs relative to experiment (~20-30 kcal/mol). Gas-p
 | File | Description |
 |:---|:---|
 | `bde_results.json` | Full BDE results with all variants |
-| `intact_relaxed.xyz` | Relaxed methanol geometry |
-| `frag_bond0_homo_{1,2}.xyz` | C–O homolytic radical fragments |
-| `frag_bond0_hetero_pos_neg_{1,2}.xyz` | C–O ionic variant A (CH₃⁺, OH⁻) |
-| `frag_bond0_hetero_neg_pos_{1,2}.xyz` | C–O ionic variant B (CH₃⁻, OH⁺) |
+| [intact_relaxed.xyz](intact_relaxed.xyz) | Relaxed methanol geometry |
+| [frag_bond0_homo_{1,2}.xyz](frag_bond0_homo_{1,2}.xyz) | C–O homolytic radical fragments |
+| [frag_bond0_hetero_pos_neg_{1,2}.xyz](frag_bond0_hetero_pos_neg_{1,2}.xyz) | C–O ionic variant A (CH₃⁺, OH⁻) |
+| [frag_bond0_hetero_neg_pos_{1,2}.xyz](frag_bond0_hetero_neg_pos_{1,2}.xyz) | C–O ionic variant B (CH₃⁻, OH⁺) |
 | `bde_comparison.png` | Comparison plot |
 | `plot.py` | Plotting script |

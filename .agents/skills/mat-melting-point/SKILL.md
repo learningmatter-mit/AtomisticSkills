@@ -14,7 +14,7 @@ To determine the thermodynamic melting temperature ($T_m$) of a bulk material by
 1.  **Background Research**: 
     - Search for the approximate melting point ($T_m$) and boiling/evaporation point ($T_{vap}$) of the material.
     - Choose a melting temperature $T_{melt}$ where $T_m < T_{melt} \ll T_{vap}$.
-    - **MD Parameters**: Refer to the [general-molecular-dynamics](../general-molecular-dynamics/SKILL.md) skill for best practices on timesteps and monitors. In general, use a 2.0 fs timestep for systems without Hydrogen.
+    - **MD Parameters**: Refer to the [mat-md-monitors](../mat-md-monitors/SKILL.md) skill for best practices on timesteps and monitors. In general, use a 2.0 fs timestep for systems without Hydrogen.
 
 2.  **Phase Preparation**: 
     - **Solid**: Create a supercell using `create_supercell.py`.
@@ -35,6 +35,7 @@ To determine the thermodynamic melting temperature ($T_m$) of a bulk material by
         output_dir="melt_stage"
     )
     ```
+    - **Visual Inspection (CRITICAL)**: Sometimes the cell does not fully melt within the specified MD steps. You MUST use the `mcp_base_visualize_structure` tool to generate an image of the final `liquid.cif` structure (or trajectory) and have the VLM visually inspect the image to confirm that the long-range crystalline order has been destroyed and the cell is completely melted. If it has not, you must run the MD with a higher temperature or for more steps.
 3.  **Interface Creation**: Use `create_interface.py` to concatenate the two phases.
     ```bash
     # Env: base-agent
@@ -66,17 +67,22 @@ To determine the thermodynamic melting temperature ($T_m$) of a bulk material by
     ```bash
     # Env: base-agent
     # Solid should be ~100% solid
-    python .agents/skills/mat-melting-point/scripts/check_phase.py solid_supercell.cif \
+    python .agents/skills/mat-melting-point/scripts/check_phase.py <research_dir>/solid_features.json \
         --solid_features <research_dir>/solid_features.json \
         --liquid_features <research_dir>/liquid_features.json
     
     # Liquid should be ~100% liquid
-    python .agents/skills/mat-melting-point/scripts/check_phase.py liquid_supercell.cif \
+    python .agents/skills/mat-melting-point/scripts/check_phase.py <research_dir>/liquid_features.json \
         --solid_features <research_dir>/solid_features.json \
         --liquid_features <research_dir>/liquid_features.json
     
     # Interface should show ~50% solid/liquid coexistence
-    python .agents/skills/mat-melting-point/scripts/check_phase.py interface_relax/relaxed_structure.cif \
+    # (Requires predicting features for the relaxed interface first)
+    mcp_mace_predict_atomic_features(
+        structure_data="interface_relax/relaxed_structure.cif",
+        output_path="<research_dir>/interface_features.json"
+    )
+    python .agents/skills/mat-melting-point/scripts/check_phase.py <research_dir>/interface_features.json \
         --solid_features <research_dir>/solid_features.json \
         --liquid_features <research_dir>/liquid_features.json
     ```
@@ -88,10 +94,22 @@ To determine the thermodynamic melting temperature ($T_m$) of a bulk material by
     
     **If interface lost coexistence:** Adjust melting temperature or relaxation parameters.
 
-6.  **Production**: Run an NVE MD simulation starting near the expected $T_m$ (e.g., 933K for Al) with the `monitor=True` parameter. This automatically launches the stability monitor in the background.
+6.  **Thermalization (Equilibration)**: Start from the 0 K relaxed structure and run a short NVT thermalization at the expected $T_m$ to properly distribute kinetic and potential energy.
     ```bash
     mcp_mace_run_md(
-        structure_data="relaxed_structure.cif", 
+        structure_data="interface_relax/relaxed_structure.cif", 
+        temperature=933, # Target expected Tm
+        ensemble="nvt", 
+        steps=5000, 
+        timestep=2.0,
+        output_dir="thermalization_md"
+    )
+    ```
+
+109.  **Production**: Run an NVE MD simulation starting from the full `.traj` file of the thermalized structure with the `monitor=True` parameter. Passing the `.traj` file is **critical** because it preserves the velocities from the NVT run, providing a continuous MD sequence.
+    ```bash
+    mcp_mace_run_md(
+        structure_data="thermalization_md/<formula>_<temp>K_nvt.traj", # Pass .traj to preserve velocities
         temperature=933, 
         ensemble="nve", 
         steps=100000, 
@@ -101,21 +119,30 @@ To determine the thermodynamic melting temperature ($T_m$) of a bulk material by
         output_dir="production_md"
     )
     ```
-7.  **Auto-Termination**: The integrated monitor will:
+8.  **Auto-Termination**: The integrated monitor will:
     - Check for temperature and potential energy stability.
     - Automatically stop the MD simulation when the melting point is reached.
     - Log termination status in the research log.
     - `mcp_mace_run_md` will return once the simulation stops (either by finishing all steps or by monitor termination).
 
-8.  **Phase Validation**: Verify that the solid and liquid phases still coexist at the end of the simulation.
+9.  **Phase Validation**: Verify that the solid and liquid phases still coexist at the end of the simulation.
+    First, predict the atomic features of the final structure:
     ```bash
-    # Note: If MD was killed, use the last frame from trajectory or the restart file if available.
+    mcp_mace_predict_atomic_features(
+        structure_data="production_md/final_structure.cif",
+        output_path="production_md/final_structure_features.json"
+    )
+    ```
+    Then, classify the phase:
+    ```bash
     # Env: base-agent
-    python .agents/skills/mat-melting-point/scripts/check_phase.py production_md/final_structure.cif
+    python .agents/skills/mat-melting-point/scripts/check_phase.py production_md/final_structure_features.json \
+      --solid_features solid_features.json \
+      --liquid_features liquid_features.json
     ```
     - **Fully Solidified**: The NVE starting temperature was too low.
     - **Fully Melted**: The NVE starting temperature was too high.
-9.  **Analysis**: If coexistence is verified, calculate $T_m$ by averaging the temperature over the last 5 ps of the simulation.
+10. **Analysis**: If coexistence is verified, calculate $T_m$ by averaging the temperature over the last 5 ps of the simulation.
 
 
 

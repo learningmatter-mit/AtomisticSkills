@@ -22,31 +22,13 @@ if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
 from src.utils.mlips.loader import load_wrapper
+from src.utils.structure_utils import normalize_charge_spin
 from widom_common import (
     add_common_widom_args,
     read_structure,
     run_widom_job,
     select_device,
 )
-
-
-def normalize_charge_spin(atoms) -> None:
-    info = atoms.info if isinstance(atoms.info, dict) else {}
-    if atoms.info is not info:
-        atoms.info = info
-    try:
-        charge = int(info.get("charge", info.get("chg", 0)))
-    except Exception:
-        charge = 0
-    try:
-        spin_mult = int(
-            info.get("spin_multiplicity", info.get("multiplicity", info.get("spin", 1)))
-        )
-    except Exception:
-        spin_mult = 1
-    atoms.info["charge"] = charge
-    atoms.info["spin_multiplicity"] = spin_mult
-    atoms.info["spin"] = spin_mult
 
 
 def parse_args() -> argparse.Namespace:
@@ -83,7 +65,7 @@ def main() -> int:
 
     device = select_device(args.device)
     atoms = read_structure(args.structure)
-    normalize_charge_spin(atoms)
+    normalize_charge_spin(atoms, args.task_name)
 
     model_tag = args.model_tag or f"{args.calculator}_{args.model_name}"
     
@@ -123,6 +105,11 @@ def main() -> int:
             "task_name": args.task_name,
         },
     )
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
     return 0
 
 

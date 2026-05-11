@@ -4,7 +4,7 @@ This example demonstrates how to calculate the XRD pattern for LiFePO4 (Olivine 
 
 ## Files
 
-- `LiFePO4.cif`: The crystal structure of LiFePO4 obtained from Materials Project.
+- [LiFePO4.cif](LiFePO4.cif): The crystal structure of LiFePO4 obtained from Materials Project.
 - `LiFePO4_xrd.json`: Calculated diffraction data.
 - `LiFePO4_PV_xrd.png`: Plot of the XRD spectrum.
 

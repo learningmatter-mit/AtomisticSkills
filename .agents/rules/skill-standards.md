@@ -41,7 +41,7 @@ category: category-name
 
 **Guidelines:**
 - `name`: Use lowercase letters, numbers, and hyphens only (kebab-case)
-- `description`: Should be clear enough for the agent to decide if this skill is relevant to a user query
+- `description`: Should be clear enough for the agent to decide if this skill is relevant to a user query. **The description must state what the skill is used for, NOT how the skill works.**
 - `category`: Must be one of the following (use a YAML list like `[materials, chemistry]` if multiple apply):
   - `materials`: Materials science simulation and analysis skills (prefix: `mat-`)
   - `chemistry`: Chemistry and molecular simulation skills (prefix: `chem-`)
@@ -97,8 +97,13 @@ Provide concrete, runnable examples that demonstrate typical usage.
 
 **CRITICAL RULE:** Each distinct example should be placed in its own dedicated subdirectory within `examples/` (e.g., `examples/my-example/`) and MUST contain its own `README.md` file. This README should comprehensively document the example's goal, step-by-step instructions, and expected outputs.
 
+**LITERATURE VALIDATION RULE:** Whenever possible, choose an example system with known, published literature reported values. In the example's `README.md`, you MUST compare the skill's execution results to the reported literature values to validate the skill's correctness, and explicitly include the literature reference citation.
+
 > [!WARNING]
 > **Artifact Retention**: Example folders are purely for structural reference and lightweight logging. NEVER commit or retain large execution artifacts such as PyTorch model checkpoints (`.pth`, `.model`), checkpoint snapshots (`.pt`), or uncompressed trajectory aggregations (`.xyz`) inside these example subdirectories.
+
+**3D STRUCTURE RENDERING RULE:** To ensure compatibility with the documentation website's automatic 3D structure viewer (3Dmol.js), any `.cif` or `.xyz` files you want rendered MUST be written as standard markdown links (e.g., `[my_structure.cif](my_structure.cif)`). Do NOT write them merely as backticked code snippets (` `my_structure.cif` `) within tables or lists, as they will not be rendered. It is recommended to add a dedicated "## 3D Structures" section at the end of the `README.md` for these links.
+
 
 ```markdown
 ## Examples
@@ -122,19 +127,12 @@ Document important limitations, safety rules, and requirements:
 ```
 
 ### 6. References Section
-Include literature references for the methods, algorithms, or datasets that the skill is based on. This ensures scientific reproducibility and gives proper attribution.
+Include basic literature citations (with DOIs if available) for the methods, algorithms, or software packages the skill relies on to ensure scientific reproducibility.
 
 ```markdown
 ## References
 - Author et al., "Paper Title", *Journal Name*, Year. [DOI](https://doi.org/...)
-- Author et al., "Another Paper", *Journal*, Year. [DOI](https://doi.org/...)
 ```
-
-**Guidelines:**
-- Cite the **original paper** describing the method or algorithm used
-- Include DOI links when available
-- If the skill wraps a software package, cite the package's canonical reference
-- For skills based on well-known textbook methods, a brief description of the method origin is acceptable in lieu of a formal citation
 
 ## Script Documentation Standards
 
@@ -202,47 +200,16 @@ The required environment must be consistent across:
 
 ## Best Practices
 
-### 1. Skill Scope
-- **Single Responsibility**: Each skill should target one well-defined task
-- **Composability**: Skills should work well together (e.g., molecular-dynamics skill referenced by melting-point skill)
-- **Reusability**: Design skills to be applicable across different materials or systems
-
-### 2. Progressive Disclosure
-- Keep `SKILL.md` focused on the workflow and high-level logic
-- Move complex implementation details into `scripts/`
-- Store reference data, templates, or large datasets in `resources/`
-- Use `examples/` to demonstrate typical inputs and expected outputs
-
-### 3. Path and Environment Management
-- **Script References**: Always use relative paths from the `SKILL.md` file
-  - Good: `[plot.py](scripts/plot.py)`
-  - Bad: `/absolute/path/to/plot.py`
-- **Skill Cross-References**: Use relative paths between skills
-  - Good: `[molecular-dynamics](../molecular-dynamics/SKILL.md)`
-  - Bad: Absolute paths or external links
-- **Environment Specification**: Always annotate which conda environment is required
-  - Use `# Env: <env-name>` comments in code blocks
-  - Specify environments in the Constraints section when multiple environments are needed
-
-### 4. Documentation Quality
-- **Clarity**: Use clear, technical language appropriate for scientific computing
-- **Completeness**: Include all necessary parameters and explain their significance
-- **Examples**: Provide realistic, working examples with actual filenames and values
-- **Error Prevention**: Document common pitfalls and validation steps (e.g., "Verify coexistence before production run")
-
-### 5. Integration with MCP Tools and MLIPs
-- Clearly distinguish between MCP tool calls and local script execution
-- Provide explicit output paths for MCP tools to avoid ambiguity
-- Document expected return values and how to use them in subsequent steps
-- **MLIP Usage**: When a skill involves Machine Learning Interatomic Potentials (MLIPs), prioritize using existing MCP tools. If writing a custom script is necessary, ALWAYS import and use the centralized `src.utils.mlips.loader.load_wrapper` function to load models consistently.
-
-### 6. Validation and Quality Checks
-- Include verification steps within the workflow (e.g., phase verification in melting-point skill)
-- Specify expected outcomes and how to interpret them
-- Provide guidance on what to do when results don't match expectations
+- **Scope & Progressive Disclosure**: Target one well-defined task. Focus `SKILL.md` on workflow logic; move implementation to `scripts/`, datasets to `resources/`, and examples to `examples/`.
+- **References**: Always use relative paths from `SKILL.md` when linking to scripts or other skills.
+- **Environments**: Always annotate code blocks with `# Env: <env-name>` and specify requirements in the Constraints section.
+- **Integration**: Prioritize existing MCP tools over custom code. If writing custom MLIP scripts, ALWAYS use `src.utils.mlips.loader.load_wrapper`.
+- **Validation & Documentation**: Embed verification steps, document expected outcomes, and use concrete, reproducible parameters in examples.
+- **Parameter Persistence**: Skill scripts that accept input kwargs and hyperparameters **must** save all input parameters to a **separate `input_configs.yaml`** file in the same output directory where results are written. This file must capture both user-specified values **and** the default values of any parameters that were not explicitly provided. Do **not** embed configs inside JSON output files (e.g. as a `"config"` key). This ensures results remain clean and can be fully interpreted and reproduced in the future without re-inspecting the source code or command history.
 
 ## Skill Naming Conventions
 
+- **Purpose over Method**: Skill names should be informative of the *function or purpose* of the skill, NOT the specific computational method being used (e.g., `mat-solid-free-energy` is preferred over `mat-frenkel-ladd`).
 - Use **kebab-case** for skill directory names (lowercase with hyphens)
 - **Every skill name must start with a category prefix** matching its `category` field:
   - `mat-` for `materials` skills (e.g., `mat-melting-point`, `mat-diffusion-analysis`, `mat-phonon`)
@@ -254,16 +221,11 @@ The required environment must be consistent across:
   - Avoid: `mat-mp`, `ml-train`, `drug-d`
 - Use **noun forms** for result-oriented skills: `mat-phase-diagram`, `mat-surface-energy`
 - Use **action/process names** for workflow skills: `mat-diffusion-analysis`, `ml-mlip-training`
+- **Private Skills**: To create a proprietary or private skill that should not be tracked by version control, prefix the entire name with `private-` (e.g., `private-mat-proprietary-workflow`). The repository's `.gitignore` is configured to ignore all directories matching `.agents/skills/private-*/`, ensuring they remain local while still being automatically discovered by the agent.
 
 ## Example Skill Structure
 
-See [`.agents/skills/melting-point/`](./../skills/melting-point/) for a comprehensive reference implementation that demonstrates:
-- Multi-step workflow with clear progression
-- Integration of MCP tools and local scripts
-- Environment-specific annotations
-- Cross-references to related skills
-- Validation and quality checks embedded in the workflow
-- Realistic examples with concrete parameters
+See [`.agents/skills/melting-point/`](./../skills/melting-point/) for a comprehensive reference implementation demonstrating workflows, tool integration, validation, and environment handling.
 
 ### 7. Author Information
 

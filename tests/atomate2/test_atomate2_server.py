@@ -31,6 +31,16 @@ def test_run_atomate2_vasp_calculation_optics_check_only(skip_if_wrong_env):
     assert "error" not in res
 
 @pytest.mark.atomate2
+def test_run_atomate2_vasp_calculation_lobster_check_only(skip_if_wrong_env):
+    res = atomate2_server.run_atomate2_vasp_calculation(
+        structures_path="dummy.cif",
+        output_dir="dummy_out",
+        calculation_type="lobster",
+        check_only=True
+    )
+    assert "error" not in res
+
+@pytest.mark.atomate2
 def test_get_atomate2_results_by_id(skip_if_wrong_env, mock_handler):
     mock_handler.get_results_by_id.return_value = [{"energy": -5.0}]
     res = atomate2_server.get_atomate2_results_by_id(job_ids=["dummy"])

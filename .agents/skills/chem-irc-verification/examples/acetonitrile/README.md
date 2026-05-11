@@ -12,14 +12,14 @@ CH3CN (reactant)  <->  TS  <->  CH3NC (product)
 
 | File | Description |
 |------|-------------|
-| `reactant_optimized.xyz` | Optimized reactant reference |
-| `product_optimized.xyz` | Optimized product reference |
-| `ts_optimized.xyz` | Saddle-point-optimized TS input |
+| [reactant_optimized.xyz](reactant_optimized.xyz) | Optimized reactant reference |
+| [product_optimized.xyz](product_optimized.xyz) | Optimized product reference |
+| [ts_optimized.xyz](ts_optimized.xyz) | Saddle-point-optimized TS input |
 | `run_example.sh` | Reproducible run script |
 | `output/irc_forward.traj` | Forward IRC trajectory |
 | `output/irc_reverse.traj` | Reverse IRC trajectory |
-| `output/irc_forward_endpoint.xyz` | Final forward-direction endpoint |
-| `output/irc_reverse_endpoint.xyz` | Final reverse-direction endpoint |
+| [output/irc_forward_endpoint.xyz](output/irc_forward_endpoint.xyz) | Final forward-direction endpoint |
+| [output/irc_reverse_endpoint.xyz](output/irc_reverse_endpoint.xyz) | Final reverse-direction endpoint |
 | `output/irc_verification_results.json` | Endpoint assignment, RMSD/connectivity checks, pass/fail |
 
 ## Model

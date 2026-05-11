@@ -19,7 +19,7 @@ python .agents/skills/chem-conformer-search/scripts/conformer_search.py \
 ## Expected Results
 
 - **`conformer_results.json`**: Summary of unique conformers (energies, Boltzmann weights).
-- **`conf_*.xyz`**: XYZ files for each unique conformer.
+- **[conf_*.xyz](conf_*.xyz)**: XYZ files for each unique conformer.
 
 ## Literature Comparison
 

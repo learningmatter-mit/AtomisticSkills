@@ -12,7 +12,7 @@ This example demonstrates the generation of amorphous LiCl from a crystalline st
 1.  **Preparation**:
     -   Started with crystalline LiCl.
     -   Generated a supercell (~100 atoms, $3\times3\times2$ expansion) to avoid periodicity artifacts.
-    -   Input file: `crystalline_supercell.cif`
+    -   Input file: [crystalline_supercell.cif](crystalline_supercell.cif)
 
 2.  **Melt-Quench Simulation**:
     -   **Stage 1: Melting**:
@@ -29,7 +29,7 @@ This example demonstrates the generation of amorphous LiCl from a crystalline st
 ## Results
 
 ### Structure Analysis
--   **Final Structure**: `amorphous_final.cif`
+-   **Final Structure**: [amorphous_final.cif](amorphous_final.cif)
 -   **Density**: $\sim 1.66 \text{ g/cm}^3$
     -   Significant reduction from crystalline density ($\sim 2.07 \text{ g/cm}^3$), typical of amorphous solids.
 -   **Coordination Number (CN)**: ~4.0

@@ -1,0 +1,42 @@
+[
+    {
+        "cid": 2244,
+        "smiles": "CC(=O)OC1=CC=CC=C1C(=O)O",
+        "iupac_name": "2-acetyloxybenzoic acid",
+        "formula": "C9H8O4",
+        "molecular_weight": "180.16",
+        "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/2244"
+    },
+    {
+        "cid": 5161,
+        "smiles": "C1=CC=C(C(=C1)C(=O)OC2=CC=CC=C2C(=O)O)O",
+        "iupac_name": "2-(2-hydroxybenzoyl)oxybenzoic acid",
+        "formula": "C14H10O5",
+        "molecular_weight": "258.23",
+        "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/5161"
+    },
+    {
+        "cid": 68484,
+        "smiles": "CC(=O)OC1=CC=CC=C1C(=O)OC",
+        "iupac_name": "methyl 2-acetyloxybenzoate",
+        "formula": "C10H10O4",
+        "molecular_weight": "194.18",
+        "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/68484"
+    },
+    {
+        "cid": 61159,
+        "smiles": "CC1=CC=CC=C1OC(=O)C2=CC=CC=C2O",
+        "iupac_name": "(2-methylphenyl) 2-hydroxybenzoate",
+        "formula": "C14H12O3",
+        "molecular_weight": "228.24",
+        "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/61159"
+    },
+    {
+        "cid": 10745,
+        "smiles": "CC(=O)OC1=CC=CC=C1C(=O)OC2=CC=CC=C2C(=O)O",
+        "iupac_name": "2-(2-acetyloxybenzoyl)oxybenzoic acid",
+        "formula": "C16H12O6",
+        "molecular_weight": "300.26",
+        "pubchem_url": "https://pubchem.ncbi.nlm.nih.gov/compound/10745"
+    }
+]

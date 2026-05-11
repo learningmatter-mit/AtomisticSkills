@@ -185,3 +185,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     monitor_melting(args.log_path, analysis_window_ps=args.window, stability_duration_ps=args.stability_duration, stop_file=args.stop_file)
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generative Discovery of Halide Solid-State Electrolytes — AtomisticSkills Workflows</title>
+  <meta name="description" content="An end-to-end generative AI workflow for discovering novel high-conductivity solid-state electrolytes (SSEs), specifically mapped for halide lithium-ion conductors."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .workflow-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .workflow-hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .workflow-desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .workflow-content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/generative-halide-discovery.md" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="workflow-hero">
+  <div class="workflow-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Workflows</div>
+    <h1>Generative Discovery of Halide Solid-State Electrolytes</h1>
+    <p class="workflow-desc">An end-to-end generative AI workflow for discovering novel high-conductivity solid-state electrolytes (SSEs), specifically mapped for halide lithium-ion conductors.</p>
+  </div>
+</div>
+<div class="workflow-content">
+  <div class="rendered-md" id="workflow-body"></div>
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/generative-halide-discovery.md" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 8px; color: #1e293b; font-weight: 600; text-decoration: none; font-size: 0.95rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: background 0.2s;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View this Workflow on GitHub
+    </a>
+  </div>
+</div>
+<footer>
+  &copy; 2026 AtomisticSkills. Generated by build_skills.py.
+</footer>
+<script>
+  document.getElementById('workflow-body').innerHTML = marked.parse("This workflow documents the explicit steps required to transition from a conceptual material class (e.g., Li-M-X halides) to highly verified, novel superionic solid-state electrolytes (SSEs) using a hierarchical screening strategy involving generative AI, ML interatomic potentials (MLIPs), and high-fidelity DFT verification.\n\n## 1. Initial Research & Target Framing\n- **Goal**: Discover fast-ion conducting halide Solid-State Electrolytes (SSEs).\n- **Setup**: Create an active task directory via the `create_research_dir` MCP tool (e.g., `research/YYYY-MM-DD_halide_sse_generative_search`).\n- **Chemical Spaces**: Focus on ternary systems (e.g., `Li-Y-Cl`, `Li-Sc-Br`, `Li-In-Cl`, `Li-Hf-Cl`, `Li-Zr-Cl`, `Li-Er-Br`). These are selected to ensure varied polyhedral configurations and lattice volumes conducive to high Li-ion mobility.\n\n## 2. Generative Candidate Creation (MatterGen)\nGenerate hypothetical, chemically plausible structures using a diffusion-based generative model.\n- **Skill Reference**: `ml-generative-mattergen`\n- **Execution**: Apply MatterGen's `chemical_system` conditioning to generate structures containing exactly the elements requested. \n- **Filtering**: Generate large batches (e.g., 500 structures) and post-process to strip out un-desired binaries/elementals or invalid compositions (e.g., resulting in ~350 unique candidates).\n\n## 3. Tier 1: Fast MLIP Stability Screening ($E_{hull}$)\nSince generative models output varying levels of stability, rigorously filter out candidates using a unified MLIP scale.\n- **Relaxation**: Relax all generated CIFs fully using **FairChem UMA** (`uma-s-1p1` or `uma-s-1p2`).\n- **Competitor Sourcing**: Query the Materials Project (`mat-db-mp`) and relax known MP competitors using the exact same MLIP to ensure apples-to-apples energy comparisons.\n- **Phase Diagram Construction**: Use `mat-stability` to compute $E_{hull}$ for all generated candidates against the MLIP convex hull.\n- **Filter**: Narrow down to top candidates (e.g., top 10-20) with $E_{hull} \\le 50$ meV/atom.\n\n## 4. Tier 2: High-Fidelity DFT Refinement\nRefine the stability of the top candidates using accurate DFT to confirm synthesizability.\n- **Skill Reference**: `mat-dft-vasp`\n- **Execution**: Run VASP static calculations or relaxations via `mcp_atomate2_run_atomate2_vasp_calculation` with the `matpes-pbe` preset.\n- **Refinement**: Re-calculate $E_{hull}$ using DFT energies. Only strictly stable or near-stable candidates (e.g., top 5-9) proceed to electrochemical analysis.\n\n## 5. Electrochemical Stability & Window Analysis\nAssess the potential range of operation against Li metal.\n- **Skill Reference**: `mat-electrochemical-window`\n- **Calculation**: Calculate the intrinsic electrochemical stability window ($V_{red}$ and $V_{ox}$) against $Li/Li^+$. Priority is given to materials with windows overlapping the target cathode/anode ranges.\n\n## 6. High-Throughput Diffusion Molecular Dynamics (MD)\nUse Molecular Dynamics to evaluate and predict the ionic conductivity of the top structurally stable candidates.\n- **Execution**: Run NVT ensemble MD through the **FairChem** server (`mcp_fairchem_run_md`).\n- **Model Choice**: Use **uma-s-1p1** or **uma-s-1p2**.\n- **Temperatures**: Run a temperature ladder (e.g., 400K, 500K, 600K, 700K, 800K, 900K).\n- **Auto-Monitoring**: Enable the `diffusion` monitor to stop simulations once MSD has converged.\n\n## 7. Transport Analysis & Visualization\n- **Arrhenius Analysis**: Use the `mat-diffusion-analysis` skill to ingest the aggregated multi-temperature `diffusion_Li.json` files and fit the activation energy ($E_a$).\n- **Probability Density**: For top conductors, use `mat-md-probability-density` to visualize the Li-ion diffusion pathways and identify the dimensionality of conduction (1D, 2D, or 3D).\n\n## 8. Structural Novelty & Literature Verification\n- **Structural Match**: Pass the final candidates through `mat-structure-novelty` to ensure they are not duplicates of known Materials Project entries.\n- **Literature Search**: Execute OpenAlex/PubMed queries for the specific formulas to confirm if the material has been experimentally synthesized or computationally predicted before.\n\n## 9. Comprehensive Result Amalgamation\nDeliver the holistic dataset (Generation source, Space Group, DFT $E_{hull}$, Electrochemical Window, $E_a$, Conductivity $\\sigma_{RT}$, and Novelty status) for experimental validation.");
+</script>
+</body>
+</html>

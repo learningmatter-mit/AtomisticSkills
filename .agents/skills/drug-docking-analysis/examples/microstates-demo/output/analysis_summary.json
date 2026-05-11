@@ -1,0 +1,23 @@
+{
+    "n_compounds": 4,
+    "microstate_aggregation": {
+        "enabled": true,
+        "parent_id_col": "parent_compound_id"
+    },
+    "score_mean": -9.725,
+    "score_std": 0.576,
+    "score_min": -10.4,
+    "score_max": -8.9,
+    "le_mean": 0.8655,
+    "le_median": 0.8652,
+    "enrichment": {
+        "auc": 1.0,
+        "ef_1pct": 50.0,
+        "ef_2pct": 25.0,
+        "ef_5pct": 10.0,
+        "ef_10pct": 5.0,
+        "ef_20pct": 2.5,
+        "n_actives": 2,
+        "n_inactives": 2
+    }
+}

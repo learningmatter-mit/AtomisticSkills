@@ -1,0 +1,11 @@
+rank,compound_id,parent_compound_id,microstate_id,label,best_affinity,n_poses,smiles
+1,DEMO001_ms1,DEMO001,ms1,active,-10.4,5,c1ccc2c(c1)c(=O)[nH]c(n2)N
+2,DEMO002_ms2,DEMO002,ms2,active,-10.1,5,C[NH2+]CCc1ccc(O)c(O)c1
+3,DEMO001_ms2,DEMO001,ms2,active,-9.8,5,c1ccc2c(c1)c(=[NH2+])[nH]c(n2)N
+4,DEMO003_ms1,DEMO003,ms1,inactive,-9.5,5,CC(=O)Nc1ccc(O)cc1
+5,DEMO002_ms1,DEMO002,ms1,active,-9.2,5,CNCCc1ccc(O)c(O)c1
+6,DEMO004_ms1,DEMO004,ms1,inactive,-8.9,5,Cc1ccccc1C(=O)O
+7,DEMO001_ms3,DEMO001,ms3,active,-8.7,5,c1ccc2c(c1)c([O-])nc(n2)N
+8,DEMO003_ms2,DEMO003,ms2,inactive,-8.4,5,CC(=O)Nc1ccc([O-])cc1
+9,DEMO004_ms2,DEMO004,ms2,inactive,-8.1,5,Cc1ccccc1C(=O)[O-]
+10,DEMO002_ms3,DEMO002,ms3,active,-7.8,5,C[NH2+]CCc1ccc([O-])c(O)c1

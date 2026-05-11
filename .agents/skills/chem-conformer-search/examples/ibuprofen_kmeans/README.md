@@ -26,11 +26,11 @@ python .agents/skills/chem-conformer-search/scripts/conformer_search.py \
 
 | Conformer | File | Rel. Energy (kcal/mol) | Boltzmann Weight |
 |:---:|:---|:---:|:---:|
-| 0 (Global Min) | `conf_000.xyz` | 0.000 | 26.7% |
-| 1 | `conf_001.xyz` | 0.052 | 24.5% |
-| 2 | `conf_002.xyz` | 0.176 | 19.9% |
-| 3 | `conf_003.xyz` | 0.356 | 14.7% |
-| 4 | `conf_004.xyz` | 0.373 | 14.3% |
+| 0 (Global Min) | [conf_000.xyz](conf_000.xyz) | 0.000 | 26.7% |
+| 1 | [conf_001.xyz](conf_001.xyz) | 0.052 | 24.5% |
+| 2 | [conf_002.xyz](conf_002.xyz) | 0.176 | 19.9% |
+| 3 | [conf_003.xyz](conf_003.xyz) | 0.356 | 14.7% |
+| 4 | [conf_004.xyz](conf_004.xyz) | 0.373 | 14.3% |
 
 - **Initial conformers generated:** 25 (from 50 RDKit requests, after initial RMS pruning)
 - **Final unique conformers (1 per KMeans cluster):** 5

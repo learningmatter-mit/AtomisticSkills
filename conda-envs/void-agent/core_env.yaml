@@ -1,0 +1,16 @@
+name: void-agent
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - uv
+  - numpy
+  - scikit-learn
+  - networkx
+  - rdkit
+  
+  - pip:
+    - pymatgen
+    - zeopp-lsmo

@@ -102,6 +102,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate synthetic accessibility using IBM RXN")
     parser.add_argument("smiles", help="Target molecule SMILES string")
     parser.add_argument("--steps", type=int, default=3, help="Maximum number of synthesis steps to explore")
+    parser.add_argument("--output_dir", type=str, default=".", help="Directory to save input_configs.yaml")
     
     args = parser.parse_args()
+    
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
     evaluate_retrosynthesis(args.smiles, max_steps=args.steps)

@@ -1,0 +1,34 @@
+{
+    "method": "both",
+    "results": {
+        "GB": {
+            "dG_mean_kcal_mol": -52.91,
+            "dG_std_kcal_mol": 4.74,
+            "dG_sem_kcal_mol": 1.19
+        },
+        "PB": {
+            "dG_mean_kcal_mol": -2.02,
+            "dG_std_kcal_mol": 6.27,
+            "dG_sem_kcal_mol": 1.57
+        }
+    },
+    "n_frames_evaluated": null,
+    "skip_ns": 0.5,
+    "stride": 10,
+    "trajectory_dt_ps": 10.0,
+    "skip_frames_applied": 49,
+    "ligand_sdf": "examples/drug-discovery/cdk2-htvs/05_pose_validation/poses_sdf/CHEMBL388978.sdf",
+    "cofactor_sdf": null,
+    "ligand_sel": "resname UNK",
+    "receptor_sel": "protein",
+    "protein_ff": "amber/ff14SB",
+    "pb_int_diel": 1.0,
+    "pb_ext_diel": 80.0,
+    "gb_model": 5,
+    "salt_conc_M": 0.0,
+    "temperature_note": "MMPBSA.py does not expose a temperature variable; sander / PBSA use a hard-coded thermal context. The temperature MD ran at is implicit in the sampled trajectory frames.",
+    "final_results_dat": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/drug-mmpbsa-gbsa/examples/cdk2-mmpbsa/run/FINAL_RESULTS_MMPBSA.dat",
+    "decomp_dat": ".agents/skills/drug-mmpbsa-gbsa/examples/cdk2-mmpbsa/run/FINAL_DECOMP_MMPBSA.dat",
+    "wall_time_seconds": 299.8,
+    "sem_note": "MMPBSA.py reports SEM treating frames as independent samples; frames from a single trajectory are correlated, so the true statistical error is larger. For honest uncertainties, run replicate trajectories and compare across them."
+}

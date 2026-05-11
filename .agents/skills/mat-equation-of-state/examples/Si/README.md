@@ -4,7 +4,7 @@ This example demonstrates calculating the equation of state for crystalline Sili
 
 ## Structure
 
-The Silicon structure (`Si.cif`) was obtained from Materials Project (mp-149), representing the diamond cubic structure with lattice parameter a = 5.43 Å.
+The Silicon structure ([Si.cif](Si.cif)) was obtained from Materials Project (mp-149), representing the diamond cubic structure with lattice parameter a = 5.43 Å.
 
 ## Calculation
 

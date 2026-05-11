@@ -1,0 +1,12 @@
+{
+    "center_x": 14.1585,
+    "center_y": 24.2965,
+    "center_z": 5.8805,
+    "size_x": 21.757,
+    "size_y": 20.0,
+    "size_z": 20.0,
+    "padding": 6.0,
+    "min_size": 20.0,
+    "mode": "ligand",
+    "source": "MK1_ligand.pdb"
+}

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reaction Description to NMR Quantification — AtomisticSkills Workflows</title>
+  <meta name="description" content="End-to-end workflow for predicting reaction products and quantifying them via Wasserstein deconvolution of a crude 1H NMR spectrum."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .workflow-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .workflow-hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .workflow-desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .workflow-content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/reaction-to-nmr-quantification.md" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="workflow-hero">
+  <div class="workflow-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Workflows</div>
+    <h1>Reaction Description to NMR Quantification</h1>
+    <p class="workflow-desc">End-to-end workflow for predicting reaction products and quantifying them via Wasserstein deconvolution of a crude 1H NMR spectrum.</p>
+  </div>
+</div>
+<div class="workflow-content">
+  <div class="rendered-md" id="workflow-body"></div>
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/reaction-to-nmr-quantification.md" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 8px; color: #1e293b; font-weight: 600; text-decoration: none; font-size: 0.95rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: background 0.2s;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View this Workflow on GitHub
+    </a>
+  </div>
+</div>
+<footer>
+  &copy; 2026 AtomisticSkills. Generated by build_skills.py.
+</footer>
+<script>
+  document.getElementById('workflow-body').innerHTML = marked.parse("This workflow guides the agent through computationally identifying and quantifying the components of a reaction mixture when the starting point is a textual description of a chemical reaction and a crude 1H NMR spectrum (numeric data or an image).\n\n**Scientific Problem:**\nAfter running a synthetic reaction, chemists routinely acquire a crude 1H NMR spectrum of the unpurified mixture to assess conversion, selectivity, and purity. Interpreting such spectra is error-prone when multiple overlapping components are present (reactants, products, isomers, solvents, reagents). This workflow automates the process by (1) predicting what species should be present, (2) generating simulated reference spectra for each, and (3) performing Wasserstein-distance deconvolution to extract mole fractions.\n\n## Step-by-Step Methodology\n\n### Optional Step 0: Digitize Spectrum Image\nIf the user provides an image of a spectrum rather than a numeric data file.\n\n- **Skill:** Use the `general-plot-digitizer` skill.\n- **Action:** Follow the digitizer's full VLM + CV pipeline to extract a two-column `.csv` (ppm, intensity) from the image.\n- **Output:** A numeric `.csv` or `.xy` spectrum file ready for downstream steps.\n- **Decision:** If the digitized spectrum shows artifacts (axis labels captured as peaks, grid lines), re-run with adjusted parameters before proceeding.\n\n### Step 1: Identify All NMR-Relevant Species\nParse the user's reaction description and compile a complete list of compounds whose signals may appear in the crude NMR.\n\n- **Action:** The agent should use its chemistry knowledge and the reference file at `.agents/skills/chem-nmr-analysis/reference/named_reactions.json` to identify reactants, products, solvents, NMR-visible reagents, and byproducts. The agent must distinguish reactants (transformed, go to ReactionT5) from reagents (facilitate, go to ReactionT5 as `--reagent_smiles`) from solvents (do NOT go to ReactionT5, but may need NMR references).\n- **Decision:** If the reaction name is ambiguous about the specific reagent or solvent used, ask the user before proceeding.\n\n### Step 2: Resolve Compound Names to SMILES\nConvert each compound name to a canonical SMILES string.\n\n- *Skill Reference:* `drug-db-pubchem`\n- **Action:** Query PubChem for each species and extract `CanonicalSMILES`. If a user provides SMILES directly, use as-is.\n\n### Step 3: Predict Reaction Products\nUse ML forward prediction to determine what products formed.\n\n- *Skill Reference:* `chem-nmr-analysis` (`predict_products.py`)\n- **Action:** Pass reactant SMILES and reagent SMILES to ReactionT5 via the `predict_products.py` script. Requires `HF_TOKEN`.\n- **Output:** JSON file with predicted product SMILES.\n- **Decision:** If ReactionT5 returns no products or implausible results, the agent should suggest likely products from its own chemistry knowledge and ask the user to confirm.\n\n### Step 4: Generate NMR Reference Spectra\nPredict 1H NMR spectra for all identified species (reactants + products + solvents + NMR-visible reagents).\n\n- *Skill Reference:* `chem-nmr-predict`\n- **Action:** Pass all collected SMILES to `predict_nmr.py`. Match `--field_mhz` to the user's spectrometer if known.\n- **Output:** One `.xy` reference spectrum and one `_signals.csv` signal table per compound.\n\n### Step 5: Visual Inspection\nOverlay the crude spectrum with all references to verify alignment before deconvolution.\n\n- *Skill Reference:* `chem-nmr-analysis` (`plot.py`)\n- **Action:** Generate an overlay plot and inspect it. Check that reference peaks align with mixture peaks and that no major mixture peaks are unaccounted for.\n- **Decision:** If peaks don't align, ask the user about ppm referencing. If major peaks are unmatched, revisit Step 1 for missing components.\n\n### Step 6: Deconvolution\nQuantify component mole fractions via Wasserstein-distance deconvolution.\n\n- *Skill Reference:* `chem-nmr-analysis` (`deconvolve.py`)\n- **Action:** Run `deconvolve.py` with the crude spectrum, all reference spectra, proton counts, and component names. Always use `--plot` and `--json`.\n- **Output:** Estimated mole fractions, Wasserstein distance (fit quality), and a multi-panel deconvolution plot.\n- **Decision:** Review the Wasserstein distance. If WD > 0.15, the fit is poor \u2014 check for missing components or ppm offsets before trusting the proportions. If the proportions contradict known chemistry, flag this to the user.\n\n## References\n- Ciach, M. et al., \"Masserstein: linear resampling of mass spectra by optimal transport\", *Rapid Commun. Mass Spectrom.*, 2020.\n- Domzal, B. et al., \"Magnetstein: Wasserstein-distance NMR mixture analysis\", *Anal. Chem.*, 2024.\n- Sagawa, Y. et al., \"ReactionT5: a large-scale pretrained model towards chemical reaction prediction\", *arXiv*, 2023.");
+</script>
+</body>
+</html>

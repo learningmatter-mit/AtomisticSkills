@@ -202,6 +202,12 @@ def main() -> None:
         help="Max number of precursor compositions to search (default: 50)",
     )
     parser.add_argument(
+        "--max_cifs",
+        type=int,
+        default=0,
+        help="Maximum number of CIF files to save (0 for all, default: 0)",
+    )
+    parser.add_argument(
         "--output_dir",
         required=True,
         help="Directory to save results",
@@ -228,8 +234,10 @@ def main() -> None:
 
     for match in direct_matches:
         cif_name = f"{structure_index:03d}_{match['formula']}_MP_{match['material_id']}.cif"
-        cif_path = output_dir / cif_name
-        match["structure"].to(filename=str(cif_path))
+        
+        if args.max_cifs == 0 or structure_index < args.max_cifs:
+            cif_path = output_dir / cif_name
+            match["structure"].to(filename=str(cif_path))
 
         all_results.append({
             "index": structure_index,
@@ -332,8 +340,10 @@ def main() -> None:
                         f"_from_{precursor_formula}"
                         f"_{mp_struct['material_id']}.cif"
                     )
-                    cif_path = output_dir / cif_name
-                    new_structure.to(filename=str(cif_path))
+                    
+                    if args.max_cifs == 0 or structure_index < args.max_cifs:
+                        cif_path = output_dir / cif_name
+                        new_structure.to(filename=str(cif_path))
 
                     sub_str = ", ".join(
                         f"{k}→{v}" for k, v in precursor["actual_changes"].items()
@@ -389,6 +399,10 @@ def main() -> None:
             )
         if len(sub_results) > 15:
             print(f"  ... and {len(sub_results) - 15} more")
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
 
 
 if __name__ == "__main__":

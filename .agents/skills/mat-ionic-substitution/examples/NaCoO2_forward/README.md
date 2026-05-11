@@ -11,6 +11,7 @@ Propose all high-probability ion-substituted variants of NaCoO₂, a layered cat
 python .agents/skills/mat-ionic-substitution/scripts/propose_substitutions.py \
     --structure NaCoO2.cif \
     --threshold 0.001 \
+    --max_cifs 5 \
     --output_dir examples/NaCoO2_forward/
 ```
 
@@ -45,5 +46,5 @@ Source structure: NaCoO₂ from Materials Project (mp-1279953).
 
 ## Output Files
 
-- `*.cif` — 47 substituted structure files
+- [*.cif](*.cif) — Representative substituted structure files (top 5 + LiCoO2)
 - `substitution_manifest.json` — full metadata (substitution map, probability, multi-swap flag)

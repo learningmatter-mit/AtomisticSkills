@@ -17,6 +17,7 @@ Wait! HTVS operations directly interact with research databases. Before running 
 
 This file serves as the generic property bridge feeding directly into `.agents/skills/mat-htvs-catalysis-activity-analysis` to evaluate OER/ORR/CO2RR/NRR scaling laws.
 
+<<<<<<< HEAD
 ### 0. Initialize Project References (New Projects)
 
 For first-time setup or new screening groups, initialize the gas-phase references (`H2`, `H2O`, `CO2`, `N2`) in your target database. This skill provides a centralized resource and a utility to ensure consistent thermodynamics.
@@ -32,6 +33,10 @@ python .agents/skills/mat-htvs-genbindingenergy/scripts/migrate_references.py \
     --group_name my_project \
     --research_dir ./research/current_research_dir
 ```
+=======
+### 1. Execute the Pipeline
+Run the generator using the specific group configuration parameters:
+>>>>>>> origin/htvs
 
 ```bash
 # Env: htvs-agent
@@ -44,6 +49,7 @@ python .agents/skills/mat-htvs-genbindingenergy/scripts/generate_binding_energy.
     --output_data ./research/current_research_dir/binding_energies.json
 ```
 
+<<<<<<< HEAD
 ### 2. Molecule Energy Scale Correction (Parallel Campaigns)
 
 When running parallel MLIP/DFT campaigns, the MLIP calculated energies must be shifted to the DFT molecule energy scale to ensure thermodynamic consistency in Volcano plots.
@@ -54,6 +60,9 @@ When running parallel MLIP/DFT campaigns, the MLIP calculated energies must be s
 3. This forces the script to use DFT molecule baselines even when the surface energies are in MLIP scale, effectively shifting the binding energy results.
 
 ### 3. Connect into Analytics
+=======
+### 2. Connect into Analytics
+>>>>>>> origin/htvs
 Navigate back into the standard analysis module (`mat-htvs-catalysis-activity-analysis`) and parse your newly created JSON:
 ```bash
 python .agents/skills/mat-htvs-catalysis-activity-analysis/scripts/run.py \

@@ -1,7 +1,7 @@
 ---
 name: ml-generative-mattergen
 description: Generate inorganic material structures using MatterGen, a diffusion-based generative model.
-category: [machine-learning]
+category: [machine-learning, materials]
 ---
 
 # MatterGen Structure Generation Skill

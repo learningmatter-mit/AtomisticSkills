@@ -26,6 +26,6 @@ The example JSON (`../example.json`) specifies two structures:
 
 ## Files
 
-- `structure_0000.cif` — MnLiO (spacegroup 58)
-- `structure_0001.cif` — TmNiAs (spacegroup 194)
+- [structure_0000.cif](structure_0000.cif) — MnLiO (spacegroup 58)
+- [structure_0001.cif](structure_0001.cif) — TmNiAs (spacegroup 194)
 - `generation_metadata.json` — Generation parameters

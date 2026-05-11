@@ -15,6 +15,7 @@ To evaluate and improve the accuracy of a foundation MatGL potential (e.g., CHGN
 3.  **Data Preparation**: Execute `scripts/prepare_matgl_data.py` to process JSON structures and split into training and validation sets.
 4.  **Fine-Tuning**: Execute `scripts/train_matgl.py` to begin fine-tuning natively on the GPU using PyTorch Lightning.
 5.  **Validation**: Verify convergence and compare against the benchmarked foundation metrics.
+6.  **Registration**: Use the `register_model` tool to register the newly fine-tuned model checkpoint into the local registry so future research tasks can discover and reuse it.
 
 ## Usage
 

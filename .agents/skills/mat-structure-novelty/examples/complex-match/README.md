@@ -5,7 +5,7 @@ This example demonstrates how to match an unknown `Li10GeP2S12` (LGPS) structure
 ## Run Instructions
 
 1. Simply run the script. It automatically uses the Materials Project API because no candidate pool was provided.
-To see what a successful match to an experimental structure looks like, run the script against `known_experimental.cif`:
+To see what a successful match to an experimental structure looks like, run the script against [known_experimental.cif](known_experimental.cif):
 
 ```bash
 # Env: base-agent
@@ -13,7 +13,7 @@ python ../../scripts/match_structure.py known_experimental.cif --output experime
 ```
 The output JSON will label `match_found: true` and identify the corresponding MP ID with `theoretical: False` (an ICSD-supported structure).
 
-2. To see what a failure to match looks like, run it against `novel_structure.cif`, which is an artificially heavily distorted structural state:
+2. To see what a failure to match looks like, run it against [novel_structure.cif](novel_structure.cif), which is an artificially heavily distorted structural state:
 
 ```bash
 # Env: base-agent

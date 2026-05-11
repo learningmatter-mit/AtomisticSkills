@@ -1,0 +1,17 @@
+{
+    "center_x": 12.645,
+    "center_y": 21.222,
+    "center_z": 7.562,
+    "size_x": 29.024,
+    "size_y": 26.528,
+    "size_z": 24.449,
+    "padding": 6.0,
+    "min_size": 20.0,
+    "default_size": 22.0,
+    "sizing_strategy": "bounding_box",
+    "mode": "pocket",
+    "source": "pockets_fpocket.json#rank=1",
+    "pocket_id": "pocket_1",
+    "druggability_score": 0.05,
+    "backend": "fpocket"
+}

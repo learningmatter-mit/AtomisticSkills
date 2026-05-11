@@ -36,3 +36,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     create_interface(args.solid, args.liquid, args.axis, args.output)
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)

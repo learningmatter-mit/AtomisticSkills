@@ -110,5 +110,9 @@ def main():
     print(f"  conda activate matgl-agent")
     print(f"  python generate_matgl_config.py --train-data {train_path.absolute()} " + (f"--val-data {val_path.absolute()} " if val_data else "") + f"--model {args.model} --output-dir {output_path.absolute()}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 if __name__ == "__main__":
     main()

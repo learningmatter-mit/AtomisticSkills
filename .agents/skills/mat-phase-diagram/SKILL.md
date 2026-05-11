@@ -1,7 +1,7 @@
 ---
 name: mat-phase-diagram
 description: Retrieve and visualize pre-computed phase diagrams from Materials Project for thermodynamic stability analysis.
-category: [thermodynamics]
+category: [materials]
 ---
 
 # Phase Diagram Retrieval

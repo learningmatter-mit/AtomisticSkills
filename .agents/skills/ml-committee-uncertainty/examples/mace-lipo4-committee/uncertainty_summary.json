@@ -1,0 +1,65 @@
+{
+  "committee_models": [
+    "committee_models/seed_0/mace_finetuned.model",
+    "committee_models/seed_1/mace_finetuned.model",
+    "committee_models/seed_2/mace_finetuned.model"
+  ],
+  "energy_threshold_meV_per_atom": 10.0,
+  "force_threshold_meV_A": 150.0,
+  "configuration_sets": {
+    "bulk_300K_nvt": {
+      "description": "100 NVT frames at 300 K from in-distribution LiFePO4 2x1x2 supercell",
+      "n_total": 100,
+      "n_flagged": 2,
+      "flagged_fraction": 0.02,
+      "energy_std_meV_per_atom": {
+        "mean": 1.84,
+        "std": 1.27,
+        "min": 0.31,
+        "max": 12.31,
+        "p95": 4.62
+      },
+      "max_force_std_meV_A": {
+        "mean": 38.6,
+        "std": 22.1,
+        "min": 7.4,
+        "max": 187.3,
+        "p95": 81.2
+      },
+      "flag_reasons": [
+        "structure_idx=47: energy_std=12.31 > 10.0 meV/atom",
+        "structure_idx=83: force_std=187.3 > 150.0 meV/A"
+      ]
+    },
+    "off_equilibrium_samples": {
+      "description": "200 structures sampled from high-temperature AIMD at 800-1200 K, underrepresented in training set",
+      "n_total": 200,
+      "n_flagged": 79,
+      "flagged_fraction": 0.395,
+      "energy_std_meV_per_atom": {
+        "mean": 13.48,
+        "std": 9.34,
+        "min": 1.02,
+        "max": 61.7,
+        "p95": 34.2
+      },
+      "max_force_std_meV_A": {
+        "mean": 284.1,
+        "std": 197.3,
+        "min": 22.8,
+        "max": 1124.5,
+        "p95": 742.6
+      }
+    }
+  },
+  "committee_training": {
+    "base_model": "MACE-MH-1",
+    "task_name": "omat_pbe",
+    "n_training_structures": 1200,
+    "epochs": 200,
+    "lr": 1e-4,
+    "seeds": [0, 1, 2],
+    "final_validation_energy_mae_meV_per_atom": [2.14, 2.09, 2.21],
+    "final_validation_force_mae_meV_A": [48.3, 47.1, 50.6]
+  }
+}

@@ -160,6 +160,10 @@ def main() -> None:
     print(" ".join(parts))
     print("Use with: --curve-color \"<hex>\"", file=sys.stderr)
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.image)
+
 
 if __name__ == "__main__":
     main()

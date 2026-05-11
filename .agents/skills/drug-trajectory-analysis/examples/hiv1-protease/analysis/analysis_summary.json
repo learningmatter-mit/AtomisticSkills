@@ -1,0 +1,13 @@
+{
+    "n_frames": 10,
+    "skip_frames": 0,
+    "ligand_resname": "UNK",
+    "ligand_rmsd_mean_A": 1.2296,
+    "ligand_rmsd_std_A": 0.4651,
+    "ligand_rmsd_max_A": 1.6269,
+    "ligand_com_drift_A": 1.1771,
+    "n_pocket_residues": 10,
+    "n_hbonds_detected": 70,
+    "n_contact_residues": 16,
+    "ifp_computed": true
+}

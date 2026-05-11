@@ -17,6 +17,7 @@ To evaluate and improve the accuracy of a foundation MACE potential for a specif
 17. **Config Generation**: Execute `scripts/generate_mace_config.py` using the `.xyz` data to produce `finetune_config.yaml`.
 18. **Fine-Tuning**: Execute `mace_run_train --config /path/to/finetune_config.yaml` to begin fine-tuning natively on the GPU.
 19. **Validation**: Verify convergence and compare against the benchmarked foundation metrics.
+20. **Registration**: Use the `register_model` tool to register the newly fine-tuned model checkpoint into the local registry so future research tasks can discover and reuse it.
 
 ## Training Configuration
 

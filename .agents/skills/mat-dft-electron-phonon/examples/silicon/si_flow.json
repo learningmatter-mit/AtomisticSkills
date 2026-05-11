@@ -1,0 +1,3442 @@
+{
+    "@module": "jobflow.core.flow",
+    "@class": "Flow",
+    "@version": "0.2.1",
+    "jobs": [
+        {
+            "@module": "jobflow.core.flow",
+            "@class": "Flow",
+            "@version": "0.2.1",
+            "jobs": [
+                {
+                    "@module": "jobflow.core.job",
+                    "@class": "Job",
+                    "@version": "0.2.1",
+                    "function": {
+                        "@module": "atomate2.vasp.jobs.base",
+                        "@callable": "BaseVaspMaker.make",
+                        "@bound": {
+                            "@module": "atomate2.vasp.jobs.core",
+                            "@class": "TightRelaxMaker",
+                            "@version": "0.0.22",
+                            "name": "tight relax 1",
+                            "input_set_generator": {
+                                "@module": "atomate2.vasp.sets.core",
+                                "@class": "TightRelaxSetGenerator",
+                                "@version": "0.0.22",
+                                "structure": null,
+                                "config_dict": {
+                                    "PARENT": "VASPIncarBase",
+                                    "INCAR": {
+                                        "ALGO": "Fast",
+                                        "EDIFF": 1e-05,
+                                        "EDIFFG": -0.02,
+                                        "ENAUG": 1360,
+                                        "ENCUT": 680,
+                                        "IBRION": 2,
+                                        "ISIF": 3,
+                                        "ISMEAR": 0,
+                                        "ISPIN": 2,
+                                        "LAECHG": true,
+                                        "LASPH": true,
+                                        "LCHARG": true,
+                                        "LELF": false,
+                                        "LMIXTAU": true,
+                                        "LORBIT": 11,
+                                        "LREAL": false,
+                                        "LVTOT": true,
+                                        "LWAVE": false,
+                                        "NELM": 200,
+                                        "NSW": 99,
+                                        "PREC": "Accurate",
+                                        "SIGMA": 0.05,
+                                        "MAGMOM": {
+                                            "Ce": 5,
+                                            "Ce3+": 1,
+                                            "Co": 0.6,
+                                            "Co3+": 0.6,
+                                            "Co4+": 1,
+                                            "Cr": 5,
+                                            "Dy3+": 5,
+                                            "Er3+": 3,
+                                            "Eu": 10,
+                                            "Eu2+": 7,
+                                            "Eu3+": 6,
+                                            "Fe": 5,
+                                            "Gd3+": 7,
+                                            "Ho3+": 4,
+                                            "La3+": 0.6,
+                                            "Lu3+": 0.6,
+                                            "Mn": 5,
+                                            "Mn3+": 4,
+                                            "Mn4+": 3,
+                                            "Mo": 5,
+                                            "Nd3+": 3,
+                                            "Ni": 5,
+                                            "Pm3+": 4,
+                                            "Pr3+": 2,
+                                            "Sm3+": 5,
+                                            "Tb3+": 6,
+                                            "Tm3+": 2,
+                                            "V": 5,
+                                            "W": 5,
+                                            "Yb3+": 1
+                                        },
+                                        "GGA": "PS",
+                                        "LDAU": true,
+                                        "LDAUJ": {
+                                            "F": {
+                                                "Co": 0,
+                                                "Cr": 0,
+                                                "Fe": 0,
+                                                "Mn": 0,
+                                                "Mo": 0,
+                                                "Ni": 0,
+                                                "V": 0,
+                                                "W": 0
+                                            },
+                                            "O": {
+                                                "Co": 0,
+                                                "Cr": 0,
+                                                "Fe": 0,
+                                                "Mn": 0,
+                                                "Mo": 0,
+                                                "Ni": 0,
+                                                "V": 0,
+                                                "W": 0
+                                            }
+                                        },
+                                        "LDAUL": {
+                                            "F": {
+                                                "Co": 2,
+                                                "Cr": 2,
+                                                "Fe": 2,
+                                                "Mn": 2,
+                                                "Mo": 2,
+                                                "Ni": 2,
+                                                "V": 2,
+                                                "W": 2
+                                            },
+                                            "O": {
+                                                "Co": 2,
+                                                "Cr": 2,
+                                                "Fe": 2,
+                                                "Mn": 2,
+                                                "Mo": 2,
+                                                "Ni": 2,
+                                                "V": 2,
+                                                "W": 2
+                                            }
+                                        },
+                                        "LDAUTYPE": 2,
+                                        "LDAUU": {
+                                            "F": {
+                                                "Co": 3.32,
+                                                "Cr": 3.7,
+                                                "Fe": 5.3,
+                                                "Mn": 3.9,
+                                                "Mo": 4.38,
+                                                "Ni": 6.2,
+                                                "V": 3.25,
+                                                "W": 6.2
+                                            },
+                                            "O": {
+                                                "Co": 3.32,
+                                                "Cr": 3.7,
+                                                "Fe": 5.3,
+                                                "Mn": 3.9,
+                                                "Mo": 4.38,
+                                                "Ni": 6.2,
+                                                "V": 3.25,
+                                                "W": 6.2
+                                            }
+                                        },
+                                        "LDAUPRINT": 1
+                                    },
+                                    "POTCAR_FUNCTIONAL": "PBE_54",
+                                    "POTCAR": {
+                                        "Ac": "Ac",
+                                        "Ag": "Ag",
+                                        "Al": "Al",
+                                        "Am": "Am",
+                                        "Ar": "Ar",
+                                        "As": "As",
+                                        "At": "At",
+                                        "Au": "Au",
+                                        "B": "B",
+                                        "Ba": "Ba_sv",
+                                        "Be": "Be",
+                                        "Bi": "Bi_d",
+                                        "Br": "Br",
+                                        "C": "C",
+                                        "Ca": "Ca_sv",
+                                        "Cd": "Cd",
+                                        "Ce": "Ce",
+                                        "Cf": "Cf",
+                                        "Cl": "Cl",
+                                        "Cm": "Cm",
+                                        "Co": "Co",
+                                        "Cr": "Cr_pv",
+                                        "Cs": "Cs_sv",
+                                        "Cu": "Cu",
+                                        "Dy": "Dy_3",
+                                        "Er": "Er_3",
+                                        "Eu": "Eu_2",
+                                        "F": "F",
+                                        "Fe": "Fe",
+                                        "Fr": "Fr_sv",
+                                        "Ga": "Ga_d",
+                                        "Gd": "Gd_3",
+                                        "Ge": "Ge_d",
+                                        "H": "H",
+                                        "He": "He",
+                                        "Hf": "Hf_pv",
+                                        "Hg": "Hg",
+                                        "Ho": "Ho_3",
+                                        "I": "I",
+                                        "In": "In_d",
+                                        "Ir": "Ir",
+                                        "K": "K_sv",
+                                        "Kr": "Kr",
+                                        "La": "La",
+                                        "Li": "Li_sv",
+                                        "Lu": "Lu_3",
+                                        "Mg": "Mg",
+                                        "Mn": "Mn_pv",
+                                        "Mo": "Mo_sv",
+                                        "N": "N",
+                                        "Na": "Na_pv",
+                                        "Nb": "Nb_sv",
+                                        "Nd": "Nd_3",
+                                        "Ne": "Ne",
+                                        "Ni": "Ni",
+                                        "Np": "Np",
+                                        "O": "O",
+                                        "Os": "Os",
+                                        "P": "P",
+                                        "Pa": "Pa",
+                                        "Pb": "Pb_d",
+                                        "Pd": "Pd",
+                                        "Pm": "Pm_3",
+                                        "Po": "Po_d",
+                                        "Pr": "Pr_3",
+                                        "Pt": "Pt",
+                                        "Pu": "Pu",
+                                        "Ra": "Ra_sv",
+                                        "Rb": "Rb_sv",
+                                        "Re": "Re",
+                                        "Rh": "Rh_pv",
+                                        "Rn": "Rn",
+                                        "Ru": "Ru_pv",
+                                        "S": "S",
+                                        "Sb": "Sb",
+                                        "Sc": "Sc_sv",
+                                        "Se": "Se",
+                                        "Si": "Si",
+                                        "Sm": "Sm_3",
+                                        "Sn": "Sn_d",
+                                        "Sr": "Sr_sv",
+                                        "Ta": "Ta_pv",
+                                        "Tb": "Tb_3",
+                                        "Tc": "Tc_pv",
+                                        "Te": "Te",
+                                        "Th": "Th",
+                                        "Ti": "Ti_sv",
+                                        "Tl": "Tl_d",
+                                        "Tm": "Tm_3",
+                                        "U": "U",
+                                        "V": "V_sv",
+                                        "W": "W_sv",
+                                        "Xe": "Xe",
+                                        "Y": "Y_sv",
+                                        "Yb": "Yb_3",
+                                        "Zn": "Zn",
+                                        "Zr": "Zr_sv"
+                                    },
+                                    "KPOINTS": {
+                                        "reciprocal_density": 64,
+                                        "reciprocal_density_metal": 200
+                                    }
+                                },
+                                "files_to_transfer": {},
+                                "user_incar_settings": {},
+                                "user_kpoints_settings": {},
+                                "user_potcar_settings": {},
+                                "constrain_total_magmom": false,
+                                "sort_structure": true,
+                                "user_potcar_functional": "PBE_54",
+                                "force_gamma": true,
+                                "reduce_structure": null,
+                                "vdw": null,
+                                "use_structure_charge": false,
+                                "standardize": false,
+                                "sym_prec": 0.1,
+                                "international_monoclinic": true,
+                                "validate_magmom": true,
+                                "inherit_incar": false,
+                                "auto_kspacing": false,
+                                "auto_ismear": true,
+                                "auto_ispin": false,
+                                "auto_lreal": false,
+                                "auto_metal_kpoints": true,
+                                "bandgap_tol": 0.0001,
+                                "bandgap": null,
+                                "prev_incar": null,
+                                "prev_kpoints": null,
+                                "_valid_potcars": null
+                            },
+                            "write_input_set_kwargs": {},
+                            "copy_vasp_kwargs": {},
+                            "run_vasp_kwargs": {},
+                            "task_document_kwargs": {},
+                            "stop_children_kwargs": {},
+                            "write_additional_data": {}
+                        }
+                    },
+                    "function_args": [
+                        {
+                            "@module": "pymatgen.core.structure",
+                            "@class": "Structure",
+                            "charge": 0.0,
+                            "lattice": {
+                                "matrix": [
+                                    [
+                                        0.0,
+                                        2.715,
+                                        2.715
+                                    ],
+                                    [
+                                        2.715,
+                                        0.0,
+                                        2.715
+                                    ],
+                                    [
+                                        2.715,
+                                        2.715,
+                                        0.0
+                                    ]
+                                ],
+                                "pbc": [
+                                    true,
+                                    true,
+                                    true
+                                ],
+                                "a": 3.839589821842953,
+                                "b": 3.839589821842953,
+                                "c": 3.839589821842953,
+                                "alpha": 60.00000000000001,
+                                "beta": 60.00000000000001,
+                                "gamma": 60.00000000000001,
+                                "volume": 40.02575174999999
+                            },
+                            "properties": {},
+                            "sites": [
+                                {
+                                    "species": [
+                                        {
+                                            "element": "Si",
+                                            "occu": 1
+                                        }
+                                    ],
+                                    "abc": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ],
+                                    "properties": {},
+                                    "label": "Si",
+                                    "xyz": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "species": [
+                                        {
+                                            "element": "Si",
+                                            "occu": 1
+                                        }
+                                    ],
+                                    "abc": [
+                                        0.25,
+                                        0.25,
+                                        0.25
+                                    ],
+                                    "properties": {},
+                                    "label": "Si",
+                                    "xyz": [
+                                        1.3575,
+                                        1.3575,
+                                        1.3575
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "function_kwargs": {
+                        "prev_dir": null
+                    },
+                    "output_schema": {
+                        "@module": "emmet.core.tasks",
+                        "@callable": "TaskDoc",
+                        "@bound": null
+                    },
+                    "uuid": "0e73876d-f2ac-4326-ba2f-fbb3a7ce0a9d",
+                    "index": 1,
+                    "name": "tight relax 1",
+                    "metadata": {},
+                    "config": {
+                        "@module": "jobflow.core.job",
+                        "@class": "JobConfig",
+                        "@version": "0.2.1",
+                        "resolve_references": true,
+                        "on_missing_references": "error",
+                        "manager_config": {},
+                        "expose_store": false,
+                        "pass_manager_config": true,
+                        "response_manager_config": {}
+                    },
+                    "hosts": [
+                        "fb4923f6-28fc-43c5-8e3f-9b84eb6060f8",
+                        "0a011705-e052-4dfd-bef1-8837f763d0f8"
+                    ],
+                    "metadata_updates": [],
+                    "config_updates": [],
+                    "name_updates": [
+                        {
+                            "append_str": " 1",
+                            "prepend": false
+                        }
+                    ],
+                    "data": [
+                        {
+                            "@module": "pymatgen.electronic_structure.bandstructure",
+                            "@callable": "BandStructure",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.bandstructure",
+                            "@callable": "BandStructureSymmLine",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "DOS",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "Dos",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "CompleteDos",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Locpot",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Chgcar",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Wavecar",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.core.trajectory",
+                            "@callable": "Trajectory",
+                            "@bound": null
+                        },
+                        "force_constants",
+                        "normalmode_eigenvecs",
+                        "bandstructure"
+                    ]
+                },
+                {
+                    "@module": "jobflow.core.job",
+                    "@class": "Job",
+                    "@version": "0.2.1",
+                    "function": {
+                        "@module": "atomate2.vasp.jobs.base",
+                        "@callable": "BaseVaspMaker.make",
+                        "@bound": {
+                            "@module": "atomate2.vasp.jobs.core",
+                            "@class": "TightRelaxMaker",
+                            "@version": "0.0.22",
+                            "name": "tight relax 2",
+                            "input_set_generator": {
+                                "@module": "atomate2.vasp.sets.core",
+                                "@class": "TightRelaxSetGenerator",
+                                "@version": "0.0.22",
+                                "structure": null,
+                                "config_dict": {
+                                    "PARENT": "VASPIncarBase",
+                                    "INCAR": {
+                                        "ALGO": "Fast",
+                                        "EDIFF": 1e-05,
+                                        "EDIFFG": -0.02,
+                                        "ENAUG": 1360,
+                                        "ENCUT": 680,
+                                        "IBRION": 2,
+                                        "ISIF": 3,
+                                        "ISMEAR": 0,
+                                        "ISPIN": 2,
+                                        "LAECHG": true,
+                                        "LASPH": true,
+                                        "LCHARG": true,
+                                        "LELF": false,
+                                        "LMIXTAU": true,
+                                        "LORBIT": 11,
+                                        "LREAL": false,
+                                        "LVTOT": true,
+                                        "LWAVE": false,
+                                        "NELM": 200,
+                                        "NSW": 99,
+                                        "PREC": "Accurate",
+                                        "SIGMA": 0.05,
+                                        "MAGMOM": {
+                                            "Ce": 5,
+                                            "Ce3+": 1,
+                                            "Co": 0.6,
+                                            "Co3+": 0.6,
+                                            "Co4+": 1,
+                                            "Cr": 5,
+                                            "Dy3+": 5,
+                                            "Er3+": 3,
+                                            "Eu": 10,
+                                            "Eu2+": 7,
+                                            "Eu3+": 6,
+                                            "Fe": 5,
+                                            "Gd3+": 7,
+                                            "Ho3+": 4,
+                                            "La3+": 0.6,
+                                            "Lu3+": 0.6,
+                                            "Mn": 5,
+                                            "Mn3+": 4,
+                                            "Mn4+": 3,
+                                            "Mo": 5,
+                                            "Nd3+": 3,
+                                            "Ni": 5,
+                                            "Pm3+": 4,
+                                            "Pr3+": 2,
+                                            "Sm3+": 5,
+                                            "Tb3+": 6,
+                                            "Tm3+": 2,
+                                            "V": 5,
+                                            "W": 5,
+                                            "Yb3+": 1
+                                        },
+                                        "GGA": "PS",
+                                        "LDAU": true,
+                                        "LDAUJ": {
+                                            "F": {
+                                                "Co": 0,
+                                                "Cr": 0,
+                                                "Fe": 0,
+                                                "Mn": 0,
+                                                "Mo": 0,
+                                                "Ni": 0,
+                                                "V": 0,
+                                                "W": 0
+                                            },
+                                            "O": {
+                                                "Co": 0,
+                                                "Cr": 0,
+                                                "Fe": 0,
+                                                "Mn": 0,
+                                                "Mo": 0,
+                                                "Ni": 0,
+                                                "V": 0,
+                                                "W": 0
+                                            }
+                                        },
+                                        "LDAUL": {
+                                            "F": {
+                                                "Co": 2,
+                                                "Cr": 2,
+                                                "Fe": 2,
+                                                "Mn": 2,
+                                                "Mo": 2,
+                                                "Ni": 2,
+                                                "V": 2,
+                                                "W": 2
+                                            },
+                                            "O": {
+                                                "Co": 2,
+                                                "Cr": 2,
+                                                "Fe": 2,
+                                                "Mn": 2,
+                                                "Mo": 2,
+                                                "Ni": 2,
+                                                "V": 2,
+                                                "W": 2
+                                            }
+                                        },
+                                        "LDAUTYPE": 2,
+                                        "LDAUU": {
+                                            "F": {
+                                                "Co": 3.32,
+                                                "Cr": 3.7,
+                                                "Fe": 5.3,
+                                                "Mn": 3.9,
+                                                "Mo": 4.38,
+                                                "Ni": 6.2,
+                                                "V": 3.25,
+                                                "W": 6.2
+                                            },
+                                            "O": {
+                                                "Co": 3.32,
+                                                "Cr": 3.7,
+                                                "Fe": 5.3,
+                                                "Mn": 3.9,
+                                                "Mo": 4.38,
+                                                "Ni": 6.2,
+                                                "V": 3.25,
+                                                "W": 6.2
+                                            }
+                                        },
+                                        "LDAUPRINT": 1
+                                    },
+                                    "POTCAR_FUNCTIONAL": "PBE_54",
+                                    "POTCAR": {
+                                        "Ac": "Ac",
+                                        "Ag": "Ag",
+                                        "Al": "Al",
+                                        "Am": "Am",
+                                        "Ar": "Ar",
+                                        "As": "As",
+                                        "At": "At",
+                                        "Au": "Au",
+                                        "B": "B",
+                                        "Ba": "Ba_sv",
+                                        "Be": "Be",
+                                        "Bi": "Bi_d",
+                                        "Br": "Br",
+                                        "C": "C",
+                                        "Ca": "Ca_sv",
+                                        "Cd": "Cd",
+                                        "Ce": "Ce",
+                                        "Cf": "Cf",
+                                        "Cl": "Cl",
+                                        "Cm": "Cm",
+                                        "Co": "Co",
+                                        "Cr": "Cr_pv",
+                                        "Cs": "Cs_sv",
+                                        "Cu": "Cu",
+                                        "Dy": "Dy_3",
+                                        "Er": "Er_3",
+                                        "Eu": "Eu_2",
+                                        "F": "F",
+                                        "Fe": "Fe",
+                                        "Fr": "Fr_sv",
+                                        "Ga": "Ga_d",
+                                        "Gd": "Gd_3",
+                                        "Ge": "Ge_d",
+                                        "H": "H",
+                                        "He": "He",
+                                        "Hf": "Hf_pv",
+                                        "Hg": "Hg",
+                                        "Ho": "Ho_3",
+                                        "I": "I",
+                                        "In": "In_d",
+                                        "Ir": "Ir",
+                                        "K": "K_sv",
+                                        "Kr": "Kr",
+                                        "La": "La",
+                                        "Li": "Li_sv",
+                                        "Lu": "Lu_3",
+                                        "Mg": "Mg",
+                                        "Mn": "Mn_pv",
+                                        "Mo": "Mo_sv",
+                                        "N": "N",
+                                        "Na": "Na_pv",
+                                        "Nb": "Nb_sv",
+                                        "Nd": "Nd_3",
+                                        "Ne": "Ne",
+                                        "Ni": "Ni",
+                                        "Np": "Np",
+                                        "O": "O",
+                                        "Os": "Os",
+                                        "P": "P",
+                                        "Pa": "Pa",
+                                        "Pb": "Pb_d",
+                                        "Pd": "Pd",
+                                        "Pm": "Pm_3",
+                                        "Po": "Po_d",
+                                        "Pr": "Pr_3",
+                                        "Pt": "Pt",
+                                        "Pu": "Pu",
+                                        "Ra": "Ra_sv",
+                                        "Rb": "Rb_sv",
+                                        "Re": "Re",
+                                        "Rh": "Rh_pv",
+                                        "Rn": "Rn",
+                                        "Ru": "Ru_pv",
+                                        "S": "S",
+                                        "Sb": "Sb",
+                                        "Sc": "Sc_sv",
+                                        "Se": "Se",
+                                        "Si": "Si",
+                                        "Sm": "Sm_3",
+                                        "Sn": "Sn_d",
+                                        "Sr": "Sr_sv",
+                                        "Ta": "Ta_pv",
+                                        "Tb": "Tb_3",
+                                        "Tc": "Tc_pv",
+                                        "Te": "Te",
+                                        "Th": "Th",
+                                        "Ti": "Ti_sv",
+                                        "Tl": "Tl_d",
+                                        "Tm": "Tm_3",
+                                        "U": "U",
+                                        "V": "V_sv",
+                                        "W": "W_sv",
+                                        "Xe": "Xe",
+                                        "Y": "Y_sv",
+                                        "Yb": "Yb_3",
+                                        "Zn": "Zn",
+                                        "Zr": "Zr_sv"
+                                    },
+                                    "KPOINTS": {
+                                        "reciprocal_density": 64,
+                                        "reciprocal_density_metal": 200
+                                    }
+                                },
+                                "files_to_transfer": {},
+                                "user_incar_settings": {},
+                                "user_kpoints_settings": {},
+                                "user_potcar_settings": {},
+                                "constrain_total_magmom": false,
+                                "sort_structure": true,
+                                "user_potcar_functional": "PBE_54",
+                                "force_gamma": true,
+                                "reduce_structure": null,
+                                "vdw": null,
+                                "use_structure_charge": false,
+                                "standardize": false,
+                                "sym_prec": 0.1,
+                                "international_monoclinic": true,
+                                "validate_magmom": true,
+                                "inherit_incar": false,
+                                "auto_kspacing": false,
+                                "auto_ismear": true,
+                                "auto_ispin": false,
+                                "auto_lreal": false,
+                                "auto_metal_kpoints": true,
+                                "bandgap_tol": 0.0001,
+                                "bandgap": null,
+                                "prev_incar": null,
+                                "prev_kpoints": null,
+                                "_valid_potcars": null
+                            },
+                            "write_input_set_kwargs": {},
+                            "copy_vasp_kwargs": {},
+                            "run_vasp_kwargs": {},
+                            "task_document_kwargs": {},
+                            "stop_children_kwargs": {},
+                            "write_additional_data": {}
+                        }
+                    },
+                    "function_args": [
+                        {
+                            "@module": "jobflow.core.reference",
+                            "@class": "OutputReference",
+                            "@version": null,
+                            "uuid": "0e73876d-f2ac-4326-ba2f-fbb3a7ce0a9d",
+                            "attributes": [
+                                [
+                                    "a",
+                                    "structure"
+                                ]
+                            ],
+                            "output_schema": null
+                        }
+                    ],
+                    "function_kwargs": {
+                        "prev_dir": {
+                            "@module": "jobflow.core.reference",
+                            "@class": "OutputReference",
+                            "@version": null,
+                            "uuid": "0e73876d-f2ac-4326-ba2f-fbb3a7ce0a9d",
+                            "attributes": [
+                                [
+                                    "a",
+                                    "dir_name"
+                                ]
+                            ],
+                            "output_schema": null
+                        }
+                    },
+                    "output_schema": {
+                        "@module": "emmet.core.tasks",
+                        "@callable": "TaskDoc",
+                        "@bound": null
+                    },
+                    "uuid": "9a779f70-7964-40a6-a046-d9df9dc81879",
+                    "index": 1,
+                    "name": "tight relax 2",
+                    "metadata": {},
+                    "config": {
+                        "@module": "jobflow.core.job",
+                        "@class": "JobConfig",
+                        "@version": "0.2.1",
+                        "resolve_references": true,
+                        "on_missing_references": "error",
+                        "manager_config": {},
+                        "expose_store": false,
+                        "pass_manager_config": true,
+                        "response_manager_config": {}
+                    },
+                    "hosts": [
+                        "fb4923f6-28fc-43c5-8e3f-9b84eb6060f8",
+                        "0a011705-e052-4dfd-bef1-8837f763d0f8"
+                    ],
+                    "metadata_updates": [],
+                    "config_updates": [],
+                    "name_updates": [
+                        {
+                            "append_str": " 2",
+                            "prepend": false
+                        }
+                    ],
+                    "data": [
+                        {
+                            "@module": "pymatgen.electronic_structure.bandstructure",
+                            "@callable": "BandStructure",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.bandstructure",
+                            "@callable": "BandStructureSymmLine",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "DOS",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "Dos",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "CompleteDos",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Locpot",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Chgcar",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Wavecar",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.core.trajectory",
+                            "@callable": "Trajectory",
+                            "@bound": null
+                        },
+                        "force_constants",
+                        "normalmode_eigenvecs",
+                        "bandstructure"
+                    ]
+                }
+            ],
+            "output": {
+                "@module": "jobflow.core.reference",
+                "@class": "OutputReference",
+                "@version": null,
+                "uuid": "9a779f70-7964-40a6-a046-d9df9dc81879",
+                "attributes": [],
+                "output_schema": {
+                    "@module": "emmet.core.tasks",
+                    "@callable": "TaskDoc",
+                    "@bound": null
+                }
+            },
+            "name": "double relax",
+            "order": "auto",
+            "uuid": "fb4923f6-28fc-43c5-8e3f-9b84eb6060f8",
+            "hosts": [
+                "0a011705-e052-4dfd-bef1-8837f763d0f8"
+            ],
+            "metadata": {},
+            "metadata_updates": []
+        },
+        {
+            "@module": "jobflow.core.job",
+            "@class": "Job",
+            "@version": "0.2.1",
+            "function": {
+                "@module": "atomate2.vasp.jobs.base",
+                "@callable": "BaseVaspMaker.make",
+                "@bound": {
+                    "@module": "atomate2.vasp.jobs.core",
+                    "@class": "StaticMaker",
+                    "@version": "0.0.22",
+                    "name": "static",
+                    "input_set_generator": {
+                        "@module": "atomate2.vasp.sets.core",
+                        "@class": "StaticSetGenerator",
+                        "@version": "0.0.22",
+                        "structure": null,
+                        "config_dict": {
+                            "PARENT": "VASPIncarBase",
+                            "INCAR": {
+                                "ALGO": "Fast",
+                                "EDIFF": 1e-05,
+                                "EDIFFG": -0.02,
+                                "ENAUG": 1360,
+                                "ENCUT": 680,
+                                "IBRION": 2,
+                                "ISIF": 3,
+                                "ISMEAR": 0,
+                                "ISPIN": 2,
+                                "LAECHG": true,
+                                "LASPH": true,
+                                "LCHARG": true,
+                                "LELF": false,
+                                "LMIXTAU": true,
+                                "LORBIT": 11,
+                                "LREAL": false,
+                                "LVTOT": true,
+                                "LWAVE": false,
+                                "NELM": 200,
+                                "NSW": 99,
+                                "PREC": "Accurate",
+                                "SIGMA": 0.05,
+                                "MAGMOM": {
+                                    "Ce": 5,
+                                    "Ce3+": 1,
+                                    "Co": 0.6,
+                                    "Co3+": 0.6,
+                                    "Co4+": 1,
+                                    "Cr": 5,
+                                    "Dy3+": 5,
+                                    "Er3+": 3,
+                                    "Eu": 10,
+                                    "Eu2+": 7,
+                                    "Eu3+": 6,
+                                    "Fe": 5,
+                                    "Gd3+": 7,
+                                    "Ho3+": 4,
+                                    "La3+": 0.6,
+                                    "Lu3+": 0.6,
+                                    "Mn": 5,
+                                    "Mn3+": 4,
+                                    "Mn4+": 3,
+                                    "Mo": 5,
+                                    "Nd3+": 3,
+                                    "Ni": 5,
+                                    "Pm3+": 4,
+                                    "Pr3+": 2,
+                                    "Sm3+": 5,
+                                    "Tb3+": 6,
+                                    "Tm3+": 2,
+                                    "V": 5,
+                                    "W": 5,
+                                    "Yb3+": 1
+                                },
+                                "GGA": "PS",
+                                "LDAU": true,
+                                "LDAUJ": {
+                                    "F": {
+                                        "Co": 0,
+                                        "Cr": 0,
+                                        "Fe": 0,
+                                        "Mn": 0,
+                                        "Mo": 0,
+                                        "Ni": 0,
+                                        "V": 0,
+                                        "W": 0
+                                    },
+                                    "O": {
+                                        "Co": 0,
+                                        "Cr": 0,
+                                        "Fe": 0,
+                                        "Mn": 0,
+                                        "Mo": 0,
+                                        "Ni": 0,
+                                        "V": 0,
+                                        "W": 0
+                                    }
+                                },
+                                "LDAUL": {
+                                    "F": {
+                                        "Co": 2,
+                                        "Cr": 2,
+                                        "Fe": 2,
+                                        "Mn": 2,
+                                        "Mo": 2,
+                                        "Ni": 2,
+                                        "V": 2,
+                                        "W": 2
+                                    },
+                                    "O": {
+                                        "Co": 2,
+                                        "Cr": 2,
+                                        "Fe": 2,
+                                        "Mn": 2,
+                                        "Mo": 2,
+                                        "Ni": 2,
+                                        "V": 2,
+                                        "W": 2
+                                    }
+                                },
+                                "LDAUTYPE": 2,
+                                "LDAUU": {
+                                    "F": {
+                                        "Co": 3.32,
+                                        "Cr": 3.7,
+                                        "Fe": 5.3,
+                                        "Mn": 3.9,
+                                        "Mo": 4.38,
+                                        "Ni": 6.2,
+                                        "V": 3.25,
+                                        "W": 6.2
+                                    },
+                                    "O": {
+                                        "Co": 3.32,
+                                        "Cr": 3.7,
+                                        "Fe": 5.3,
+                                        "Mn": 3.9,
+                                        "Mo": 4.38,
+                                        "Ni": 6.2,
+                                        "V": 3.25,
+                                        "W": 6.2
+                                    }
+                                },
+                                "LDAUPRINT": 1
+                            },
+                            "POTCAR_FUNCTIONAL": "PBE_54",
+                            "POTCAR": {
+                                "Ac": "Ac",
+                                "Ag": "Ag",
+                                "Al": "Al",
+                                "Am": "Am",
+                                "Ar": "Ar",
+                                "As": "As",
+                                "At": "At",
+                                "Au": "Au",
+                                "B": "B",
+                                "Ba": "Ba_sv",
+                                "Be": "Be",
+                                "Bi": "Bi_d",
+                                "Br": "Br",
+                                "C": "C",
+                                "Ca": "Ca_sv",
+                                "Cd": "Cd",
+                                "Ce": "Ce",
+                                "Cf": "Cf",
+                                "Cl": "Cl",
+                                "Cm": "Cm",
+                                "Co": "Co",
+                                "Cr": "Cr_pv",
+                                "Cs": "Cs_sv",
+                                "Cu": "Cu",
+                                "Dy": "Dy_3",
+                                "Er": "Er_3",
+                                "Eu": "Eu_2",
+                                "F": "F",
+                                "Fe": "Fe",
+                                "Fr": "Fr_sv",
+                                "Ga": "Ga_d",
+                                "Gd": "Gd_3",
+                                "Ge": "Ge_d",
+                                "H": "H",
+                                "He": "He",
+                                "Hf": "Hf_pv",
+                                "Hg": "Hg",
+                                "Ho": "Ho_3",
+                                "I": "I",
+                                "In": "In_d",
+                                "Ir": "Ir",
+                                "K": "K_sv",
+                                "Kr": "Kr",
+                                "La": "La",
+                                "Li": "Li_sv",
+                                "Lu": "Lu_3",
+                                "Mg": "Mg",
+                                "Mn": "Mn_pv",
+                                "Mo": "Mo_sv",
+                                "N": "N",
+                                "Na": "Na_pv",
+                                "Nb": "Nb_sv",
+                                "Nd": "Nd_3",
+                                "Ne": "Ne",
+                                "Ni": "Ni",
+                                "Np": "Np",
+                                "O": "O",
+                                "Os": "Os",
+                                "P": "P",
+                                "Pa": "Pa",
+                                "Pb": "Pb_d",
+                                "Pd": "Pd",
+                                "Pm": "Pm_3",
+                                "Po": "Po_d",
+                                "Pr": "Pr_3",
+                                "Pt": "Pt",
+                                "Pu": "Pu",
+                                "Ra": "Ra_sv",
+                                "Rb": "Rb_sv",
+                                "Re": "Re",
+                                "Rh": "Rh_pv",
+                                "Rn": "Rn",
+                                "Ru": "Ru_pv",
+                                "S": "S",
+                                "Sb": "Sb",
+                                "Sc": "Sc_sv",
+                                "Se": "Se",
+                                "Si": "Si",
+                                "Sm": "Sm_3",
+                                "Sn": "Sn_d",
+                                "Sr": "Sr_sv",
+                                "Ta": "Ta_pv",
+                                "Tb": "Tb_3",
+                                "Tc": "Tc_pv",
+                                "Te": "Te",
+                                "Th": "Th",
+                                "Ti": "Ti_sv",
+                                "Tl": "Tl_d",
+                                "Tm": "Tm_3",
+                                "U": "U",
+                                "V": "V_sv",
+                                "W": "W_sv",
+                                "Xe": "Xe",
+                                "Y": "Y_sv",
+                                "Yb": "Yb_3",
+                                "Zn": "Zn",
+                                "Zr": "Zr_sv"
+                            },
+                            "KPOINTS": {
+                                "reciprocal_density": 64,
+                                "reciprocal_density_metal": 200
+                            }
+                        },
+                        "files_to_transfer": {},
+                        "user_incar_settings": {},
+                        "user_kpoints_settings": {},
+                        "user_potcar_settings": {},
+                        "constrain_total_magmom": false,
+                        "sort_structure": true,
+                        "user_potcar_functional": "PBE_54",
+                        "force_gamma": true,
+                        "reduce_structure": null,
+                        "vdw": null,
+                        "use_structure_charge": false,
+                        "standardize": false,
+                        "sym_prec": 0.1,
+                        "international_monoclinic": true,
+                        "validate_magmom": true,
+                        "inherit_incar": false,
+                        "auto_kspacing": false,
+                        "auto_ismear": true,
+                        "auto_ispin": false,
+                        "auto_lreal": false,
+                        "auto_metal_kpoints": true,
+                        "bandgap_tol": 0.0001,
+                        "bandgap": null,
+                        "prev_incar": null,
+                        "prev_kpoints": null,
+                        "_valid_potcars": null,
+                        "lepsilon": false,
+                        "lcalcpol": false
+                    },
+                    "write_input_set_kwargs": {},
+                    "copy_vasp_kwargs": {},
+                    "run_vasp_kwargs": {},
+                    "task_document_kwargs": {},
+                    "stop_children_kwargs": {},
+                    "write_additional_data": {}
+                }
+            },
+            "function_args": [
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "9a779f70-7964-40a6-a046-d9df9dc81879",
+                    "attributes": [
+                        [
+                            "a",
+                            "structure"
+                        ]
+                    ],
+                    "output_schema": null
+                }
+            ],
+            "function_kwargs": {
+                "prev_dir": {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "9a779f70-7964-40a6-a046-d9df9dc81879",
+                    "attributes": [
+                        [
+                            "a",
+                            "dir_name"
+                        ]
+                    ],
+                    "output_schema": null
+                }
+            },
+            "output_schema": {
+                "@module": "emmet.core.tasks",
+                "@callable": "TaskDoc",
+                "@bound": null
+            },
+            "uuid": "8f1494eb-3a2b-43f9-b2fe-d0d25e023bcd",
+            "index": 1,
+            "name": "static",
+            "metadata": {},
+            "config": {
+                "@module": "jobflow.core.job",
+                "@class": "JobConfig",
+                "@version": "0.2.1",
+                "resolve_references": true,
+                "on_missing_references": "error",
+                "manager_config": {},
+                "expose_store": false,
+                "pass_manager_config": true,
+                "response_manager_config": {}
+            },
+            "hosts": [
+                "0a011705-e052-4dfd-bef1-8837f763d0f8"
+            ],
+            "metadata_updates": [],
+            "config_updates": [],
+            "name_updates": [],
+            "data": [
+                {
+                    "@module": "pymatgen.electronic_structure.bandstructure",
+                    "@callable": "BandStructure",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.electronic_structure.bandstructure",
+                    "@callable": "BandStructureSymmLine",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.electronic_structure.dos",
+                    "@callable": "DOS",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.electronic_structure.dos",
+                    "@callable": "Dos",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.electronic_structure.dos",
+                    "@callable": "CompleteDos",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.io.vasp.outputs",
+                    "@callable": "Locpot",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.io.vasp.outputs",
+                    "@callable": "Chgcar",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.io.vasp.outputs",
+                    "@callable": "Wavecar",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.core.trajectory",
+                    "@callable": "Trajectory",
+                    "@bound": null
+                },
+                "force_constants",
+                "normalmode_eigenvecs",
+                "bandstructure"
+            ]
+        },
+        {
+            "@module": "jobflow.core.job",
+            "@class": "Job",
+            "@version": "0.2.1",
+            "function": {
+                "@module": "atomate2.vasp.jobs.elph",
+                "@callable": "SupercellElectronPhononDisplacedStructureMaker.make",
+                "@bound": {
+                    "@module": "atomate2.vasp.jobs.elph",
+                    "@class": "SupercellElectronPhononDisplacedStructureMaker",
+                    "@version": "0.0.22",
+                    "name": "supercell electron phonon displacements",
+                    "input_set_generator": {
+                        "@module": "atomate2.vasp.sets.core",
+                        "@class": "ElectronPhononSetGenerator",
+                        "@version": "0.0.22",
+                        "structure": null,
+                        "config_dict": {
+                            "PARENT": "VASPIncarBase",
+                            "INCAR": {
+                                "ALGO": "Fast",
+                                "EDIFF": 1e-05,
+                                "EDIFFG": -0.02,
+                                "ENAUG": 1360,
+                                "ENCUT": 680,
+                                "IBRION": 2,
+                                "ISIF": 3,
+                                "ISMEAR": 0,
+                                "ISPIN": 2,
+                                "LAECHG": true,
+                                "LASPH": true,
+                                "LCHARG": true,
+                                "LELF": false,
+                                "LMIXTAU": true,
+                                "LORBIT": 11,
+                                "LREAL": false,
+                                "LVTOT": true,
+                                "LWAVE": false,
+                                "NELM": 200,
+                                "NSW": 99,
+                                "PREC": "Accurate",
+                                "SIGMA": 0.05,
+                                "MAGMOM": {
+                                    "Ce": 5,
+                                    "Ce3+": 1,
+                                    "Co": 0.6,
+                                    "Co3+": 0.6,
+                                    "Co4+": 1,
+                                    "Cr": 5,
+                                    "Dy3+": 5,
+                                    "Er3+": 3,
+                                    "Eu": 10,
+                                    "Eu2+": 7,
+                                    "Eu3+": 6,
+                                    "Fe": 5,
+                                    "Gd3+": 7,
+                                    "Ho3+": 4,
+                                    "La3+": 0.6,
+                                    "Lu3+": 0.6,
+                                    "Mn": 5,
+                                    "Mn3+": 4,
+                                    "Mn4+": 3,
+                                    "Mo": 5,
+                                    "Nd3+": 3,
+                                    "Ni": 5,
+                                    "Pm3+": 4,
+                                    "Pr3+": 2,
+                                    "Sm3+": 5,
+                                    "Tb3+": 6,
+                                    "Tm3+": 2,
+                                    "V": 5,
+                                    "W": 5,
+                                    "Yb3+": 1
+                                },
+                                "GGA": "PS",
+                                "LDAU": true,
+                                "LDAUJ": {
+                                    "F": {
+                                        "Co": 0,
+                                        "Cr": 0,
+                                        "Fe": 0,
+                                        "Mn": 0,
+                                        "Mo": 0,
+                                        "Ni": 0,
+                                        "V": 0,
+                                        "W": 0
+                                    },
+                                    "O": {
+                                        "Co": 0,
+                                        "Cr": 0,
+                                        "Fe": 0,
+                                        "Mn": 0,
+                                        "Mo": 0,
+                                        "Ni": 0,
+                                        "V": 0,
+                                        "W": 0
+                                    }
+                                },
+                                "LDAUL": {
+                                    "F": {
+                                        "Co": 2,
+                                        "Cr": 2,
+                                        "Fe": 2,
+                                        "Mn": 2,
+                                        "Mo": 2,
+                                        "Ni": 2,
+                                        "V": 2,
+                                        "W": 2
+                                    },
+                                    "O": {
+                                        "Co": 2,
+                                        "Cr": 2,
+                                        "Fe": 2,
+                                        "Mn": 2,
+                                        "Mo": 2,
+                                        "Ni": 2,
+                                        "V": 2,
+                                        "W": 2
+                                    }
+                                },
+                                "LDAUTYPE": 2,
+                                "LDAUU": {
+                                    "F": {
+                                        "Co": 3.32,
+                                        "Cr": 3.7,
+                                        "Fe": 5.3,
+                                        "Mn": 3.9,
+                                        "Mo": 4.38,
+                                        "Ni": 6.2,
+                                        "V": 3.25,
+                                        "W": 6.2
+                                    },
+                                    "O": {
+                                        "Co": 3.32,
+                                        "Cr": 3.7,
+                                        "Fe": 5.3,
+                                        "Mn": 3.9,
+                                        "Mo": 4.38,
+                                        "Ni": 6.2,
+                                        "V": 3.25,
+                                        "W": 6.2
+                                    }
+                                },
+                                "LDAUPRINT": 1
+                            },
+                            "POTCAR_FUNCTIONAL": "PBE_54",
+                            "POTCAR": {
+                                "Ac": "Ac",
+                                "Ag": "Ag",
+                                "Al": "Al",
+                                "Am": "Am",
+                                "Ar": "Ar",
+                                "As": "As",
+                                "At": "At",
+                                "Au": "Au",
+                                "B": "B",
+                                "Ba": "Ba_sv",
+                                "Be": "Be",
+                                "Bi": "Bi_d",
+                                "Br": "Br",
+                                "C": "C",
+                                "Ca": "Ca_sv",
+                                "Cd": "Cd",
+                                "Ce": "Ce",
+                                "Cf": "Cf",
+                                "Cl": "Cl",
+                                "Cm": "Cm",
+                                "Co": "Co",
+                                "Cr": "Cr_pv",
+                                "Cs": "Cs_sv",
+                                "Cu": "Cu",
+                                "Dy": "Dy_3",
+                                "Er": "Er_3",
+                                "Eu": "Eu_2",
+                                "F": "F",
+                                "Fe": "Fe",
+                                "Fr": "Fr_sv",
+                                "Ga": "Ga_d",
+                                "Gd": "Gd_3",
+                                "Ge": "Ge_d",
+                                "H": "H",
+                                "He": "He",
+                                "Hf": "Hf_pv",
+                                "Hg": "Hg",
+                                "Ho": "Ho_3",
+                                "I": "I",
+                                "In": "In_d",
+                                "Ir": "Ir",
+                                "K": "K_sv",
+                                "Kr": "Kr",
+                                "La": "La",
+                                "Li": "Li_sv",
+                                "Lu": "Lu_3",
+                                "Mg": "Mg",
+                                "Mn": "Mn_pv",
+                                "Mo": "Mo_sv",
+                                "N": "N",
+                                "Na": "Na_pv",
+                                "Nb": "Nb_sv",
+                                "Nd": "Nd_3",
+                                "Ne": "Ne",
+                                "Ni": "Ni",
+                                "Np": "Np",
+                                "O": "O",
+                                "Os": "Os",
+                                "P": "P",
+                                "Pa": "Pa",
+                                "Pb": "Pb_d",
+                                "Pd": "Pd",
+                                "Pm": "Pm_3",
+                                "Po": "Po_d",
+                                "Pr": "Pr_3",
+                                "Pt": "Pt",
+                                "Pu": "Pu",
+                                "Ra": "Ra_sv",
+                                "Rb": "Rb_sv",
+                                "Re": "Re",
+                                "Rh": "Rh_pv",
+                                "Rn": "Rn",
+                                "Ru": "Ru_pv",
+                                "S": "S",
+                                "Sb": "Sb",
+                                "Sc": "Sc_sv",
+                                "Se": "Se",
+                                "Si": "Si",
+                                "Sm": "Sm_3",
+                                "Sn": "Sn_d",
+                                "Sr": "Sr_sv",
+                                "Ta": "Ta_pv",
+                                "Tb": "Tb_3",
+                                "Tc": "Tc_pv",
+                                "Te": "Te",
+                                "Th": "Th",
+                                "Ti": "Ti_sv",
+                                "Tl": "Tl_d",
+                                "Tm": "Tm_3",
+                                "U": "U",
+                                "V": "V_sv",
+                                "W": "W_sv",
+                                "Xe": "Xe",
+                                "Y": "Y_sv",
+                                "Yb": "Yb_3",
+                                "Zn": "Zn",
+                                "Zr": "Zr_sv"
+                            },
+                            "KPOINTS": {
+                                "reciprocal_density": 64,
+                                "reciprocal_density_metal": 200
+                            }
+                        },
+                        "files_to_transfer": {},
+                        "user_incar_settings": {},
+                        "user_kpoints_settings": {},
+                        "user_potcar_settings": {},
+                        "constrain_total_magmom": false,
+                        "sort_structure": true,
+                        "user_potcar_functional": "PBE_54",
+                        "force_gamma": true,
+                        "reduce_structure": null,
+                        "vdw": null,
+                        "use_structure_charge": false,
+                        "standardize": false,
+                        "sym_prec": 0.1,
+                        "international_monoclinic": true,
+                        "validate_magmom": true,
+                        "inherit_incar": false,
+                        "auto_kspacing": false,
+                        "auto_ismear": true,
+                        "auto_ispin": true,
+                        "auto_lreal": false,
+                        "auto_metal_kpoints": true,
+                        "bandgap_tol": 0.0001,
+                        "bandgap": null,
+                        "prev_incar": null,
+                        "prev_kpoints": null,
+                        "_valid_potcars": null,
+                        "temperatures": [
+                            0,
+                            100,
+                            200,
+                            300,
+                            400,
+                            500,
+                            600,
+                            700,
+                            800,
+                            900,
+                            1000
+                        ],
+                        "reciprocal_density": 64
+                    },
+                    "write_input_set_kwargs": {},
+                    "copy_vasp_kwargs": {},
+                    "run_vasp_kwargs": {},
+                    "task_document_kwargs": {},
+                    "stop_children_kwargs": {},
+                    "write_additional_data": {},
+                    "transformations": [
+                        "SupercellTransformation"
+                    ],
+                    "transformation_params": null,
+                    "temperatures": [
+                        0,
+                        300,
+                        600
+                    ],
+                    "min_supercell_length": 10.0
+                }
+            },
+            "function_args": [
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "8f1494eb-3a2b-43f9-b2fe-d0d25e023bcd",
+                    "attributes": [
+                        [
+                            "a",
+                            "structure"
+                        ]
+                    ],
+                    "output_schema": null
+                }
+            ],
+            "function_kwargs": {
+                "prev_dir": {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "8f1494eb-3a2b-43f9-b2fe-d0d25e023bcd",
+                    "attributes": [
+                        [
+                            "a",
+                            "dir_name"
+                        ]
+                    ],
+                    "output_schema": null
+                }
+            },
+            "output_schema": {
+                "@module": "emmet.core.tasks",
+                "@callable": "TaskDoc",
+                "@bound": null
+            },
+            "uuid": "2df297ac-39b4-47ff-aa28-9b1ed8298fc3",
+            "index": 1,
+            "name": "supercell electron phonon displacements",
+            "metadata": {},
+            "config": {
+                "@module": "jobflow.core.job",
+                "@class": "JobConfig",
+                "@version": "0.2.1",
+                "resolve_references": true,
+                "on_missing_references": "error",
+                "manager_config": {},
+                "expose_store": false,
+                "pass_manager_config": true,
+                "response_manager_config": {}
+            },
+            "hosts": [
+                "0a011705-e052-4dfd-bef1-8837f763d0f8"
+            ],
+            "metadata_updates": [],
+            "config_updates": [],
+            "name_updates": [],
+            "data": [
+                {
+                    "@module": "pymatgen.electronic_structure.bandstructure",
+                    "@callable": "BandStructure",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.electronic_structure.bandstructure",
+                    "@callable": "BandStructureSymmLine",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.electronic_structure.dos",
+                    "@callable": "DOS",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.electronic_structure.dos",
+                    "@callable": "Dos",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.electronic_structure.dos",
+                    "@callable": "CompleteDos",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.io.vasp.outputs",
+                    "@callable": "Locpot",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.io.vasp.outputs",
+                    "@callable": "Chgcar",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.io.vasp.outputs",
+                    "@callable": "Wavecar",
+                    "@bound": null
+                },
+                {
+                    "@module": "pymatgen.core.trajectory",
+                    "@callable": "Trajectory",
+                    "@bound": null
+                },
+                "force_constants",
+                "normalmode_eigenvecs",
+                "bandstructure"
+            ]
+        },
+        {
+            "@module": "jobflow.core.flow",
+            "@class": "Flow",
+            "@version": "0.2.1",
+            "jobs": [
+                {
+                    "@module": "jobflow.core.job",
+                    "@class": "Job",
+                    "@version": "0.2.1",
+                    "function": {
+                        "@module": "atomate2.vasp.jobs.base",
+                        "@callable": "BaseVaspMaker.make",
+                        "@bound": {
+                            "@module": "atomate2.vasp.jobs.core",
+                            "@class": "StaticMaker",
+                            "@version": "0.0.22",
+                            "name": "static bulk supercell",
+                            "input_set_generator": {
+                                "@module": "atomate2.vasp.sets.core",
+                                "@class": "StaticSetGenerator",
+                                "@version": "0.0.22",
+                                "structure": null,
+                                "config_dict": {
+                                    "PARENT": "VASPIncarBase",
+                                    "INCAR": {
+                                        "ALGO": "Fast",
+                                        "EDIFF": 1e-05,
+                                        "EDIFFG": -0.02,
+                                        "ENAUG": 1360,
+                                        "ENCUT": 680,
+                                        "IBRION": 2,
+                                        "ISIF": 3,
+                                        "ISMEAR": 0,
+                                        "ISPIN": 2,
+                                        "LAECHG": true,
+                                        "LASPH": true,
+                                        "LCHARG": true,
+                                        "LELF": false,
+                                        "LMIXTAU": true,
+                                        "LORBIT": 11,
+                                        "LREAL": false,
+                                        "LVTOT": true,
+                                        "LWAVE": false,
+                                        "NELM": 200,
+                                        "NSW": 99,
+                                        "PREC": "Accurate",
+                                        "SIGMA": 0.05,
+                                        "MAGMOM": {
+                                            "Ce": 5,
+                                            "Ce3+": 1,
+                                            "Co": 0.6,
+                                            "Co3+": 0.6,
+                                            "Co4+": 1,
+                                            "Cr": 5,
+                                            "Dy3+": 5,
+                                            "Er3+": 3,
+                                            "Eu": 10,
+                                            "Eu2+": 7,
+                                            "Eu3+": 6,
+                                            "Fe": 5,
+                                            "Gd3+": 7,
+                                            "Ho3+": 4,
+                                            "La3+": 0.6,
+                                            "Lu3+": 0.6,
+                                            "Mn": 5,
+                                            "Mn3+": 4,
+                                            "Mn4+": 3,
+                                            "Mo": 5,
+                                            "Nd3+": 3,
+                                            "Ni": 5,
+                                            "Pm3+": 4,
+                                            "Pr3+": 2,
+                                            "Sm3+": 5,
+                                            "Tb3+": 6,
+                                            "Tm3+": 2,
+                                            "V": 5,
+                                            "W": 5,
+                                            "Yb3+": 1
+                                        },
+                                        "GGA": "PS",
+                                        "LDAU": true,
+                                        "LDAUJ": {
+                                            "F": {
+                                                "Co": 0,
+                                                "Cr": 0,
+                                                "Fe": 0,
+                                                "Mn": 0,
+                                                "Mo": 0,
+                                                "Ni": 0,
+                                                "V": 0,
+                                                "W": 0
+                                            },
+                                            "O": {
+                                                "Co": 0,
+                                                "Cr": 0,
+                                                "Fe": 0,
+                                                "Mn": 0,
+                                                "Mo": 0,
+                                                "Ni": 0,
+                                                "V": 0,
+                                                "W": 0
+                                            }
+                                        },
+                                        "LDAUL": {
+                                            "F": {
+                                                "Co": 2,
+                                                "Cr": 2,
+                                                "Fe": 2,
+                                                "Mn": 2,
+                                                "Mo": 2,
+                                                "Ni": 2,
+                                                "V": 2,
+                                                "W": 2
+                                            },
+                                            "O": {
+                                                "Co": 2,
+                                                "Cr": 2,
+                                                "Fe": 2,
+                                                "Mn": 2,
+                                                "Mo": 2,
+                                                "Ni": 2,
+                                                "V": 2,
+                                                "W": 2
+                                            }
+                                        },
+                                        "LDAUTYPE": 2,
+                                        "LDAUU": {
+                                            "F": {
+                                                "Co": 3.32,
+                                                "Cr": 3.7,
+                                                "Fe": 5.3,
+                                                "Mn": 3.9,
+                                                "Mo": 4.38,
+                                                "Ni": 6.2,
+                                                "V": 3.25,
+                                                "W": 6.2
+                                            },
+                                            "O": {
+                                                "Co": 3.32,
+                                                "Cr": 3.7,
+                                                "Fe": 5.3,
+                                                "Mn": 3.9,
+                                                "Mo": 4.38,
+                                                "Ni": 6.2,
+                                                "V": 3.25,
+                                                "W": 6.2
+                                            }
+                                        },
+                                        "LDAUPRINT": 1
+                                    },
+                                    "POTCAR_FUNCTIONAL": "PBE_54",
+                                    "POTCAR": {
+                                        "Ac": "Ac",
+                                        "Ag": "Ag",
+                                        "Al": "Al",
+                                        "Am": "Am",
+                                        "Ar": "Ar",
+                                        "As": "As",
+                                        "At": "At",
+                                        "Au": "Au",
+                                        "B": "B",
+                                        "Ba": "Ba_sv",
+                                        "Be": "Be",
+                                        "Bi": "Bi_d",
+                                        "Br": "Br",
+                                        "C": "C",
+                                        "Ca": "Ca_sv",
+                                        "Cd": "Cd",
+                                        "Ce": "Ce",
+                                        "Cf": "Cf",
+                                        "Cl": "Cl",
+                                        "Cm": "Cm",
+                                        "Co": "Co",
+                                        "Cr": "Cr_pv",
+                                        "Cs": "Cs_sv",
+                                        "Cu": "Cu",
+                                        "Dy": "Dy_3",
+                                        "Er": "Er_3",
+                                        "Eu": "Eu_2",
+                                        "F": "F",
+                                        "Fe": "Fe",
+                                        "Fr": "Fr_sv",
+                                        "Ga": "Ga_d",
+                                        "Gd": "Gd_3",
+                                        "Ge": "Ge_d",
+                                        "H": "H",
+                                        "He": "He",
+                                        "Hf": "Hf_pv",
+                                        "Hg": "Hg",
+                                        "Ho": "Ho_3",
+                                        "I": "I",
+                                        "In": "In_d",
+                                        "Ir": "Ir",
+                                        "K": "K_sv",
+                                        "Kr": "Kr",
+                                        "La": "La",
+                                        "Li": "Li_sv",
+                                        "Lu": "Lu_3",
+                                        "Mg": "Mg",
+                                        "Mn": "Mn_pv",
+                                        "Mo": "Mo_sv",
+                                        "N": "N",
+                                        "Na": "Na_pv",
+                                        "Nb": "Nb_sv",
+                                        "Nd": "Nd_3",
+                                        "Ne": "Ne",
+                                        "Ni": "Ni",
+                                        "Np": "Np",
+                                        "O": "O",
+                                        "Os": "Os",
+                                        "P": "P",
+                                        "Pa": "Pa",
+                                        "Pb": "Pb_d",
+                                        "Pd": "Pd",
+                                        "Pm": "Pm_3",
+                                        "Po": "Po_d",
+                                        "Pr": "Pr_3",
+                                        "Pt": "Pt",
+                                        "Pu": "Pu",
+                                        "Ra": "Ra_sv",
+                                        "Rb": "Rb_sv",
+                                        "Re": "Re",
+                                        "Rh": "Rh_pv",
+                                        "Rn": "Rn",
+                                        "Ru": "Ru_pv",
+                                        "S": "S",
+                                        "Sb": "Sb",
+                                        "Sc": "Sc_sv",
+                                        "Se": "Se",
+                                        "Si": "Si",
+                                        "Sm": "Sm_3",
+                                        "Sn": "Sn_d",
+                                        "Sr": "Sr_sv",
+                                        "Ta": "Ta_pv",
+                                        "Tb": "Tb_3",
+                                        "Tc": "Tc_pv",
+                                        "Te": "Te",
+                                        "Th": "Th",
+                                        "Ti": "Ti_sv",
+                                        "Tl": "Tl_d",
+                                        "Tm": "Tm_3",
+                                        "U": "U",
+                                        "V": "V_sv",
+                                        "W": "W_sv",
+                                        "Xe": "Xe",
+                                        "Y": "Y_sv",
+                                        "Yb": "Yb_3",
+                                        "Zn": "Zn",
+                                        "Zr": "Zr_sv"
+                                    },
+                                    "KPOINTS": {
+                                        "reciprocal_density": 64,
+                                        "reciprocal_density_metal": 200
+                                    }
+                                },
+                                "files_to_transfer": {},
+                                "user_incar_settings": {
+                                    "KSPACING": null,
+                                    "EDIFF": 1e-05
+                                },
+                                "user_kpoints_settings": {
+                                    "reciprocal_density": 50
+                                },
+                                "user_potcar_settings": {},
+                                "constrain_total_magmom": false,
+                                "sort_structure": true,
+                                "user_potcar_functional": "PBE_54",
+                                "force_gamma": true,
+                                "reduce_structure": null,
+                                "vdw": null,
+                                "use_structure_charge": false,
+                                "standardize": false,
+                                "sym_prec": 0.1,
+                                "international_monoclinic": true,
+                                "validate_magmom": true,
+                                "inherit_incar": false,
+                                "auto_kspacing": false,
+                                "auto_ismear": true,
+                                "auto_ispin": true,
+                                "auto_lreal": false,
+                                "auto_metal_kpoints": true,
+                                "bandgap_tol": 0.0001,
+                                "bandgap": null,
+                                "prev_incar": null,
+                                "prev_kpoints": null,
+                                "_valid_potcars": null,
+                                "lepsilon": false,
+                                "lcalcpol": false
+                            },
+                            "write_input_set_kwargs": {},
+                            "copy_vasp_kwargs": {},
+                            "run_vasp_kwargs": {},
+                            "task_document_kwargs": {},
+                            "stop_children_kwargs": {},
+                            "write_additional_data": {}
+                        }
+                    },
+                    "function_args": [
+                        {
+                            "@module": "jobflow.core.reference",
+                            "@class": "OutputReference",
+                            "@version": null,
+                            "uuid": "2df297ac-39b4-47ff-aa28-9b1ed8298fc3",
+                            "attributes": [
+                                [
+                                    "a",
+                                    "structure"
+                                ]
+                            ],
+                            "output_schema": null
+                        }
+                    ],
+                    "function_kwargs": {
+                        "prev_dir": {
+                            "@module": "jobflow.core.reference",
+                            "@class": "OutputReference",
+                            "@version": null,
+                            "uuid": "8f1494eb-3a2b-43f9-b2fe-d0d25e023bcd",
+                            "attributes": [
+                                [
+                                    "a",
+                                    "dir_name"
+                                ]
+                            ],
+                            "output_schema": null
+                        }
+                    },
+                    "output_schema": {
+                        "@module": "emmet.core.tasks",
+                        "@callable": "TaskDoc",
+                        "@bound": null
+                    },
+                    "uuid": "04711fda-2f5c-41c2-af07-99f1f048f8da",
+                    "index": 1,
+                    "name": "static bulk supercell",
+                    "metadata": {},
+                    "config": {
+                        "@module": "jobflow.core.job",
+                        "@class": "JobConfig",
+                        "@version": "0.2.1",
+                        "resolve_references": true,
+                        "on_missing_references": "error",
+                        "manager_config": {},
+                        "expose_store": false,
+                        "pass_manager_config": true,
+                        "response_manager_config": {}
+                    },
+                    "hosts": [
+                        "28fed005-d451-47ad-a2d2-173c0b491769",
+                        "0a011705-e052-4dfd-bef1-8837f763d0f8"
+                    ],
+                    "metadata_updates": [],
+                    "config_updates": [],
+                    "name_updates": [
+                        {
+                            "append_str": " bulk supercell",
+                            "prepend": false
+                        }
+                    ],
+                    "data": [
+                        {
+                            "@module": "pymatgen.electronic_structure.bandstructure",
+                            "@callable": "BandStructure",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.bandstructure",
+                            "@callable": "BandStructureSymmLine",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "DOS",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "Dos",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "CompleteDos",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Locpot",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Chgcar",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Wavecar",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.core.trajectory",
+                            "@callable": "Trajectory",
+                            "@bound": null
+                        },
+                        "force_constants",
+                        "normalmode_eigenvecs",
+                        "bandstructure"
+                    ]
+                },
+                {
+                    "@module": "jobflow.core.job",
+                    "@class": "Job",
+                    "@version": "0.2.1",
+                    "function": {
+                        "@module": "atomate2.vasp.jobs.core",
+                        "@callable": "NonSCFMaker.make",
+                        "@bound": {
+                            "@module": "atomate2.vasp.jobs.core",
+                            "@class": "NonSCFMaker",
+                            "@version": "0.0.22",
+                            "name": "non-scf uniform bulk supercell",
+                            "input_set_generator": {
+                                "@module": "atomate2.vasp.sets.core",
+                                "@class": "NonSCFSetGenerator",
+                                "@version": "0.0.22",
+                                "structure": null,
+                                "config_dict": {
+                                    "PARENT": "VASPIncarBase",
+                                    "INCAR": {
+                                        "ALGO": "Fast",
+                                        "EDIFF": 1e-05,
+                                        "EDIFFG": -0.02,
+                                        "ENAUG": 1360,
+                                        "ENCUT": 680,
+                                        "IBRION": 2,
+                                        "ISIF": 3,
+                                        "ISMEAR": 0,
+                                        "ISPIN": 2,
+                                        "LAECHG": true,
+                                        "LASPH": true,
+                                        "LCHARG": true,
+                                        "LELF": false,
+                                        "LMIXTAU": true,
+                                        "LORBIT": 11,
+                                        "LREAL": false,
+                                        "LVTOT": true,
+                                        "LWAVE": false,
+                                        "NELM": 200,
+                                        "NSW": 99,
+                                        "PREC": "Accurate",
+                                        "SIGMA": 0.05,
+                                        "MAGMOM": {
+                                            "Ce": 5,
+                                            "Ce3+": 1,
+                                            "Co": 0.6,
+                                            "Co3+": 0.6,
+                                            "Co4+": 1,
+                                            "Cr": 5,
+                                            "Dy3+": 5,
+                                            "Er3+": 3,
+                                            "Eu": 10,
+                                            "Eu2+": 7,
+                                            "Eu3+": 6,
+                                            "Fe": 5,
+                                            "Gd3+": 7,
+                                            "Ho3+": 4,
+                                            "La3+": 0.6,
+                                            "Lu3+": 0.6,
+                                            "Mn": 5,
+                                            "Mn3+": 4,
+                                            "Mn4+": 3,
+                                            "Mo": 5,
+                                            "Nd3+": 3,
+                                            "Ni": 5,
+                                            "Pm3+": 4,
+                                            "Pr3+": 2,
+                                            "Sm3+": 5,
+                                            "Tb3+": 6,
+                                            "Tm3+": 2,
+                                            "V": 5,
+                                            "W": 5,
+                                            "Yb3+": 1
+                                        },
+                                        "GGA": "PS",
+                                        "LDAU": true,
+                                        "LDAUJ": {
+                                            "F": {
+                                                "Co": 0,
+                                                "Cr": 0,
+                                                "Fe": 0,
+                                                "Mn": 0,
+                                                "Mo": 0,
+                                                "Ni": 0,
+                                                "V": 0,
+                                                "W": 0
+                                            },
+                                            "O": {
+                                                "Co": 0,
+                                                "Cr": 0,
+                                                "Fe": 0,
+                                                "Mn": 0,
+                                                "Mo": 0,
+                                                "Ni": 0,
+                                                "V": 0,
+                                                "W": 0
+                                            }
+                                        },
+                                        "LDAUL": {
+                                            "F": {
+                                                "Co": 2,
+                                                "Cr": 2,
+                                                "Fe": 2,
+                                                "Mn": 2,
+                                                "Mo": 2,
+                                                "Ni": 2,
+                                                "V": 2,
+                                                "W": 2
+                                            },
+                                            "O": {
+                                                "Co": 2,
+                                                "Cr": 2,
+                                                "Fe": 2,
+                                                "Mn": 2,
+                                                "Mo": 2,
+                                                "Ni": 2,
+                                                "V": 2,
+                                                "W": 2
+                                            }
+                                        },
+                                        "LDAUTYPE": 2,
+                                        "LDAUU": {
+                                            "F": {
+                                                "Co": 3.32,
+                                                "Cr": 3.7,
+                                                "Fe": 5.3,
+                                                "Mn": 3.9,
+                                                "Mo": 4.38,
+                                                "Ni": 6.2,
+                                                "V": 3.25,
+                                                "W": 6.2
+                                            },
+                                            "O": {
+                                                "Co": 3.32,
+                                                "Cr": 3.7,
+                                                "Fe": 5.3,
+                                                "Mn": 3.9,
+                                                "Mo": 4.38,
+                                                "Ni": 6.2,
+                                                "V": 3.25,
+                                                "W": 6.2
+                                            }
+                                        },
+                                        "LDAUPRINT": 1
+                                    },
+                                    "POTCAR_FUNCTIONAL": "PBE_54",
+                                    "POTCAR": {
+                                        "Ac": "Ac",
+                                        "Ag": "Ag",
+                                        "Al": "Al",
+                                        "Am": "Am",
+                                        "Ar": "Ar",
+                                        "As": "As",
+                                        "At": "At",
+                                        "Au": "Au",
+                                        "B": "B",
+                                        "Ba": "Ba_sv",
+                                        "Be": "Be",
+                                        "Bi": "Bi_d",
+                                        "Br": "Br",
+                                        "C": "C",
+                                        "Ca": "Ca_sv",
+                                        "Cd": "Cd",
+                                        "Ce": "Ce",
+                                        "Cf": "Cf",
+                                        "Cl": "Cl",
+                                        "Cm": "Cm",
+                                        "Co": "Co",
+                                        "Cr": "Cr_pv",
+                                        "Cs": "Cs_sv",
+                                        "Cu": "Cu",
+                                        "Dy": "Dy_3",
+                                        "Er": "Er_3",
+                                        "Eu": "Eu_2",
+                                        "F": "F",
+                                        "Fe": "Fe",
+                                        "Fr": "Fr_sv",
+                                        "Ga": "Ga_d",
+                                        "Gd": "Gd_3",
+                                        "Ge": "Ge_d",
+                                        "H": "H",
+                                        "He": "He",
+                                        "Hf": "Hf_pv",
+                                        "Hg": "Hg",
+                                        "Ho": "Ho_3",
+                                        "I": "I",
+                                        "In": "In_d",
+                                        "Ir": "Ir",
+                                        "K": "K_sv",
+                                        "Kr": "Kr",
+                                        "La": "La",
+                                        "Li": "Li_sv",
+                                        "Lu": "Lu_3",
+                                        "Mg": "Mg",
+                                        "Mn": "Mn_pv",
+                                        "Mo": "Mo_sv",
+                                        "N": "N",
+                                        "Na": "Na_pv",
+                                        "Nb": "Nb_sv",
+                                        "Nd": "Nd_3",
+                                        "Ne": "Ne",
+                                        "Ni": "Ni",
+                                        "Np": "Np",
+                                        "O": "O",
+                                        "Os": "Os",
+                                        "P": "P",
+                                        "Pa": "Pa",
+                                        "Pb": "Pb_d",
+                                        "Pd": "Pd",
+                                        "Pm": "Pm_3",
+                                        "Po": "Po_d",
+                                        "Pr": "Pr_3",
+                                        "Pt": "Pt",
+                                        "Pu": "Pu",
+                                        "Ra": "Ra_sv",
+                                        "Rb": "Rb_sv",
+                                        "Re": "Re",
+                                        "Rh": "Rh_pv",
+                                        "Rn": "Rn",
+                                        "Ru": "Ru_pv",
+                                        "S": "S",
+                                        "Sb": "Sb",
+                                        "Sc": "Sc_sv",
+                                        "Se": "Se",
+                                        "Si": "Si",
+                                        "Sm": "Sm_3",
+                                        "Sn": "Sn_d",
+                                        "Sr": "Sr_sv",
+                                        "Ta": "Ta_pv",
+                                        "Tb": "Tb_3",
+                                        "Tc": "Tc_pv",
+                                        "Te": "Te",
+                                        "Th": "Th",
+                                        "Ti": "Ti_sv",
+                                        "Tl": "Tl_d",
+                                        "Tm": "Tm_3",
+                                        "U": "U",
+                                        "V": "V_sv",
+                                        "W": "W_sv",
+                                        "Xe": "Xe",
+                                        "Y": "Y_sv",
+                                        "Yb": "Yb_3",
+                                        "Zn": "Zn",
+                                        "Zr": "Zr_sv"
+                                    },
+                                    "KPOINTS": {
+                                        "reciprocal_density": 64,
+                                        "reciprocal_density_metal": 200
+                                    }
+                                },
+                                "files_to_transfer": {},
+                                "user_incar_settings": {
+                                    "LORBIT": 10
+                                },
+                                "user_kpoints_settings": {},
+                                "user_potcar_settings": {},
+                                "constrain_total_magmom": false,
+                                "sort_structure": true,
+                                "user_potcar_functional": "PBE_54",
+                                "force_gamma": true,
+                                "reduce_structure": null,
+                                "vdw": null,
+                                "use_structure_charge": false,
+                                "standardize": false,
+                                "sym_prec": 0.1,
+                                "international_monoclinic": true,
+                                "validate_magmom": true,
+                                "inherit_incar": false,
+                                "auto_kspacing": false,
+                                "auto_ismear": true,
+                                "auto_ispin": true,
+                                "auto_lreal": false,
+                                "auto_metal_kpoints": true,
+                                "bandgap_tol": 0.0001,
+                                "bandgap": null,
+                                "prev_incar": null,
+                                "prev_kpoints": null,
+                                "_valid_potcars": null,
+                                "mode": "line",
+                                "dedos": 0.02,
+                                "reciprocal_density": 100,
+                                "reciprocal_density_metal": 400,
+                                "line_density": 20,
+                                "optics": false,
+                                "nbands_factor": 1.2
+                            },
+                            "write_input_set_kwargs": {},
+                            "copy_vasp_kwargs": {},
+                            "run_vasp_kwargs": {},
+                            "task_document_kwargs": {
+                                "strip_bandstructure_projections": true,
+                                "strip_dos_projections": true
+                            },
+                            "stop_children_kwargs": {},
+                            "write_additional_data": {}
+                        }
+                    },
+                    "function_args": [
+                        {
+                            "@module": "jobflow.core.reference",
+                            "@class": "OutputReference",
+                            "@version": null,
+                            "uuid": "04711fda-2f5c-41c2-af07-99f1f048f8da",
+                            "attributes": [
+                                [
+                                    "a",
+                                    "structure"
+                                ]
+                            ],
+                            "output_schema": null
+                        }
+                    ],
+                    "function_kwargs": {
+                        "prev_dir": {
+                            "@module": "jobflow.core.reference",
+                            "@class": "OutputReference",
+                            "@version": null,
+                            "uuid": "04711fda-2f5c-41c2-af07-99f1f048f8da",
+                            "attributes": [
+                                [
+                                    "a",
+                                    "dir_name"
+                                ]
+                            ],
+                            "output_schema": null
+                        },
+                        "mode": "uniform"
+                    },
+                    "output_schema": {
+                        "@module": "emmet.core.tasks",
+                        "@callable": "TaskDoc",
+                        "@bound": null
+                    },
+                    "uuid": "f5006d28-c153-40f9-bcd8-b4849d2ca18c",
+                    "index": 1,
+                    "name": "non-scf uniform bulk supercell",
+                    "metadata": {},
+                    "config": {
+                        "@module": "jobflow.core.job",
+                        "@class": "JobConfig",
+                        "@version": "0.2.1",
+                        "resolve_references": true,
+                        "on_missing_references": "error",
+                        "manager_config": {},
+                        "expose_store": false,
+                        "pass_manager_config": true,
+                        "response_manager_config": {}
+                    },
+                    "hosts": [
+                        "28fed005-d451-47ad-a2d2-173c0b491769",
+                        "0a011705-e052-4dfd-bef1-8837f763d0f8"
+                    ],
+                    "metadata_updates": [],
+                    "config_updates": [],
+                    "name_updates": [
+                        {
+                            "append_str": " bulk supercell",
+                            "prepend": false
+                        }
+                    ],
+                    "data": [
+                        {
+                            "@module": "pymatgen.electronic_structure.bandstructure",
+                            "@callable": "BandStructure",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.bandstructure",
+                            "@callable": "BandStructureSymmLine",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "DOS",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "Dos",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.electronic_structure.dos",
+                            "@callable": "CompleteDos",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Locpot",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Chgcar",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.io.vasp.outputs",
+                            "@callable": "Wavecar",
+                            "@bound": null
+                        },
+                        {
+                            "@module": "pymatgen.core.trajectory",
+                            "@callable": "Trajectory",
+                            "@bound": null
+                        },
+                        "force_constants",
+                        "normalmode_eigenvecs",
+                        "bandstructure"
+                    ]
+                }
+            ],
+            "output": {
+                "@module": "jobflow.core.reference",
+                "@class": "OutputReference",
+                "@version": null,
+                "uuid": "f5006d28-c153-40f9-bcd8-b4849d2ca18c",
+                "attributes": [],
+                "output_schema": {
+                    "@module": "emmet.core.tasks",
+                    "@callable": "TaskDoc",
+                    "@bound": null
+                }
+            },
+            "name": "uniform band structure bulk supercell",
+            "order": "auto",
+            "uuid": "28fed005-d451-47ad-a2d2-173c0b491769",
+            "hosts": [
+                "0a011705-e052-4dfd-bef1-8837f763d0f8"
+            ],
+            "metadata": {},
+            "metadata_updates": []
+        },
+        {
+            "@module": "jobflow.core.job",
+            "@class": "Job",
+            "@version": "0.2.1",
+            "function": {
+                "@module": "atomate2.vasp.jobs.elph",
+                "@callable": "run_elph_displacements",
+                "@bound": null
+            },
+            "function_args": [
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "2df297ac-39b4-47ff-aa28-9b1ed8298fc3",
+                    "attributes": [
+                        [
+                            "a",
+                            "calcs_reversed"
+                        ],
+                        [
+                            "i",
+                            0
+                        ],
+                        [
+                            "a",
+                            "output"
+                        ],
+                        [
+                            "a",
+                            "elph_displaced_structures"
+                        ],
+                        [
+                            "a",
+                            "temperatures"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "2df297ac-39b4-47ff-aa28-9b1ed8298fc3",
+                    "attributes": [
+                        [
+                            "a",
+                            "calcs_reversed"
+                        ],
+                        [
+                            "i",
+                            0
+                        ],
+                        [
+                            "a",
+                            "output"
+                        ],
+                        [
+                            "a",
+                            "elph_displaced_structures"
+                        ],
+                        [
+                            "a",
+                            "structures"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "atomate2.vasp.flows.core",
+                    "@class": "UniformBandStructureMaker",
+                    "@version": "0.0.22",
+                    "name": "uniform band structure",
+                    "static_maker": {
+                        "@module": "atomate2.vasp.jobs.core",
+                        "@class": "StaticMaker",
+                        "@version": "0.0.22",
+                        "name": "static",
+                        "input_set_generator": {
+                            "@module": "atomate2.vasp.sets.core",
+                            "@class": "StaticSetGenerator",
+                            "@version": "0.0.22",
+                            "structure": null,
+                            "config_dict": {
+                                "PARENT": "VASPIncarBase",
+                                "INCAR": {
+                                    "ALGO": "Fast",
+                                    "EDIFF": 1e-05,
+                                    "EDIFFG": -0.02,
+                                    "ENAUG": 1360,
+                                    "ENCUT": 680,
+                                    "IBRION": 2,
+                                    "ISIF": 3,
+                                    "ISMEAR": 0,
+                                    "ISPIN": 2,
+                                    "LAECHG": true,
+                                    "LASPH": true,
+                                    "LCHARG": true,
+                                    "LELF": false,
+                                    "LMIXTAU": true,
+                                    "LORBIT": 11,
+                                    "LREAL": false,
+                                    "LVTOT": true,
+                                    "LWAVE": false,
+                                    "NELM": 200,
+                                    "NSW": 99,
+                                    "PREC": "Accurate",
+                                    "SIGMA": 0.05,
+                                    "MAGMOM": {
+                                        "Ce": 5,
+                                        "Ce3+": 1,
+                                        "Co": 0.6,
+                                        "Co3+": 0.6,
+                                        "Co4+": 1,
+                                        "Cr": 5,
+                                        "Dy3+": 5,
+                                        "Er3+": 3,
+                                        "Eu": 10,
+                                        "Eu2+": 7,
+                                        "Eu3+": 6,
+                                        "Fe": 5,
+                                        "Gd3+": 7,
+                                        "Ho3+": 4,
+                                        "La3+": 0.6,
+                                        "Lu3+": 0.6,
+                                        "Mn": 5,
+                                        "Mn3+": 4,
+                                        "Mn4+": 3,
+                                        "Mo": 5,
+                                        "Nd3+": 3,
+                                        "Ni": 5,
+                                        "Pm3+": 4,
+                                        "Pr3+": 2,
+                                        "Sm3+": 5,
+                                        "Tb3+": 6,
+                                        "Tm3+": 2,
+                                        "V": 5,
+                                        "W": 5,
+                                        "Yb3+": 1
+                                    },
+                                    "GGA": "PS",
+                                    "LDAU": true,
+                                    "LDAUJ": {
+                                        "F": {
+                                            "Co": 0,
+                                            "Cr": 0,
+                                            "Fe": 0,
+                                            "Mn": 0,
+                                            "Mo": 0,
+                                            "Ni": 0,
+                                            "V": 0,
+                                            "W": 0
+                                        },
+                                        "O": {
+                                            "Co": 0,
+                                            "Cr": 0,
+                                            "Fe": 0,
+                                            "Mn": 0,
+                                            "Mo": 0,
+                                            "Ni": 0,
+                                            "V": 0,
+                                            "W": 0
+                                        }
+                                    },
+                                    "LDAUL": {
+                                        "F": {
+                                            "Co": 2,
+                                            "Cr": 2,
+                                            "Fe": 2,
+                                            "Mn": 2,
+                                            "Mo": 2,
+                                            "Ni": 2,
+                                            "V": 2,
+                                            "W": 2
+                                        },
+                                        "O": {
+                                            "Co": 2,
+                                            "Cr": 2,
+                                            "Fe": 2,
+                                            "Mn": 2,
+                                            "Mo": 2,
+                                            "Ni": 2,
+                                            "V": 2,
+                                            "W": 2
+                                        }
+                                    },
+                                    "LDAUTYPE": 2,
+                                    "LDAUU": {
+                                        "F": {
+                                            "Co": 3.32,
+                                            "Cr": 3.7,
+                                            "Fe": 5.3,
+                                            "Mn": 3.9,
+                                            "Mo": 4.38,
+                                            "Ni": 6.2,
+                                            "V": 3.25,
+                                            "W": 6.2
+                                        },
+                                        "O": {
+                                            "Co": 3.32,
+                                            "Cr": 3.7,
+                                            "Fe": 5.3,
+                                            "Mn": 3.9,
+                                            "Mo": 4.38,
+                                            "Ni": 6.2,
+                                            "V": 3.25,
+                                            "W": 6.2
+                                        }
+                                    },
+                                    "LDAUPRINT": 1
+                                },
+                                "POTCAR_FUNCTIONAL": "PBE_54",
+                                "POTCAR": {
+                                    "Ac": "Ac",
+                                    "Ag": "Ag",
+                                    "Al": "Al",
+                                    "Am": "Am",
+                                    "Ar": "Ar",
+                                    "As": "As",
+                                    "At": "At",
+                                    "Au": "Au",
+                                    "B": "B",
+                                    "Ba": "Ba_sv",
+                                    "Be": "Be",
+                                    "Bi": "Bi_d",
+                                    "Br": "Br",
+                                    "C": "C",
+                                    "Ca": "Ca_sv",
+                                    "Cd": "Cd",
+                                    "Ce": "Ce",
+                                    "Cf": "Cf",
+                                    "Cl": "Cl",
+                                    "Cm": "Cm",
+                                    "Co": "Co",
+                                    "Cr": "Cr_pv",
+                                    "Cs": "Cs_sv",
+                                    "Cu": "Cu",
+                                    "Dy": "Dy_3",
+                                    "Er": "Er_3",
+                                    "Eu": "Eu_2",
+                                    "F": "F",
+                                    "Fe": "Fe",
+                                    "Fr": "Fr_sv",
+                                    "Ga": "Ga_d",
+                                    "Gd": "Gd_3",
+                                    "Ge": "Ge_d",
+                                    "H": "H",
+                                    "He": "He",
+                                    "Hf": "Hf_pv",
+                                    "Hg": "Hg",
+                                    "Ho": "Ho_3",
+                                    "I": "I",
+                                    "In": "In_d",
+                                    "Ir": "Ir",
+                                    "K": "K_sv",
+                                    "Kr": "Kr",
+                                    "La": "La",
+                                    "Li": "Li_sv",
+                                    "Lu": "Lu_3",
+                                    "Mg": "Mg",
+                                    "Mn": "Mn_pv",
+                                    "Mo": "Mo_sv",
+                                    "N": "N",
+                                    "Na": "Na_pv",
+                                    "Nb": "Nb_sv",
+                                    "Nd": "Nd_3",
+                                    "Ne": "Ne",
+                                    "Ni": "Ni",
+                                    "Np": "Np",
+                                    "O": "O",
+                                    "Os": "Os",
+                                    "P": "P",
+                                    "Pa": "Pa",
+                                    "Pb": "Pb_d",
+                                    "Pd": "Pd",
+                                    "Pm": "Pm_3",
+                                    "Po": "Po_d",
+                                    "Pr": "Pr_3",
+                                    "Pt": "Pt",
+                                    "Pu": "Pu",
+                                    "Ra": "Ra_sv",
+                                    "Rb": "Rb_sv",
+                                    "Re": "Re",
+                                    "Rh": "Rh_pv",
+                                    "Rn": "Rn",
+                                    "Ru": "Ru_pv",
+                                    "S": "S",
+                                    "Sb": "Sb",
+                                    "Sc": "Sc_sv",
+                                    "Se": "Se",
+                                    "Si": "Si",
+                                    "Sm": "Sm_3",
+                                    "Sn": "Sn_d",
+                                    "Sr": "Sr_sv",
+                                    "Ta": "Ta_pv",
+                                    "Tb": "Tb_3",
+                                    "Tc": "Tc_pv",
+                                    "Te": "Te",
+                                    "Th": "Th",
+                                    "Ti": "Ti_sv",
+                                    "Tl": "Tl_d",
+                                    "Tm": "Tm_3",
+                                    "U": "U",
+                                    "V": "V_sv",
+                                    "W": "W_sv",
+                                    "Xe": "Xe",
+                                    "Y": "Y_sv",
+                                    "Yb": "Yb_3",
+                                    "Zn": "Zn",
+                                    "Zr": "Zr_sv"
+                                },
+                                "KPOINTS": {
+                                    "reciprocal_density": 64,
+                                    "reciprocal_density_metal": 200
+                                }
+                            },
+                            "files_to_transfer": {},
+                            "user_incar_settings": {
+                                "KSPACING": null,
+                                "EDIFF": 1e-05
+                            },
+                            "user_kpoints_settings": {
+                                "reciprocal_density": 50
+                            },
+                            "user_potcar_settings": {},
+                            "constrain_total_magmom": false,
+                            "sort_structure": true,
+                            "user_potcar_functional": "PBE_54",
+                            "force_gamma": true,
+                            "reduce_structure": null,
+                            "vdw": null,
+                            "use_structure_charge": false,
+                            "standardize": false,
+                            "sym_prec": 0.1,
+                            "international_monoclinic": true,
+                            "validate_magmom": true,
+                            "inherit_incar": false,
+                            "auto_kspacing": false,
+                            "auto_ismear": true,
+                            "auto_ispin": true,
+                            "auto_lreal": false,
+                            "auto_metal_kpoints": true,
+                            "bandgap_tol": 0.0001,
+                            "bandgap": null,
+                            "prev_incar": null,
+                            "prev_kpoints": null,
+                            "_valid_potcars": null,
+                            "lepsilon": false,
+                            "lcalcpol": false
+                        },
+                        "write_input_set_kwargs": {},
+                        "copy_vasp_kwargs": {},
+                        "run_vasp_kwargs": {},
+                        "task_document_kwargs": {},
+                        "stop_children_kwargs": {},
+                        "write_additional_data": {}
+                    },
+                    "bs_maker": {
+                        "@module": "atomate2.vasp.jobs.core",
+                        "@class": "NonSCFMaker",
+                        "@version": "0.0.22",
+                        "name": "non-scf",
+                        "input_set_generator": {
+                            "@module": "atomate2.vasp.sets.core",
+                            "@class": "NonSCFSetGenerator",
+                            "@version": "0.0.22",
+                            "structure": null,
+                            "config_dict": {
+                                "PARENT": "VASPIncarBase",
+                                "INCAR": {
+                                    "ALGO": "Fast",
+                                    "EDIFF": 1e-05,
+                                    "EDIFFG": -0.02,
+                                    "ENAUG": 1360,
+                                    "ENCUT": 680,
+                                    "IBRION": 2,
+                                    "ISIF": 3,
+                                    "ISMEAR": 0,
+                                    "ISPIN": 2,
+                                    "LAECHG": true,
+                                    "LASPH": true,
+                                    "LCHARG": true,
+                                    "LELF": false,
+                                    "LMIXTAU": true,
+                                    "LORBIT": 11,
+                                    "LREAL": false,
+                                    "LVTOT": true,
+                                    "LWAVE": false,
+                                    "NELM": 200,
+                                    "NSW": 99,
+                                    "PREC": "Accurate",
+                                    "SIGMA": 0.05,
+                                    "MAGMOM": {
+                                        "Ce": 5,
+                                        "Ce3+": 1,
+                                        "Co": 0.6,
+                                        "Co3+": 0.6,
+                                        "Co4+": 1,
+                                        "Cr": 5,
+                                        "Dy3+": 5,
+                                        "Er3+": 3,
+                                        "Eu": 10,
+                                        "Eu2+": 7,
+                                        "Eu3+": 6,
+                                        "Fe": 5,
+                                        "Gd3+": 7,
+                                        "Ho3+": 4,
+                                        "La3+": 0.6,
+                                        "Lu3+": 0.6,
+                                        "Mn": 5,
+                                        "Mn3+": 4,
+                                        "Mn4+": 3,
+                                        "Mo": 5,
+                                        "Nd3+": 3,
+                                        "Ni": 5,
+                                        "Pm3+": 4,
+                                        "Pr3+": 2,
+                                        "Sm3+": 5,
+                                        "Tb3+": 6,
+                                        "Tm3+": 2,
+                                        "V": 5,
+                                        "W": 5,
+                                        "Yb3+": 1
+                                    },
+                                    "GGA": "PS",
+                                    "LDAU": true,
+                                    "LDAUJ": {
+                                        "F": {
+                                            "Co": 0,
+                                            "Cr": 0,
+                                            "Fe": 0,
+                                            "Mn": 0,
+                                            "Mo": 0,
+                                            "Ni": 0,
+                                            "V": 0,
+                                            "W": 0
+                                        },
+                                        "O": {
+                                            "Co": 0,
+                                            "Cr": 0,
+                                            "Fe": 0,
+                                            "Mn": 0,
+                                            "Mo": 0,
+                                            "Ni": 0,
+                                            "V": 0,
+                                            "W": 0
+                                        }
+                                    },
+                                    "LDAUL": {
+                                        "F": {
+                                            "Co": 2,
+                                            "Cr": 2,
+                                            "Fe": 2,
+                                            "Mn": 2,
+                                            "Mo": 2,
+                                            "Ni": 2,
+                                            "V": 2,
+                                            "W": 2
+                                        },
+                                        "O": {
+                                            "Co": 2,
+                                            "Cr": 2,
+                                            "Fe": 2,
+                                            "Mn": 2,
+                                            "Mo": 2,
+                                            "Ni": 2,
+                                            "V": 2,
+                                            "W": 2
+                                        }
+                                    },
+                                    "LDAUTYPE": 2,
+                                    "LDAUU": {
+                                        "F": {
+                                            "Co": 3.32,
+                                            "Cr": 3.7,
+                                            "Fe": 5.3,
+                                            "Mn": 3.9,
+                                            "Mo": 4.38,
+                                            "Ni": 6.2,
+                                            "V": 3.25,
+                                            "W": 6.2
+                                        },
+                                        "O": {
+                                            "Co": 3.32,
+                                            "Cr": 3.7,
+                                            "Fe": 5.3,
+                                            "Mn": 3.9,
+                                            "Mo": 4.38,
+                                            "Ni": 6.2,
+                                            "V": 3.25,
+                                            "W": 6.2
+                                        }
+                                    },
+                                    "LDAUPRINT": 1
+                                },
+                                "POTCAR_FUNCTIONAL": "PBE_54",
+                                "POTCAR": {
+                                    "Ac": "Ac",
+                                    "Ag": "Ag",
+                                    "Al": "Al",
+                                    "Am": "Am",
+                                    "Ar": "Ar",
+                                    "As": "As",
+                                    "At": "At",
+                                    "Au": "Au",
+                                    "B": "B",
+                                    "Ba": "Ba_sv",
+                                    "Be": "Be",
+                                    "Bi": "Bi_d",
+                                    "Br": "Br",
+                                    "C": "C",
+                                    "Ca": "Ca_sv",
+                                    "Cd": "Cd",
+                                    "Ce": "Ce",
+                                    "Cf": "Cf",
+                                    "Cl": "Cl",
+                                    "Cm": "Cm",
+                                    "Co": "Co",
+                                    "Cr": "Cr_pv",
+                                    "Cs": "Cs_sv",
+                                    "Cu": "Cu",
+                                    "Dy": "Dy_3",
+                                    "Er": "Er_3",
+                                    "Eu": "Eu_2",
+                                    "F": "F",
+                                    "Fe": "Fe",
+                                    "Fr": "Fr_sv",
+                                    "Ga": "Ga_d",
+                                    "Gd": "Gd_3",
+                                    "Ge": "Ge_d",
+                                    "H": "H",
+                                    "He": "He",
+                                    "Hf": "Hf_pv",
+                                    "Hg": "Hg",
+                                    "Ho": "Ho_3",
+                                    "I": "I",
+                                    "In": "In_d",
+                                    "Ir": "Ir",
+                                    "K": "K_sv",
+                                    "Kr": "Kr",
+                                    "La": "La",
+                                    "Li": "Li_sv",
+                                    "Lu": "Lu_3",
+                                    "Mg": "Mg",
+                                    "Mn": "Mn_pv",
+                                    "Mo": "Mo_sv",
+                                    "N": "N",
+                                    "Na": "Na_pv",
+                                    "Nb": "Nb_sv",
+                                    "Nd": "Nd_3",
+                                    "Ne": "Ne",
+                                    "Ni": "Ni",
+                                    "Np": "Np",
+                                    "O": "O",
+                                    "Os": "Os",
+                                    "P": "P",
+                                    "Pa": "Pa",
+                                    "Pb": "Pb_d",
+                                    "Pd": "Pd",
+                                    "Pm": "Pm_3",
+                                    "Po": "Po_d",
+                                    "Pr": "Pr_3",
+                                    "Pt": "Pt",
+                                    "Pu": "Pu",
+                                    "Ra": "Ra_sv",
+                                    "Rb": "Rb_sv",
+                                    "Re": "Re",
+                                    "Rh": "Rh_pv",
+                                    "Rn": "Rn",
+                                    "Ru": "Ru_pv",
+                                    "S": "S",
+                                    "Sb": "Sb",
+                                    "Sc": "Sc_sv",
+                                    "Se": "Se",
+                                    "Si": "Si",
+                                    "Sm": "Sm_3",
+                                    "Sn": "Sn_d",
+                                    "Sr": "Sr_sv",
+                                    "Ta": "Ta_pv",
+                                    "Tb": "Tb_3",
+                                    "Tc": "Tc_pv",
+                                    "Te": "Te",
+                                    "Th": "Th",
+                                    "Ti": "Ti_sv",
+                                    "Tl": "Tl_d",
+                                    "Tm": "Tm_3",
+                                    "U": "U",
+                                    "V": "V_sv",
+                                    "W": "W_sv",
+                                    "Xe": "Xe",
+                                    "Y": "Y_sv",
+                                    "Yb": "Yb_3",
+                                    "Zn": "Zn",
+                                    "Zr": "Zr_sv"
+                                },
+                                "KPOINTS": {
+                                    "reciprocal_density": 64,
+                                    "reciprocal_density_metal": 200
+                                }
+                            },
+                            "files_to_transfer": {},
+                            "user_incar_settings": {
+                                "LORBIT": 10
+                            },
+                            "user_kpoints_settings": {},
+                            "user_potcar_settings": {},
+                            "constrain_total_magmom": false,
+                            "sort_structure": true,
+                            "user_potcar_functional": "PBE_54",
+                            "force_gamma": true,
+                            "reduce_structure": null,
+                            "vdw": null,
+                            "use_structure_charge": false,
+                            "standardize": false,
+                            "sym_prec": 0.1,
+                            "international_monoclinic": true,
+                            "validate_magmom": true,
+                            "inherit_incar": false,
+                            "auto_kspacing": false,
+                            "auto_ismear": true,
+                            "auto_ispin": true,
+                            "auto_lreal": false,
+                            "auto_metal_kpoints": true,
+                            "bandgap_tol": 0.0001,
+                            "bandgap": null,
+                            "prev_incar": null,
+                            "prev_kpoints": null,
+                            "_valid_potcars": null,
+                            "mode": "line",
+                            "dedos": 0.02,
+                            "reciprocal_density": 100,
+                            "reciprocal_density_metal": 400,
+                            "line_density": 20,
+                            "optics": false,
+                            "nbands_factor": 1.2
+                        },
+                        "write_input_set_kwargs": {},
+                        "copy_vasp_kwargs": {},
+                        "run_vasp_kwargs": {},
+                        "task_document_kwargs": {
+                            "strip_bandstructure_projections": true,
+                            "strip_dos_projections": true
+                        },
+                        "stop_children_kwargs": {},
+                        "write_additional_data": {}
+                    }
+                }
+            ],
+            "function_kwargs": {
+                "prev_dir": {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "8f1494eb-3a2b-43f9-b2fe-d0d25e023bcd",
+                    "attributes": [
+                        [
+                            "a",
+                            "dir_name"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                "original_structure": {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "8f1494eb-3a2b-43f9-b2fe-d0d25e023bcd",
+                    "attributes": [
+                        [
+                            "a",
+                            "structure"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                "supercell_structure": {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "2df297ac-39b4-47ff-aa28-9b1ed8298fc3",
+                    "attributes": [
+                        [
+                            "a",
+                            "structure"
+                        ]
+                    ],
+                    "output_schema": null
+                }
+            },
+            "output_schema": null,
+            "uuid": "d85c9f40-8db3-4058-a8c7-314c5d09d5e8",
+            "index": 1,
+            "name": "run_elph_displacements",
+            "metadata": {},
+            "config": {
+                "@module": "jobflow.core.job",
+                "@class": "JobConfig",
+                "@version": "0.2.1",
+                "resolve_references": true,
+                "on_missing_references": "error",
+                "manager_config": {},
+                "expose_store": false,
+                "pass_manager_config": true,
+                "response_manager_config": {}
+            },
+            "hosts": [
+                "0a011705-e052-4dfd-bef1-8837f763d0f8"
+            ],
+            "metadata_updates": [],
+            "config_updates": [],
+            "name_updates": []
+        },
+        {
+            "@module": "jobflow.core.job",
+            "@class": "Job",
+            "@version": "0.2.1",
+            "function": {
+                "@module": "atomate2.vasp.jobs.elph",
+                "@callable": "calculate_electron_phonon_renormalisation",
+                "@bound": null
+            },
+            "function_args": [
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "d85c9f40-8db3-4058-a8c7-314c5d09d5e8",
+                    "attributes": [
+                        [
+                            "i",
+                            "temperatures"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "d85c9f40-8db3-4058-a8c7-314c5d09d5e8",
+                    "attributes": [
+                        [
+                            "i",
+                            "band_structures"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "d85c9f40-8db3-4058-a8c7-314c5d09d5e8",
+                    "attributes": [
+                        [
+                            "i",
+                            "structures"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "d85c9f40-8db3-4058-a8c7-314c5d09d5e8",
+                    "attributes": [
+                        [
+                            "i",
+                            "uuids"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "d85c9f40-8db3-4058-a8c7-314c5d09d5e8",
+                    "attributes": [
+                        [
+                            "i",
+                            "dirs"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "f5006d28-c153-40f9-bcd8-b4849d2ca18c",
+                    "attributes": [
+                        [
+                            "a",
+                            "vasp_objects"
+                        ],
+                        [
+                            "i",
+                            "bandstructure"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "f5006d28-c153-40f9-bcd8-b4849d2ca18c",
+                    "attributes": [
+                        [
+                            "a",
+                            "structure"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                "f5006d28-c153-40f9-bcd8-b4849d2ca18c",
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "f5006d28-c153-40f9-bcd8-b4849d2ca18c",
+                    "attributes": [
+                        [
+                            "a",
+                            "dir_name"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                "2df297ac-39b4-47ff-aa28-9b1ed8298fc3",
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "2df297ac-39b4-47ff-aa28-9b1ed8298fc3",
+                    "attributes": [
+                        [
+                            "a",
+                            "dir_name"
+                        ]
+                    ],
+                    "output_schema": null
+                },
+                {
+                    "@module": "jobflow.core.reference",
+                    "@class": "OutputReference",
+                    "@version": null,
+                    "uuid": "8f1494eb-3a2b-43f9-b2fe-d0d25e023bcd",
+                    "attributes": [
+                        [
+                            "a",
+                            "structure"
+                        ]
+                    ],
+                    "output_schema": null
+                }
+            ],
+            "function_kwargs": {},
+            "output_schema": {
+                "@module": "atomate2.vasp.schemas.elph",
+                "@callable": "ElectronPhononRenormalisationDoc",
+                "@bound": null
+            },
+            "uuid": "e9eb9e17-8ced-4777-a062-740a663c505d",
+            "index": 1,
+            "name": "calculate_electron_phonon_renormalisation",
+            "metadata": {},
+            "config": {
+                "@module": "jobflow.core.job",
+                "@class": "JobConfig",
+                "@version": "0.2.1",
+                "resolve_references": true,
+                "on_missing_references": "none",
+                "manager_config": {},
+                "expose_store": false,
+                "pass_manager_config": true,
+                "response_manager_config": {}
+            },
+            "hosts": [
+                "0a011705-e052-4dfd-bef1-8837f763d0f8"
+            ],
+            "metadata_updates": [],
+            "config_updates": [],
+            "name_updates": []
+        }
+    ],
+    "output": {
+        "@module": "jobflow.core.reference",
+        "@class": "OutputReference",
+        "@version": null,
+        "uuid": "e9eb9e17-8ced-4777-a062-740a663c505d",
+        "attributes": [],
+        "output_schema": {
+            "@module": "atomate2.vasp.schemas.elph",
+            "@callable": "ElectronPhononRenormalisationDoc",
+            "@bound": null
+        }
+    },
+    "name": "Si_Electron_Phonon",
+    "order": "auto",
+    "uuid": "0a011705-e052-4dfd-bef1-8837f763d0f8",
+    "hosts": [],
+    "metadata": {},
+    "metadata_updates": []
+}

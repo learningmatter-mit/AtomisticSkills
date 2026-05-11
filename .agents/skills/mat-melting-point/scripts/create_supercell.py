@@ -52,3 +52,7 @@ if __name__ == "__main__":
     
     target_min = args.min_lengths if args.min_lengths else (args.min_length if args.min_length else 20.0)
     create_supercell(args.input, args.output, target_min, args.scaling)
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)

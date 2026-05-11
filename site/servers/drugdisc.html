@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>drugdisc Server Tools — AtomisticSkills</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .tool-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    .tool-name { font-size: 1.25rem; font-weight: 700; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace; }
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md pre{background:#f8fafc;padding:1.25rem;border-radius:8px;border:1px solid #e2e8f0;overflow-x:auto;margin:1rem 0}
+    .rendered-md pre code{background:transparent;padding:0;border:none;color:#334155;font-size:0.9rem;line-height:1.6}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/src/mcp_server/drugdisc_server.py" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Servers</div>
+    <h1>drugdisc Server</h1>
+    <p class="desc">MCP Tools exposed by the <code>drugdisc_server.py</code></p>
+  </div>
+</div>
+<div class="content">
+  <div class="tools-list">
+    
+        <div class="tool-card">
+          <h3 class="tool-name">📎 parse_smiles_input</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nParse SMILES from string or file.\n\nArgs:\n    smiles: Single SMILES string\n    smiles_file: Path to SMILES file (formats: \"SMILES\", \"SMILES\\tNAME\", \"SMILES NAME\")\n    name: Optional molecule name (only used with smiles string)\n    \nReturns:\n    Dictionary with parsed SMILES and names\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 standardize_molecule</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nStandardize a molecule using RDKit MolStandardize.\n\nArgs:\n    smiles: Input SMILES string\n    mode: Standardization mode\n        - \"none\": No standardization\n        - \"cleanup\": Basic cleanup\n        - \"parent\": Largest fragment + cleanup\n        - \"uncharged\": Parent + neutralize\n        - \"tautomer\": Parent + canonical tautomer\n    enumerate_protomers: Generate pH-dependent protonation states\n    ph_min: Minimum pH for protomer enumeration\n    ph_max: Maximum pH for protomer enumeration\n    max_protomers: Maximum number of protomers to generate\n    \nReturns:\n    Dictionary with standardized SMILES or list of protomers\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 convert_to_pdbqt</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nConvert molecule or protein to PDBQT format using Meeko.\n\nArgs:\n    input_data: Can be:\n        - SMILES string (if input_type=\"smiles\")\n        - Path to SDF file (if input_type=\"sdf\")\n        - Path to PDB file (if input_type=\"pdb\")\n    output_path: Output PDBQT file path\n    input_type: Type of input (\"smiles\", \"sdf\", \"pdb\")\n    num_confs: Number of conformers to generate (for SMILES/SDF)\n    force_field: Force field for optimization (\"MMFF94\", \"MMFF94s\", \"UFF\")\n    max_iters: Maximum optimization iterations\n    \nReturns:\n    Dictionary with conversion results\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 compute_molecular_descriptors</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nCompute molecular descriptors and drug-likeness heuristics.\n\nArgs:\n    smiles: Single SMILES string\n    smiles_file: Path to SMILES file\n    include_sandp_tpsa: Use S,P-inclusive TPSA calculation\n    output_file: Path to save results as JSON (REQUIRED)\n    \nReturns:\n    Dictionary with summary statistics and path to full results\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 compute_molecular_fingerprints</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nCompute Morgan fingerprints and chemical similarity.\n\nArgs:\n    smiles_file: Path to SMILES file\n    radius: Morgan radius (default 2 for ECFP4)\n    fp_size: Fingerprint bit vector size\n    use_chirality: Include stereochemistry\n    use_features: Use pharmacophore features (FCFP)\n    compute_similarity: Calculate pairwise Tanimoto similarity\n    cluster: Perform Butina clustering\n    cluster_cutoff: Similarity cutoff for clustering\n    save_heatmap: Optional path to save similarity heatmap\n    output_file: Path to save results as JSON (REQUIRED)\n    \nReturns:\n    Dictionary with summary statistics and paths\n```"'></div>
+        </div>
+        
+  </div>
+</div>
+<footer><p>AtomisticSkills — Open-sourced AI research infrastructure</p></footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    marked.setOptions({ breaks: true, gfm: true });
+    document.querySelectorAll('.tool-doc').forEach(el => {
+        try {
+            // We encoded it with json.dumps(), so we parse with JSON.parse.
+            const rawHtmlStr = el.dataset.md;
+            // The unescaped string can be parsed back:
+            const md = JSON.parse(rawHtmlStr.replace(/&#39;/g, "'"));
+            el.innerHTML = marked.parse(md);
+        } catch(e) {
+            el.innerText = el.dataset.md;
+        }
+    });
+  });
+</script>
+</body>
+</html>

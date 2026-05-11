@@ -15,7 +15,9 @@ from pydantic import BaseModel
 
 from .utils import (
     bootstrap_ratio_std,
+    bootstrap_henry_stderr,
     calculate_atomic_density,
+    logsumexp,
 )
 
 
@@ -78,26 +80,30 @@ def analyze_widom_insertions(
     # Set invalid energies to a large value
     interaction_energies_valid = np.where(is_valid, interaction_energies, 1e10)  # [eV]
 
-    # Calculate ensemble averages properties
-    # units._e [J/eV], units._k [J/K], units._k / units._e # [eV/K]
-    boltzmann_factor = np.exp(-interaction_energies_valid / (temperature * units._k / units._e))
+    # Calculate ensemble average properties for Henry coefficient using log-sum-exp
+    kT_eV = temperature * units._k / units._e  # [eV]
+    beta = 1.0 / kT_eV
+    a = np.where(is_valid, -beta * interaction_energies_valid, -np.inf)
+    log_mean_w = logsumexp(a) - np.log(num_samples)
+    mean_w = np.exp(log_mean_w)
 
     # KH = <exp(-E/RT)> / (R * T)
     atomic_density = calculate_atomic_density(structure)  # [kg / m^3]
     kh = (
-        boltzmann_factor.mean()
+        mean_w
         / (units._k * units._Nav)  # R = [J / mol K] = [Pa m^3 / mol K]
         / temperature  # T = [K] -> [mol/ m^3 Pa]
         / atomic_density  #  = [kg / m^3] -> [mol / kg Pa]
     )  # [mol/kg Pa]
 
-    # Estimate std dev of estimator. Is a mean, so we take the std dev of terms/sqrt(N)
-    kh_std = (
-        boltzmann_factor.std()
-        / (units._k * units._Nav)
-        / temperature
-        / atomic_density
-        / np.sqrt(num_samples)
+    # Estimate standard deviation of Henry coefficient using bootstrap
+    kh_std = bootstrap_henry_stderr(
+        interaction_energies_valid,
+        is_valid,
+        temperature,
+        atomic_density,
+        n_bootstrap=100,
+        random_seed=random_seed,
     )  # [mol/kg Pa]
 
     # U = < E * exp(-E/RT) > / <exp(-E/RT)> # [eV]

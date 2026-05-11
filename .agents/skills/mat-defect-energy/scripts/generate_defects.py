@@ -242,6 +242,10 @@ def main():
     print(f"\n✓ Saved metadata to {meta_path}")
     print(f"✓ Total defect structures generated: {len(all_defects)}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 
 if __name__ == "__main__":
     main()

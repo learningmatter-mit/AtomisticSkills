@@ -78,6 +78,7 @@ def setup_django(
     from django.apps import apps
     if not apps.ready:
         django.setup()
+    
     logger.debug("Django configured with settings: %s", settings_module)
 
 

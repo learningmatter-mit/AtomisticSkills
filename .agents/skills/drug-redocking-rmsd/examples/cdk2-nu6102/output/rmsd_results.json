@@ -1,0 +1,64 @@
+{
+    "reference": "cocrystal_ligand_4SP.pdb",
+    "docked": "cocrystal_NU6102_docked.pdbqt",
+    "n_poses": 10,
+    "threshold": 2.0,
+    "top_pose_rmsd": 5.16,
+    "gate_pass": false,
+    "gate_criterion": "Top-scored docked pose (pose 1) heavy-atom RMSD below threshold. Standard self-docking validation metric: a near-native pose somewhere in the pose ensemble is not sufficient if the scoring function cannot rank it first.",
+    "best_rmsd": 4.829,
+    "best_pose": 2,
+    "best_rmsd_note": "best_rmsd is the minimum RMSD across all poses. Use as a diagnostic only: if best_pose > 1 but best_rmsd < threshold, the docking is sampling near-native conformations but the scoring function is failing to prioritize them.",
+    "poses": [
+        {
+            "pose": 1,
+            "rmsd_heavy_atom": 5.16,
+            "pass": false
+        },
+        {
+            "pose": 2,
+            "rmsd_heavy_atom": 4.829,
+            "pass": false
+        },
+        {
+            "pose": 3,
+            "rmsd_heavy_atom": 5.217,
+            "pass": false
+        },
+        {
+            "pose": 4,
+            "rmsd_heavy_atom": 6.786,
+            "pass": false
+        },
+        {
+            "pose": 5,
+            "rmsd_heavy_atom": 8.81,
+            "pass": false
+        },
+        {
+            "pose": 6,
+            "rmsd_heavy_atom": 8.895,
+            "pass": false
+        },
+        {
+            "pose": 7,
+            "rmsd_heavy_atom": 5.213,
+            "pass": false
+        },
+        {
+            "pose": 8,
+            "rmsd_heavy_atom": 5.715,
+            "pass": false
+        },
+        {
+            "pose": 9,
+            "rmsd_heavy_atom": 6.842,
+            "pass": false
+        },
+        {
+            "pose": 10,
+            "rmsd_heavy_atom": 8.75,
+            "pass": false
+        }
+    ]
+}

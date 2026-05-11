@@ -109,8 +109,12 @@ class HTVSDbHandler:
         group_name: str,
         miller_index: List[int],
         method_name: Optional[str] = None,
+<<<<<<< HEAD
         framework_name: Optional[str] = None,
         details: Optional[Dict[str, Any]] = None
+=======
+        framework_name: Optional[str] = None
+>>>>>>> origin/htvs
     ) -> str:
         payload = {
             "structure_type": "surface",
@@ -134,8 +138,12 @@ class HTVSDbHandler:
         parent_bulk_id: Optional[int] = None,
         miller_index: List[int] = [0, 1, 0],
         method_name: Optional[str] = None,
+<<<<<<< HEAD
         framework_name: Optional[str] = None,
         details: Optional[Dict[str, Any]] = None
+=======
+        framework_name: Optional[str] = None
+>>>>>>> origin/htvs
     ) -> str:
         """
         Batch save structures from a directory or file with auto-detection.

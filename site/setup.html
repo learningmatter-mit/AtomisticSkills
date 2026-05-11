@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AtomisticSkills Setup Guide — AtomisticSkills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0;
+      --text:#1b1464; --muted:#64748b; --accent:#816cff;
+      --accent2:#5b3de8;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+      padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-logo img{height:24px}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+
+    /* HERO */
+    .doc-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:4rem 2rem 3rem}
+    .doc-hero-inner{max-width:850px;margin:0 auto}
+    .doc-breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .doc-breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;color:var(--text);margin:0}
+
+    /* CONTENT */
+    .doc-content{max-width:850px;margin:0 auto;padding:3rem 2rem}
+    .rendered-md h2{font-size:1.6rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.25rem;font-weight:700;margin:1.5rem 0 0.75rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.75;font-size:1.05rem}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:1rem 0}
+    .rendered-md li{margin:0.5rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;
+      background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md pre{background:#1e293b;border-radius:10px;padding:1.5rem;overflow-x:auto;margin:1.5rem 0}
+    .rendered-md pre code{background:none;border:none;color:#e2e8f0;padding:0;font-size:0.85rem;line-height:1.7}
+    .rendered-md blockquote{border-left:4px solid var(--accent);background:#f8f9ff;
+      padding:1rem 1.5rem;border-radius:0 10px 10px 0;margin:1.5rem 0}
+    .rendered-md img{max-width:100%;border-radius:12px;border:1px solid var(--border);margin:2rem auto;display:block;box-shadow:0 8px 30px rgba(0,0,0,0.1)}
+    .rendered-md a{color:var(--accent);text-decoration:none;font-weight:500}
+    .rendered-md a:hover{text-decoration:underline}
+
+    .admonition{border-radius:8px;padding:1rem;margin:1.5rem 0;border-left:4px solid}
+    .admonition-tip{background:#f0fdf4;border-color:#22c55e}
+    .admonition-note{background:#eff6ff;border-color:#3b82f6}
+    .admonition-important{background:#faf5ff;border-color:#a855f7}
+    .admonition-warning{background:#fffbeb;border-color:#f59e0b}
+    .admonition-caution{background:#fef2f2;border-color:#ef4444}
+
+    footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;color:var(--muted);font-size:0.9rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><img src="logo/atomisticskills_logo.svg" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="index.html">← Back Home</a>
+</nav>
+<div class="doc-hero">
+  <div class="doc-hero-inner">
+    <div class="doc-breadcrumb"><a href="index.html">Home</a> / Documentation</div>
+    <h1>AtomisticSkills Setup Guide</h1>
+  </div>
+</div>
+<div class="doc-content">
+  <div class="rendered-md" id="doc-body"></div>
+</div>
+<footer><p>AtomisticSkills — Open-sourced AI research infrastructure</p></footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const DOC_MD = "Guide the user step-by-step through setting up AtomisticSkills.\n\n## Step 1: Clone the Repository\nAsk the user to run this in their terminal *(Optional: Ask them to fork the repository first if they plan to contribute, and clone their fork instead)*:\n\n```bash\ngit clone git@github.com:bowen-bd/AtomisticSkills.git\ncd AtomisticSkills\n```\n\n## Step 2: Choose Environments\nAtomisticSkills uses separate MCP servers running in different conda environments to manage conflicting MLIP and DFT dependencies.\n\nPresent using a list:\n\n**MCP Server Environments (Interactive Tools):**\n- [ ] **Base** (`base-agent`): Materials Project queries, VASP I/O, base tools (Highly Recommended)\n- [ ] **MACE** (`mace-agent`): MACE models (MP, OMAT, MatPES)\n- [ ] **MatGL** (`matgl-agent`): MatGL models (CHGNet, M3GNet) and bandgap prediction\n- [ ] **FairChem** (`fairchem-agent`): FairChem models (UMA, ESEN)\n- [ ] **Atomate2** (`atomate2-agent`): Remote DFT job management via Jobflow/Jobflow-remote\n- [ ] **Smol** (`smol-agent`): Cluster expansion and Monte Carlo\n- [ ] **DrugDisc** (`drugdisc-agent`): Drug discovery tools (Fingerprints, Docking, ADMET)\n- [ ] **MatterGen** (`mattergen-agent`): Generative crystal design from MatterGen\n- [ ] **ADiT** (`adit-agent`): All-atom diffusion generation\n- [ ] **DiffCSP** (`diffcsp-agent`): Symmetry-constrained crystal generation\n\n**Script-Only Environments (No MCP Server):**\n- [ ] **XRD** (`xrd-agent`): XRD spectrum phase analysis and refinement tools\n- [ ] **ORCA** (`orca-agent`): DFT structural optimization and single-points via SCINE wrapper\n- [ ] **Phase Field** (`phasefield-agent`): Simulation of grain growth and spinodal decomposition\n- [ ] **CALPHAD** (`calphad-agent`): Thermodynamics and phase diagram modeling\n- [ ] **NMR** (`nmr-agent`): NMR mixture deconvolution and kinetics prediction\n- [ ] **React-OT** (`react-ot-agent`): Transition state structural generation\n- [ ] **SCD** (`scd-agent`): Pretrained Self-Conditioned Denoising for property prediction\n\nOptions: Keep it simple! Ask exactly which frameworks they want to use. \"I only need MACE and basic tools\" $\\rightarrow$ `base-agent` and `mace-agent`.\n\n## Step 3: Install Conda Environments\nDepending on their choices in Step 2, provide the commands to set them up:\n\n```bash\nbash conda-envs/base-agent/install.sh\nbash conda-envs/mace-agent/install.sh\n# ... other selected environments\n```\n*(Remind the user this might take a few minutes. Wait for them to finish before proceeding).*\n\n## Step 4: Configuration & API Keys\nMany tools require API keys (like the Materials Project API) or binary paths.\nHave the user create a global configuration file in their home directory.\n\n**Provide this template (`~/.atomistic_skills.yaml`):**\n```yaml\n# Materials Project API Key (Required for base-server)\nMP_API_KEY: \"your_mp_api_key_here\"\n\n# Atomate2 Remote Project (Required for remote job monitoring)\nATOMATE2_REMOTE_PROJECT: \"remote_perlmutter\"\n\n# Required for running molecular DFT calculations with ORCA\nORCA_BINARY_PATH: /path/to/orca_directory/orca\n```\n*(Tell them they can also set these as environment variables like `export MP_API_KEY=\"key\"`, but the file is persistent).*\n\n## Step 5: Configure MCP Servers\nThe project provides an `mcp_config.json` that defines all tools. The placeholder paths need to be updated to match the user's specific conda path.\n\nRun together:\n```bash\npython configure_mcp.py\n```\n*(This auto-detects `miniforge3` or `miniconda3`. If it fails, they can pass the base path manually: `python configure_mcp.py /path/to/miniforge3`)*\n\n## Step 6: Add to AI Assistant\nFinally, copy the patched MCP settings into their AI copilot's configuration file.\n\n| Client | File |\n|--------|------|\n| **Antigravity / Gemini CLI** | `~/.gemini/settings.json` or `~/.gemini/antigravity/mcp_config.json` |\n| **Cursor** | `.cursor/mcp.json` (Settings $\\rightarrow$ MCP $\\rightarrow$ Add) |\n| **Claude Code** | `.claude.json` or `.mcp.json` |\n| **Windsurf** | `~/.codeium/windsurf/mcp_config.json` |\n\n1. Locate the AI assistant's config file.\n2. Copy the `mcpServers` block from AtomisticSkills' `mcp_config.json` for the environments they installed.\n3. Paste/Merge into the AI assistant config.\n4. Restart the assistant!\n\n## What's Next? (Guided First Use)\n**Run a live test WITH the user.**\n\n**Demo Query (Base agent):** \"Search the Materials Project for the stable structure of LiFePO4.\"\n*(Use the `search_materials_project_by_formula` tool)*\n\nIf they set up a MLIP (e.g., MACE): \"Predict the forces and energy for this LiFePO4 structure using the MACE model.\"\n\n## Best Practices for Users\n- **Leverage Local GPUs**: We highly recommend running the framework on a machine with local GPU resources so MLIP tasks can evaluate quickly without external compute costs.\n- **Customize**: Add your own specialized SKILLs, MCP tools, and Workflows directly to the project structure to tailor it to your research needs.\n- **Contribute Back**: If you develop a robust, generalized tool or SKILL, please submit a PR to the main branch! We actively acknowledge all open-source contributors.\n\n## Common Issues\n| Issue | Fix |\n|-------|-----|\n| MCP Tools not showing up | Verify JSON syntax in the copilot's config file and restart the IDE/copilot. |\n| Tool execution failed / Python not found | Ensure `configure_mcp.py` successfully updated the `command` paths to the correct conda envs. |\n| Atomate2 remote worker issues | See `conda-envs/atomate2-agent/atomate2_remote_worker_setup.md` |\n| MLIP environment conflicts | Each MCP server handles its own environment isolation automatically via the copied `mcp_config.json`. |\n";
+  marked.setOptions({ breaks: true, gfm: true });
+  const KATEX_OPTS = { delimiters: [
+    {left: '$$', right: '$$', display: true},
+    {left: '$', right: '$', display: false},
+    {left: '\\(', right: '\\)', display: false},
+    {left: '\\[', right: '\\]', display: true}
+  ], throwOnError: false };
+
+    function renderMd(md, container) {
+    if (!md) return;
+    const mathBlocks = [];
+    const placeholder = (i) => `MATHPLACEHOLDER${i}X`;
+    
+    // Protect block math $$...$$
+    let safe = md.replace(/\$\$([\s\S]+?)\$\$/g, (_, m) => {
+      mathBlocks.push(`$$${m}$$`);
+      return placeholder(mathBlocks.length - 1);
+    });
+    // Protect inline math $...$
+    safe = safe.replace(/(?<!\$)\$([^\$]+?)\$(?!\$)/g, (_, m) => {
+      mathBlocks.push(`$${m}$`);
+      return placeholder(mathBlocks.length - 1);
+    });
+
+    let html = marked.parse(safe);
+    mathBlocks.forEach((tok, i) => {
+      html = html.replace(new RegExp(placeholder(i), 'g'), tok);
+    });
+
+    html = html
+      .replace(/<blockquote>\s*<p>\[!TIP\]/gi,  '<blockquote class="admonition admonition-tip"><p>💡 <strong>Tip</strong>')
+      .replace(/<blockquote>\s*<p>\[!NOTE\]/gi, '<blockquote class="admonition admonition-note"><p>📝 <strong>Note</strong>')
+      .replace(/<blockquote>\s*<p>\[!IMPORTANT\]/gi, '<blockquote class="admonition admonition-important"><p>⚡ <strong>Important</strong>')
+      .replace(/<blockquote>\s*<p>\[!WARNING\]/gi, '<blockquote class="admonition admonition-warning"><p>⚠️ <strong>Warning</strong>')
+      .replace(/<blockquote>\s*<p>\[!CAUTION\]/gi, '<blockquote class="admonition admonition-caution"><p>🚨 <strong>Caution</strong>');
+
+    container.innerHTML = html;
+    if (typeof renderMathInElement !== 'undefined') renderMathInElement(container, KATEX_OPTS);
+    if (typeof $3Dmol !== 'undefined') {
+      container.querySelectorAll('.custom-3dmol').forEach(el => {
+        if (!el.dataset.b64) return;
+        try {
+          let content = decodeURIComponent(escape(atob(el.dataset.b64)));
+          let viewer = $3Dmol.createViewer(el, {backgroundColor: '#f8f9fc'});
+          viewer.addModel(content, el.dataset.datatype);
+          viewer.setStyle({}, {stick:{radius:0.15}, sphere:{radius:0.4}});
+          if(el.dataset.unitcell) viewer.addUnitCell();
+          viewer.zoomTo();
+          viewer.render();
+        } catch (err) {
+          console.error("Failed to init 3Dmol viewer", err);
+        }
+      });
+    }
+  }
+  renderMd(DOC_MD, document.getElementById('doc-body'));
+});
+</script>
+</body>
+</html>

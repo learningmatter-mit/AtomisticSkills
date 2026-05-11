@@ -16,11 +16,18 @@ Use the HTVS tools (`htvs_server` MCP tools, the included scripts, or the utilit
 
 ## Configuration & Safety (CRITICAL)
 
+<<<<<<< HEAD
 Wait! HTVS operations directly interact with research databases and computing clusters. Before running any commands:
 1.  **Expose the Context**: Explicitly state the `settings_module`, `group_name`, `inbox_path`, `completed_path`, `compute_platform`, and `requester` you are about to use.
 2.  **Expose Job Details**: Explicitly show the user the final, generated `job_details` (including VASP INCAR parameters like `preset_type`, `ISIF`, `NSW`, `LDAUU`, etc.) that will be applied.
 3.  **Request Confirmation**: Ask the user: *"I am about to perform this operation with the above DB settings and INCAR parameters. Is this correct?"*
 4.  **Do NOT proceed** with execution (like `submit_jobs.py` or `autopilot`) until the user gives explicit approval.
+=======
+Wait! HTVS operations directly interact with research databases. Before running any commands:
+1.  **Expose the Context**: Explicitly state the `settings_module` and `group_name` you are about to use.
+2.  **Request Confirmation**: Ask the user: *"I am about to perform this operation on the [GROUP_NAME] project within the [SETTINGS_MODULE] database. Is this correct?"*
+3.  **Do NOT proceed** until the user gives explicit approval.
+>>>>>>> origin/htvs
 
 ## Workflow
 
@@ -82,6 +89,7 @@ save_htvs_structure(
 )
 ```
 
+<<<<<<< HEAD
 ### 4. Step-Specific Configuration (vasp_steps)
 
 For workflow transparency, VASP INCAR settings and cluster parameters must be centrally managed in `~/.atomistic_skills.yaml`. This ensures that there are no "hidden defaults" during generation and provides a single source of truth for the entire workflow.
@@ -135,6 +143,37 @@ details = json.loads(details_json)
 details.update(global_settings)
 
 # 3. Request job via MCP tool
+=======
+### 4. Prepare Job Details
+
+Use the **`prepare_vasp_job_details`** MCP tool to generate standard VASP parameters:
+
+```python
+details_json = prepare_vasp_job_details(
+    structure_file="structure.cif",
+    preset_type="mp",          # or "omat", "matpes-pbe", "matpes-r2scan"
+    calculation_type="static",  # or "relaxation"
+    magnetism=True,
+    magnetism_scheme="fm"       # or "afm", "nm"
+)
+```
+
+### 5. Submit Jobs
+
+Use the **`htvs_request_job`** or **`htvs_request_followup_job`** MCP tools:
+
+```python
+# 1. Generate details
+details = json.loads(details_json)
+details.update({
+    "compute_platform": "perlmutter",
+    "pseudo_dir": "/path/to/potcar",
+    "requester": "hojechun",
+    "project_name": "m5068"
+})
+
+# 2. Request job via MCP tool
+>>>>>>> origin/htvs
 htvs_request_job(
     settings_module="orgel",
     group_name="agent",
@@ -142,7 +181,11 @@ htvs_request_job(
     details=details
 )
 
+<<<<<<< HEAD
 # 4. Request follow-up (e.g. Static after Relaxation)
+=======
+# 3. Request follow-up (e.g. Static after Relaxation)
+>>>>>>> origin/htvs
 htvs_request_followup_job(
     settings_module="orgel",
     group_name="agent",

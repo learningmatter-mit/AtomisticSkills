@@ -1,0 +1,19 @@
+{
+    "dG_mean_kcal_mol": -44.42,
+    "dG_std_kcal_mol": 3.14,
+    "dG_sem_kcal_mol": 0.56,
+    "sem_note": "SEM assumes frames are independent samples. Because frames come from a single correlated trajectory, this underestimates the true statistical error. For honest uncertainties, run replicate trajectories or compute a block-averaged error.",
+    "n_frames_evaluated": 31,
+    "skip_ns": 0.5,
+    "stride": 5,
+    "start_frame": 49,
+    "ligand_sdf": "examples/drug-discovery/cdk2-htvs/05_pose_validation/poses_sdf/CHEMBL388978.sdf",
+    "cofactor_sdf": null,
+    "ligand_sel": "resname UNK",
+    "receptor_sel": "protein",
+    "protein_ff": "amber/ff14SB",
+    "implicit_solvent": "GBn2",
+    "solute_dielectric": 1.0,
+    "solvent_dielectric": 78.5,
+    "wall_time_seconds": 116.8
+}

@@ -1,7 +1,7 @@
 ---
 name: ml-property-predictor
 description: Train a property predictor head on top of a Machine Learning Interatomic Potential (MLIP) backbone (MACE or MatGL) to predict custom intensive or extensive properties from crystal or molecular structures.
-category: [machine-learning]
+category: [machine-learning, materials, chemistry]
 ---
 
 # MLIP Property Predictor Training

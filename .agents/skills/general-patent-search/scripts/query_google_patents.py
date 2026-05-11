@@ -101,3 +101,7 @@ if __name__ == "__main__":
         with open(args.output, 'w') as f:
             json.dump({'query': args.query, 'limit': args.limit, 'results': results}, f, indent=2)
         print(f"Results saved to: {args.output}")
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)

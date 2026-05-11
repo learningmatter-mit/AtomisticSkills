@@ -191,6 +191,9 @@ class Atomate2Handler:
                 maker = BandStructureMaker(bandstructure_type=bs_type)
             elif calculation_type == "optics":
                 maker = OpticsMaker()
+            elif calculation_type == "lobster":
+                from atomate2.vasp.flows.lobster import VaspLobsterMaker
+                maker = VaspLobsterMaker()
             else:
                 raise ValueError(f"Unknown calculation_type: {calculation_type}")
             
@@ -205,6 +208,11 @@ class Atomate2Handler:
                         maker.static_maker.input_set_generator.user_incar_settings.update(user_incar)
                     if hasattr(maker.optics_maker, "input_set_generator"):
                         maker.optics_maker.input_set_generator.user_incar_settings.update(user_incar)
+                elif calculation_type == "lobster":
+                    if hasattr(maker.relax_maker, "input_set_generator"):
+                        maker.relax_maker.input_set_generator.user_incar_settings.update(user_incar)
+                    if hasattr(maker.lobster_static_maker, "input_set_generator"):
+                        maker.lobster_static_maker.input_set_generator.user_incar_settings.update(user_incar)
                 else:
                     maker.input_set_generator.user_incar_settings.update(user_incar)
             return maker

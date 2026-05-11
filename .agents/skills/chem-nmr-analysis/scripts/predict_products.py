@@ -139,6 +139,10 @@ def main():
     else:
         print(json.dumps(result, indent=2))
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)
+
 
 if __name__ == "__main__":
     main()

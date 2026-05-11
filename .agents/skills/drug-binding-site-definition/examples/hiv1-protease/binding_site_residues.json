@@ -1,0 +1,18 @@
+{
+    "center_x": 15.3075,
+    "center_y": 24.0845,
+    "center_z": 5.168,
+    "size_x": 28.017,
+    "size_y": 26.829,
+    "size_z": 29.21,
+    "padding": 8.0,
+    "min_size": 20.0,
+    "mode": "residues",
+    "source": "1HSG_protein.pdb",
+    "residues": [
+        "B:ASP25",
+        "B:THR26",
+        "B:GLY27",
+        "B:ILE50"
+    ]
+}

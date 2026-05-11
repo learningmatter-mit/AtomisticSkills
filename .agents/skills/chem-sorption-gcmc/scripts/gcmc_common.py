@@ -23,6 +23,8 @@ from ase.io import read
 from ase.io.trajectory import Trajectory
 from ase_mc import Moveset
 
+from src.utils.serialization_utils import format_temperature_key, finite_or_none
+
 # Energy/temperature conversion constants for Qst calculations
 EV_TO_KJMOL = 96.4853321233  # 1 eV per molecule = 96.485... kJ/mol
 KB_EVK = 8.617333262145e-5   # Boltzmann constant in eV/K
@@ -47,7 +49,7 @@ def _default_pr_gas_params() -> dict[str, dict[str, float | str]]:
             mol_name="CO2",
             Tc=304.1282,  # K
             Pc=7.3773e6,  # Pa
-            omega=0.225,  # -
+            omega=0.22394,  # - (NIST/DIPPR value; COFclean reference uses 0.22394)
             M=44.01e-3,  # kg/mol
         ),
         "N2": dict(
@@ -779,13 +781,6 @@ def analyze_and_plot_multicomponent(
 # -----------------------------------------------------------------------------
 
 
-def _format_temperature_key(temperature: float) -> str:
-    rounded = round(temperature)
-    if abs(temperature - rounded) < 1e-6:
-        return f"{int(rounded)}K"
-    return f"{temperature:g}K"
-
-
 def _load_properties_json(properties_path: Path, cof_name: str) -> dict:
     properties_path = Path(properties_path)
     properties_path.parent.mkdir(parents=True, exist_ok=True)
@@ -808,14 +803,6 @@ def _write_properties_json(properties_path: Path, data: dict) -> None:
     Path(properties_path).write_text(json.dumps(data, indent=2, allow_nan=False) + "\n")
 
 
-def _finite_or_none(x: float) -> float | None:
-    try:
-        xf = float(x)
-    except Exception:
-        return None
-    return xf if np.isfinite(xf) else None
-
-
 def _same_partial_pressure(a: dict | None, b: dict | None) -> bool:
     if a is None and b is None:
         return True
@@ -824,8 +811,8 @@ def _same_partial_pressure(a: dict | None, b: dict | None) -> bool:
     if set(a.keys()) != set(b.keys()):
         return False
     for k in a.keys():
-        av = _finite_or_none(a.get(k))
-        bv = _finite_or_none(b.get(k))
+        av = finite_or_none(a.get(k))
+        bv = finite_or_none(b.get(k))
         if av != bv:
             return False
     return True
@@ -836,7 +823,7 @@ def _upsert_isotherm_point(points: list, new_point: dict) -> list:
 
     Matching rule: same p_total and same p_partial (per-adsorbate partials).
     """
-    p_new = _finite_or_none(new_point.get("p_total"))
+    p_new = finite_or_none(new_point.get("p_total"))
     pp_new = new_point.get("p_partial")
     if p_new is None:
         return list(points) + [new_point]
@@ -845,7 +832,7 @@ def _upsert_isotherm_point(points: list, new_point: dict) -> list:
     for i, pt in enumerate(out):
         if not isinstance(pt, dict):
             continue
-        p_old = _finite_or_none(pt.get("p_total"))
+        p_old = finite_or_none(pt.get("p_total"))
         if p_old != p_new:
             continue
         if not _same_partial_pressure(pt.get("p_partial"), pp_new):
@@ -900,7 +887,7 @@ def compute_eq_loading_from_traj_single(
         nmols[i] = count_probe_molecules_by_blocks(atoms, host_natoms, probe)
     eq_nmols = _eq_nmols_from_array(nmols, frac_tail=frac_tail)
     host_mass_kg = _host_mass_kg(host, host_natoms)
-    return _mol_per_kg_from_nmols(eq_nmols, host_mass_kg) * 1000.0  # mol/kg -> mmol/g
+    return _mol_per_kg_from_nmols(eq_nmols, host_mass_kg)  # mol/kg == mmol/g (numerically equal)
 
 
 def _host_mass_kg(host: Atoms, host_natoms: int) -> float:
@@ -936,7 +923,7 @@ def update_properties_json_gcmc_single(
     host_mass_kg = _host_mass_kg(host, host_natoms)
     mol_per_kg = _mol_per_kg_from_nmols(eq_nmols, host_mass_kg)
     # Numerically, 1 mol/kg == 1 mmol/g
-    mmol_per_g = _finite_or_none(mol_per_kg)
+    mmol_per_g = finite_or_none(mol_per_kg)
 
     props = data.setdefault("properties", {})
     adsorption = props.setdefault("adsorption", {})
@@ -1024,7 +1011,7 @@ def update_properties_json_gcmc_multicomponent(
             continue
         eq_nmols = _compute_eq_nmols(nmols_path, frac_tail=frac_tail)
         mol_per_kg = _mol_per_kg_from_nmols(eq_nmols, host_mass_kg)
-        q_by_adsorbate[name] = _finite_or_none(mol_per_kg)
+        q_by_adsorbate[name] = finite_or_none(mol_per_kg)
 
     finite_vals = [v for v in q_by_adsorbate.values() if v is not None]
     q_total = float(np.sum(finite_vals)) if finite_vals else None
@@ -1191,7 +1178,7 @@ def qst_single_fluctuation_from_series(
 
     mean = float(np.mean(good))
     std = float(np.std(good, ddof=1)) if good.size >= 2 else float("nan")
-    return _finite_or_none(mean), _finite_or_none(std), int(n_blocks), int(block_size)
+    return finite_or_none(mean), finite_or_none(std), int(n_blocks), int(block_size)
 
 
 def qst_multicomponent_fluctuation_from_series(
@@ -1272,8 +1259,8 @@ def qst_multicomponent_fluctuation_from_series(
             q_mean[nm] = None
             q_std[nm] = None
         else:
-            q_mean[nm] = _finite_or_none(float(np.mean(vals)))
-            q_std[nm] = _finite_or_none(float(np.std(vals, ddof=1))) if vals.size >= 2 else None
+            q_mean[nm] = finite_or_none(float(np.mean(vals)))
+            q_std[nm] = finite_or_none(float(np.std(vals, ddof=1))) if vals.size >= 2 else None
 
     return q_mean, q_std, int(n_blocks), int(block_size)
 
@@ -1302,7 +1289,7 @@ def compute_eq_loading_from_traj_multicomponent(
     for name in species_names:
         eq_nmols = _eq_nmols_from_array(nmols[name], frac_tail=frac_tail)
         mol_per_kg = _mol_per_kg_from_nmols(eq_nmols, host_mass_kg)
-        q_by_adsorbate[name] = _finite_or_none(mol_per_kg * 1000.0) if np.isfinite(mol_per_kg) else None
+        q_by_adsorbate[name] = finite_or_none(mol_per_kg) if np.isfinite(mol_per_kg) else None  # mol/kg == mmol/g
     finite_vals = [v for v in q_by_adsorbate.values() if v is not None]
     q_total = float(np.sum(finite_vals)) if finite_vals else None
     return q_by_adsorbate, q_total
@@ -1353,8 +1340,8 @@ def gcmc_standalone_payload_single(
     point = {
         "p_total": float(pressure_bar),
         "p_partial": {adsorbate: float(pressure_bar)},
-        "q_total": _finite_or_none(q_total_mmol_g) if q_total_mmol_g is not None else None,
-        "q_by_adsorbate": {adsorbate: _finite_or_none(q_total_mmol_g) if q_total_mmol_g is not None else None},
+        "q_total": finite_or_none(q_total_mmol_g) if q_total_mmol_g is not None else None,
+        "q_by_adsorbate": {adsorbate: finite_or_none(q_total_mmol_g) if q_total_mmol_g is not None else None},
     }
     return {
         "adsorbates": [adsorbate],

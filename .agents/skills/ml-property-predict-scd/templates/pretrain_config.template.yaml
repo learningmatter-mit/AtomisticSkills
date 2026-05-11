@@ -1,0 +1,83 @@
+load_model: null
+log_dir: experiments/
+job_id: new_pretrain_run
+wandb_notes: "SCD pretraining on a new dataset"
+
+dataset: REPLACE_DATASET_NAME
+dataset_root: tmp/replace_dataset_root
+dataset_arg: null
+train_size: null
+val_size: 100
+test_size: 100
+batch_size: 32
+inference_batch_size: 32
+seed: 1
+num_workers: 6
+
+model_config: configs/model_configs/scd.yaml
+
+energy_weight: 0.0
+force_weight: 1.0
+ema_alpha_dy: 1.0
+ema_alpha_y: 1.0
+
+distributed_backend: ddp
+ngpus: -1
+num_nodes: 1
+redirect: false
+
+lr: 0.0005
+weight_decay: 0.05
+lr_schedule: cosine
+lr_factor: 0.8
+lr_min: 1.0e-07
+lr_patience: 15
+lr_warmup_steps: 10000
+lr_cosine_length: 800000
+num_epochs: 3000
+num_steps: 800000
+precision: 32
+
+save_interval: 1
+test_interval: 1
+
+standardize: false
+pretraining: true
+self_cond: true
+noise_scale: 0.04
+denoising_weight: 1.0
+
+# Molecules with compiled TorchMD extension:
+# noise_in_loader: false
+# allow_periodic: false
+
+# Molecules without compiled extension:
+# noise_in_loader: true
+# allow_periodic: false
+
+# Periodic/materials:
+noise_in_loader: REPLACE_TRUE_OR_FALSE
+allow_periodic: REPLACE_TRUE_OR_FALSE
+graph_cutoff: 5.0
+neighbor_method: brute
+max_neighbors: 32
+
+# Periodic augmentation only. Set to zero for molecules.
+p_cell_repeat: 0.0
+cell_repeat_iters: 0
+rep_min_atoms: 0
+
+random_rotate: false
+torsion_angle_std: 0.0
+max_bonds_rotated: 0
+p_invert: 0.0
+
+momentum_update: false
+model_momentum: 0.996
+val_ema_model: false
+droppath_warmup: false
+
+# Optional OOM protection
+# max_nodes_per_batch: 4000
+# batch_clipper_cache_size: 1000
+# allow_test_clipping: false

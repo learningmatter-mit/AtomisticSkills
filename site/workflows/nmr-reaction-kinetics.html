@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NMR Time-Series Reaction Kinetics — AtomisticSkills Workflows</title>
+  <meta name="description" content="End-to-end workflow for extracting reaction kinetics (mole fraction vs time) from time-series crude 1H NMR spectra via Wasserstein deconvolution."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .workflow-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .workflow-hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .workflow-desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .workflow-content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/nmr-reaction-kinetics.md" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="workflow-hero">
+  <div class="workflow-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Workflows</div>
+    <h1>NMR Time-Series Reaction Kinetics</h1>
+    <p class="workflow-desc">End-to-end workflow for extracting reaction kinetics (mole fraction vs time) from time-series crude 1H NMR spectra via Wasserstein deconvolution.</p>
+  </div>
+</div>
+<div class="workflow-content">
+  <div class="rendered-md" id="workflow-body"></div>
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/nmr-reaction-kinetics.md" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 8px; color: #1e293b; font-weight: 600; text-decoration: none; font-size: 0.95rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: background 0.2s;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View this Workflow on GitHub
+    </a>
+  </div>
+</div>
+<footer>
+  &copy; 2026 AtomisticSkills. Generated by build_skills.py.
+</footer>
+<script>
+  document.getElementById('workflow-body').innerHTML = marked.parse("This workflow extends the single-point NMR quantification workflow (`reaction-to-nmr-quantification.md`) to a time series: given crude 1H NMR spectra recorded at multiple time points during a reaction, it produces mole-fraction-vs-time kinetics curves.\n\n**Scientific Problem:**\nMonitoring reaction progress by NMR is routine in synthetic chemistry, but extracting quantitative kinetics from crude spectra with overlapping signals is tedious and error-prone. This workflow chains reference spectrum acquisition (via product prediction and NMR simulation) with Wasserstein-distance deconvolution at each time point to produce kinetics curves, enabling assessment of conversion, selectivity, and rate behavior without manual peak integration.\n\n## Step-by-Step Methodology\n\n### Steps 0\u20135: Obtain Reference Spectra\nFollow Steps 0\u20135 of the `reaction-to-nmr-quantification.md` workflow to identify all species, resolve names to SMILES, predict products, generate NMR reference spectra, and verify alignment against a representative crude spectrum. If the user provides images instead of numeric files, digitize each time-point image individually using the `general-plot-digitizer` skill.\n\n### Step 6: Run Time-Series Kinetics\nPerform Wasserstein deconvolution at each time point and assemble kinetics curves.\n\n- *Skill Reference:* `chem-nmr-analysis` (`kinetics.py`)\n- **Action:** Pass all reference spectra, all time-point crude spectra (in chronological order), corresponding time values, proton counts, and component names to `kinetics.py`.\n- **Output:** `kinetics.csv` (mole fractions + Wasserstein distance per time point) and `kinetics_plot.png` (mole fraction vs time + fit quality vs time).\n- **Decision:** Inspect the kinetics plot. If curves are non-monotonic or a Wasserstein distance spike occurs at a single time point, that spectrum likely has baseline or phasing issues \u2014 consider excluding it and re-running. If all WD values exceed 0.15, the fit is poor across the board; revisit reference alignment (Step 5) before trusting the kinetics.\n\n## Summary Checklist for the Agent\nWhen tasked with \"extract kinetics from NMR time series\":\n1. [ ] Digitize spectrum images if needed. (`general-plot-digitizer`)\n2. [ ] Identify all NMR-relevant species (reactants, products, solvents, reagents).\n3. [ ] Resolve names to SMILES. (`drug-db-pubchem`)\n4. [ ] Predict products via ReactionT5. (`chem-nmr-analysis` `predict_products.py`)\n5. [ ] Generate reference spectra. (`chem-nmr-predict`)\n6. [ ] Visual inspection of overlay. (`chem-nmr-analysis` `plot.py`)\n7. [ ] Run kinetics deconvolution. (`chem-nmr-analysis` `kinetics.py`)\n8. [ ] Inspect kinetics plot and verify chemical plausibility.\n\n## References\n- Ciach, M. et al., \"Masserstein: linear resampling of mass spectra by optimal transport\", *Rapid Commun. Mass Spectrom.*, 2020.\n- Domzal, B. et al., \"Magnetstein: Wasserstein-distance NMR mixture analysis\", *Anal. Chem.*, 2024.");
+</script>
+</body>
+</html>

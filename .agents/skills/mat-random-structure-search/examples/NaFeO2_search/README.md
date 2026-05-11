@@ -79,5 +79,5 @@ Basin B (~30 structures) does not match any of the 4 known MP phases, suggesting
 
 - `generation_manifest.json` — metadata for the 50 generated structures
 - `best_structure.png` — visualization of the lowest-energy relaxed structure
-- `relaxed_structures/basin_A_ground_state_R3m.cif` — the best structure (matches mp-19359)
-- `relaxed_structures/basin_B_metastable.cif` — representative of the second energy basin
+- [relaxed_structures/basin_A_ground_state_R3m.cif](relaxed_structures/basin_A_ground_state_R3m.cif) — the best structure (matches mp-19359)
+- [relaxed_structures/basin_B_metastable.cif](relaxed_structures/basin_B_metastable.cif) — representative of the second energy basin

@@ -1,10 +1,15 @@
 name: fairchem-agent
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
 dependencies:
-  - python=3.10
+  - python=3.12
+  - "pytorch=*=*cuda*"
   - pip
   - pip:
     - mcp
-    - fairchem-core
+    - fairchem-core>=2.18.0
     - cython
     - pymatgen
     - pymatgen-analysis-diffusion
@@ -13,4 +18,4 @@ dependencies:
     - setuptools-scm
     - sella
     - typing-extensions
-    - ase
+    - ase>=3.23

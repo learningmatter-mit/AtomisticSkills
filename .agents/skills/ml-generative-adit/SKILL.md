@@ -1,7 +1,7 @@
 ---
-name: ml-adit
+name: ml-generative-adit
 description: Generate novel crystal structures and molecules using ADiT (All-atom Diffusion Transformer), a unified latent diffusion model.
-category: [machine-learning]
+category: [machine-learning, materials, chemistry]
 ---
 
 # ADiT Structure Generation Skill

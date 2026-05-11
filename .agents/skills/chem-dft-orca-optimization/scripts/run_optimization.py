@@ -21,6 +21,7 @@ import json
 import logging
 import os
 import sys
+from contextlib import contextmanager
 from typing import Optional
 
 import numpy as np
@@ -45,6 +46,16 @@ from src.utils.research_utils import get_current_research_dir
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger("ORCA-Optimization")
+
+
+@contextmanager
+def cwd(path):
+    oldpwd = os.getcwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(oldpwd)
 
 
 def run_optimization(
@@ -103,6 +114,7 @@ def run_optimization(
         special_option=special_option,
         nprocs=nprocs,
         extra_calculator_settings=extra_calculator_settings,
+        output_dir=output_dir
     )
 
     ase.io.write(os.path.join(output_dir, "initial_structure.xyz"), atoms_initial)
@@ -115,33 +127,34 @@ def run_optimization(
         task_kwargs.update(extra_optimizer_settings)
         logger.info(f"Extra optimizer settings: {extra_optimizer_settings}")
 
-    if opt_type == "min":
-        logger.info(f"Running geometry minimization (max {convergence_max_iterations} steps)...")
-        output_key = "opt"
-        systems, success = readuct.run_opt_task(
-            systems, ["input"], output=[output_key], **task_kwargs
-        )
-        if calculate_final_hessian:
-            systems, success = readuct.run_hessian_task(
-                systems, [output_key]
+    with cwd(output_dir):
+        if opt_type == "min":
+            logger.info(f"Running geometry minimization (max {convergence_max_iterations} steps)...")
+            output_key = "opt"
+            systems, success = readuct.run_opt_task(
+                systems, ["input"], output=[output_key], **task_kwargs
             )
-    elif opt_type == "ts":
-        logger.info(f"Running TS optimization (max {convergence_max_iterations} steps)...")
-        output_key = "tsopt"
-        systems, success = readuct.run_tsopt_task(
-            systems, ["input"], output=[output_key], **task_kwargs
-        )
-        if calculate_final_hessian:
-            systems, success = readuct.run_hessian_task(
-                systems, [output_key],
+            if calculate_final_hessian:
+                systems, success = readuct.run_hessian_task(
+                    systems, [output_key]
+                )
+        elif opt_type == "ts":
+            logger.info(f"Running TS optimization (max {convergence_max_iterations} steps)...")
+            output_key = "tsopt"
+            systems, success = readuct.run_tsopt_task(
+                systems, ["input"], output=[output_key], **task_kwargs
             )
-    else:
-        raise ValueError(f"Unknown opt_type: {opt_type}. Must be 'min' or 'ts'.")
+            if calculate_final_hessian:
+                systems, success = readuct.run_hessian_task(
+                    systems, [output_key],
+                )
+        else:
+            raise ValueError(f"Unknown opt_type: {opt_type}. Must be 'min' or 'ts'.")
 
-    if success:
-        logger.info("Optimization converged successfully.")
-    else:
-        logger.warning("Optimization did NOT converge within the maximum number of steps.")
+        if success:
+            logger.info("Optimization converged successfully.")
+        else:
+            logger.warning("Optimization did NOT converge within the maximum number of steps.")
 
     opt_calculator = systems[output_key]
     final_structure = opt_calculator.structure
@@ -280,6 +293,10 @@ def main():
     with open(results_file, "w") as f:
         json.dump(recursive_tolist(result), f, indent=4)
     logger.info(f"Results saved to {results_file}")
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
 
 
 if __name__ == "__main__":

@@ -236,6 +236,10 @@ def main():
         plot_overlay(spectra, labels, args.title, out_path, ppm_range)
     print(f"Plot saved -> {out_path.with_suffix('.png')}, {out_path.with_suffix('.svg')}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)
+
 
 if __name__ == "__main__":
     main()

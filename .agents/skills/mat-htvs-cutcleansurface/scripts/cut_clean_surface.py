@@ -170,10 +170,10 @@ def run_cut_clean_surface(args: argparse.Namespace) -> Dict[str, Any]:
                             miller_index=list(MI_hkl),
                             details=details
                         )
-                        created_ids = json.loads(save_out)
-                        if isinstance(created_ids, list):
-                            created_surface_ids.extend(created_ids)
-                            num_surfaces += len(created_ids)
+                        created_ids_res = json.loads(save_out)
+                        if isinstance(created_ids_res, list):
+                            created_surface_ids.extend(created_ids_res)
+                            num_surfaces += len(created_ids_res)
                         else:
                             log(f"Error saving surface for Crystal {bulk.id}: {save_out}")
                     finally:

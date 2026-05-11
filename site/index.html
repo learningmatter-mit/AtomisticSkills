@@ -1,0 +1,1738 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <title>AtomisticSkills — AI-Driven Atomistic Research Framework</title>
+  <meta name="description"
+    content="A composable framework for AI-driven atomistic materials research. Modular skills covering materials simulation, drug discovery, ML potentials, and more." />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #f8f9fc;
+      --bg2: #ffffff;
+      --bg3: #f1f4f9;
+      --border: #e2e8f0;
+      --border-hover: #cbd5e1;
+      --text: #1b1464;
+      --muted: #64748b;
+      --muted2: #94a3b8;
+      --accent: #816cff;
+      --accent2: #5b3de8;
+      --shadow: 0 1px 3px rgba(0, 0, 0, .06), 0 4px 16px rgba(0, 0, 0, .04);
+      --shadow-hover: 0 4px 16px rgba(0, 0, 0, .1), 0 8px 32px rgba(0, 0, 0, .06);
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 58px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none
+    }
+
+    .nav-logo img {
+      height: 26px
+    }
+
+    .nav-logo span {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--text)
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color .2s
+    }
+
+    .nav-links a:hover {
+      color: var(--text)
+    }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s
+    }
+
+    .nav-cta:hover {
+      background: var(--accent2)
+    }
+
+    /* HERO */
+    .hero {
+      padding: 72px 2.5rem 60px;
+      text-align: center;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border)
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f0f0ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 99px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.4
+      }
+    }
+
+    /* Typewriter hero */
+    .hero-title-block {
+      margin-bottom: 1.5rem
+    }
+
+    .hero-logo-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 0.5rem
+    }
+
+    .hero-logo-line img {
+      height: 64px;
+      width: auto
+    }
+
+    .hero-typing-line {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: -0.01em;
+      min-height: 1.3em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45em;
+      flex-wrap: wrap
+    }
+
+    .hero-typing-line .prefix {
+      color: var(--muted);
+      white-space: nowrap
+    }
+
+    .hero-typing-word {
+      color: var(--accent);
+      min-width: 0;
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent
+    }
+
+    .hero-cursor {
+      display: inline-block;
+      width: 4px;
+      height: 1.1em;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-left: 3px;
+      vertical-align: middle;
+      animation: blink .9s step-end infinite
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    .hero-ide-line {
+      font-size: clamp(1.15rem, 2.5vw, 1.7rem);
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      letter-spacing: 0.01em
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 2.25rem;
+      line-height: 1.7
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: .875rem;
+      justify-content: center;
+      flex-wrap: wrap
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 13px 26px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .2s;
+      box-shadow: 0 2px 12px rgba(99, 102, 241, .3)
+    }
+
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-1px)
+    }
+
+    .btn-secondary {
+      background: var(--bg2);
+      border: 1px solid var(--border-hover);
+      color: var(--text);
+      border-radius: 9px;
+      padding: 13px 26px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+
+
+    /* STATS */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border)
+    }
+
+    .stat {
+      flex: 1;
+      max-width: 180px;
+      text-align: center;
+      padding: 1.75rem 1rem;
+      border-right: 1px solid var(--border)
+    }
+
+    .stat:last-child {
+      border-right: none
+    }
+
+    .stat-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      border-right: 1px solid var(--border);
+      padding: 0 1.5rem;
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent)
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: .04em
+    }
+
+    /* SECTION */
+    .section {
+      padding: 72px 2.5rem;
+      max-width: 1400px;
+      margin: 0 auto
+    }
+
+    .section-header {
+      text-align: left;
+      margin-bottom: 2.5rem
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 800;
+      margin-bottom: .5rem;
+      letter-spacing: -0.01em
+    }
+
+    .section-desc {
+      color: var(--muted);
+      max-width: 560px
+    }
+
+    /* LEVEL CARDS */
+    .levels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem
+    }
+
+    .level-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      transition: box-shadow .25s, transform .25s;
+      box-shadow: var(--shadow)
+    }
+
+    .level-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px)
+    }
+
+    .level-icon {
+      font-size: 1.75rem;
+      margin-bottom: 1rem
+    }
+
+    .level-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: .4rem
+    }
+
+    .level-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6
+    }
+
+    .level-chips {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px
+    }
+
+    .chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 3px 9px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      color: var(--muted)
+    }
+
+    /* SKILLS BROWSER */
+    .skills-bar {
+      display: flex;
+      gap: .875rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 240px
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted2)
+    }
+
+    #skill-search {
+      width: 100%;
+      padding: 10px 13px 10px 40px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color .2s
+    }
+
+    #skill-search:focus {
+      border-color: var(--accent)
+    }
+
+    #skill-search::placeholder {
+      color: var(--muted2)
+    }
+
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap
+    }
+
+    .filter-btn {
+      padding: 7px 15px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      transition: all .2s
+    }
+
+    .filter-btn:hover {
+      border-color: var(--border-hover);
+      color: var(--text)
+    }
+
+    .filter-btn.active {
+      color: #fff;
+      border-color: transparent
+    }
+
+    .filter-btn[data-cat="all"].active {
+      background: var(--accent)
+    }
+
+    .filter-btn[data-cat="materials"].active {
+      background: #3b82f6
+    }
+
+    .filter-btn[data-cat="chemistry"].active {
+      background: #22c55e
+    }
+
+    .filter-btn[data-cat="machine-learning"].active {
+      background: #8068f8
+    }
+
+    .filter-btn[data-cat="drug-discovery"].active {
+      background: #d946ef
+    }
+
+    .filter-btn[data-cat="general"].active {
+      background: #f59e0b
+    }
+
+    .skills-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem
+    }
+
+    .skills-count {
+      color: var(--muted);
+      font-size: 0.84rem
+    }
+
+    .skills-count strong {
+      color: var(--text)
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: .875rem
+    }
+
+    /* SKILL CARD */
+    .skill-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.35rem;
+      cursor: pointer;
+      transition: all .22s;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: inherit
+    }
+
+    .skill-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px)
+    }
+
+    .skill-card-top {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: .5rem;
+    }
+
+    .skill-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      word-break: break-word;
+      width: 100%;
+    }
+
+    .skill-cat {
+      font-size: 0.67rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 99px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: .05em
+    }
+
+    .cat-materials {
+      background: #eff6ff;
+      color: #1d4ed8
+    }
+
+    .cat-chemistry {
+      background: #f0fdf4;
+      color: #15803d
+    }
+
+    .cat-machine-learning {
+      background: #f3f0ff;
+      color: #5b3de8
+    }
+
+    .cat-drug-discovery {
+      background: #fdf2f8;
+      color: #a21caf
+    }
+
+    .cat-general {
+      background: #fffbeb;
+      color: #92400e
+    }
+
+    .cat-thermodynamics {
+      background: #ecfeff;
+      color: #0e7490
+    }
+
+    .skill-desc {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5
+    }
+
+    .skill-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: .25rem
+    }
+
+    .ex-badge {
+      font-size: 0.7rem;
+      color: var(--muted2);
+      display: flex;
+      align-items: center;
+      gap: 4px
+    }
+
+    .ex-badge.has-ex {
+      color: #22c55e;
+      font-weight: 600
+    }
+
+    .view-arrow {
+      font-size: 0.75rem;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity .2s
+    }
+
+    .skill-card:hover .view-arrow {
+      opacity: 1
+    }
+
+    .skill-card.hidden {
+      display: none
+    }
+
+    /* Multi-badge row */
+    .skill-cats {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      width: 100%;
+    }
+
+    /* WORKFLOWS */
+    .workflows-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem
+    }
+
+    .workflow-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      transition: all .22s;
+      text-decoration: none;
+      display: block;
+      box-shadow: var(--shadow)
+    }
+
+    .workflow-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px)
+    }
+
+    .workflow-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .5rem
+    }
+
+    .workflow-card h3 {
+      font-size: .98rem;
+      font-weight: 700;
+      margin-bottom: .4rem;
+      color: var(--text)
+    }
+
+    .workflow-card p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5
+    }
+
+    .workflow-card .wf-arrow {
+      color: var(--accent);
+      font-size: 0.8rem;
+      margin-top: .75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity .2s
+    }
+
+    .workflow-card:hover .wf-arrow {
+      opacity: 1
+    }
+
+    .guides-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem
+    }
+
+    .guide-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-decoration: none;
+      transition: all .2s;
+      display: block;
+      box-shadow: var(--shadow)
+    }
+
+    .guide-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px)
+    }
+
+    .guide-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      color: var(--accent)
+    }
+
+    .guide-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--text)
+    }
+
+    .guide-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5
+    }
+
+    /* ENV TABLE */
+    .env-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem
+    }
+
+    .env-table-wrap {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow-x: auto;
+      box-shadow: var(--shadow)
+    }
+
+    table {
+      width: 100%;
+      min-width: 580px;
+      border-collapse: collapse
+    }
+
+    th {
+      background: var(--bg3);
+      padding: 12px 18px;
+      text-align: left;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em
+    }
+
+    td {
+      padding: 11px 18px;
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem
+    }
+
+    tr:hover td {
+      background: var(--bg3)
+    }
+
+    .env-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      padding: 2px 9px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 6px
+    }
+
+    .env-scripts td {
+      color: var(--muted);
+      font-style: italic
+    }
+
+    .env-scripts:hover td {
+      background: var(--bg3);
+      color: var(--text)
+    }
+
+    /* INSTALL */
+    .install-box {
+      background: #1e293b;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow)
+    }
+
+    .install-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, .05);
+      display: flex;
+      align-items: center;
+      gap: 7px
+    }
+
+    .dot-r {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ef4444
+    }
+
+    .dot-y {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #f59e0b
+    }
+
+    .dot-g {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22c55e
+    }
+
+    pre {
+      padding: 1.4rem 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.83rem;
+      line-height: 1.85;
+      overflow-x: auto;
+      color: #e2e8f0
+    }
+
+    .c {
+      color: #94a3b8
+    }
+
+    .k {
+      color: #86efac
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      background: var(--bg2)
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none
+    }
+
+    footer a:hover {
+      color: var(--accent)
+    }
+
+    .footer-logo {
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px
+    }
+
+    .footer-logo img {
+      height: 28px;
+      width: auto
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border)
+    }
+
+    @media(max-width:768px) {
+      .nav-links {
+        display: none
+      }
+
+      .stats-row {
+        flex-wrap: wrap
+      }
+
+      .stat {
+        min-width: 50%
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#">
+      <img src="logo/atomisticskills_logo.svg" alt="AtomisticSkills" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#workflows">Workflows</a></li>
+      <li><a href="#environments">Environments</a></li>
+      <li><a href="#guides">Docs</a></li>
+      <li><a href="#install">Install</a></li>
+    </ul>
+    <a class="nav-cta" href="https://github.com/bowen-bd/AtomisticSkills" target="_blank">GitHub →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero"
+    style="padding: 72px 2.5rem 60px; text-align: center; background: var(--bg2); border-bottom: 1px solid var(--border);">
+    <div class="hero-title-block">
+      <div class="hero-logo-line"
+        style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 0.5rem;">
+        <img src="logo/atomisticskills_logo.svg" alt="AtomisticSkills logo" style="height: 64px; width: auto;" />
+      </div>
+      <div class="hero-typing-line"
+        style="display: flex; align-items: center; justify-content: center; gap: 0.45em; flex-wrap: wrap; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--muted); letter-spacing: -0.01em; min-height: 1.3em;">
+        <span class="prefix">harnessing</span>
+        <span class="hero-typing-word" id="typing-word"
+          style="color: var(--accent); background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;"></span><span
+          class="hero-cursor" id="typing-cursor"
+          style="display: inline-block; width: 4px; height: 1.1em; background: var(--accent); border-radius: 2px; margin-left: 3px; animation: blink .9s step-end infinite;"></span>
+      </div>
+      <div class="hero-ide-line"
+        style="font-size: clamp(1.15rem, 2.5vw, 1.7rem); font-weight: 500; color: var(--muted); margin-top: 0.3rem;">in
+        your agentic IDEs</div>
+    </div>
+    <div class="hero-buttons"
+      style="display: flex; gap: .875rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+      <a class="btn-primary" href="#skills" id="browse-skills-btn">Browse Skills ↓</a>
+      <a class="btn-primary" href="#install" id="install-btn">Install</a>
+      <a class="btn-secondary" href="https://github.com/bowen-bd/AtomisticSkills" target="_blank">⭐ Star on GitHub</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-num" id="stat-skills">95+</div>
+      <div class="stat-label">Research Skills</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="stat-tools">46</div>
+      <div class="stat-label">MCP Tools</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="stat-servers">17</div>
+      <div class="stat-label">Tool Servers</div>
+    </div>
+    <div class="stat-arrow">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </div>
+    <div class="stat">
+      <div class="stat-num"
+        style="font-size: 3.8rem; line-height: 0.6; margin-top: 0.2rem; margin-bottom: 0.2rem; font-weight: 400;">∞
+      </div>
+      <div class="stat-label">scientific workflows</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HIERARCHY -->
+  <!-- HIERARCHY -->
+  <section class="section" id="overview">
+    <div style="display:flex; gap:4rem; flex-wrap:wrap; align-items: stretch; max-width: 1400px; margin: 0 auto;">
+
+      <!-- Left side: Text and Cards -->
+      <div style="flex: 1; min-width: 320px;">
+        <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+          <div class="section-tag" style="justify-content: flex-start;">Framework</div>
+          <h2>Three-Level Research Hierarchy</h2>
+          <p class="section-desc" style="max-width: 100%;">A composable framework for AI-driven atomistic research.
+            Chain modular skills across
+            MLIPs, DFT, drug discovery, and generative AI — in any coding copilot.</p>
+        </div>
+        <div class="levels" style="grid-template-columns: 1fr; gap: 1.5rem;">
+          <a href="#environments" class="level-card" style="text-decoration:none; color:inherit; display:block;">
+            <div class="level-icon">📎</div>
+            <h3>Tools</h3>
+            <p>Strictly typed, battle-tested operations exposed via MCP servers. Fixed signatures for relax, MD,
+              literature search,
+              DFT I/O, and more.</p>
+            <div class="level-chips">
+              <span class="chip">mcp_mace_relax_structure</span>
+              <span class="chip">mcp_matgl_run_md</span>
+              <span class="chip">mcp_atomate2_run_vasp</span>
+            </div>
+          </a>
+          <a href="#skills" class="level-card" style="text-decoration:none; color:inherit; display:block;">
+            <div class="level-icon">⚙️</div>
+            <h3>Skills</h3>
+            <p>Mid-level tutorials combining tool calls to solve focused research problems. Each ships with SKILL.md,
+              helper
+              scripts, and runnable examples.</p>
+            <div class="level-chips">
+              <span class="chip">mat-melting-point</span>
+              <span class="chip">mat-stability</span>
+              <span class="chip">ml-mace-finetune</span>
+            </div>
+          </a>
+          <a href="#workflows" class="level-card" style="text-decoration:none; color:inherit; display:block;">
+            <div class="level-icon">🎯</div>
+            <h3>Workflows</h3>
+            <p>High-level, publication-scope research campaigns chaining multiple skills. From computational materials
+              science workflows to building atomistic ML models.</p>
+            <div class="level-chips">
+              <span class="chip">generative-halide-discovery</span>
+              <span class="chip">materials-discovery</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right side: Mock Chat Interface -->
+      <div
+        style="flex: 1; min-width: 350px; background: #fbfbfe; border: 2px solid #818cf8; border-radius: 24px; padding: 2rem 1.5rem 1rem; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(129, 140, 248, 0.1);">
+        <h3 style="font-size: 1.6rem; font-weight: 600; color: #000; margin-bottom: 2rem; margin-top: 0;">Your Agentic
+          IDE</h3>
+
+        <div style="width: 100%; display: flex; flex-direction: column; gap: 1.25rem;">
+
+          <!-- User Chat 1 -->
+          <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: flex-start;">
+            <div
+              style="color: #64748b; font-size: 0.95rem; font-weight: 600; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px;">
+              Is Li₃MCl₆ a good Li-ion conductor?</div>
+            <div
+              style="width: 34px; height: 34px; border: 2px solid #64748b; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Agent Chat 1 -->
+          <div style="display: flex; gap: 12px; justify-content: flex-start; align-items: flex-start;">
+            <div
+              style="width: 32px; height: 32px; background: #6b6bff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="13" rx="3.5"></rect>
+                <line x1="7" y1="10.5" x2="7" y2="13.5" stroke-width="3"></line>
+                <line x1="11" y1="10.5" x2="11" y2="13.5" stroke-width="3"></line>
+              </svg>
+            </div>
+            <div
+              style="display: flex; flex-direction: column; gap: 8px; flex: 1; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px;">
+              <div style="color: #64748b; font-size: 0.95rem; font-weight: 600; line-height: 1.4;">here is the research
+                plan for you to review:</div>
+              <div
+                style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 6px; padding-left:25px;">
+                <span style="color: #60a5fa;">M↓</span> Analyzed: <span style="color: #000;">SKILL.md</span>
+              </div>
+
+              <!-- DAG Diagram -->
+              <div style="display: flex; align-items: center; gap: 10px; margin: 8px 0 8px 10px;">
+                <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                  <div
+                    style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px 10px; font-size: 0.75rem; color: #64748b; font-weight: 600; background: white; display: flex; align-items: center; gap: 4px;">
+                    📎 Tool 1</div>
+                  <div style="color: #93c5fd;">↓</div>
+                  <div
+                    style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px 10px; font-size: 0.75rem; color: #64748b; font-weight: 600; background: white; display: flex; align-items: center; gap: 4px;">
+                    📎 Tool 2</div>
+                </div>
+                <div style="color: #93c5fd;">→</div>
+                <div style="display: flex; gap: 8px; overflow-x: auto;">
+                  <!-- Skill Block 1 -->
+                  <div
+                    style="background: #f1f5f9; border-radius: 12px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                    <div
+                      style="font-size: 0.8rem; font-weight: 700; color: #000; display: flex; align-items: center; gap: 4px;">
+                      ⚙️ Skill 1</div>
+                    <div style="display: flex; gap: 6px; font-size: 0.75rem; align-items: center;"><span
+                        style="color: #60a5fa;">M↓</span> 📎</div>
+                  </div>
+                  <div style="color: #93c5fd; display: flex; align-items: center;">→</div>
+                  <!-- Skill Block 2 -->
+                  <div
+                    style="background: #f1f5f9; border-radius: 12px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                    <div
+                      style="font-size: 0.8rem; font-weight: 700; color: #000; display: flex; align-items: center; gap: 4px;">
+                      ⚙️ Skill 2</div>
+                    <div style="display: flex; gap: 6px; font-size: 0.75rem; align-items: center;"><span
+                        style="color: #60a5fa;">M↓</span> 📎</div>
+                  </div>
+                  <div style="color: #93c5fd; display: flex; align-items: center;">→</div>
+                  <!-- Skill Block 3 -->
+                  <div
+                    style="background: #f1f5f9; border-radius: 12px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                    <div
+                      style="font-size: 0.8rem; font-weight: 700; color: #000; display: flex; align-items: center; gap: 4px;">
+                      ⚙️ Skill 3</div>
+                    <div style="display: flex; gap: 6px; font-size: 0.75rem; align-items: center;"><span
+                        style="color: #60a5fa;">M↓</span> 💾 💾</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Buttons -->
+              <div style="display: flex; gap: 8px; justify-content: center; width: 100%; margin-top: 0px;">
+                <div
+                  style="background: #94a3b8; color: white; border-radius: 6px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700;">
+                  Proceed</div>
+                <div
+                  style="background: #cbd5e1; color: white; border-radius: 6px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700;">
+                  Open</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Chat 2 -->
+          <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: flex-start; margin-top: 4px;">
+            <div
+              style="color: #64748b; font-size: 0.95rem; font-weight: 600; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px;">
+              Proceed</div>
+            <div
+              style="width: 34px; height: 34px; border: 2px solid #64748b; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Agent Chat 2 -->
+          <div style="display: flex; gap: 12px; justify-content: flex-start; align-items: flex-start; margin-top: 6px;">
+            <div
+              style="width: 32px; height: 32px; background: #6b6bff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="13" rx="3.5"></rect>
+                <line x1="7" y1="10.5" x2="7" y2="13.5" stroke-width="3"></line>
+                <line x1="11" y1="10.5" x2="11" y2="13.5" stroke-width="3"></line>
+              </svg>
+            </div>
+            <div
+              style="display: flex; flex-direction: column; gap: 8px; flex: 1; background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px;">
+              <div
+                style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                📎 MCP tool: <span style="color: #000;">search_literature</span>
+              </div>
+              <div
+                style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                📎 MCP tool: <span style="color: #000;">search_materials_project</span>
+              </div>
+              <div
+                style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                ⚙️ SKILL: <span style="color: #000;">ml-foundation-potentials</span>
+              </div>
+              <div
+                style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 6px; padding-left: 20px;">
+                <span style="color: #60a5fa;">M↓</span> Analyzed: <span style="color: #000;">SKILL.md</span>
+              </div>
+              <div
+                style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                ⚙️ SKILL: <span style="color: #000;">general-molecular-dynamics</span>
+              </div>
+              <!-- Mock Terminal -->
+              <div
+                style="border: 1px solid #cbd5e1; border-radius: 8px; background: white; margin: 2px 0 2px 20px; overflow: hidden; max-width: 90%;">
+                <div
+                  style="padding: 6px 12px; font-size: 0.70rem; font-weight: 600; border-bottom: 1px solid #cbd5e1; color: #000;">
+                  Ran background command</div>
+                <div
+                  style="padding: 6px 12px; font-size: 0.70rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  ~/.../AtomisticSkills $ <span style="color: #000;">conda run -n matgl-agent python ...</span>
+                </div>
+              </div>
+              <div
+                style="color: #94a3b8; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                ⚙️ SKILL: <span style="color: #000;">mat-diffusion-analysis</span>
+              </div>
+              <div style="color: #475569; text-align: center; margin-top: 0px; font-weight: 800; padding-right: 40px;">⋮
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Input field -->
+          <div
+            style="width: 100%; background: white; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span style="color: #cbd5e1; font-size: 0.95rem; font-weight: 600;">here is a sentence...</span>
+            <div style="display: flex; gap: 6px;">
+              <div style="width: 22px; height: 12px; border-radius: 8px; background: #cbd5e1; margin-right: 4px;"></div>
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: #cbd5e1;"></div>
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: #cbd5e1;"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS BROWSER -->
+  <section class="section" id="skills">
+    <div class="section-header">
+      <div class="section-tag">Skills Library</div>
+      <h2>Browse Research Skills</h2>
+      <p class="section-desc">Click any skill to view its full documentation and example runs.</p>
+    </div>
+
+    <div class="skills-bar">
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input id="skill-search" type="text" placeholder="Search skills by name or keyword…" />
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="materials">MAT</button>
+        <button class="filter-btn" data-cat="chemistry">CHEM</button>
+        <button class="filter-btn" data-cat="machine-learning">ML</button>
+        <button class="filter-btn" data-cat="drug-discovery">DRUG</button>
+        <button class="filter-btn" data-cat="general">GENERAL</button>
+      </div>
+    </div>
+
+    <div class="skills-meta">
+      <div class="skills-count">Showing <strong id="skill-count">95</strong> skills</div>
+    </div>
+
+    <div class="skills-grid" id="skills-grid"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- WORKFLOWS -->
+  <section class="section" id="workflows">
+    <div class="section-header">
+      <div class="section-tag">Workflows</div>
+      <h2>Example end-to-end scientific workflows</h2>
+      <p class="section-desc">Pre-built pipelines for complex multi-stage research objectives.</p>
+    </div>
+    <div class="workflows-grid" id="workflows-grid"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ENVIRONMENTS -->
+  <section class="section" id="environments">
+    <div class="section-header">
+      <div class="section-tag">Environments</div>
+      <h2>Isolated Tool Environments</h2>
+      <p class="section-desc">Each environment is fully isolated to prevent dependency conflicts. Environments marked
+        <span class="env-tag">MCP</span> expose tools directly to your AI agent; others are used via skills scripts.
+      </p>
+    </div>
+    <div class="env-wrap">
+      <p
+        style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.2rem">
+        MCP Server Environments</p>
+      <div class="env-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>MCP Server</th>
+              <th style="text-align:center">Tools</th>
+              <th>Conda Env</th>
+              <th>Core Libraries</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="servers/base.html" style="text-decoration:none"><span class="env-tag">base</span></a></td>
+              <td style="text-align:center"></td>
+              <td>base-agent</td>
+              <td>pymatgen, ase, rdkit, packmol</td>
+              <td>MP queries, VASP I/O, structure tools</td>
+            </tr>
+            <tr>
+              <td><a href="servers/mace.html" style="text-decoration:none"><span class="env-tag">mace</span></a></td>
+              <td style="text-align:center"></td>
+              <td>mace-agent</td>
+              <td>mace-torch</td>
+              <td>MACE models (MP, OMAT, MATPES, MH)</td>
+            </tr>
+            <tr>
+              <td><a href="servers/matgl.html" style="text-decoration:none"><span class="env-tag">matgl</span></a></td>
+              <td style="text-align:center"></td>
+              <td>matgl-agent</td>
+              <td>matgl, dgl</td>
+              <td>CHGNet, M3GNet, TensorNet</td>
+            </tr>
+            <tr>
+              <td><a href="servers/fairchem.html" style="text-decoration:none"><span class="env-tag">fairchem</span></a>
+              </td>
+              <td style="text-align:center"></td>
+              <td>fairchem-agent</td>
+              <td>fairchem-core</td>
+              <td>UMA, ESEN models (OMAT, OMol, OC20)</td>
+            </tr>
+            <tr>
+              <td><a href="servers/atomate2.html" style="text-decoration:none"><span class="env-tag">atomate2</span></a>
+              </td>
+              <td style="text-align:center"></td>
+              <td>atomate2-agent</td>
+              <td>atomate2, jobflow-remote</td>
+              <td>Remote DFT workflows via NERSC/HPC</td>
+            </tr>
+            <tr>
+              <td><a href="servers/smol.html" style="text-decoration:none"><span class="env-tag">smol</span></a></td>
+              <td style="text-align:center"></td>
+              <td>smol-agent</td>
+              <td>smol</td>
+              <td>Cluster expansion + Monte Carlo</td>
+            </tr>
+            <tr>
+              <td><a href="servers/drugdisc.html" style="text-decoration:none"><span class="env-tag">drugdisc</span></a>
+              </td>
+              <td style="text-align:center"></td>
+              <td>drugdisc-agent</td>
+              <td>rdkit, autodock-vina, meeko</td>
+              <td>Docking, ADMET, fingerprints</td>
+            </tr>
+            <tr>
+              <td><a href="servers/mattergen.html" style="text-decoration:none"><span
+                    class="env-tag">mattergen</span></a></td>
+              <td style="text-align:center"></td>
+              <td>mattergen-agent</td>
+              <td>MatterGen, PyG, lightning</td>
+              <td>Generative crystal design</td>
+            </tr>
+            <tr>
+              <td><a href="servers/adit.html" style="text-decoration:none"><span class="env-tag">adit</span></a></td>
+              <td style="text-align:center"></td>
+              <td>adit-agent</td>
+              <td>ADiT, lightning, hydra, PyG</td>
+              <td>All-atom diffusion generation</td>
+            </tr>
+            <tr>
+              <td><a href="servers/diffcsp.html" style="text-decoration:none"><span class="env-tag">diffcsp</span></a>
+              </td>
+              <td style="text-align:center"></td>
+              <td>diffcsp-agent</td>
+              <td>DiffCSP++, hydra, PyG, pyxtal</td>
+              <td>Symmetry-constrained crystal generation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p
+        style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:.25rem 0 .2rem">
+        Script-Only Environments <span style="font-weight:400;text-transform:none;letter-spacing:0">(no MCP server —
+          invoked via conda run)</span></p>
+      <div class="env-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Conda Env</th>
+              <th>Core Libraries</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="env-scripts">
+              <td>xrd-agent</td>
+              <td>DARA, pymatgen</td>
+              <td>XRD phase analysis &amp; Rietveld refinement</td>
+            </tr>
+            <tr class="env-scripts">
+              <td>orca-agent</td>
+              <td>scine_utilities, scine_readuct, ase</td>
+              <td>DFT/CC single-points, TS optimization (ORCA)</td>
+            </tr>
+            <tr class="env-scripts">
+              <td>calphad-agent</td>
+              <td>pycalphad, pymatgen</td>
+              <td>CALPHAD phase &amp; property diagrams</td>
+            </tr>
+            <tr class="env-scripts">
+              <td>phasefield-agent</td>
+              <td>fipy, scipy, imageio</td>
+              <td>Phase-field simulations (Allen-Cahn, Cahn-Hilliard)</td>
+            </tr>
+            <tr class="env-scripts">
+              <td>nmr-agent</td>
+              <td>nmrsim, nmrglue</td>
+              <td>NMR prediction &amp; Wasserstein deconvolution</td>
+            </tr>
+            <tr class="env-scripts">
+              <td>react-ot-agent</td>
+              <td>PyTorch</td>
+              <td>Transition state generation via React-OT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- GUIDES -->
+  <section class="section" id="guides">
+    <div class="section-header">
+      <div class="section-tag">Documentation</div>
+      <h2>Guides &amp; Resources</h2>
+      <p class="section-desc">In-depth guides for developing new skills, managing environments, and data visualization.
+      </p>
+    </div>
+    <div class="guides-grid" id="guides-grid"></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- INSTALL -->
+  <section class="section" id="install">
+    <div class="section-header" style="text-align: center; margin-bottom: 2rem;">
+      <div class="section-tag" style="justify-content: center;">Quick Start</div>
+      <h2>Get Started in Minutes</h2>
+      <p class="section-desc" style="margin: 0 auto; max-width: 600px;">
+        AtomisticSkills is designed to work directly with agentic IDEs. Follow these simple steps:
+      </p>
+    </div>
+
+    <div class="install-box"
+      style="margin: 0 auto; max-width: 750px; text-align: left; background: var(--bg2); padding: 2.5rem; border-radius: 12px; border: 1px solid var(--border);">
+      <ol style="color: var(--text); padding-left: 1.5rem; line-height: 1.8; font-size: 1.05rem;">
+        <li style="margin-bottom: 1.5rem;">
+          <strong>Clone the repository</strong>:
+          <pre
+            style="position: relative; margin-top: 0.8rem; background: #f8fafc; color: #334155; border: 1px solid var(--border); padding: 1rem; padding-right: 3rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;"><span style="color: #10b981; font-weight: 600;">git clone</span> <span style="color: #94a3b8;">git@github.com:bowen-bd/AtomisticSkills.git && cd AtomisticSkills</span><button onclick="navigator.clipboard.writeText('git clone git@github.com:bowen-bd/AtomisticSkills.git && cd AtomisticSkills'); this.innerText = '✅'; setTimeout(() => { this.innerText = '📋' }, 2000)" style="position: absolute; right: 10px; top: 12px; background: transparent; border: none; cursor: pointer; font-size: 1.1rem; opacity: 0.5; transition: opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5" title="Copy to clipboard">📋</button></pre>
+        </li>
+        <li style="margin-bottom: 1.5rem;">
+          <strong>Open the repository as a project in an agentic IDE</strong> (e.g., Cursor, Claude Code, Roo,
+          Antigravity, VS Code, etc.).
+        </li>
+        <li>
+          <strong>Ask the agent to install AtomisticSkills for you.</strong>
+          <div
+            style="background: #f1f5f9; border-radius: 12px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 0.8rem; border: 1px solid var(--border);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div
+                style="background: var(--accent); color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(129, 108, 255, 0.3);">
+                👤</div>
+              <div style="font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--text); font-weight: 500;">
+                Install AtomisticSkills according to its docs/setup.md guide</div>
+            </div>
+            <button
+              onclick="navigator.clipboard.writeText('Install AtomisticSkills according to its docs/setup.md guide'); this.innerText = '✅'; setTimeout(() => { this.innerText = '📋' }, 2000)"
+              style="background: transparent; border: none; cursor: pointer; font-size: 1.1rem; opacity: 0.5; transition: opacity 0.2s; flex-shrink: 0;"
+              onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5"
+              title="Copy to clipboard">📋</button>
+          </div>
+        </li>
+      </ol>
+      <div style="margin-top: 2rem; display: flex; justify-content: center;">
+        <a style="font-size: 0.95rem; color: #64748b; text-decoration: none; font-weight: 500; transition: color 0.2s;"
+          onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='#64748b'"
+          href="setup.html">Prefer manual installation? View setup guide →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="logo/atomisticskills_logo.svg" alt="AtomisticSkills" />
+    </div>
+    <p>Open-sourced AI research infrastructure.</p>
+    <p style="margin-top:.5rem">
+      <a href="https://github.com/bowen-bd/AtomisticSkills" target="_blank">GitHub</a> ·
+      <a href="https://github.com/bowen-bd/AtomisticSkills/blob/main/LICENSE" target="_blank">MIT License</a> ·
+      <a href="https://github.com/bowen-bd/AtomisticSkills/blob/main/README.md" target="_blank">Docs</a>
+    </p>
+  </footer>
+
+  <script src="skills_index.js?2026041400"></script>
+  <script>
+
+    const GUIDES = [
+      { id: "setup", title: "Quick Start & Setup", desc: "Interactive agent-ready setup flow and environment installation guide.", icon: "🚀" },
+      { id: "developer_guide", title: "Developer Guide", desc: "Best practices for implementing modular research skills and tools.", icon: "🛠️" },
+      { id: "environment_variables", title: "Environment Variables", desc: "Configuration guide for Materials Project keys and custom MLIP backend paths.", icon: "⚙️" },
+      { id: "visualize_structure", title: "Structure Visualization", desc: "How to generate high-quality publications-ready crystal and molecule renders.", icon: "🎨" },
+      { id: "mcp_stdio_redirection", title: "STDIO Redirection", desc: "File-descriptor level log output control for Python-based MCP servers.", icon: "🔧" }
+    ];
+
+    const CAT_LABEL = {
+      materials: "MAT", chemistry: "CHEM",
+      "machine-learning": "ML", "drug-discovery": "DRUG",
+      general: "GENERAL"
+    };
+
+    // Render workflows
+    const wg = document.getElementById('workflows-grid');
+    if (window.WORKFLOWS_DATA) {
+      window.WORKFLOWS_DATA.forEach(w => {
+        const a = document.createElement('a');
+        a.className = 'workflow-card';
+        a.href = `workflows/${w.id}.html`;
+        a.innerHTML = `<div class="workflow-tag">Workflow</div><h3>${w.title}</h3><p>${w.description}</p><span class="wf-arrow">View details →</span>`;
+        wg.appendChild(a);
+      });
+    } else {
+      wg.innerHTML = '<p style="color:var(--muted)">Workflows index not found. Run <code>python site/build_skills.py</code> first.</p>';
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGuides();
+      if (window.SKILLS_DATA) {
+        renderSkills(window.SKILLS_DATA);
+      } else {
+        document.getElementById('skills-grid').innerHTML = '<p style="color:var(--muted)">Skills index not found. Run <code>python site/build_skills.py</code> first.</p>';
+      }
+
+      if (window.ATOMISTIC_STATS) {
+        document.getElementById('stat-skills').innerText = window.ATOMISTIC_STATS.skills + "+";
+        document.getElementById('stat-tools').innerText = window.ATOMISTIC_STATS.tools;
+        document.getElementById('stat-servers').innerText = window.ATOMISTIC_STATS.servers;
+        // Updating the button as well
+        document.getElementById('browse-skills-btn').innerText = `Browse ${window.ATOMISTIC_STATS.skills}+ Skills ↓`;
+      }
+    });
+
+    function catBadges(cats) {
+      const list = Array.isArray(cats) ? cats : [cats];
+      return list.map(c => {
+        const label = CAT_LABEL[c] || c;
+        return `<span class="skill-cat cat-${c}">${label}</span>`;
+      }).join('');
+    }
+
+    let allCards = [];
+    function renderSkills(skills) {
+      const grid = document.getElementById('skills-grid');
+      document.getElementById('skill-count').textContent = skills.length;
+      skills.forEach(s => {
+        const a = document.createElement('a');
+        a.className = 'skill-card';
+        a.href = `skills/${s.id}.html`;
+        a.dataset.cats = (Array.isArray(s.category) ? s.category : [s.category]).join(',');
+        a.dataset.name = (s.name || '').toLowerCase();
+        a.dataset.desc = (s.description || '').toLowerCase();
+        const exText = s.has_examples
+          ? `<span class="ex-badge has-ex">✦ ${s.num_examples} example${s.num_examples > 1 ? 's' : ''}</span>`
+          : `<span class="ex-badge">No examples</span>`;
+        a.innerHTML = `
+      <div class="skill-card-top">
+        <div class="skill-name">${s.name}</div>
+        <div class="skill-cats">${catBadges(s.category)}</div>
+      </div>
+      <div class="skill-desc">${s.description}</div>
+      <div class="skill-footer">${exText}<span class="view-arrow">View docs →</span></div>`;
+        grid.appendChild(a);
+        allCards.push(a);
+      });
+    }
+
+    function renderGuides() {
+      const grid = document.getElementById('guides-grid');
+      GUIDES.forEach(g => {
+        const card = document.createElement('a');
+        card.href = `${g.id}.html`;
+        card.className = 'guide-card';
+        card.innerHTML = `
+      <div class="guide-icon">${g.icon}</div>
+      <h3>${g.title}</h3>
+      <p>${g.desc}</p>
+    `;
+        grid.appendChild(card);
+      });
+    }
+
+    // ── Typewriter animation ──────────────────────────────────────────────
+    const TYPING_WORDS = [
+      'atomistic simulation',
+      'materials databases',
+      'literature reading',
+      'density functional theory',
+      'graph neural networks',
+      'molecular dynamics',
+      'ML force fields',
+      'computational chemistry',
+      'molecular generation',
+      'phase diagrams',
+      'molecular docking',
+      'thermodynamics',
+      'synthesis recommendation',
+      'diffraction pattern analysis',
+    ];
+    const typingEl = document.getElementById('typing-word');
+    const cursorEl = document.getElementById('typing-cursor');
+    let twIdx = 0, twChar = 0, twDeleting = false, twPause = 0;
+    const TYPE_SPEED = 52, DELETE_SPEED = 28, PAUSE_AFTER = 1600, PAUSE_BEFORE = 220;
+    function typeStep() {
+      const word = TYPING_WORDS[twIdx];
+      if (twPause > 0) { twPause -= 16; setTimeout(typeStep, 16); return; }
+      if (!twDeleting) {
+        twChar++;
+        typingEl.textContent = word.slice(0, twChar);
+        if (twChar === word.length) { twDeleting = true; twPause = PAUSE_AFTER; }
+        setTimeout(typeStep, TYPE_SPEED + Math.random() * 22);
+      } else {
+        twChar--;
+        typingEl.textContent = word.slice(0, twChar);
+        if (twChar === 0) {
+          twDeleting = false;
+          twPause = PAUSE_BEFORE;
+          twIdx = (twIdx + 1) % TYPING_WORDS.length;
+        }
+        setTimeout(typeStep, DELETE_SPEED);
+      }
+    }
+    typeStep();
+
+    // Filter logic
+    let activeFilter = 'all';
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.cat;
+        applyFilters();
+      });
+    });
+    document.getElementById('skill-search').addEventListener('input', applyFilters);
+
+    function applyFilters() {
+      const q = document.getElementById('skill-search').value.toLowerCase();
+      let count = 0;
+      allCards.forEach(c => {
+        const catMatch = activeFilter === 'all' || c.dataset.cats.split(',').includes(activeFilter);
+        const textMatch = !q || c.dataset.name.includes(q) || c.dataset.desc.includes(q);
+        const show = catMatch && textMatch;
+        c.classList.toggle('hidden', !show);
+        if (show) count++;
+      });
+      document.getElementById('skill-count').textContent = count;
+    }
+
+    // Inject server tools count
+    if (window.SERVER_TOOLS_COUNT) {
+      document.querySelectorAll('.env-table-wrap .env-tag').forEach(tag => {
+        const id = tag.textContent.trim();
+        if (window.SERVER_TOOLS_COUNT[id] !== undefined) {
+          const toolsTd = tag.closest('td').nextElementSibling;
+          if (toolsTd && toolsTd.tagName === 'TD') {
+            toolsTd.innerHTML = `<span style="opacity:0.8; font-weight:500">${window.SERVER_TOOLS_COUNT[id]}</span>`;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

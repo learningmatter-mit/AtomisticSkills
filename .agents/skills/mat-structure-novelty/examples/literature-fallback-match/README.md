@@ -6,7 +6,7 @@ In this case, we use `Li2ZrCl6` (LZC)—a known halide solid-state electrolyte (
 
 ## Run Instructions
 
-1. Attempting to search MP for candidate structures would fail or yield no candidates. But you can run the matcher on the target structure anyway. We provide `Li2ZrCl6.cif` as the test structure.
+1. Attempting to search MP for candidate structures would fail or yield no candidates. But you can run the matcher on the target structure anyway. We provide [Li2ZrCl6.cif](Li2ZrCl6.cif) as the test structure.
 
 2. Run the script:
 

@@ -178,6 +178,10 @@ def main():
     output_path = Path(args.output)
     visualize_magnetic_structure(structure_path, moments_data, output_path)
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)
+
 
 if __name__ == "__main__":
     main()

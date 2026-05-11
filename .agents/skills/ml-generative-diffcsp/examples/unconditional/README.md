@@ -23,5 +23,5 @@ python .agents/skills/ml-generative-diffcsp/scripts/unconditional_generate.py \
 
 ## Files
 
-- `structure_0000.cif` — Example generated structure
+- [structure_0000.cif](structure_0000.cif) — Example generated structure
 - `generation_metadata.json` — Generation parameters

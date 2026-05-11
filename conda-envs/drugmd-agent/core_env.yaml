@@ -1,0 +1,21 @@
+name: drugmd-agent
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - openmm>=8.1
+  - pdbfixer
+  - parmed
+  - pymol-open-source
+  - pip
+  - pip:
+    - mcp
+    - openff-toolkit
+    - openmmforcefields
+    - openff-interchange
+    - mdanalysis
+    - prolif
+    - rdkit
+    - scipy
+    - matplotlib
+    - requests

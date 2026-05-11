@@ -4,10 +4,10 @@ This example demonstrates calculating the adsorption energy of a CO molecule on 
 
 ## Files
 
-- `Cu_bulk.cif`: FCC Cu bulk structure (mp-30 from Materials Project)
-- `CO.xyz`: CO molecule with optimized gas-phase geometry
-- `CO_Cu111_initial.cif`: Initial structure of CO adsorbed on Cu(111) slab
-- `CO_Cu111_relaxed.cif`: Relaxed structure after optimization (example)
+- [Cu_bulk.cif](examples/CO_on_Cu111/Cu_bulk.cif): FCC Cu bulk structure (mp-30 from Materials Project)
+- [CO.xyz](examples/CO_on_Cu111/CO.xyz): CO molecule with optimized gas-phase geometry
+- [CO_Cu111_initial.cif](examples/CO_on_Cu111/CO_Cu111_initial.cif): Initial structure of CO adsorbed on Cu(111) slab
+- [CO_Cu111_relaxed.cif](examples/CO_on_Cu111/CO_Cu111_relaxed.cif): Relaxed structure after optimization (example)
 - `adsorption_results.json`: Example output showing calculated adsorption energies
 
 ## Running the Calculation

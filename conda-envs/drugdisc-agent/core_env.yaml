@@ -5,6 +5,7 @@ dependencies:
   - python=3.11
   - vina
   - pdbfixer
+  - fpocket
   - pip
   - pip:
     - mcp
@@ -17,3 +18,5 @@ dependencies:
     - dimorphite_dl
     - requests
     - matplotlib
+    - posebusters
+    - MDAnalysis

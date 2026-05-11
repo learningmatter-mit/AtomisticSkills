@@ -361,6 +361,10 @@ def main():
     if num_success == 0:
         sys.exit(1)
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 
 if __name__ == "__main__":
     main()

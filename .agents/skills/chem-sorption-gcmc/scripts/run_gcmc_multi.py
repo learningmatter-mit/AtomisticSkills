@@ -460,6 +460,10 @@ def main(argv: Optional[list[str]] = None) -> int:
     write_gcmc_results_json(gcmc_json_path, payload)
     LOGGER.info("Wrote %s", gcmc_json_path)
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
     # Remove traj/log and .npy intermediates; keep JSON and PNGs
     cleanup_paths = [traj_path, log_path, out_dir / "energy.npy"]
     for name in species_names:

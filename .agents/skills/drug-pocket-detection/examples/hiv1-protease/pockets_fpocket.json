@@ -1,0 +1,874 @@
+{
+    "protein": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/drug-pocket-detection/examples/hiv1-protease/1HSG_protein.pdb",
+    "backend": "fpocket",
+    "backend_version": "4.0",
+    "backend_command": [
+        "/Users/matthewcox/miniforge3/envs/drugdisc-agent/bin/fpocket",
+        "-f",
+        "/var/folders/g9/q8qv40895cv4llyvvlj1b_380000gn/T/pocket_detect_173zl7ai/1HSG_protein.pdb"
+    ],
+    "n_pockets": 5,
+    "residue_cutoff_a": 5.0,
+    "pockets": [
+        {
+            "rank": 1,
+            "id": "pocket_1",
+            "fpocket_index": 1,
+            "druggability_score": 0.05,
+            "fpocket_score": 0.094,
+            "volume_a3": 1609.225,
+            "n_alpha_spheres": 157,
+            "hydrophobicity_score": 28.5,
+            "polarity_score": 5.0,
+            "center": {
+                "x": 13.552184713375794,
+                "y": 21.834299363057323,
+                "z": 6.35915923566879
+            },
+            "bounding_box": {
+                "min": [
+                    4.133,
+                    13.958,
+                    1.338
+                ],
+                "max": [
+                    21.157,
+                    28.486,
+                    13.787
+                ]
+            },
+            "residues": [
+                {
+                    "chain": "A",
+                    "resnum": 8,
+                    "resname": "ARG",
+                    "icode": "",
+                    "one_letter": "R",
+                    "label": "A:ARG8"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 23,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "A:LEU23"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 25,
+                    "resname": "ASP",
+                    "icode": "",
+                    "one_letter": "D",
+                    "label": "A:ASP25"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 27,
+                    "resname": "GLY",
+                    "icode": "",
+                    "one_letter": "G",
+                    "label": "A:GLY27"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 28,
+                    "resname": "ALA",
+                    "icode": "",
+                    "one_letter": "A",
+                    "label": "A:ALA28"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 29,
+                    "resname": "ASP",
+                    "icode": "",
+                    "one_letter": "D",
+                    "label": "A:ASP29"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 30,
+                    "resname": "ASP",
+                    "icode": "",
+                    "one_letter": "D",
+                    "label": "A:ASP30"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 31,
+                    "resname": "THR",
+                    "icode": "",
+                    "one_letter": "T",
+                    "label": "A:THR31"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 32,
+                    "resname": "VAL",
+                    "icode": "",
+                    "one_letter": "V",
+                    "label": "A:VAL32"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 47,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "A:ILE47"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 48,
+                    "resname": "GLY",
+                    "icode": "",
+                    "one_letter": "G",
+                    "label": "A:GLY48"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 49,
+                    "resname": "GLY",
+                    "icode": "",
+                    "one_letter": "G",
+                    "label": "A:GLY49"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 50,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "A:ILE50"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 76,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "A:LEU76"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 80,
+                    "resname": "THR",
+                    "icode": "",
+                    "one_letter": "T",
+                    "label": "A:THR80"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 81,
+                    "resname": "PRO",
+                    "icode": "",
+                    "one_letter": "P",
+                    "label": "A:PRO81"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 82,
+                    "resname": "VAL",
+                    "icode": "",
+                    "one_letter": "V",
+                    "label": "A:VAL82"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 84,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "A:ILE84"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 8,
+                    "resname": "ARG",
+                    "icode": "",
+                    "one_letter": "R",
+                    "label": "B:ARG8"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 23,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU23"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 25,
+                    "resname": "ASP",
+                    "icode": "",
+                    "one_letter": "D",
+                    "label": "B:ASP25"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 27,
+                    "resname": "GLY",
+                    "icode": "",
+                    "one_letter": "G",
+                    "label": "B:GLY27"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 28,
+                    "resname": "ALA",
+                    "icode": "",
+                    "one_letter": "A",
+                    "label": "B:ALA28"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 29,
+                    "resname": "ASP",
+                    "icode": "",
+                    "one_letter": "D",
+                    "label": "B:ASP29"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 30,
+                    "resname": "ASP",
+                    "icode": "",
+                    "one_letter": "D",
+                    "label": "B:ASP30"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 31,
+                    "resname": "THR",
+                    "icode": "",
+                    "one_letter": "T",
+                    "label": "B:THR31"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 32,
+                    "resname": "VAL",
+                    "icode": "",
+                    "one_letter": "V",
+                    "label": "B:VAL32"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 45,
+                    "resname": "LYS",
+                    "icode": "",
+                    "one_letter": "K",
+                    "label": "B:LYS45"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 46,
+                    "resname": "MET",
+                    "icode": "",
+                    "one_letter": "M",
+                    "label": "B:MET46"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 47,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "B:ILE47"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 48,
+                    "resname": "GLY",
+                    "icode": "",
+                    "one_letter": "G",
+                    "label": "B:GLY48"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 49,
+                    "resname": "GLY",
+                    "icode": "",
+                    "one_letter": "G",
+                    "label": "B:GLY49"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 50,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "B:ILE50"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 53,
+                    "resname": "PHE",
+                    "icode": "",
+                    "one_letter": "F",
+                    "label": "B:PHE53"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 76,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU76"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 80,
+                    "resname": "THR",
+                    "icode": "",
+                    "one_letter": "T",
+                    "label": "B:THR80"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 81,
+                    "resname": "PRO",
+                    "icode": "",
+                    "one_letter": "P",
+                    "label": "B:PRO81"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 82,
+                    "resname": "VAL",
+                    "icode": "",
+                    "one_letter": "V",
+                    "label": "B:VAL82"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 84,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "B:ILE84"
+                }
+            ],
+            "n_residues": 39,
+            "raw_metrics": {
+                "Score": 0.094,
+                "Druggability Score": 0.05,
+                "Number of Alpha Spheres": 157.0,
+                "Total SASA": 358.866,
+                "Polar SASA": 154.777,
+                "Apolar SASA": 204.089,
+                "Volume": 1609.225,
+                "Mean local hydrophobic density": 36.338,
+                "Mean alpha sphere radius": 4.104,
+                "Mean alp. sph. solvent access": 0.472,
+                "Apolar alpha sphere proportion": 0.414,
+                "Hydrophobicity score": 28.5,
+                "Volume score": 3.833,
+                "Polarity score": 5.0,
+                "Charge score": -1.0,
+                "Proportion of polar atoms": 38.554,
+                "Alpha sphere density": 8.294,
+                "Cent. of mass - Alpha Sphere max dist": 21.97,
+                "Flexibility": 0.0
+            }
+        },
+        {
+            "rank": 2,
+            "id": "pocket_4",
+            "fpocket_index": 4,
+            "druggability_score": 0.003,
+            "fpocket_score": -0.017,
+            "volume_a3": 444.381,
+            "n_alpha_spheres": 32,
+            "hydrophobicity_score": 23.545,
+            "polarity_score": 4.0,
+            "center": {
+                "x": 18.28865625,
+                "y": 17.1410625,
+                "z": -18.58278125
+            },
+            "bounding_box": {
+                "min": [
+                    16.607,
+                    12.518,
+                    -22.179
+                ],
+                "max": [
+                    20.477,
+                    21.094,
+                    -16.186
+                ]
+            },
+            "residues": [
+                {
+                    "chain": "B",
+                    "resnum": 14,
+                    "resname": "LYS",
+                    "icode": "",
+                    "one_letter": "K",
+                    "label": "B:LYS14"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 15,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "B:ILE15"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 16,
+                    "resname": "GLY",
+                    "icode": "",
+                    "one_letter": "G",
+                    "label": "B:GLY16"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 17,
+                    "resname": "GLY",
+                    "icode": "",
+                    "one_letter": "G",
+                    "label": "B:GLY17"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 38,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU38"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 39,
+                    "resname": "PRO",
+                    "icode": "",
+                    "one_letter": "P",
+                    "label": "B:PRO39"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 61,
+                    "resname": "GLN",
+                    "icode": "",
+                    "one_letter": "Q",
+                    "label": "B:GLN61"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 62,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "B:ILE62"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 63,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU63"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 64,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "B:ILE64"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 65,
+                    "resname": "GLU",
+                    "icode": "",
+                    "one_letter": "E",
+                    "label": "B:GLU65"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 70,
+                    "resname": "LYS",
+                    "icode": "",
+                    "one_letter": "K",
+                    "label": "B:LYS70"
+                }
+            ],
+            "n_residues": 12,
+            "raw_metrics": {
+                "Score": -0.017,
+                "Druggability Score": 0.003,
+                "Number of Alpha Spheres": 32.0,
+                "Total SASA": 125.648,
+                "Polar SASA": 41.114,
+                "Apolar SASA": 84.534,
+                "Volume": 444.381,
+                "Mean local hydrophobic density": 8.2,
+                "Mean alpha sphere radius": 4.007,
+                "Mean alp. sph. solvent access": 0.533,
+                "Apolar alpha sphere proportion": 0.312,
+                "Hydrophobicity score": 23.545,
+                "Volume score": 4.091,
+                "Polarity score": 4.0,
+                "Charge score": 1.0,
+                "Proportion of polar atoms": 38.462,
+                "Alpha sphere density": 4.505,
+                "Cent. of mass - Alpha Sphere max dist": 10.354,
+                "Flexibility": 0.0
+            }
+        },
+        {
+            "rank": 3,
+            "id": "pocket_3",
+            "fpocket_index": 3,
+            "druggability_score": 0.001,
+            "fpocket_score": 0.018,
+            "volume_a3": 306.269,
+            "n_alpha_spheres": 20,
+            "hydrophobicity_score": 14.429,
+            "polarity_score": 4.0,
+            "center": {
+                "x": 6.646650000000001,
+                "y": 24.2659,
+                "z": -7.6952
+            },
+            "bounding_box": {
+                "min": [
+                    5.417,
+                    21.874,
+                    -11.341
+                ],
+                "max": [
+                    9.111,
+                    26.405,
+                    -5.358
+                ]
+            },
+            "residues": [
+                {
+                    "chain": "B",
+                    "resnum": 10,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU10"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 20,
+                    "resname": "LYS",
+                    "icode": "",
+                    "one_letter": "K",
+                    "label": "B:LYS20"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 21,
+                    "resname": "GLU",
+                    "icode": "",
+                    "one_letter": "E",
+                    "label": "B:GLU21"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 22,
+                    "resname": "ALA",
+                    "icode": "",
+                    "one_letter": "A",
+                    "label": "B:ALA22"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 23,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU23"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 34,
+                    "resname": "GLU",
+                    "icode": "",
+                    "one_letter": "E",
+                    "label": "B:GLU34"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 81,
+                    "resname": "PRO",
+                    "icode": "",
+                    "one_letter": "P",
+                    "label": "B:PRO81"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 82,
+                    "resname": "VAL",
+                    "icode": "",
+                    "one_letter": "V",
+                    "label": "B:VAL82"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 83,
+                    "resname": "ASN",
+                    "icode": "",
+                    "one_letter": "N",
+                    "label": "B:ASN83"
+                }
+            ],
+            "n_residues": 9,
+            "raw_metrics": {
+                "Score": 0.018,
+                "Druggability Score": 0.001,
+                "Number of Alpha Spheres": 20.0,
+                "Total SASA": 80.696,
+                "Polar SASA": 31.183,
+                "Apolar SASA": 49.513,
+                "Volume": 306.269,
+                "Mean local hydrophobic density": 4.0,
+                "Mean alpha sphere radius": 4.038,
+                "Mean alp. sph. solvent access": 0.583,
+                "Apolar alpha sphere proportion": 0.25,
+                "Hydrophobicity score": 14.429,
+                "Volume score": 4.0,
+                "Polarity score": 4.0,
+                "Charge score": -1.0,
+                "Proportion of polar atoms": 44.444,
+                "Alpha sphere density": 3.5,
+                "Cent. of mass - Alpha Sphere max dist": 7.68,
+                "Flexibility": 0.0
+            }
+        },
+        {
+            "rank": 4,
+            "id": "pocket_5",
+            "fpocket_index": 5,
+            "druggability_score": 0.001,
+            "fpocket_score": -0.062,
+            "volume_a3": 188.67,
+            "n_alpha_spheres": 15,
+            "hydrophobicity_score": -4.5,
+            "polarity_score": 2.0,
+            "center": {
+                "x": -2.653133333333334,
+                "y": 25.807000000000002,
+                "z": 16.499399999999998
+            },
+            "bounding_box": {
+                "min": [
+                    -3.998,
+                    23.65,
+                    15.456
+                ],
+                "max": [
+                    -1.686,
+                    26.67,
+                    17.165
+                ]
+            },
+            "residues": [
+                {
+                    "chain": "A",
+                    "resnum": 44,
+                    "resname": "PRO",
+                    "icode": "",
+                    "one_letter": "P",
+                    "label": "A:PRO44"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 45,
+                    "resname": "LYS",
+                    "icode": "",
+                    "one_letter": "K",
+                    "label": "A:LYS45"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 46,
+                    "resname": "MET",
+                    "icode": "",
+                    "one_letter": "M",
+                    "label": "A:MET46"
+                },
+                {
+                    "chain": "A",
+                    "resnum": 55,
+                    "resname": "LYS",
+                    "icode": "",
+                    "one_letter": "K",
+                    "label": "A:LYS55"
+                }
+            ],
+            "n_residues": 4,
+            "raw_metrics": {
+                "Score": -0.062,
+                "Druggability Score": 0.001,
+                "Number of Alpha Spheres": 15.0,
+                "Total SASA": 49.0,
+                "Polar SASA": 8.594,
+                "Apolar SASA": 40.406,
+                "Volume": 188.67,
+                "Mean local hydrophobic density": 10.0,
+                "Mean alpha sphere radius": 3.911,
+                "Mean alp. sph. solvent access": 0.681,
+                "Apolar alpha sphere proportion": 0.733,
+                "Hydrophobicity score": -4.5,
+                "Volume score": 5.0,
+                "Polarity score": 2.0,
+                "Charge score": 2.0,
+                "Proportion of polar atoms": 23.077,
+                "Alpha sphere density": 1.438,
+                "Cent. of mass - Alpha Sphere max dist": 3.708,
+                "Flexibility": 0.0
+            }
+        },
+        {
+            "rank": 5,
+            "id": "pocket_6",
+            "fpocket_index": 6,
+            "druggability_score": 0.0,
+            "fpocket_score": -0.082,
+            "volume_a3": 321.99,
+            "n_alpha_spheres": 20,
+            "hydrophobicity_score": 33.556,
+            "polarity_score": 5.0,
+            "center": {
+                "x": 13.088099999999997,
+                "y": 37.83755,
+                "z": -5.980700000000001
+            },
+            "bounding_box": {
+                "min": [
+                    11.42,
+                    34.217,
+                    -8.049
+                ],
+                "max": [
+                    14.951,
+                    40.519,
+                    -3.593
+                ]
+            },
+            "residues": [
+                {
+                    "chain": "B",
+                    "resnum": 2,
+                    "resname": "GLN",
+                    "icode": "",
+                    "one_letter": "Q",
+                    "label": "B:GLN2"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 3,
+                    "resname": "ILE",
+                    "icode": "",
+                    "one_letter": "I",
+                    "label": "B:ILE3"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 4,
+                    "resname": "THR",
+                    "icode": "",
+                    "one_letter": "T",
+                    "label": "B:THR4"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 5,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU5"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 6,
+                    "resname": "TRP",
+                    "icode": "",
+                    "one_letter": "W",
+                    "label": "B:TRP6"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 7,
+                    "resname": "GLN",
+                    "icode": "",
+                    "one_letter": "Q",
+                    "label": "B:GLN7"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 8,
+                    "resname": "ARG",
+                    "icode": "",
+                    "one_letter": "R",
+                    "label": "B:ARG8"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 9,
+                    "resname": "PRO",
+                    "icode": "",
+                    "one_letter": "P",
+                    "label": "B:PRO9"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 10,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU10"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 11,
+                    "resname": "VAL",
+                    "icode": "",
+                    "one_letter": "V",
+                    "label": "B:VAL11"
+                },
+                {
+                    "chain": "B",
+                    "resnum": 24,
+                    "resname": "LEU",
+                    "icode": "",
+                    "one_letter": "L",
+                    "label": "B:LEU24"
+                }
+            ],
+            "n_residues": 11,
+            "raw_metrics": {
+                "Score": -0.082,
+                "Druggability Score": 0.0,
+                "Number of Alpha Spheres": 20.0,
+                "Total SASA": 102.427,
+                "Polar SASA": 58.952,
+                "Apolar SASA": 43.475,
+                "Volume": 321.99,
+                "Mean local hydrophobic density": 2.0,
+                "Mean alpha sphere radius": 4.033,
+                "Mean alp. sph. solvent access": 0.597,
+                "Apolar alpha sphere proportion": 0.15,
+                "Hydrophobicity score": 33.556,
+                "Volume score": 4.778,
+                "Polarity score": 5.0,
+                "Charge score": 1.0,
+                "Proportion of polar atoms": 52.632,
+                "Alpha sphere density": 3.33,
+                "Cent. of mass - Alpha Sphere max dist": 8.412,
+                "Flexibility": 0.0
+            }
+        }
+    ]
+}

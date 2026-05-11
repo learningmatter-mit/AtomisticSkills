@@ -391,6 +391,10 @@ def main() -> None:
 
     print(f"\n  Next step: Relax all structures with an MLIP, then rank by energy.")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 
 if __name__ == "__main__":
     main()

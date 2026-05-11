@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>base Server Tools — AtomisticSkills</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .tool-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    .tool-name { font-size: 1.25rem; font-weight: 700; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace; }
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md pre{background:#f8fafc;padding:1.25rem;border-radius:8px;border:1px solid #e2e8f0;overflow-x:auto;margin:1rem 0}
+    .rendered-md pre code{background:transparent;padding:0;border:none;color:#334155;font-size:0.9rem;line-height:1.6}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/src/mcp_server/base_server.py" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Servers</div>
+    <h1>base Server</h1>
+    <p class="desc">MCP Tools exposed by the <code>base_server.py</code></p>
+  </div>
+</div>
+<div class="content">
+  <div class="tools-list">
+    
+        <div class="tool-card">
+          <h3 class="tool-name">📎 create_research_dir</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nCreate research directory and set as active for MCP tools.\n\nArgs:\n    research_topic: Short description (e.g. \"LiFePO4_stability\"), prefixed with date.\n    \nReturns:\n    Path to the newly created directory.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 task_boundary</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nInitialize a task boundary for research phases.\n\nArgs:\n    TaskName: Name of the task phase (e.g. \"Research Plan\", \"Literature Review\").\n    \nReturns:\n    Status message.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 notify_user</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nAsk the user to review a document or wait for feedback.\n\nArgs:\n    message: Notification message for the user.\n    ShouldAutoProceed: Set to true to ensure the &#39;Proceed&#39; button is visible to the user.\n    \nReturns:\n    Status message.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 search_materials_project_by_formula</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nSearch Materials Project by formula. Supports wildcards.\n\nArgs:\n    formula: Chemical formula (e.g., \"Si\", \"Fe2O3\", \"Si*\").\n    api_key: Optional MP API key (defaults to environment).\n    save_to_file: Optional save path (or directory if return_all=True).\n    return_all: If True, returns all matching structures instead of just the ground state.\n    \nReturns:\n    Path to saved CIF file(s).\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 search_materials_project_by_chemsys</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nSearch Materials Project by chemical system. Returns all stable structures on convex hull.\n\nArgs:\n    chemsys: Chemical system (e.g., \"Li-O\", \"Si-Fe-O\").\n    api_key: Optional MP API key (defaults to environment).\n    save_to_file: Optional directory path to save structures. If not provided, creates a directory named {chemsys}_structures.\n    \nReturns:\n    Summary of saved structures with paths.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 visualize_structure</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nVisualize structure(s) as high-quality image(s).\n\nArgs:\n    structure_path: Can be:\n        - Path to a single structure file (CIF, POSCAR, XYZ, etc.)\n        - Path to a directory containing multiple structures (generates one image per structure)\n        - Path to a trajectory file (visualizes the last frame)\n    output_path: Save path for single file, or directory for batch mode (auto: research_dir or cwd). \n                 Formats: png, jpg, svg, pdf.\n    width: Image width in pixels (default: 1200).\n    height: Image height in pixels (default: 800).\n    scale: Resolution scale factor (default: 2.0).\n    \nReturns:\n    Summary of saved image(s).\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 search_literature</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nSearch the OpenAlex database for scientific literature and optionally download full-text.\n\nArgs:\n    query: The search term (e.g., \"solid state battery LGPS\").\n    limit: Maximum number of results to return (default 10, max 50).\n    download: Whether to automatically attempt downloading the full text of discovered papers.\n    save_to_file: Optional path to save the full JSON results.\n    \nReturns:\n    Formatted markdown summary of the top papers found, downloading status, and paywall warnings.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 supercell_expansion</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nCreate a supercell from an existing structure.\n\nArgs:\n    structure_path: Path to the input structure file (e.g., CIF, POSCAR).\n    scaling_matrix_json: JSON string of a scaling matrix for generating the supercell (integer, list of 3 ints, or 3x3 matrix list).\n    supercell_min_length: Minimum length (\u00c5) for each lattice vector. Automatically expands supercell. Ignored if scaling_matrix is set.\n    save_to_file: Optional path to save the generated structure. Optional.\n    \nReturns:\n    Summary of saved supercell structure with path.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 modify_structure</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nModify a structure by substituting elements.\n\nArgs:\n    structure_path: Path to the input structure file (e.g., CIF, POSCAR).\n    substitution_dict_json: JSON string mapping old elements to new elements or fractions.\n                            Example 1: &#39;{\"Li\": \"Na\"}&#39; changes all Li to Na.\n                            Example 2: &#39;{\"Li\": {\"Li\": 0.5, \"Na\": 0.5}}&#39; changes all Li to a 50/50 mixture.\n    save_to_file: Optional path to save the generated structure. Optional.\n    \nReturns:\n    Summary of saved modified structure with path.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 search_model_registry</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nSearch the local MLIP model registry for fine-tuned checkpoints.\n\nCall this before training a new MLIP to reuse existing models if possible.\n\nArgs:\n    chemical_system: Elements to filter by (e.g. \"Li-Fe-P-O\").\n    backend: Optional filter: \"mace\", \"matgl\", or \"fairchem\".\n    max_energy_mae: Max validation energy MAE in meV/atom (optional).\n    max_force_mae: Max validation force MAE in meV/\u00c5 (optional).\n    tags_json: JSON array of required tags, e.g. &#39;[\"battery\"]&#39; (optional).\n\nReturns:\n    Markdown list of matching models.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 register_model</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nRegister a fine-tuned MLIP checkpoint in the local model registry.\n\nCall this after successfully fine-tuning an MLIP to allow future reuse.\n\nArgs:\n    checkpoint_path: Absolute path to the saved model checkpoint file.\n    chemical_system: Elements covered, e.g. \"Li-Fe-P-O\".\n    backend: Model framework: \"mace\", \"matgl\", or \"fairchem\".\n    base_model: Name of foundation checkpoint (e.g. \"MACE-MH-1\").\n    description: Short description of training data and purpose.\n    energy_mae: Validation energy MAE in meV/atom (optional).\n    force_mae: Validation force MAE in meV/\u00c5 (optional).\n    research_dir: Relative path to training research directory (optional).\n    tags_json: JSON array of keyword tags, e.g. &#39;[\"battery\"]&#39; (optional).\n    notes: Free-text notes (optional).\n    model_id: Explicit registry id. Auto-generated if omitted.\n\nReturns:\n    Confirmation message with the assigned model id.\n```"'></div>
+        </div>
+        
+  </div>
+</div>
+<footer><p>AtomisticSkills — Open-sourced AI research infrastructure</p></footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    marked.setOptions({ breaks: true, gfm: true });
+    document.querySelectorAll('.tool-doc').forEach(el => {
+        try {
+            // We encoded it with json.dumps(), so we parse with JSON.parse.
+            const rawHtmlStr = el.dataset.md;
+            // The unescaped string can be parsed back:
+            const md = JSON.parse(rawHtmlStr.replace(/&#39;/g, "'"));
+            el.innerHTML = marked.parse(md);
+        } catch(e) {
+            el.innerText = el.dataset.md;
+        }
+    });
+  });
+</script>
+</body>
+</html>

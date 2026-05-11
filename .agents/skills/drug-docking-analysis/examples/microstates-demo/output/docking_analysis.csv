@@ -1,0 +1,5 @@
+compound_id,label,docking_score,mw,clogp,tpsa,heavy_atoms,le,bei,sei,smiles
+DEMO001_ms1,active,-10.4,161.16,0.51,71.8,12,0.8667,64.53,144.91,c1ccc2c(c1)c(=O)[nH]c(n2)N
+DEMO002_ms2,active,-10.1,168.22,-0.17,57.1,12,0.8417,60.04,176.98,C[NH2+]CCc1ccc(O)c(O)c1
+DEMO003_ms1,inactive,-9.5,151.16,1.35,49.3,11,0.8636,62.85,192.58,CC(=O)Nc1ccc(O)cc1
+DEMO004_ms1,inactive,-8.9,136.15,1.69,37.3,10,0.89,65.37,238.61,Cc1ccccc1C(=O)O

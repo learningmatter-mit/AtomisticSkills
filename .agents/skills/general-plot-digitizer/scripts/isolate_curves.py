@@ -734,6 +734,10 @@ def main() -> None:
     if args.debug and debug_dir is not None:
         print(f"Debug: artifacts saved to {debug_dir}", file=sys.stderr)
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)
+
 
 if __name__ == "__main__":
     main()

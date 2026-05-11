@@ -396,6 +396,10 @@ def main():
     if args.plot:
         plot_formation_energy_diagram(results, band_gap, args.plot)
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)
+
 
 if __name__ == "__main__":
     main()

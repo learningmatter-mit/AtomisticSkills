@@ -102,7 +102,35 @@ python .agents/skills/drug-docking-vina/scripts/run_docking.py \
 
 **Tip:** for batch docking, the script will compute Vina maps once (before loading ligands) to reduce repeated setup overhead.
 
-### 5. Validation & interpretation (strongly recommended)
+### 5. Collect results into a ranked CSV
+
+`run_docking.py` writes a machine-readable JSON that is good for reproducibility but not directly consumable by downstream analysis tools (such as [drug-docking-analysis](../drug-docking-analysis/SKILL.md)). Use `collect_results.py` to produce a ranked CSV that joins the docking scores with library metadata (SMILES, labels, microstate/parent IDs).
+
+```bash
+# Env: drugdisc-agent (stdlib only, any env works)
+
+# Combined JSON from run_docking.py
+python .agents/skills/drug-docking-vina/scripts/collect_results.py \
+  --results docking/results/docking_results.json \
+  --library_csv library/library_master.csv \
+  --output_dir docking/analysis/
+
+# Or a directory of per-ligand *_result.json files (SLURM array workflows)
+python .agents/skills/drug-docking-vina/scripts/collect_results.py \
+  --results docking/results/ \
+  --library_csv library/library_master.csv \
+  --output_dir docking/analysis/
+```
+
+**Library CSV requirements:** must have a `compound_id` column. The `compound_id` value must match the `ligand` field in the docking JSON, which is the PDBQT filename stem set by `drug-ligand-prep` (e.g. `indinavir.pdbqt` -> `indinavir`). Any of these columns, when present, are passed through to the ranked CSV and are picked up by downstream analysis tools:
+- `smiles` (used by `drug-docking-analysis` for ligand efficiency metrics)
+- `label` (used for retrospective enrichment)
+- `parent_compound_id` and `microstate_id` (used for microstate aggregation when protomers/tautomers were enumerated during ligand prep)
+- `pchembl` (passed through for reference)
+
+**Output:** `docking_ranked.csv` sorted by `best_affinity` (most negative first) with columns `rank, compound_id, best_affinity, [passthrough columns], n_poses, runtime_s`. Also writes `docking_collect_summary.json` with counts and the top 10.
+
+### 6. Validation & interpretation (strongly recommended)
 
 Docking is approximate; good practice is to validate your protocol for a given target:
 

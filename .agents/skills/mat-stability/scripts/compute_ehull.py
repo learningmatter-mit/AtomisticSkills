@@ -310,6 +310,10 @@ def main():
     
     print(f"✓ Results saved to {output_file}")
     
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)
+
     return 0
 
 

@@ -4,51 +4,51 @@ description: An end-to-end generative AI workflow for discovering novel high-con
 
 # Generative Discovery of Halide Solid-State Electrolytes
 
-This workflow documents the explicit steps required to transition from a conceptual material class (e.g., Li-M-X halides) to highly verified, novel superionic solid-state electrolytes (SSEs) using generative AI, ML interatomic potentials (MLIPs), and literature checks.
+This workflow documents the explicit steps required to transition from a conceptual material class (e.g., Li-M-X halides) to highly verified, novel superionic solid-state electrolytes (SSEs) using a hierarchical screening strategy involving generative AI, ML interatomic potentials (MLIPs), and high-fidelity DFT verification.
 
 ## 1. Initial Research & Target Framing
-- **Goal**: Discover fast-ion conducting Solid-State Electrolytes (SSEs).
+- **Goal**: Discover fast-ion conducting halide Solid-State Electrolytes (SSEs).
 - **Setup**: Create an active task directory via the `create_research_dir` MCP tool (e.g., `research/YYYY-MM-DD_halide_sse_generative_search`).
-- **Chemical Spaces**: Focus on ternary systems (e.g., `Li-Y-Cl`, `Li-Sc-Br`, `Li-In-Cl`, `Li-Hf-Cl`, `Li-Zr-Cl`, `Li-Er-Br`). The spaces should be selected to ensure varied polyhedral configurations and lattice volumes conducive to high Li-ion mobility.
+- **Chemical Spaces**: Focus on ternary systems (e.g., `Li-Y-Cl`, `Li-Sc-Br`, `Li-In-Cl`, `Li-Hf-Cl`, `Li-Zr-Cl`, `Li-Er-Br`). These are selected to ensure varied polyhedral configurations and lattice volumes conducive to high Li-ion mobility.
 
 ## 2. Generative Candidate Creation (MatterGen)
-Generate purely hypothetical, chemically plausible structures using a diffusion-based generative model.
+Generate hypothetical, chemically plausible structures using a diffusion-based generative model.
 - **Skill Reference**: `ml-generative-mattergen`
 - **Execution**: Apply MatterGen's `chemical_system` conditioning to generate structures containing exactly the elements requested. 
-- *Crucial Note*: MatterGen does not strictly fix formula proportions under chemical system conditioning; generate large batches (e.g., 50 structures per system) and post-process to strip out un-desired binaries/elementals. 
-- Keep all valid CIF outputs in a `mattergen_candidates/` subdirectory.
+- **Filtering**: Generate large batches (e.g., 500 structures) and post-process to strip out un-desired binaries/elementals or invalid compositions (e.g., resulting in ~350 unique candidates).
 
-## 3. Thermodynamic Stability Pre-Screening ($E_{hull}$)
-Since generative models output varying levels of stability, rigorously filter out candidates that decompose exothermically.
-- **Relaxation**: Relax all generated CIFs fully using an MLIP (e.g., `mcp_fairchem_relax_structure` with `uma-s-1p1` or MatGL). Save the relaxed CIFs to `candidate_relaxations/`.
-- **Competitor Sourcing**: Query the Materials Project (`mat-db-mp`) to download CIFs of all known stable phases associated within the targeted chemical spaces.
-- **Unified MLIP Energy Scale**: Relax the known MP competitors using the exact same MLIP used for the novel candidates to ensure apples-to-apples energy comparisons.
-- **Phase Diagram Construction**: Use `mat-stability` and `pymatgen.analysis.phase_diagram` to compute $E_{hull}$ for all generated candidates against the newly constructed MLIP convex hull.
-- *Filter Rule*: Discard candidates with $E_{hull} > 50$ meV/atom. Highly stable candidates ($E_{hull} \le 10$ meV/atom) proceed to dynamical validation.
+## 3. Tier 1: Fast MLIP Stability Screening ($E_{hull}$)
+Since generative models output varying levels of stability, rigorously filter out candidates using a unified MLIP scale.
+- **Relaxation**: Relax all generated CIFs fully using **FairChem UMA** (`uma-s-1p1` or `uma-s-1p2`).
+- **Competitor Sourcing**: Query the Materials Project (`mat-db-mp`) and relax known MP competitors using the exact same MLIP to ensure apples-to-apples energy comparisons.
+- **Phase Diagram Construction**: Use `mat-stability` to compute $E_{hull}$ for all generated candidates against the MLIP convex hull.
+- **Filter**: Narrow down to top candidates (e.g., top 10-20) with $E_{hull} \le 50$ meV/atom.
 
-## 4. High-Throughput Diffusion Molecular Dynamics (MD)
+## 4. Tier 2: High-Fidelity DFT Refinement
+Refine the stability of the top candidates using accurate DFT to confirm synthesizability.
+- **Skill Reference**: `mat-dft-vasp`
+- **Execution**: Run VASP static calculations or relaxations via `mcp_atomate2_run_atomate2_vasp_calculation` with the `matpes-pbe` preset.
+- **Refinement**: Re-calculate $E_{hull}$ using DFT energies. Only strictly stable or near-stable candidates (e.g., top 5-9) proceed to electrochemical analysis.
+
+## 5. Electrochemical Stability & Window Analysis
+Assess the potential range of operation against Li metal.
+- **Skill Reference**: `mat-electrochemical-window`
+- **Calculation**: Calculate the intrinsic electrochemical stability window ($V_{red}$ and $V_{ox}$) against $Li/Li^+$. Priority is given to materials with windows overlapping the target cathode/anode ranges.
+
+## 6. High-Throughput Diffusion Molecular Dynamics (MD)
 Use Molecular Dynamics to evaluate and predict the ionic conductivity of the top structurally stable candidates.
-- **Execution**: Run NVT ensemble MD through the MLIP server (e.g., `mcp_matgl_run_md`).
+- **Execution**: Run NVT ensemble MD through the **FairChem** server (`mcp_fairchem_run_md`).
+- **Model Choice**: Use **uma-s-1p1** or **uma-s-1p2**.
 - **Temperatures**: Run a temperature ladder (e.g., 400K, 500K, 600K, 700K, 800K, 900K).
-- **MD Parameters**: 
-  - Ensure supercells are sufficiently expanded (min 10Å side length).
-  - Use a timestep of 2fs (`timestep: 2.0`).
-  - Progressively scale the number of steps to ensure statistical convergence at lower temperatures (e.g., 10,000 steps at 900K up to 320,000 steps at 400K).
-- **Auto-Monitoring**: Enable diffusion and explosion tracking monitors (via `src/utils/mlips/md_utils.py`) to automatically snapshot Mean Square Displacement (`diffusion_Li.json` & `msd_Li.png`) after equilibration passes.
+- **Auto-Monitoring**: Enable the `diffusion` monitor to stop simulations once MSD has converged.
 
-## 5. Arrhenius Extrapolation & Ranking
-- Use the PyMatgen `DiffusionAnalyzer` workflow (as seen in `mat-diffusion-analysis`) to ingest the aggregated multi-temperature `diffusion_Li.json` files for each structure.
-- **Metrics**: 
-  - Fit the exact activation energy ($E_a$).
-  - Calculate extrapolated room temperature (300K) isotropic ionic conductivity ($\sigma_{RT}$) in mS/cm using cell volumes from the parent candidate CIF.
-- *Filter Rule*: Highlight materials exhibiting superionic conductivities ($> 1$ mS/cm) and realistic barriers ($E_a \approx 0.1 - 0.5$ eV).
+## 7. Transport Analysis & Visualization
+- **Arrhenius Analysis**: Use the `mat-diffusion-analysis` skill to ingest the aggregated multi-temperature `diffusion_Li.json` files and fit the activation energy ($E_a$).
+- **Probability Density**: For top conductors, use `mat-md-probability-density` to visualize the Li-ion diffusion pathways and identify the dimensionality of conduction (1D, 2D, or 3D).
 
-## 6. Structural & Chemical Literature Novelty Verification
-Validate whether the generated and highly conductive structures are true discoveries.
-- **Structural Duplication check**: Pass the highly stable generated formulas through `mat-structure-novelty` (`pymatgen.analysis.structure_matcher`) against identical formulas found on the Materials Project.
-- **Experimental Verification**: Execute the OpenAlex literature database query (`mcp_base_search_literature`) for the formulas alongside keywords (e.g., `["Li3ErCl6", "solid electrolyte"]`).
-  - If identical papers return matches, verify if the computational structural predictions accurately hit the experimental bounds.
-  - If no matches exist, it constitutes a fully novel AI-driven material discovery ready for experimental synthesis.
+## 8. Structural Novelty & Literature Verification
+- **Structural Match**: Pass the final candidates through `mat-structure-novelty` to ensure they are not duplicates of known Materials Project entries.
+- **Literature Search**: Execute OpenAlex/PubMed queries for the specific formulas to confirm if the material has been experimentally synthesized or computationally predicted before.
 
-## 7. Comprehensive Result Amalgamation
-Finally, merge all properties (Generation source, Space Group, $E_{hull}$, Formation Energy, $E_a$, Conductivity $\sigma_{RT}$, and Literature Citations) into a master CSV DataFrame to deliver the holistic dataset for publication or lab transition.
+## 9. Comprehensive Result Amalgamation
+Deliver the holistic dataset (Generation source, Space Group, DFT $E_{hull}$, Electrochemical Window, $E_a$, Conductivity $\sigma_{RT}$, and Novelty status) for experimental validation.

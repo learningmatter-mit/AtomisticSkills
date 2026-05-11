@@ -4,7 +4,7 @@ cd $(dirname "$0")
 # Run Single Component GCMC using UMA
 export PYTHONPATH=$(dirname $(dirname $(dirname $(dirname "$PWD"))))
 conda run -n fairchem-agent python ../scripts/run_gcmc.py \
-  --cif Hb-DBD-AA_supercell.relaxed.cif \
+  --cif test_structure_supercell.relaxed.cif \
   --calculator fairchem \
   --model-name uma-s-1p1 \
   --task-name omol \
@@ -16,7 +16,7 @@ conda run -n fairchem-agent python ../scripts/run_gcmc.py \
 
 # Run Multi Component GCMC using UMA
 conda run -n fairchem-agent python ../scripts/run_gcmc_multi.py \
-  --cif Hb-DBD-AA_supercell.relaxed.cif \
+  --cif test_structure_supercell.relaxed.cif \
   --calculator fairchem \
   --model-name uma-s-1p1 \
   --task-name omol \

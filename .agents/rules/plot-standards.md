@@ -22,8 +22,8 @@ plt.rcParams.update({'font.size': 14})
 
 ## Data Series and Line Styles
 - **Line Widths**: Default line widths for major data series MUST be `linewidth=2.5`.
-- **Grids**: Grids should be enabled but kept subtle so they don't overpower the data:
-  `ax.grid(True, linestyle='--', alpha=0.6)`
+- **Grids**: Grid lines should be entirely turned off and omitted from the axes to maintain a clean background:
+  `ax.grid(False)`
 - **Legends**: Legends should generally not have a bounding box frame unless it is required to obscure messy data underneath it:
   `ax.legend(frameon=False)`
 

@@ -22,6 +22,16 @@ logger = logging.getLogger(__name__)
 # Model configurations, default tasks, and supported tasks
 MODEL_METADATA = {
     # UMA models (Universal) - Can handle both solid state (omat) and output molecular properties (omol)
+    "uma-s-1p2": {
+        "default_task": "omat", 
+        "supported_tasks": ["omat", "omol", "oc22"],
+        "domain": "general"
+    },
+    "uma-m-1p2": {
+        "default_task": "omat", 
+        "supported_tasks": ["omat", "omol", "oc22"],
+        "domain": "general"
+    },
     "uma-s-1p1": {
         "default_task": "omat", 
         "supported_tasks": ["omat", "omol", "oc22"],

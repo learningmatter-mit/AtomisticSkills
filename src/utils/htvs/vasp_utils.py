@@ -310,13 +310,17 @@ class HTVSVaspHandler:
                     job_details["ispin"] = 1
             else:
                 job_details["ispin"] = 1
-
+            
             # 4. MatPES Relaxation Overrides (Applied as defaults)
             if calculation_type == "relaxation" and "matpes" in preset_type:
                 job_details["nsteps"] = 200
                 job_details["ibrion"] = 2
                 job_details["isif"] = 2
 
+            # 5. Custom Overrides (Applied LAST to allow user control)
+            if custom_settings:
+                job_details.update(custom_settings)
+                
             return json.dumps(job_details, indent=2)
 
         except Exception as e:

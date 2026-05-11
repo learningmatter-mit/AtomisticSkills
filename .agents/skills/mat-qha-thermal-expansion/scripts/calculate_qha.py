@@ -79,3 +79,7 @@ if __name__ == "__main__":
     wrapper = load_wrapper(args.model_type, args.model_name, device=args.device)
     atoms = read(args.structure)
     run_qha(args, wrapper, atoms)
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)

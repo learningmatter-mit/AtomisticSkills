@@ -16,6 +16,7 @@ Requirements:
 import json
 import os
 import logging
+from pathlib import Path
 from typing import Any, Optional
 
 import ase.io
@@ -113,6 +114,7 @@ def setup_orca_calculator(
     special_option: str = "NOSOSCF",
     nprocs: int = 1,
     extra_calculator_settings: Optional[dict[str, Any]] = None,
+    output_dir: str = ".",
 ) -> tuple["su.core.Calculator", su.AtomCollection, "ase.Atoms"]:
     """
     Build and configure a SCINE calculator powered by ORCA.
@@ -152,7 +154,6 @@ def setup_orca_calculator(
     atom_collection, atoms = load_structure(structure_path)
 
     calculator = su.core.get_calculator("dft", "orca")
-    calculator.structure = atom_collection
 
     calculator.settings["molecular_charge"] = charge
     calculator.settings["spin_multiplicity"] = spin_multiplicity
@@ -177,6 +178,20 @@ def setup_orca_calculator(
         for key, value in extra_calculator_settings.items():
             calculator.settings[key] = value
             logger.info(f"  Extra setting: {key} = {value!r}")
+            if key == "method":
+                method = value
+            elif key == "basis_set":
+                basis_set = value
+            elif key == "molecular_charge":
+                charge = value
+            elif key == "spin_multiplicity":
+                spin_multiplicity = value
+            elif key == "external_program_nprocs":
+                nprocs = value
+            elif key == "solvation":
+                solvation = value
+            elif key == "solvent":
+                solvent = value
 
     logger.info(
         f"ORCA calculator configured: {method}/{basis_set}, "
@@ -184,8 +199,16 @@ def setup_orca_calculator(
     )
     if solvation:
         logger.info(f"  Solvation: {solvation}, solvent: {solvent}")
+
+    # make sure that raw ORCA files are in the output directory if no other place was specified
+    if extra_calculator_settings is None or 'base_working_directory' not in extra_calculator_settings:
+        calculator.settings['base_working_directory'] = str(Path(output_dir).resolve())
+    # set higher default memory than specified in wrapper if not specified otherwise
+    if extra_calculator_settings is None or 'external_program_memory' not in extra_calculator_settings:
+        calculator.settings['external_program_memory'] = 4096 * nprocs
     logger.debug(str(calculator.settings.as_dict()))
 
+    calculator.structure = atom_collection
     return calculator, atom_collection, atoms
 
 

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MLIP Benchmark Finetune Workflow — AtomisticSkills Workflows</title>
+  <meta name="description" content="Workflow for benchmarking, fine-tuning, and distilling Machine Learning Interatomic Potentials (MLIPs)"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .workflow-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .workflow-hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .workflow-desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .workflow-content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/mlip-benchmark-finetune.md" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="workflow-hero">
+  <div class="workflow-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Workflows</div>
+    <h1>MLIP Benchmark Finetune Workflow</h1>
+    <p class="workflow-desc">Workflow for benchmarking, fine-tuning, and distilling Machine Learning Interatomic Potentials (MLIPs)</p>
+  </div>
+</div>
+<div class="workflow-content">
+  <div class="rendered-md" id="workflow-body"></div>
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/mlip-benchmark-finetune.md" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 8px; color: #1e293b; font-weight: 600; text-decoration: none; font-size: 0.95rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: background 0.2s;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View this Workflow on GitHub
+    </a>
+  </div>
+</div>
+<footer>
+  &copy; 2026 AtomisticSkills. Generated by build_skills.py.
+</footer>
+<script>
+  document.getElementById('workflow-body').innerHTML = marked.parse("This workflow guides you through the process of selecting, evaluating, and improving a Machine Learning Interatomic Potential (MLIP) for a specific target simulation task.\n\n1. **Choose a relevant foundation potential**\n   - Review the requirements of your target simulation (e.g., elements involved, accuracy versus speed constraints).\n   - Refer to the `ml-foundation-potentials` skill (`.agents/skills/ml-foundation-potentials/SKILL.md`) to select an appropriate foundation potential.\n\n2. **Sample the Potential Energy Surface (PES)**\n   - Carefully sample the PES based on the problem of interest to capture relevant configurations, including off-equilibrium and transition states.\n   - For solid-state materials, refer to the `mat-sample-pes-by-md` skill (`.agents/skills/mat-sample-pes-by-md/SKILL.md`).\n   - Alternative sampling methods exist depending on the system (e.g., `chem-conformer-search`, `mat-amorphization`, `mat-random-structure-search`).\n\n3. **Acquire labels for the sampled structures**\n   - Calculate high-fidelity energies, forces, and stresses for the sampled structures.\n   - *Ab initio labels*: Use Density Functional Theory (DFT) via `atomate2` VASP workflows.\n   - *Distillation*: Use a significantly more expensive but accurate foundation potential to label the structures for a faster, lighter potential.\n\n4. **Benchmark the foundation potential's accuracy**\n   - Evaluate the baseline accuracy of the chosen foundation potential against the newly acquired labels.\n   - Refer to the `ml-mlip-benchmark` skill (`.agents/skills/ml-mlip-benchmark/SKILL.md`) for benchmarking procedures to determine if fine-tuning is necessary.\n\n5. **Perform fine-tuning (or distillation)**\n   - If the baseline potential's accuracy is insufficient on your sampled PES, fine-tune the model using the labeled dataset.\n   - Refer to the relevant finetuning skill (`ml-mace-finetune`, `ml-fairchem-finetune`, `ml-matgl-finetune`) for instructions on setting up and executing the fine-tuning process.\n\n6. **Deploy the MLIP for the target simulation task**\n   - Deploy the benchmarked or fine-tuned MLIP to run your primary simulation tasks (e.g., production molecular dynamics, phase diagrams).\n\n7. **Monitor simulated metrics and iterate (Active Learning)**\n   - During the simulation, continuously monitor relevant physical metrics to ensure the MLIP's structural and thermodynamic stability (e.g., system density, Radial Distribution Function (RDF), transition temperature, diffusivity).\n   - If the accuracy of these computed macroscopic properties is unsatisfied or unphysical behavior is observed, repeat the process: further sample the PES from the problematic configurations, acquire new labels, and iteratively fine-tune the MLIP.");
+</script>
+</body>
+</html>

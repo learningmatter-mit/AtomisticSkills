@@ -1,7 +1,7 @@
 ---
 name: ml-mlip-benchmark
 description: Benchmark MLIP accuracy against a labeled dataset — compute MAE/RMSE for energy/atom and forces, and generate parity plots.
-category: [machine-learning]
+category: [machine-learning, materials, chemistry]
 ---
 
 # Benchmark Machine Learning Interatomic Potentials (MLIP)

@@ -4,10 +4,10 @@ This example demonstrates how to use a trained Cluster Expansion (CE) model to r
 
 ## Files
 - `cluster_expansion.json`: The trained Cluster Expansion model (serialized).
-- `primordial.cif`: The disordered primordial structure used to define the configuration space.
+- [primordial.cif](primordial.cif): The disordered primordial structure used to define the configuration space.
 - `mc_300K_energy.png`: Plot of the total energy evolution during a canonical MC simulation at 300 K.
-- `mc_300K_initial.cif`: The initial random structure used for the MC simulation.
-- `mc_300K_final.cif`: The final equilibrated structure after 10,000 MC steps.
+- [mc_300K_initial.cif](mc_300K_initial.cif): The initial random structure used for the MC simulation.
+- [mc_300K_final.cif](mc_300K_final.cif): The final equilibrated structure after 10,000 MC steps.
 
 ## Workflow Description
 

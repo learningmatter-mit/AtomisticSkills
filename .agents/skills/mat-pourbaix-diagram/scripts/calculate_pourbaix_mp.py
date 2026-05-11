@@ -132,6 +132,10 @@ def main():
     with open(args.output / "stable_entries_mp.json", "w") as f:
         json.dump(stable_data, f, indent=2)
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)
+
     return 0
 
 if __name__ == "__main__":

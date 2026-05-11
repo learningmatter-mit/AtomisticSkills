@@ -49,5 +49,9 @@ def main():
     if results:
         print(json.dumps(results, indent=2))
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.resources_dir)
+
 if __name__ == "__main__":
     main()

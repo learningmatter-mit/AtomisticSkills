@@ -32,7 +32,7 @@ wrapper: Optional[Any] = None
 
 @mcp.tool()
 def load_model(
-    model_name: str = "uma-s-1p1", 
+    model_name: str = "uma-s-1p2", 
     device: str = "auto", 
     task_name: Optional[str] = None,
     inference_settings: str = "default"
@@ -41,13 +41,13 @@ def load_model(
     Load a FAIRCHEM model.
     
     Supported models include:
-    - UMA (Universal): 'uma-s-1p1', 'uma-m-1p1', 'uma-s-1'
+    - UMA (Universal): 'uma-s-1p2', 'uma-m-1p2', 'uma-s-1p1', 'uma-m-1p1', 'uma-s-1'
     - ESEN (Organic/Molecular): 'esen-md-direct-all-omol', 'esen-sm-conserving-all-omol', 'esen-sm-direct-all-omol'
     - ESEN (Catalysis/OC25): 'esen-sm-conserving-all-oc25', 'esen-md-direct-all-oc25'
     - Fine-tuned checkpoint: provide the full path to an inference_ckpt.pt file
     
     Args:
-        model_name: Name of the model to load (default: "uma-s-1p1").
+        model_name: Name of the model to load (default: "uma-s-1p2").
                    Can also be a file path to a fine-tuned inference checkpoint
                    (e.g., "/path/to/inference_ckpt.pt" from fairchem CLI fine-tuning).
         device: Device to use ("auto", "cpu", "cuda").

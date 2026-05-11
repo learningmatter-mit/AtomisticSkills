@@ -194,6 +194,10 @@ def main():
         return 1
         
     get_structures(args.chemsys, api_key, Path(args.output_dir))
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
     return 0
 
 if __name__ == "__main__":

@@ -203,7 +203,7 @@ class CustomMDCalc(PropCalc):
                 atoms,
                 timestep_fs,
                 temperature_K=self.temperature,
-                externalstress=self.pressure * mask if mask is not None else self.pressure,
+                externalstress=self.pressure,
                 ttime=self.ttime * units.fs,
                 pfactor=self.pfactor * units.GPa * (units.fs ** 2), 
                 mask=mask,
@@ -258,16 +258,11 @@ class CustomMDCalc(PropCalc):
             atoms.set_cell(new_basis, scale_atoms=True)
 
     def calc(self, structure: Structure | Atoms | dict[str, Any]) -> dict[str, Any]:
-        # Reuse parent logic for relaxation if possible, but we need to inject our MD logic.
-        # Since PropCalc.calc does some generic stuff, we can use it? 
-        # PropCalc doesn't implement calc, it's abstract-ish. 
-        # Wait, matcalc.MDCalc calls super().calc(structure).
-        # Let's see what PropCalc does. It usually converts structure.
-        
-        # We'll just assume structure is handled or duplicate relevant logic.
-        # To be safe and clean, let's just do what MDCalc does:
-        
-        # We can call super().calc(structure) if we assume PropCalc is available.
+        # Preserve velocities if present
+        velocities = None
+        if hasattr(structure, "get_velocities"):
+            velocities = structure.get_velocities()
+            
         result = super().calc(structure)
         structure_in = result["final_structure"]
 
@@ -284,7 +279,12 @@ class CustomMDCalc(PropCalc):
             structure_in = result["final_structure"]
 
         atoms = to_ase_atoms(structure_in)
-        MaxwellBoltzmannDistribution(atoms, temperature_K=self.temperature)
+        
+        # Apply preserved velocities or initialize new ones
+        if velocities is not None and not self.relax_structure:
+            atoms.set_velocities(velocities)
+        else:
+            MaxwellBoltzmannDistribution(atoms, temperature_K=self.temperature)
 
         if self.set_com_stationary:
             Stationary(atoms)

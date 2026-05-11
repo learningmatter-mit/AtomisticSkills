@@ -1,0 +1,12 @@
+structure: test_structure_supercell.cif
+name: test_structure_supercell
+calculator: fairchem
+model_name: uma-s-1p1
+task_name: omol
+optimizer: LBFGS
+fmax: 0.05
+steps: 50
+relax_cell: true
+fixed_cell: false
+device: auto
+output_dir: .

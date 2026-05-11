@@ -1,0 +1,9 @@
+name: drugmd-agent
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - openmm>=8.1
+  - pdbfixer
+  - parmed
+  - pip

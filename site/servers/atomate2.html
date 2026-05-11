@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>atomate2 Server Tools — AtomisticSkills</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .tool-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    .tool-name { font-size: 1.25rem; font-weight: 700; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace; }
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md pre{background:#f8fafc;padding:1.25rem;border-radius:8px;border:1px solid #e2e8f0;overflow-x:auto;margin:1rem 0}
+    .rendered-md pre code{background:transparent;padding:0;border:none;color:#334155;font-size:0.9rem;line-height:1.6}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/src/mcp_server/atomate2_server.py" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Servers</div>
+    <h1>atomate2 Server</h1>
+    <p class="desc">MCP Tools exposed by the <code>atomate2_server.py</code></p>
+  </div>
+</div>
+<div class="content">
+  <div class="tools-list">
+    
+        <div class="tool-card">
+          <h3 class="tool-name">📎 run_atomate2_vasp_calculation</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nRun VASP calculations using atomate2 flows.\n\nThis tool supports MatPES presets (matpes-pbe, matpes-r2scan) and standard MP presets.\nIt can run calculations locally (blocking) or remote.\n\nArgs:\n    structures_path: Path to structure files or directory.\n    output_dir: Directory to save results and logs.\n    preset_type: VASP input preset (\"omat\", \"mp\", \"matpes-pbe\", \"matpes-r2scan\", \"mp-r2scan\").\n    calculation_type: \"static\", \"relaxation\", \"band_structure\", \"optics\", or \"lobster\".\n    config: Optional custom INCAR settings to override preset.\n    execution_mode: \"local\" (blocking) or \"remote\".\n    check_only: If True, only check environment or job status without running.\n    job_id: Optional Job ID to check status or extract results from.\n    remote_settings: Optional dict for remote execution. \n                    Keys: &#39;project&#39; (default: remote_perlmutter), &#39;worker&#39; (default: perlmutter_worker).\n    bandstructure_mode: For &#39;band_structure&#39; type: \"line\", \"uniform\", or \"both\" (default: \"line\").\n    \nReturns:\n    Status message or results summary.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 get_atomate2_results_by_id</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nRetrieve VASP calculation results from Atomate2 MongoDB by Job IDs or Flow IDs.\n\nArgs:\n    job_ids: List of Job IDs (UUIDs or DB IDs).\n    flow_ids: List of Flow IDs (UUIDs or DB IDs).\n    project_name: Name of the jobflow-remote project (default: None, auto-detected).\n    save_to_file: Optional path to save the results as a JSON file.\n    convert_units: Whether to convert stress from kB to eV/\u00c5\u00b3 (default: True).\n    \nReturns:\n    Dictionary containing the extracted training data and count.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 get_atomate2_results_by_formula</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nRetrieve VASP calculation results from Atomate2 MongoDB by chemical formula or system.\n\nArgs:\n    formula: Chemical formula filter (e.g., \"Al2O3\").\n    chemsys: Chemical system filter (e.g., \"Al-O\").\n    project_name: Name of the jobflow-remote project (default: None, auto-detected).\n    save_to_file: Optional path to save the results as a JSON file.\n    convert_units: Whether to convert stress from kB to eV/\u00c5\u00b3 (default: True).\n    limit: Maximum number of results to retrieve (default: 100).\n    \nReturns:\n    Dictionary containing the extracted training data and count.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 get_atomate2_summary</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nGet a summary of the Atomate2 database (total labels, convergence, chemsys distribution).\n\nArgs:\n    project_name: Name of the jobflow-remote project (default: None, auto-detected).\n    save_to_file: Optional path to save the results as a JSON file.\n    \nReturns:\n    Dictionary with database statistics.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 get_atomate2_recent_jobs</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nList recently completed Job IDs and their status.\n\nArgs:\n    project_name: Name of the jobflow-remote project (default: None, auto-detected).\n    limit: Number of jobs to retrieve.\n    save_to_file: Optional path to save the results as a JSON file.\n    \nReturns:\n    List of job information dictionaries.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 get_atomate2_job_status</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nCheck the detailed status of a single Atomate2 job by ID.\n\nArgs:\n    job_id: The Job ID or Flow ID (UUID or DB ID).\n    project_name: Name of the jobflow-remote project (default: None, auto-detected).\n    save_to_file: Optional path to save the results as a JSON file.\n    \nReturns:\n    Dictionary with job status information.\n```"'></div>
+        </div>
+        
+  </div>
+</div>
+<footer><p>AtomisticSkills — Open-sourced AI research infrastructure</p></footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    marked.setOptions({ breaks: true, gfm: true });
+    document.querySelectorAll('.tool-doc').forEach(el => {
+        try {
+            // We encoded it with json.dumps(), so we parse with JSON.parse.
+            const rawHtmlStr = el.dataset.md;
+            // The unescaped string can be parsed back:
+            const md = JSON.parse(rawHtmlStr.replace(/&#39;/g, "'"));
+            el.innerHTML = marked.parse(md);
+        } catch(e) {
+            el.innerText = el.dataset.md;
+        }
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+cif: test_structure_supercell.relaxed.cif
+steps: 100
+temperature_K: 298.0
+scheme: gcmc
+output_dir: multi_gas
+restart_traj: null
+restart_frame: -1
+device: auto
+calculator: fairchem
+model_name: uma-s-1p1
+task_name: omol
+output: null
+starting_tag: 1
+grid_resolution: 10
+translate_max: 5.0
+probe_fmax: 0.05
+probe_steps: 200
+gases:
+- CO2
+- N2
+y:
+- 0.15
+- 0.85
+p_total_bar: 1.0
+kij: []

@@ -21,7 +21,7 @@ Workflows are typically maintained as single markdown files in the `.agents/work
 
 ```
 .agents/workflows/
-├── hierarchical-screening-alkaline-stability.md
+├── generative-halide-discovery.md
 ├── sorption-discovery.md
 └── benchmark-finetuning.md
 ```

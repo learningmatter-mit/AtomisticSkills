@@ -12,6 +12,7 @@ python .agents/skills/mat-ionic-substitution/scripts/find_structures_for_composi
     --composition Li2ZrCl6 \
     --threshold 0.001 \
     --max_precursors 42 \
+    --max_cifs 5 \
     --output_dir examples/Li2ZrCl6_reverse/
 ```
 
@@ -43,7 +44,7 @@ python .agents/skills/mat-ionic-substitution/scripts/find_structures_for_composi
 
 ## Output Files
 
-- `*.cif` — 26 substitution-derived candidate structures
+- [*.cif](*.cif) — Top 5 substitution-derived candidate structures
 - `structure_manifest.json` — full provenance (precursor ID, substitution map, probability)
 
 ## Next Steps

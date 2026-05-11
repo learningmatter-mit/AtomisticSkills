@@ -267,3 +267,47 @@ def calculate_atomic_density(atoms: Atoms) -> float:
     volume = atoms.get_volume() * 1e-30  # Convert Å³ to m³
     total_mass = np.sum(atoms.get_masses()) * units._amu  # Convert amu to kg # type: ignore
     return total_mass / volume
+
+
+def logsumexp(a):
+    """Compute log(sum(exp(a))) in a numerically stable way.
+
+    Entries equal to -np.inf effectively contribute zero.
+    """
+    a = np.asarray(a, dtype=float)
+    a_max = np.max(a)
+    if np.isneginf(a_max):
+        return float(-np.inf)
+    return float(a_max + np.log(np.exp(a - a_max).sum()))
+
+
+def bootstrap_henry_stderr(
+    interaction_energies_valid,
+    is_valid,
+    temperature,
+    atomic_density,
+    n_bootstrap,
+    random_seed,
+):
+    """Calculate standard deviation of Henry coefficient using bootstrap.
+
+    Uses log-sum-exp to compute the ensemble average of Boltzmann weights
+    in a numerically stable way while ignoring invalid samples.
+    """
+    kT_eV = temperature * units._k / units._e
+    beta = 1.0 / kT_eV
+    R = units._k * units._Nav
+
+    n = len(interaction_energies_valid)
+    kh_samples = np.zeros(n_bootstrap)
+
+    rng = np.random.default_rng(random_seed)
+
+    for i in range(n_bootstrap):
+        idx = rng.choice(n, size=n, replace=True)
+        a = np.where(is_valid[idx], -beta * interaction_energies_valid[idx], -np.inf)
+        log_mean_w = logsumexp(a) - np.log(n)
+        mean_w = np.exp(log_mean_w)
+        kh_samples[i] = mean_w / (R * temperature * atomic_density)
+
+    return float(np.std(kh_samples))

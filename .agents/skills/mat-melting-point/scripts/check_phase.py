@@ -61,26 +61,27 @@ def project_and_classify(descriptors, mu_solid, mu_liquid):
     return is_solid, projections, solid_fraction
 
 
+def load_features(filename):
+    with open(filename) as f:
+        data = json.load(f)
+    return np.array(data["atomic_features"])
+
 def main():
     parser = argparse.ArgumentParser(
         description="Analyze phase using pre-computed MLIP atomic features",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__
     )
-    parser.add_argument("features_file", help="JSON file with atomic features")
-    parser.add_argument("--research_dir", required=True, help="Research directory with phase_references.npz")
+    parser.add_argument("features_file", help="JSON file with atomic features to analyze")
+    parser.add_argument("--solid_features", required=True, help="JSON file with reference solid atomic features")
+    parser.add_argument("--liquid_features", required=True, help="JSON file with reference liquid atomic features")
     parser.add_argument("--verbose", "-v", action="store_true", help="Show detailed output")
     args = parser.parse_args()
     
-    # Load reference descriptors
-    ref_file = Path(args.research_dir) / "phase_references.npz"
-    mu_solid, mu_liquid = load_references(ref_file)
+    mu_solid = load_features(args.solid_features).mean(axis=0)
+    mu_liquid = load_features(args.liquid_features).mean(axis=0)
     
-    # Load atomic features from JSON
-    with open(args.features_file) as f:
-        features_data = json.load(f)
-    
-    descriptors = np.array(features_data["atomic_features"])
+    descriptors = load_features(args.features_file)
     
     if args.verbose:
         print(f"Loaded features: {descriptors.shape[0]} atoms, {descriptors.shape[1]} features")
@@ -104,18 +105,21 @@ def main():
     # Determine overall phase
     if solid_fraction > 0.95:
         result = "LIKELY_SOLID"
-        print(f"  Phase: ✓ {result}")
+        print(f"  Phase: \u2713 {result}")
     elif solid_fraction < 0.05:
         result = "LIKELY_LIQUID"
-        print(f"  Phase: ✓ {result}")
+        print(f"  Phase: \u2713 {result}")
     else:
         result = "LIKELY_INTERFACE_COEXISTENCE"
-        print(f"  Phase: ⚠ {result}")
+        print(f"  Phase: \u26a0 {result}")
     
     print(f"{'='*60}\n")
     
     return result
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.features_file)
 
 if __name__ == "__main__":
     main()

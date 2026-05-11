@@ -15,7 +15,7 @@ To accurately calculate the ionic diffusivity ($D$) and activation energy ($E_a$
     - Use the `run_md` tool from a relevant potential skill (e.g., [mace](../mace/SKILL.md) or [matgl](../matgl/SKILL.md)).
     - **Batch Processing**: You can pass a directory or a list of CIF paths to `structure_data` to run multiple MD simulations concurrently via the MCP tool.
     - **Supercell Expansion**: Ensure supercells are sufficiently large (> 10 Å in all dimensions). The `run_md` tool natively supports this via the `supercell_min_length` argument (defaults to 10.0 Å) which performs orthogonal expansion automatically.
-    - **Optimization**: Use the `diffusion` monitor to automatically stop simulations once the transport properties have converged.
+    - **Optimization**: Use the `diffusion` monitor (see [mat-md-monitors](../mat-md-monitors/SKILL.md)) to automatically stop simulations once the transport properties have converged.
         ```python
         mace.run_md(
             structure_data=["candidates/A.cif", "candidates/B.cif"], 
@@ -59,6 +59,9 @@ To accurately calculate the ionic diffusivity ($D$) and activation energy ($E_a$
 - **Linearity**: The diffusivity calculation assumes a linear diffusive regime. Always inspect the generated MSD plots to ensure linearity after the `ignore_ps` period.
 - **Atom Count**: To ensure statistical significance, the system should contain a sufficient number of mobile ions (> 20 recommended).
 - **Paths**: Always use relative paths from the project root when executing scripts.
+
+## See Also
+- [mat-md-monitors](../mat-md-monitors/SKILL.md): Real-time monitoring tools for MD simulations.
 ---
 
 **Author:** Bowen Deng  

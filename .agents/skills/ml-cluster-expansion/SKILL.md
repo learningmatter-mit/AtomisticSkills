@@ -1,7 +1,7 @@
 ---
 name: ml-cluster-expansion
 description: train a Cluster Expansion (CE) for lattice-based Monte Carlo simulation of disordered materials.
-category: [machine-learning]
+category: [machine-learning, materials]
 ---
 
 # Cluster Expansion

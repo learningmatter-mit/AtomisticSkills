@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Materials Discovery Workflow — AtomisticSkills Workflows</title>
+  <meta name="description" content="An end-to-end workflow for high-throughput materials discovery, screening, and synthesizability assessment."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .workflow-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .workflow-hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .workflow-desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .workflow-content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/materials-discovery.md" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="workflow-hero">
+  <div class="workflow-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Workflows</div>
+    <h1>Materials Discovery Workflow</h1>
+    <p class="workflow-desc">An end-to-end workflow for high-throughput materials discovery, screening, and synthesizability assessment.</p>
+  </div>
+</div>
+<div class="workflow-content">
+  <div class="rendered-md" id="workflow-body"></div>
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/materials-discovery.md" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 8px; color: #1e293b; font-weight: 600; text-decoration: none; font-size: 0.95rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: background 0.2s;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View this Workflow on GitHub
+    </a>
+  </div>
+</div>
+<footer>
+  &copy; 2026 AtomisticSkills. Generated by build_skills.py.
+</footer>
+<script>
+  document.getElementById('workflow-body').innerHTML = marked.parse("This workflow provides a generalized, hierarchical approach to discovering new materials. It covers starting from initial candidate generation to evaluating thermodynamic stability, screening target properties, and finally assessing novelty and experimental synthesizability.\n\n## 1. Initial Research Setup\nFollow the initialization protocol defined in `@.agents/rules/research-standards.md`.\n- **Workspace**: Create a dedicated timestamped directory for the project (e.g., `research/YYYY-MM-DD_project_name`).\n- **Objective**: Clearly define the target application, chemical space, and the critical properties needed for success (e.g., high ionic conductivity, appropriate bandgap, or strong magnetic moment).\n\n## 2. Candidate Generation\nGenerate or retrieve a diverse set of initial candidate structures. Select the approach based on whether you are exploring known chemical spaces or searching for entirely novel frameworks.\n\n- **Database Mining**: Query existing databases for initial structural prototypes or materials that naturally meet basic constraints.\n  - *Skill Reference*: `mat-db-mp` (Materials Project querying)\n  \n- **Generative AI Methods**: Use machine learning generative models to create novel hypothetical structures.\n  - *Skill Reference*: `ml-generative-mattergen` (Diffusion-based generation, optionally conditioned on properties/systems)\n  - *Skill Reference*: `ml-generative-diffcsp` (Constrained generation using space groups and Wyckoff positions)\n  - *Skill Reference*: `ml-generative-adit` (Unified generation of periodic structures)\n  \n- **Heuristics & Substitutions**: Formulate new candidates by mimicking or scrambling known prototypes.\n  - *Skill Reference*: `mat-ionic-substitution` (Data-mined ionic substitution rules)\n  - *Skill Reference*: `mat-random-structure-search` (AIRSS-style generation for specific compositions)\n  - *Skill Reference*: `mat-disorder` (Generate ordered supercells from disordered structures)\n\n## 3. Candidate Documentation and Tracking\nMaintain a centralized record of all candidates to track their progress through the screening funnel.\n- Create a primary DataFrame or CSV table in the research directory (e.g., `candidates_tracking.csv`).\n- **Required Columns**: `candidate_id`, `formula`, `source/generation_method`, `space_group`.\n- **Property Columns**: Add columns for downstream calculated metrics (e.g., `e_above_hull`, `bandgap`, `bulk_modulus`) to easily query and filter the best performers later.\n\n## 4. Stability Determination\nBefore investing in expensive property calculations, screen out inherently unstable candidates. \n\n- **0K Thermodynamic Stability (Required)**: Calculate the energy above the convex hull ($E_{\\text{hull}}$) to ensure the material won't spontaneously phase-separate.\n  - *Skill Reference*: `mat-stability`\n  - *Skill Reference*: `mat-elemental-energies` and `mat-mp2020-compatibility` (for standardizing reference energies)\n\n- **Dynamical and Thermal Stability (Optional)**: Check for imaginary phonon modes or melting point behavior if high-temperature operation is required.\n  - *Skill Reference*: `mat-phonon` (Vibrational properties and dynamical stability)\n  - *Skill Reference*: `mat-qha-thermal-expansion` (Free energy contributions at finite temperatures)\n  - *Skill Reference*: `mat-melting-point` (Predict melting temperatures)\n\n- **Environmental & Electrochemical Stability (Optional)**: Determine operational stability in specific environments (e.g., batteries, fuel cells).\n  - *Skill Reference*: `mat-pourbaix-diagram` (Aqueous/pH stability)\n  - Note: Electrochemical stability windows can often be derived using similar grand-canonical approaches.\n\n## 5. Property Calculation and Screening\nEvaluate functional properties to find the best candidates for your specific application. Depending on the objective, invoke the corresponding property calculation workflows:\n\n- **Electronic/Band Structure**: `mat-electronic-structure`\n- **Mechanical/Elasticity**: `mat-elasticity`, `mat-equation-of-state`\n- **Thermal Transport**: `mat-lattice-thermal-conductivity`\n- **Magnetic Properties**: `mat-magnetic-density`\n- **Ion Transport**: `mat-diffusion-analysis`, `mat-intercalation-voltage`\n- **Surfaces and Defects**: `mat-surface-energy`, `mat-surface-adsorption`, `mat-defect-energy`\n\n*Update the tracking table (from step 3) continuously as properties are calculated.*\n\n## 6. Structure Novelty Check\nOnce the top-performing candidates are identified, confirm that they are genuinely new discoveries. \n- *Skill Reference*: `mat-structure-novelty` (Compare candidate structures against known theoretical and experimental databases like MP or ICSD to filter out duplicates or heavily researched materials).\n\n## 7. Synthesizability Report\nFor the final list of highly promising and novel candidates, assess how easily they can be synthesized in a lab setting:\n- Provide recommendations on the best possible synthesis conditions and precursors.\n- *Skill Reference*: `mat-reaction-network` (Predict thermodynamically optimal solid-state synthesis pathways)\n- *Skill Reference*: `mat-synthesis-recommendation` (Query text-mined literature datasets for historical recipes on related chemical systems)\n\nSummarize the results in a concise final report within the research directory.");
+</script>
+</body>
+</html>

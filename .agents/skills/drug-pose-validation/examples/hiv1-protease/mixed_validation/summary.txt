@@ -1,0 +1,12 @@
+Pose Validation Summary
+========================================
+Input poses:  4
+Valid poses:  3
+Pass rate:    75.0%
+Receptor:     no
+
+Pose 0: PASS
+Pose 1: PASS
+Pose 2: FAIL
+  Failed: bond_lengths, bond_angles, internal_steric_clash, internal_energy
+Pose 3: PASS

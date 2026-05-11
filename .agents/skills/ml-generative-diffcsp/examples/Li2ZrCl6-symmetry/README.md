@@ -24,5 +24,5 @@ mcp_diffcsp_generate_structures_with_symmetry(
 
 ## Files
 
-- `structure_0000.cif` — Example generated structure
+- [structure_0000.cif](structure_0000.cif) — Example generated structure
 - `generation_metadata.json` — Generation parameters

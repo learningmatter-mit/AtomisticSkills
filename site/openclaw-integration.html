@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OpenClaw Integration Guide — AtomisticSkills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0;
+      --text:#1b1464; --muted:#64748b; --accent:#816cff;
+      --accent2:#5b3de8;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+      padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-logo img{height:24px}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+
+    /* HERO */
+    .doc-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:4rem 2rem 3rem}
+    .doc-hero-inner{max-width:850px;margin:0 auto}
+    .doc-breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .doc-breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;color:var(--text);margin:0}
+
+    /* CONTENT */
+    .doc-content{max-width:850px;margin:0 auto;padding:3rem 2rem}
+    .rendered-md h2{font-size:1.6rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.25rem;font-weight:700;margin:1.5rem 0 0.75rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.75;font-size:1.05rem}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:1rem 0}
+    .rendered-md li{margin:0.5rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;
+      background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md pre{background:#1e293b;border-radius:10px;padding:1.5rem;overflow-x:auto;margin:1.5rem 0}
+    .rendered-md pre code{background:none;border:none;color:#e2e8f0;padding:0;font-size:0.85rem;line-height:1.7}
+    .rendered-md blockquote{border-left:4px solid var(--accent);background:#f8f9ff;
+      padding:1rem 1.5rem;border-radius:0 10px 10px 0;margin:1.5rem 0}
+    .rendered-md img{max-width:100%;border-radius:12px;border:1px solid var(--border);margin:2rem auto;display:block;box-shadow:0 8px 30px rgba(0,0,0,0.1)}
+    .rendered-md a{color:var(--accent);text-decoration:none;font-weight:500}
+    .rendered-md a:hover{text-decoration:underline}
+
+    .admonition{border-radius:8px;padding:1rem;margin:1.5rem 0;border-left:4px solid}
+    .admonition-tip{background:#f0fdf4;border-color:#22c55e}
+    .admonition-note{background:#eff6ff;border-color:#3b82f6}
+    .admonition-important{background:#faf5ff;border-color:#a855f7}
+    .admonition-warning{background:#fffbeb;border-color:#f59e0b}
+    .admonition-caution{background:#fef2f2;border-color:#ef4444}
+
+    footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;color:var(--muted);font-size:0.9rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><img src="logo/atomisticskills_logo.svg" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="index.html">← Back Home</a>
+</nav>
+<div class="doc-hero">
+  <div class="doc-hero-inner">
+    <div class="doc-breadcrumb"><a href="index.html">Home</a> / Documentation</div>
+    <h1>OpenClaw Integration Guide</h1>
+  </div>
+</div>
+<div class="doc-content">
+  <div class="rendered-md" id="doc-body"></div>
+</div>
+<footer><p>AtomisticSkills — Open-sourced AI research infrastructure</p></footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const DOC_MD = "[OpenClaw](https://github.com/openclaw/openclaw) is an open-source local AI agent framework that can connect to any LLM backend (Claude, GPT, DeepSeek, etc.) and run autonomous workflows. This guide explains how to wire AtomisticSkills into an OpenClaw session so you can run research workflows over a TUI or Telegram bot.\n\n---\n\n## Prerequisites\n\n- AtomisticSkills cloned and at least one conda environment installed (see `docs/setup.md`)\n- OpenClaw installed (`npm install -g openclaw` or equivalent \u2014 see the OpenClaw docs)\n- `mcporter` CLI installed (used by OpenClaw to manage MCP servers)\n\n---\n\n## 1. Launch OpenClaw in the AtomisticSkills directory\n\nOpenClaw treats the directory you launch it in as its **workspace root**. For AtomisticSkills, launch from the repo:\n\n```bash\ncd ~/Documents/AtomisticSkills\nopenclaw\n```\n\nOr equivalently with the explicit flag:\n\n```bash\nopenclaw --workspace ~/Documents/AtomisticSkills\n```\n\nFor the TUI interface:\n\n```bash\ncd ~/Documents/AtomisticSkills\nopenclaw tui\n```\n\n> **Why this matters:** If you launch from the wrong directory (e.g., `~/.openclaw/workspace`), the agent won't have access to the `.agent/` folder, skills, or research outputs without extra manual setup.\n\n---\n\n## 2. Load Skills, Rules, and Workflows\n\nOnce inside the session, tell the agent to load the AtomisticSkills knowledge base into its context:\n\n```\nabsorb all of /home/<you>/Documents/AtomisticSkills into context. most crucially is the files in /home/<you>/Documents/AtomisticSkills/.agent \u2014 target the skills/, workflows/, and rules/ folders within .agent/\n```\n\nThe agent will read and internalize:\n- `.agent/skills/` \u2014 all ~60 domain skills (melting point, docking, sorption, fine-tuning, etc.)\n- `.agent/workflows/` \u2014 high-level research playbooks\n- `.agent/rules/` \u2014 coding, research, and plotting standards\n\nAfter this, the agent can discover and execute skills by reading their `SKILL.md` files and running the associated scripts directly.\n\n---\n\n## 3. Register MCP Servers via mcporter\n\nAtomisticSkills' MCP servers (MatGL, MACE, FairChem, etc.) are defined in `mcp_config.json`. Register them with OpenClaw via mcporter:\n\n```\nload all mcp tools from the mcp_config.json file in /home/<you>/Documents/AtomisticSkills\n```\n\nThe agent will use `mcporter config import` to copy the server definitions into `config/mcporter.json` inside the OpenClaw workspace. You can verify with:\n\n```bash\nmcporter config list\n```\n\n> **Note:** The correct filename is `mcp_config.json` \u2014 not `mcp_settings.json`.\n\nAfter registration, MCP tools are called as `mcporter call <server> <tool>` from within the session.\n\n---\n\n## 4. Connect a Telegram Bot (Optional)\n\nOpenClaw can expose your agent as a Telegram bot for remote interaction. To pair your Telegram account:\n\n1. Message the bot on Telegram: `/start`\n2. The bot will reply with your user ID and a pairing code, e.g.:\n   ```\n   Your Telegram user id: 1234567890\n   Pairing code: 7CMR294B\n   ```\n3. On the machine running OpenClaw, approve the pairing:\n   ```bash\n   openclaw pairing approve telegram 7CMR294B\n   ```\n\nOnce paired, you can message the bot to check on long-running jobs, request status updates, or give new instructions \u2014 all while a TUI session runs on the machine.\n\n> **TUI and Telegram are separate sessions** \u2014 they do not share conversation context. Both have access to the same workspace files and MCP servers, but each has its own message history.\n\n---\n\n## 5. Configure Web Search (Optional)\n\nOpenClaw's web search tool requires a Brave Search API key:\n\n```bash\nopenclaw configure --section web\n# enter your BRAVE_API_KEY when prompted\n```\n\nOr set it as an environment variable before launching:\n\n```bash\nexport BRAVE_API_KEY=your_key_here\nopenclaw\n```\n\nWithout this, web search calls will return a `missing_brave_api_key` error.\n\n---\n\n## 6. Running Research Workflows\n\nOnce skills and MCP servers are loaded, the agent uses them autonomously. Example prompts that work well:\n\n```\nQuery 1000 bulk modulus data from Materials Project and train a property predictor using MatGL.\ndon't stop. don't ask me for questions.\n```\n\n```\nCalculate the melting point of Ag using the solid-liquid coexistence method.\n```\n\nThe agent will:\n1. Discover the relevant skill by reading `.agent/skills/*/SKILL.md`\n2. Run scripts via the appropriate conda env (e.g., `micromamba run -n mace-agent python ...`)\n3. Call MCP tools via `mcporter call <server> <tool> <args>`\n4. Save outputs to `research/<date>_<description>/`\n\nBackground processes are tracked by named sessions (e.g., `lucky-meadow`, `tidal-lagoon`). These continue running even when you're not actively messaging.\n\n---\n\n## 7. Sending Files via Telegram\n\nThe agent can attach files (PDFs, images, etc.) directly to Telegram messages. Simply ask:\n\n```\nsend the bulk modulus report pdf to me on telegram\n```\n\nYou may occasionally see a media path error in the agent's tool output, but the file typically sends successfully regardless.\n\n---\n\n## 8. Session Persistence\n\nOpenClaw sessions persist as long as you are actively using the TUI or Telegram interface. History will carry over between messages within an ongoing session. Sessions do reset after extended periods of inactivity, at which point the agent will have no memory of prior work.\n\nIf you want to be safe across longer gaps, write key milestones into a memory file in the workspace:\n\n```\nwrite a MEMORY.md in the workspace summarizing what we accomplished today\n```\n\nOn resuming after a reset, point the agent to that file:\n```\nread ~/.openclaw/workspace/MEMORY.md and resume from where we left off\n```\n\n---\n\n## Quick Reference\n\n| Task | Command / Prompt |\n|---|---|\n| Launch in AtomisticSkills dir | `cd ~/Documents/AtomisticSkills && openclaw tui` |\n| Load skills + rules | `absorb all of .../AtomisticSkills ... target skills/, workflows/, rules/` |\n| Register MCP servers | `load all mcp tools from mcp_config.json` |\n| Verify MCP servers | `mcporter config list` |\n| Pair Telegram | `openclaw pairing approve telegram <CODE>` |\n| Enable web search | `openclaw configure --section web` |\n| Send file via Telegram | Copy to `~/.openclaw/workspace/`, then ask agent to send |\n| Check OpenClaw version | `openclaw --version` |\n";
+  marked.setOptions({ breaks: true, gfm: true });
+  const KATEX_OPTS = { delimiters: [
+    {left: '$$', right: '$$', display: true},
+    {left: '$', right: '$', display: false},
+    {left: '\\(', right: '\\)', display: false},
+    {left: '\\[', right: '\\]', display: true}
+  ], throwOnError: false };
+
+    function renderMd(md, container) {
+    if (!md) return;
+    const mathBlocks = [];
+    const placeholder = (i) => `MATHPLACEHOLDER${i}X`;
+    
+    // Protect block math $$...$$
+    let safe = md.replace(/\$\$([\s\S]+?)\$\$/g, (_, m) => {
+      mathBlocks.push(`$$${m}$$`);
+      return placeholder(mathBlocks.length - 1);
+    });
+    // Protect inline math $...$
+    safe = safe.replace(/(?<!\$)\$([^\$]+?)\$(?!\$)/g, (_, m) => {
+      mathBlocks.push(`$${m}$`);
+      return placeholder(mathBlocks.length - 1);
+    });
+
+    let html = marked.parse(safe);
+    mathBlocks.forEach((tok, i) => {
+      html = html.replace(new RegExp(placeholder(i), 'g'), tok);
+    });
+
+    html = html
+      .replace(/<blockquote>\s*<p>\[!TIP\]/gi,  '<blockquote class="admonition admonition-tip"><p>💡 <strong>Tip</strong>')
+      .replace(/<blockquote>\s*<p>\[!NOTE\]/gi, '<blockquote class="admonition admonition-note"><p>📝 <strong>Note</strong>')
+      .replace(/<blockquote>\s*<p>\[!IMPORTANT\]/gi, '<blockquote class="admonition admonition-important"><p>⚡ <strong>Important</strong>')
+      .replace(/<blockquote>\s*<p>\[!WARNING\]/gi, '<blockquote class="admonition admonition-warning"><p>⚠️ <strong>Warning</strong>')
+      .replace(/<blockquote>\s*<p>\[!CAUTION\]/gi, '<blockquote class="admonition admonition-caution"><p>🚨 <strong>Caution</strong>');
+
+    container.innerHTML = html;
+    if (typeof renderMathInElement !== 'undefined') renderMathInElement(container, KATEX_OPTS);
+    if (typeof $3Dmol !== 'undefined') {
+      container.querySelectorAll('.custom-3dmol').forEach(el => {
+        if (!el.dataset.b64) return;
+        try {
+          let content = decodeURIComponent(escape(atob(el.dataset.b64)));
+          let viewer = $3Dmol.createViewer(el, {backgroundColor: '#f8f9fc'});
+          viewer.addModel(content, el.dataset.datatype);
+          viewer.setStyle({}, {stick:{radius:0.15}, sphere:{radius:0.4}});
+          if(el.dataset.unitcell) viewer.addUnitCell();
+          viewer.zoomTo();
+          viewer.render();
+        } catch (err) {
+          console.error("Failed to init 3Dmol viewer", err);
+        }
+      });
+    }
+  }
+  renderMd(DOC_MD, document.getElementById('doc-body'));
+});
+</script>
+</body>
+</html>

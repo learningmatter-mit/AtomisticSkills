@@ -1,67 +1,117 @@
 {
-    "mcpServers": {
-        "matgl": {
-            "command": "/mnt/data0/hojechun/miniforge3/envs/matgl-agent/bin/python",
-            "args": [
-                "-m",
-                "src.mcp_server.matgl_server"
-            ],
-            "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills",
-                "MATGL_BACKEND": "DGL"
-            }
-        },
-        "mace": {
-            "command": "/mnt/data0/hojechun/miniforge3/envs/mace-agent/bin/python",
-            "args": [
-                "-m",
-                "src.mcp_server.mace_server"
-            ],
-            "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
-            }
-        },
-        "fairchem": {
-            "command": "/mnt/data0/hojechun/miniforge3/envs/fairchem-agent/bin/python",
-            "args": [
-                "-m",
-                "src.mcp_server.fairchem_server"
-            ],
-            "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
-            }
-        },
-        "htvs": {
-            "command": "/mnt/data0/hojechun/miniforge3/envs/htvs-agent/bin/python",
-            "args": [
-                "-m",
-                "src.mcp_server.htvs_server"
-            ],
-            "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills",
-                "HTVS_DJANGOCHEM_DIR": "/mnt/data0/hojechun/repos/htvs/djangochem",
-                "HTVS_DIR": "/mnt/data0/hojechun/repos/htvs"
-            }
-        },
-        "atomate2": {
-            "command": "/mnt/data0/hojechun/miniforge3/envs/atomate2-agent/bin/python",
-            "args": [
-                "-m",
-                "src.mcp_server.atomate2_server"
-            ],
-            "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
-            }
-        },
-        "smol": {
-            "command": "/mnt/data0/hojechun/miniforge3/envs/smol-agent/bin/python",
-            "args": [
-                "-m",
-                "src.mcp_server.smol_server"
-            ],
-            "env": {
-                "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
-            }
-        }
+  "mcpServers": {
+    "matgl": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/matgl-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.matgl_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills",
+        "MATGL_BACKEND": "DGL"
+      }
+    },
+    "mace": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/mace-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.mace_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "fairchem": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/fairchem-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.fairchem_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "base": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/base-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.base_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "atomate2": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/atomate2-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.atomate2_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "smol": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/smol-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.smol_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "drugdisc": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/drugdisc-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.drugdisc_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "adit": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/adit-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.adit_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "diffcsp": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/diffcsp-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.diffcsp_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "mattergen": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/mattergen-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.mattergen_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills"
+      }
+    },
+    "htvs": {
+      "command": "/mnt/data0/hojechun/miniforge3/envs/htvs-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.htvs_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/mnt/data0/hojechun/repos/AtomisticSkills",
+        "HTVS_DJANGOCHEM_DIR": "/mnt/data0/hojechun/repos/htvs/djangochem",
+        "HTVS_DIR": "/mnt/data0/hojechun/repos/htvs"
+      }
     }
+  }
 }

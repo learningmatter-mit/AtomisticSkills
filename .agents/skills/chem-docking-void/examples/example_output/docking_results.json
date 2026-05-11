@@ -1,0 +1,61 @@
+{
+    "hyperparameters": {
+        "smiles": "C[N+](C)(C)C12CC3CC(C1)CC(C2)C3",
+        "host_cif": "./CHA.cif",
+        "output_dir": "./example_output",
+        "num_conformers": 5,
+        "threshold": 1.25,
+        "attempts": 50,
+        "structs_per_loading": 2,
+        "num_clusters": 5,
+        "min_radius": 3.0,
+        "probe_radius": 0.1,
+        "remove_species": [],
+        "max_loading": 20,
+        "max_subdock": 1
+    },
+    "results": [
+        {
+            "pose_id": 1,
+            "filename": "pose_1_loading_1_conf_1.cif",
+            "loading": 1,
+            "conformer_idx": 1,
+            "conformer_energy": 54.6902225505866
+        },
+        {
+            "pose_id": 2,
+            "filename": "pose_2_loading_1_conf_1.cif",
+            "loading": 1,
+            "conformer_idx": 1,
+            "conformer_energy": 54.6902225505866
+        },
+        {
+            "pose_id": 3,
+            "filename": "pose_3_loading_2_conf_1.cif",
+            "loading": 2,
+            "conformer_idx": 1,
+            "conformer_energy": 54.6902225505866
+        },
+        {
+            "pose_id": 4,
+            "filename": "pose_4_loading_2_conf_1.cif",
+            "loading": 2,
+            "conformer_idx": 1,
+            "conformer_energy": 54.6902225505866
+        },
+        {
+            "pose_id": 5,
+            "filename": "pose_5_loading_3_conf_1.cif",
+            "loading": 3,
+            "conformer_idx": 1,
+            "conformer_energy": 54.6902225505866
+        },
+        {
+            "pose_id": 6,
+            "filename": "pose_6_loading_3_conf_1.cif",
+            "loading": 3,
+            "conformer_idx": 1,
+            "conformer_energy": 54.6902225505866
+        }
+    ]
+}

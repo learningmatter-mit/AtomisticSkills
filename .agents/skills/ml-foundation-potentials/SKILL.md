@@ -1,7 +1,7 @@
 ---
 name: ml-foundation-potentials
 description: Guide for selecting the most appropriate foundation MLIP model based on simulation requirements.
-category: [machine-learning]
+category: [machine-learning, materials, chemistry, drug-discovery]
 ---
 
 # Foundation Potentials Selection
@@ -56,6 +56,23 @@ Select the appropriate machine learning interatomic potential (MLIP) for a given
 ## Selection Criteria
 
 Prioritize criteria in the following order:
+
+### 0. Check the Local Model Registry (Always First)
+Before selecting any foundation model, call `search_model_registry` to check whether a fine-tuned checkpoint already exists for the target chemical system:
+
+```bash
+mcp_base_search_model_registry(
+    chemical_system="Li-Fe-P-O",   # elements of interest
+    max_energy_mae=5.0,            # optional accuracy filter (meV/atom)
+)
+```
+
+- If a match is found **and** `checkpoint_exists = True`, use that model directly — no foundation model selection or fine-tuning is needed.
+- If a match is found but `checkpoint_exists = False` (file missing), fall through to the criteria below and plan a new fine-tuning run.
+- If no match is found, continue with the criteria below to select the best foundation model.
+
+> [!TIP]
+> After completing any fine-tuning, always register the new model with `register_model` so it can be reused in future tasks.
 
 ### 1. User Explicit Request
 If the user explicitly mentions a model name or framework (e.g., "MACE model", "fine-tuned MACE", "CHGNet", "UMA"), use that model/framework.

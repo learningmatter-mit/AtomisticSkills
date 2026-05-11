@@ -202,13 +202,20 @@ class MLIPModel(ABC):
         # Check for file path string
         # Check for file path string
         if isinstance(structure_data, str):
-            from ..structure_utils import load_structure_from_file
-            struct = load_structure_from_file(structure_data)
-            if struct is not None:
-                from pymatgen.io.ase import AseAtomsAdaptor
-                return AseAtomsAdaptor.get_atoms(struct)
+            if str(structure_data).endswith(".traj"):
+                from ase.io import read
+                try:
+                    return read(structure_data, index=-1)
+                except Exception as e:
+                    return {"error": f"Failed to load trajectory from file: {structure_data}, error: {e}"}
             else:
-                return {"error": f"Failed to load structure from file: {structure_data}"}
+                from ..structure_utils import load_structure_from_file
+                struct = load_structure_from_file(structure_data)
+                if struct is not None:
+                    from pymatgen.io.ase import AseAtomsAdaptor
+                    return AseAtomsAdaptor.get_atoms(struct)
+                else:
+                    return {"error": f"Failed to load structure from file: {structure_data}"}
         
         # Check for pymatgen Structure object
         if hasattr(structure_data, "as_dict") and hasattr(structure_data, "lattice"):
@@ -706,6 +713,8 @@ class MLIPModel(ABC):
         # Convert pressure from bar to eV/A^3 for MatCalc
         pressure_ev_ang3 = pressure * units.bar if pressure is not None else 0.0
 
+        has_velocities = hasattr(atoms, "get_velocities") and atoms.get_velocities() is not None
+
         md_calc = CustomMDCalc(
             calculator=calc,
             ensemble=ensemble.lower(),
@@ -719,6 +728,7 @@ class MLIPModel(ABC):
             logfile=log_path,
             set_zero_rotation=True,
             set_com_stationary=True,
+            relax_structure=False if has_velocities else True,
             additional_callbacks=additional_callbacks if additional_callbacks else None
         )
         
@@ -731,11 +741,14 @@ class MLIPModel(ABC):
             
         # Normal Final struct update
         final_structure = AseAtomsAdaptor.get_structure(atoms)
+        cif_path = os.path.join(output_dir, "final_structure.cif")
+        final_structure.to(filename=cif_path)
         
         return {
             "status": "success",
             "trajectory_path": traj_path,
             "log_path": log_path,
+            "cif_path": cif_path,
             "final_structure": final_structure.as_dict()
         }
 

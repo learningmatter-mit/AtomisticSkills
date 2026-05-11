@@ -22,6 +22,7 @@ if _WIDOM_SRC.is_dir() and str(_WIDOM_SRC) not in sys.path:
     sys.path.insert(0, str(_WIDOM_SRC))
 
 from widom import WidomInsertionResults, run_widom_insertion  # noqa: E402
+from src.utils.serialization_utils import format_temperature_key, finite_or_none
 
 LOGGER = logging.getLogger(__name__)
 
@@ -54,28 +55,12 @@ def add_common_widom_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--num-insertions", type=int, default=5000, help="Number of Widom insertion attempts")
     parser.add_argument("--optimize-structures", action="store_true", help="Optimize framework and gas before insertion (default: use structure as-is)")
     parser.add_argument("--cutoff-distance", type=float, default=1.0, help="Minimum framework-gas distance (Å)")
-    parser.add_argument("--cutoff-to-com", action="store_false", help="Use gas center-of-mass for cutoff checks")
+    parser.add_argument("--cutoff-to-com", action="store_true", help="Use gas center-of-mass for cutoff checks")
     parser.add_argument("--min-interplanar-distance", type=float, default=12.0, help="Min interplanar distance before supercell (Å)")
     parser.add_argument("--random-seed", type=int, default=0, help="Random seed for sampling and bootstrap")
     parser.add_argument("--min-interaction-energy", type=float, default=-1.25, help="Minimum valid interaction energy (eV)")
-    parser.add_argument("--model-outputs-interaction-energy", action="store_false", help="Treat model energies as interaction energies")
+    parser.add_argument("--model-outputs-interaction-energy", action="store_true", help="Treat model energies as interaction energies")
     parser.add_argument("--output-dir", type=Path, default=Path("."), help="Directory for output JSON")
-
-
-def _format_temperature_key(temperature: float) -> str:
-    rounded = round(temperature)
-    if abs(temperature - rounded) < 1e-6:
-        return f"{int(rounded)}K"
-    return f"{temperature:g}K"
-
-
-def _finite_or_none(x: Any) -> float | None:
-    try:
-        xf = float(x)
-    except Exception:
-        return None
-    return xf if math.isfinite(xf) else None
-
 
 def widom_standalone_payload(
     *,
@@ -90,10 +75,10 @@ def widom_standalone_payload(
         "cof_name": cof_name,
         "adsorbates": [gas],
         "temperature_K": float(temperature),
-        "henry_mol_kg_Pa": _finite_or_none(results.henry_coefficient),
-        "henry_stderr_mol_kg_Pa": _finite_or_none(results.henry_coefficient_std),
-        "heat_of_adsorption_kJ_mol": _finite_or_none(results.heat_of_adsorption),
-        "heat_of_adsorption_std_kJ_mol": _finite_or_none(results.heat_of_adsorption_std),
+        "henry_mol_kg_Pa": finite_or_none(results.henry_coefficient),
+        "henry_stderr_mol_kg_Pa": finite_or_none(results.henry_coefficient_std),
+        "heat_of_adsorption_kJ_mol": finite_or_none(results.heat_of_adsorption),
+        "heat_of_adsorption_std_kJ_mol": finite_or_none(results.heat_of_adsorption_std),
         "source": "computed",
         "method": "widom",
         "ref": None,

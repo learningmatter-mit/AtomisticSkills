@@ -1,6 +1,7 @@
 name: mace-agent
 dependencies:
   - python=3.10
+  - "pytorch=*=*cuda*"
   - pip
   - pip:
     - mcp

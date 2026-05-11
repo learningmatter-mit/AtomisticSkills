@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image to XRD Phase Analysis — AtomisticSkills Workflows</title>
+  <meta name="description" content="End-to-end workflow for digitizing an XRD plot image and identifying its crystalline phases."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .workflow-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .workflow-hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .workflow-desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .workflow-content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/image-to-xrd-phase.md" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="workflow-hero">
+  <div class="workflow-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Workflows</div>
+    <h1>Image to XRD Phase Analysis</h1>
+    <p class="workflow-desc">End-to-end workflow for digitizing an XRD plot image and identifying its crystalline phases.</p>
+  </div>
+</div>
+<div class="workflow-content">
+  <div class="rendered-md" id="workflow-body"></div>
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href="https://github.com/bowen-bd/AtomisticSkills/tree/main/.agents/workflows/image-to-xrd-phase.md" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 8px; color: #1e293b; font-weight: 600; text-decoration: none; font-size: 0.95rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: background 0.2s;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View this Workflow on GitHub
+    </a>
+  </div>
+</div>
+<footer>
+  &copy; 2026 AtomisticSkills. Generated by build_skills.py.
+</footer>
+<script>
+  document.getElementById('workflow-body').innerHTML = marked.parse("This workflow guides you through computationally identifying the crystalline phases of a material when your only starting point is an image or screenshot of an X-Ray Diffraction (XRD) plot.\n\n**Scientific Problem:** \nOften in literature analysis or quick experimental checks, raw diffractometer data (`.xy` or `.xrdml` files) is unavailable, and researchers only have access to a published image of the XRD spectrum. To computationally index these peaks and confirm the phase purity or exact polymorph of the sample against a database (like the Crystallography Open Database), the image must first be transformed into a numerical dataset. This workflow connects visual AI Agent data extraction with mathematical pseudo-Voigt profiling and high-throughput DARA phase searching to achieve end-to-end phase identification from a pure visual input.\n\n## Step-by-Step Methodology\n\n### Step 1: Visual Peak Extraction and Digitization\nProvide the AtomisticSkills Agent with the image of the XRD plot and the target chemical system.\n\n- **Skill:** Use the `mat-xrd-digitizer` skill.\n- **Action:** Instruct the Agent to use its vision capabilities to extract the 2-theta positions and relative intensities of the major peaks in the image into a `peaks.json` file. The Agent will then run the `digitize_plot.py` script on the `peaks.json` file to fit mathematical pseudo-Voigt profiles to the extracted peaks, synthesizing a realistic diffraction curve.\n- **Output:** An `example.xy` data file and a verification `example.png` plot.\n\n### Step 2: Phase Identification\nSearch the numerical dataset against a structural database to find the matching phases.\n\n- **Skill:** Use the `mat-xrd-phase-analysis` skill.\n- **Action:** The Agent will query the database (e.g., COD) for Candidate CIFs using the provided chemical system. It will then use DARA's BGMN-backed tree search to match the experimental `.xy` pattern against combinations of these CIFs.\n- **Decision:** Review the $R_{wp}$ (Weighted Profile R-factor) of the resulting solutions. If the $R_{wp}$ is very high or the residual plot is poor, you may need to ask the Agent to re-extract the peaks more carefully in Step 1, or try a different chemical system.\n- **Output:** A `results_summary.json` ranking the best matching phases, and refined fit plots bridging the digitized input with the theoretical models. \n\n### Optional Step 3: Refinement\nIf you already know the phases and simply want to refine their lattice parameters or weight fractions against the digitized plot.\n\n- **Skill:** Use the `mat-xrd-refinement` skill.\n- **Action:** Provide the specific `.cif` files directly to the DARA refinement script along with the digitized `.xy` file.\n\n### Step 4: Synthesis Recommendation\nOnce the correct phase or target material is successfully identified, determine how to synthesize it experimentally.\n\n- **Skill:** Use the `mat-synthesis-recommendation` skill.\n- **Action:** Query the experimental synthesis database (such as the Materials Project text-mined database) for the identified phase's chemical formula or exact material ID.\n- **Output:** A ranked list of literature-backed synthesis recipes, detailing the precursors, heating procedures, operations, and associated publication references.\n\n## References\n- DARA Automated Rietveld Analysis: [cedergrouphub.github.io/dara](https://cedergrouphub.github.io/dara)\n- Pseudo-Voigt profile generation is a standard practice for profile fitting in powder diffraction.");
+</script>
+</body>
+</html>

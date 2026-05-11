@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Developer Guide — AtomisticSkills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0;
+      --text:#1b1464; --muted:#64748b; --accent:#816cff;
+      --accent2:#5b3de8;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+      padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-logo img{height:24px}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+
+    /* HERO */
+    .doc-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:4rem 2rem 3rem}
+    .doc-hero-inner{max-width:850px;margin:0 auto}
+    .doc-breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .doc-breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;color:var(--text);margin:0}
+
+    /* CONTENT */
+    .doc-content{max-width:850px;margin:0 auto;padding:3rem 2rem}
+    .rendered-md h2{font-size:1.6rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.25rem;font-weight:700;margin:1.5rem 0 0.75rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.75;font-size:1.05rem}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:1rem 0}
+    .rendered-md li{margin:0.5rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;
+      background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md pre{background:#1e293b;border-radius:10px;padding:1.5rem;overflow-x:auto;margin:1.5rem 0}
+    .rendered-md pre code{background:none;border:none;color:#e2e8f0;padding:0;font-size:0.85rem;line-height:1.7}
+    .rendered-md blockquote{border-left:4px solid var(--accent);background:#f8f9ff;
+      padding:1rem 1.5rem;border-radius:0 10px 10px 0;margin:1.5rem 0}
+    .rendered-md img{max-width:100%;border-radius:12px;border:1px solid var(--border);margin:2rem auto;display:block;box-shadow:0 8px 30px rgba(0,0,0,0.1)}
+    .rendered-md a{color:var(--accent);text-decoration:none;font-weight:500}
+    .rendered-md a:hover{text-decoration:underline}
+
+    .admonition{border-radius:8px;padding:1rem;margin:1.5rem 0;border-left:4px solid}
+    .admonition-tip{background:#f0fdf4;border-color:#22c55e}
+    .admonition-note{background:#eff6ff;border-color:#3b82f6}
+    .admonition-important{background:#faf5ff;border-color:#a855f7}
+    .admonition-warning{background:#fffbeb;border-color:#f59e0b}
+    .admonition-caution{background:#fef2f2;border-color:#ef4444}
+
+    footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;color:var(--muted);font-size:0.9rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><img src="logo/atomisticskills_logo.svg" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="index.html">← Back Home</a>
+</nav>
+<div class="doc-hero">
+  <div class="doc-hero-inner">
+    <div class="doc-breadcrumb"><a href="index.html">Home</a> / Documentation</div>
+    <h1>Developer Guide</h1>
+  </div>
+</div>
+<div class="doc-content">
+  <div class="rendered-md" id="doc-body"></div>
+</div>
+<footer><p>AtomisticSkills — Open-sourced AI research infrastructure</p></footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const DOC_MD = "## Architecture Overview\n\n**AtomisticSkills** follows a **modular, multi-environment architecture** designed to isolate dependencies and expose functionality through the Model Context Protocol (MCP):\n\n```\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502                    Antigravity Agent                    \u2502\n\u2502             (Coding AI Copilot Interface)               \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                     \u2502 MCP Protocol\n          \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n          \u2502                     \u2502           \u2502             \u2502\n     \u250c\u2500\u2500\u2500\u2500\u25bc\u2500\u2500\u2500\u2500\u2510         \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u25bc\u2500\u2500\u2510   \u250c\u2500\u2500\u2500\u25bc\u2500\u2500\u2500\u2510   \u250c\u2500\u2500\u2500\u2500\u2500\u25bc\u2500\u2500\u2500\u2500\u2500\u2510\n     \u2502  MACE   \u2502         \u2502 MatGL   \u2502   \u2502  Fair \u2502   \u2502Materials  \u2502\n     \u2502 Server  \u2502         \u2502 Server  \u2502   \u2502 Chem  \u2502   \u2502Tools      \u2502\n     \u2502         \u2502         \u2502         \u2502   \u2502Server \u2502   \u2502Server     \u2502\n     \u2514\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2518         \u2514\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2518\n          \u2502                   \u2502            \u2502             \u2502\n     \u250c\u2500\u2500\u2500\u2500\u25bc\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u250c\u2500\u2500\u2500\u2500\u2500\u25bc\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u25bc\u2500\u2500\u2500\u2500\u2500\u2510  \u250c\u2500\u2500\u2500\u2500\u25bc\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n     \u2502mace-agent   \u2502    \u2502matgl-agent \u2502 \u2502fairchem\u2502  \u2502base-agent \u2502\n     \u2502environment  \u2502    \u2502environment \u2502 \u2502-agent  \u2502  \u2502environment\u2502\n     \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n```\n\n---\n\n## Core Components\n\n### 1. MCP Servers (`src/mcp_server/`)\n\nEach MCP server is a standalone Python module that exposes tools via the FastMCP framework:\n\n| Server | Environment | Primary Functionality |\n|--------|-------------|----------------------|\n| [mace_server.py](../src/mcp_server/mace_server.py) | `mace-agent` | MACE model loading, prediction, relaxation, MD, fine-tuning |\n| [matgl_server.py](../src/mcp_server/matgl_server.py) | `matgl-agent` | CHGNet/M3GNet/TensorNet operations, bandgap prediction |\n| [fairchem_server.py](../src/mcp_server/fairchem_server.py) | `fairchem-agent` | UMA/ESEN models |\n| [base_server.py](../src/mcp_server/base_server.py) | `base-agent` | Materials Project queries, VASP I/O, research directory management |\n| [atomate2_server.py](../src/mcp_server/atomate2_server.py) | `atomate2-agent` | Query remote DFT databases, job status monitoring |\n| [smol_server.py](../src/mcp_server/smol_server.py) | `smol-agent` | Cluster expansion training and Monte Carlo simulations |\n| [drugdisc_server.py](../src/mcp_server/drugdisc_server.py) | `drugdisc-agent` | Molecular descriptors, standardization, PDBQT conversion |\n| [mattergen_server.py](../src/mcp_server/mattergen_server.py) | `mattergen-agent` | MatterGen generative crystal design |\n\n### 2. Utility Modules (`src/utils/`)\n\nSupporting libraries shared across MCP servers:\n\n| Module | Purpose |\n|--------|---------|\n| `mlips/` | Unified MLIP wrappers (MACE, MatGL, FairChem, MatterGen) with common predict / relax / MD / fine-tune interface |\n| `dft/` | VASP input generation and output parsing via Pymatgen |\n| `drugdisc_utils.py` | RDKit-based molecular descriptors, standardization, and PDBQT conversion |\n| `structure_utils.py` | Convert between ASE Atoms, Pymatgen Structure, and dict formats |\n| `structure_viz.py` | Crystal structure visualization and rendering |\n| `disordered_material/` | Order-disorder sampling for partial-occupancy structures |\n| `mlips/md_utils.py` | MD monitors (explosion, volume, melting, equilibration detection) |\n| `config_utils.py` | Global configuration and API key management |\n\n### 3. Skills (`.agents/skills/`)\n\nSkills are **modular, self-contained capabilities** that combine multiple tools and scripts to accomplish complex research tasks. Each skill lives in its own directory with a standardized structure:\n\n```\n.agents/skills/<skill-name>/\n\u251c\u2500\u2500 SKILL.md              # Instructions and documentation\n\u251c\u2500\u2500 scripts/              # Python/Bash helper scripts\n\u251c\u2500\u2500 examples/             # Reference input/output files\n\u2514\u2500\u2500 resources/            # Configuration files, templates\n```\n\n**How Skills Work**:\n1. The agent reads `SKILL.md` to understand the task\n2. Follows step-by-step instructions\n3. Executes scripts from the `scripts/` directory in the appropriate environment\n4. Uses resources and examples as templates\n\n> [!TIP]\n> To create a new skill, follow the guidelines in [skill-standards.md](../.agents/rules/skill-standards.md).\n\n---\n\n## Development Workflow\n\n### Adding a New MCP Tool\n\n1. **Choose the appropriate server** based on dependencies\n2. **Define the tool function** with type hints and docstrings:\n   ```python\n   @mcp.tool()\n   def my_new_tool(\n       structure_data: dict,\n       parameter1: float = 1.0,\n       parameter2: str = \"default\"\n   ) -> dict:\n       \"\"\"\n       Brief description of what this tool does.\n       \n       Args:\n           structure_data: Structure in dictionary format.\n           parameter1: Description of parameter.\n           parameter2: Another parameter.\n           \n       Returns:\n           Dictionary with results.\n       \"\"\"\n       # Implementation logic\n       return results\n   ```\n\n3. **Test the tool** by restarting the MCP server:\n   ```bash\n   # Stop the server in Antigravity\n   # Then restart it manually for debugging:\n   export PYTHONPATH=/path/to/AtomisticSkills\n   conda activate <appropriate-env>\n   python -m src.mcp_server.<server_name>\n   ```\n\n### Implementing a New Skill\n\n1. Create the skill directory: `.agents/skills/<skill-name>/`\n2. Write `SKILL.md` following the [standards](../.agents/rules/skill-standards.md)\n3. Add helper scripts to `scripts/` (specify required conda environment)\n4. Provide examples and resources as needed\n5. Test the skill end-to-end with Antigravity\n\n### Running Tests\n\nThe project uses `pytest` with environment-specific test directories:\n\n```bash\n# Test a specific environment\nconda activate mace-agent\npytest tests/mace/\n\n# Run all tests (requires all environments)\npytest tests/\n```\n\nTest organization:\n```\ntests/\n\u251c\u2500\u2500 base/           # General utilities (base-agent)\n\u251c\u2500\u2500 mace/           # MACE-specific tests (mace-agent)\n\u251c\u2500\u2500 matgl/          # MatGL-specific tests (matgl-agent)\n\u251c\u2500\u2500 fairchem/       # FairChem-specific tests (fairchem-agent)\n\u2514\u2500\u2500 integration/    # Cross-tool integration tests\n```\n\n---\n\n## Important Technical Details\n\n### Environment Isolation\n- Each MCP server runs in a **dedicated conda environment** to avoid dependency conflicts\n- The `PYTHONPATH` must point to the project root for all servers\n- When debugging, **always activate the correct environment** before importing modules\n\n### Stdout/Stderr Handling\nAll MCP servers use centralized output redirection (see `src/utils/mcp_utils.py`) to prevent:\n- Print statements from polluting MCP responses\n- Training logs from breaking the JSON protocol\n- Debugging output from interfering with tool calls\n\nFor a complete guide on how AtomisticSkills mitigates this execution noise issue across heterogeneous infrastructures, see the [MCP STDIO Redirection Guide](mcp_stdio_redirection.md).\n\n> [!WARNING]\n> Never use raw `print()` in MCP tool functions expecting the user to read them cleanly. Use proper `logging`. Legacy outputs are automatically routed to standard error by the server.\n\n### Research Directory Management\nEvery research task should:\n1. Call `create_research_dir(research_topic)` to establish a timestamped directory\n2. Save all results (structures, plots, logs) to this directory\n3. Document findings in the research directory\n\n---\n\n## Troubleshooting\n\n### MCP Server Not Loading\n- Check `mcp_config.json` for correct Python paths\n- Verify `PYTHONPATH` points to project root\n- Restart Antigravity after configuration changes\n\n### Import Errors in Scripts\n- Ensure correct conda environment is activated\n- Check that `PYTHONPATH` includes project root: `export PYTHONPATH=/path/to/AtomisticSkills`\n- Use absolute imports: `from src.utils.mlips.mace_wrapper import MACEWrapper`\n\n### Fine-Tuning Fails\n- Verify stress units are in eV/\u00c5\u00b3 (see [stress-units.md](../.agents/rules/stress-units.md) for details)\n- Check training data format matches expected structure\n- For small datasets (<500 structures), use `freeze_backbone=True`\n\n### MD Simulation Explodes\n- Enable MD monitors: `monitor=True, monitor_type=[\"explosion\", \"volume\"]`\n- Reduce timestep (default: 1fs, try 0.5fs)\n- Check initial structure is relaxed with `fmax < 0.05 eV/\u00c5`\n";
+  marked.setOptions({ breaks: true, gfm: true });
+  const KATEX_OPTS = { delimiters: [
+    {left: '$$', right: '$$', display: true},
+    {left: '$', right: '$', display: false},
+    {left: '\\(', right: '\\)', display: false},
+    {left: '\\[', right: '\\]', display: true}
+  ], throwOnError: false };
+
+    function renderMd(md, container) {
+    if (!md) return;
+    const mathBlocks = [];
+    const placeholder = (i) => `MATHPLACEHOLDER${i}X`;
+    
+    // Protect block math $$...$$
+    let safe = md.replace(/\$\$([\s\S]+?)\$\$/g, (_, m) => {
+      mathBlocks.push(`$$${m}$$`);
+      return placeholder(mathBlocks.length - 1);
+    });
+    // Protect inline math $...$
+    safe = safe.replace(/(?<!\$)\$([^\$]+?)\$(?!\$)/g, (_, m) => {
+      mathBlocks.push(`$${m}$`);
+      return placeholder(mathBlocks.length - 1);
+    });
+
+    let html = marked.parse(safe);
+    mathBlocks.forEach((tok, i) => {
+      html = html.replace(new RegExp(placeholder(i), 'g'), tok);
+    });
+
+    html = html
+      .replace(/<blockquote>\s*<p>\[!TIP\]/gi,  '<blockquote class="admonition admonition-tip"><p>💡 <strong>Tip</strong>')
+      .replace(/<blockquote>\s*<p>\[!NOTE\]/gi, '<blockquote class="admonition admonition-note"><p>📝 <strong>Note</strong>')
+      .replace(/<blockquote>\s*<p>\[!IMPORTANT\]/gi, '<blockquote class="admonition admonition-important"><p>⚡ <strong>Important</strong>')
+      .replace(/<blockquote>\s*<p>\[!WARNING\]/gi, '<blockquote class="admonition admonition-warning"><p>⚠️ <strong>Warning</strong>')
+      .replace(/<blockquote>\s*<p>\[!CAUTION\]/gi, '<blockquote class="admonition admonition-caution"><p>🚨 <strong>Caution</strong>');
+
+    container.innerHTML = html;
+    if (typeof renderMathInElement !== 'undefined') renderMathInElement(container, KATEX_OPTS);
+    if (typeof $3Dmol !== 'undefined') {
+      container.querySelectorAll('.custom-3dmol').forEach(el => {
+        if (!el.dataset.b64) return;
+        try {
+          let content = decodeURIComponent(escape(atob(el.dataset.b64)));
+          let viewer = $3Dmol.createViewer(el, {backgroundColor: '#f8f9fc'});
+          viewer.addModel(content, el.dataset.datatype);
+          viewer.setStyle({}, {stick:{radius:0.15}, sphere:{radius:0.4}});
+          if(el.dataset.unitcell) viewer.addUnitCell();
+          viewer.zoomTo();
+          viewer.render();
+        } catch (err) {
+          console.error("Failed to init 3Dmol viewer", err);
+        }
+      });
+    }
+  }
+  renderMd(DOC_MD, document.getElementById('doc-body'));
+});
+</script>
+</body>
+</html>

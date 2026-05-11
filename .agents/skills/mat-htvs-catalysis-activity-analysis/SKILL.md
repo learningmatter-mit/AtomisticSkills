@@ -47,6 +47,7 @@ The script produces:
 - `[rxn]_free_energy_steps.png`: A step-diagram plotting the relative Free Energy landscape.
 - `[rxn]_volcano.png`: An empirically fit activity volcano mapping $-\eta$ versus the critical descriptor.
 
+<<<<<<< HEAD
 ### 4. Comparative Benchmarking (Optional)
 To benchmark a pre-screening dataset (e.g., MLIP) against a high-fidelity verification dataset (e.g., DFT), use the generalized comparative analysis script. This will output Binding Energy Parity (`parity_binding.png`) and Activity Overpotential Parity (`parity_activity.png`) with Spearman Rank Correlation metrics.
 
@@ -60,6 +61,8 @@ python .agents/skills/mat-htvs-catalysis-activity-analysis/scripts/compare_metho
     --output_dir ./research/current_research_dir
 ```
 
+=======
+>>>>>>> origin/htvs
 ## Developer Notes
 - `src.utils.htvs.catalysis_utils` contains the ReactionMechanism subclasses defining unique thermodynamic logic, equilibrium voltages, and plotting aesthetics for each catalysis route.
 

@@ -1,6 +1,25 @@
 import numpy as np
 from pathlib import Path
 
+import math
+
+def format_temperature_key(temperature: float) -> str:
+    """Format temperature as a string key (e.g. 298.15K or 300K)."""
+    rounded = round(temperature)
+    if abs(temperature - rounded) < 1e-6:
+        return f"{int(rounded)}K"
+    return f"{temperature:g}K"
+
+def finite_or_none(x: any) -> float | None:
+    """Convert value to float, returning None if not finite or on error."""
+    if x is None:
+        return None
+    try:
+        val = float(x)
+        return val if math.isfinite(val) else None
+    except (ValueError, TypeError):
+        return None
+
 def recursive_tolist(obj):
     """
     Recursively convert objects to list/dict structures compatible with JSON.

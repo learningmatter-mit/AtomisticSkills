@@ -103,10 +103,10 @@ bash examples/similarity/similarity_search.sh
 - Batch retrieval of multiple structures (Si, LiFePO4, Fe2O3)
 
 **Outputs**:
-- `mp-149_Si.cif` (~1KB, custom filename)
-- `mp-149.cif` (~1KB, Silicon diamond structure)
-- `mp-19017.cif` (~2KB, LiFePO4 olivine structure)
-- `mp-1143.cif` (~1KB, Fe2O3 hematite structure)
+- [mp-149_Si.cif](mp-149_Si.cif) (~1KB, custom filename)
+- [mp-149.cif](mp-149.cif) (~1KB, Silicon diamond structure)
+- [mp-19017.cif](mp-19017.cif) (~2KB, LiFePO4 olivine structure)
+- [mp-1143.cif](mp-1143.cif) (~1KB, Fe2O3 hematite structure)
 
 ```bash
 cd .agents/skills/mat-db-mp

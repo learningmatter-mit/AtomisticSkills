@@ -131,7 +131,9 @@ def run_add_adsorbate(args: argparse.Namespace) -> Dict[str, Any]:
                     if sum(abs(x) for x in magmoms_payload) == 0:
                         magmoms_payload = None
                 
-                as_surf = Surface.from_ase_atoms(slab_w_ads)
+                # We need to getxyz and lattice for payload
+                from pgmols.models import Surface as SurfaceModel
+                as_surf = SurfaceModel.from_ase_atoms(slab_w_ads)
 
                 payload = {
                     "bulk_id": clean_cut.bulk.id,

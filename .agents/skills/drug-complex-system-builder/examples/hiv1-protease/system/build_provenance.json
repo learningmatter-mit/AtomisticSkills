@@ -1,0 +1,28 @@
+{
+    "receptor": ".agents/skills/drug-complex-system-builder/examples/hiv1-protease/1HSG_prepared.pdb",
+    "ligand": ".agents/skills/drug-complex-system-builder/examples/hiv1-protease/ligand.sdf",
+    "pose_index": 0,
+    "ligand_ff": "openff-2.2.0",
+    "protein_ff": "amber/ff14SB",
+    "water_model": "tip3p",
+    "box_padding_angstrom": 10.0,
+    "box_shape": "cube",
+    "ionic_strength_mol_per_L": 0.15,
+    "n_protein_atoms": 3509,
+    "n_ligand_atoms": 18,
+    "n_total_atoms": 55897,
+    "n_solvent_ion_atoms": 52370,
+    "box_dimensions_angstrom": [
+        83.6,
+        83.6,
+        83.6
+    ],
+    "nonbonded_method": "PME",
+    "nonbonded_cutoff_angstrom": 10.0,
+    "constraints": "AllBonds",
+    "hydrogen_mass_amu": 4.0,
+    "hmr_enabled": true,
+    "output_pdb": ".agents/skills/drug-complex-system-builder/examples/hiv1-protease/system/complex_solvated.pdb",
+    "output_system_xml": ".agents/skills/drug-complex-system-builder/examples/hiv1-protease/system/system.xml",
+    "output_state_xml": ".agents/skills/drug-complex-system-builder/examples/hiv1-protease/system/state_initial.xml"
+}

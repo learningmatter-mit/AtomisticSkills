@@ -1,6 +1,6 @@
 ---
 name: chem-dft-orca-advanced-calculation
-description: Write and run custom ORCA input files for advanced electronic structure methods, special properties, or settings not available through the SCINE wrapper.
+description: Write and run custom ORCA input files for advanced electronic structure methods or settings not available through the SCINE wrapper, including multi-reference methods, excited states, relativistic effects, advanced SCF, NMR/EPR, and more.
 category: [chemistry]
 ---
 

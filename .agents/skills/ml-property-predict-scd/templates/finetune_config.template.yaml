@@ -1,0 +1,80 @@
+# Full-model finetuning only.
+# For lightweight frozen-backbone head training, use templates/train_lightweight_head.py instead.
+log_dir: experiments/
+load_model: null
+load_hf: null
+# load_hf: ct-scd-pcq
+# load_hf: ct-scd-amp
+job_id: new_finetune_run
+wandb_notes: ""
+
+model_config: configs/model_configs/scd.yaml
+
+dataset: REPLACE_DATASET_NAME
+dataset_root: tmp/replace_dataset_root
+dataset_arg: null
+train_size: null
+val_size: 1000
+test_size: 1000
+batch_size: 64
+inference_batch_size: 64
+seed: 1
+num_workers: 6
+
+standardize: true
+predefined_splits: false
+prior_model: null
+
+energy_weight: 1.0
+force_weight: 1.0
+ema_alpha_dy: 1.0
+ema_alpha_y: 1.0
+
+distributed_backend: ddp
+ngpus: -1
+num_nodes: 1
+redirect: false
+
+lr: 0.0005
+weight_decay: 0.01
+lr_schedule: cosine
+lr_factor: 0.8
+lr_min: 1.0e-07
+lr_patience: 15
+lr_warmup_steps: 10000
+lr_cosine_length: 300000
+num_epochs: 3000
+num_steps: 300000
+precision: 32
+
+save_interval: 5
+test_interval: 1
+val_interval: 1
+
+pretraining: false
+self_cond: false
+
+noise_scale: 0.005
+denoising_weight: 0.1
+
+# Molecules with compiled TorchMD extension:
+# noise_in_loader: false
+# allow_periodic: false
+
+# Molecules without compiled extension:
+# noise_in_loader: true
+# allow_periodic: false
+
+# Periodic/materials:
+noise_in_loader: REPLACE_TRUE_OR_FALSE
+allow_periodic: REPLACE_TRUE_OR_FALSE
+graph_cutoff: 5.0
+neighbor_method: brute
+max_neighbors: 32
+p_cell_repeat: 0.0
+cell_repeat_iters: 0
+rep_min_atoms: 0
+
+random_rotate: false
+torsion_angle_std: 0.0
+max_bonds_rotated: 0

@@ -48,28 +48,12 @@ from gcmc_common import (
     qst_single_fluctuation_from_series,
 )
 from src.utils.mlips.loader import load_wrapper
-
+from src.utils.structure_utils import normalize_charge_spin
 
 LOGGER = logging.getLogger(__name__)
 
 
-def normalize_charge_spin(atoms) -> None:
-    info = atoms.info if isinstance(atoms.info, dict) else {}
-    if atoms.info is not info:
-        atoms.info = info
-    try:
-        charge = int(info.get("charge", info.get("chg", 0)))
-    except Exception:
-        charge = 0
-    try:
-        spin_mult = int(
-            info.get("spin_multiplicity", info.get("multiplicity", info.get("spin", 1)))
-        )
-    except Exception:
-        spin_mult = 1
-    atoms.info["charge"] = charge
-    atoms.info["spin_multiplicity"] = spin_mult
-    atoms.info["spin"] = spin_mult
+
 
 
 def retag_all_guests_single_species(atoms: Atoms, host_natoms: int) -> int | None:
@@ -116,6 +100,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--device", type=str, default="auto", help="Device string (e.g. 'cuda', 'cpu', 'auto').")
     p.add_argument("--model-tag", type=str, default=None, help="Model tag for metadata.")
     p.add_argument("--output", "-o", type=Path, default=None, help="Output JSON path (default: output_dir/gcmc_results.json)")
+    p.add_argument("--keep-intermediates", action="store_true", help="Keep intermediate .log, .traj, and .npy files instead of deleting them.")
     return p.parse_args()
 
 
@@ -140,6 +125,10 @@ def main() -> int:
     LOGGER.info("Scheme       : %s", args.scheme)
     LOGGER.info("Adsorbate    : %s", args.adsorbate)
     LOGGER.info("Output dir   : %s", out_dir)
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, out_dir / "input_configs.yaml")
 
     t0 = time.perf_counter()
     wrapper = load_wrapper(
@@ -338,18 +327,20 @@ def main() -> int:
     write_gcmc_results_json(gcmc_json_path, payload)
     LOGGER.info("Wrote %s", gcmc_json_path)
 
+
     # Remove traj/log and .npy intermediates; keep JSON and PNGs (nmols.png, energy.png)
-    for p in (
-        traj_path,
-        log_path,
-        out_dir / "nmols.npy",
-        out_dir / "energy.npy",
-    ):
-        try:
-            if p is not None and p.exists():
-                p.unlink()
-        except Exception as e:
-            LOGGER.warning("Could not remove %s: %s", p, e)
+    if not args.keep_intermediates:
+        for p in (
+            traj_path,
+            log_path,
+            out_dir / "nmols.npy",
+            out_dir / "energy.npy",
+        ):
+            try:
+                if p is not None and p.exists():
+                    p.unlink()
+            except Exception as e:
+                LOGGER.warning("Could not remove %s: %s", p, e)
 
     return 0
 

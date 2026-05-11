@@ -25,7 +25,7 @@ python .agents/skills/chem-sorption-widom/scripts/run_widom.py \
     --structure path/to/relaxed_supercell.cif \
     --name MY_FRAMEWORK \
     --calculator fairchem \
-    --model-name uma-s-1p1 \
+    --model-name uma-s-1p2 \
     --task-name omol \
     --gas CO2 \
     --temperature 298 \
@@ -46,19 +46,20 @@ python .agents/skills/chem-sorption-widom/scripts/run_widom.py \
 
 ## Examples
 
-**Example 1: Using FairChem UMA for CO2 adsorption at 298K**
+**Example 1: Using FairChem UMA-S-1p2 for CO2 adsorption at 298K**
 ```bash
 # Env: fairchem-agent
 python .agents/skills/chem-sorption-widom/scripts/run_widom.py \
     --structure ./results/COF-1_supercell.cif \
     --name COF-1 \
     --calculator fairchem \
-    --model-name uma-s-1p1 \
+    --model-name uma-s-1p2 \
     --task-name omol \
     --gas CO2 \
     --temperature 298 \
     --output-dir ./results
 ```
+
 
 
 

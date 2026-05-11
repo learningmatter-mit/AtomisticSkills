@@ -1,0 +1,10 @@
+mcp
+openff-toolkit
+openmmforcefields
+openff-interchange
+mdanalysis
+prolif
+rdkit
+scipy
+matplotlib
+requests

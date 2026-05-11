@@ -1,0 +1,4 @@
+filename,sigma,rotation_angle_deg,n_atoms,total_energy_eV,interface_area_A2,gb_energy_J_m2
+sigma005_210_001,5,36.8699,78,-842.490356,15.607,0.9768
+sigma013_320_001,13,22.6199,206,-2227.755371,23.8402,0.7759
+sigma025_340_001,25,16.2602,396,-4284.001953,32.4887,0.7196

@@ -154,6 +154,10 @@ def main():
     plot_path = out_dir / "training_history.png"
     plot_training_history(history, save_path=str(plot_path), show=False, model_name="FairChem (UMA)")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,7 @@
 ---
 name: general-property-units
 description: Reference guide for energy, force, and stress units across MLIPs, DFT codes, and ASE, including conversion factors.
-category: [machine-learning]
+category: [general, machine-learning]
 ---
 
 # Units Reference for Atomistic Simulations

@@ -7,10 +7,10 @@ This example is extracted from the official React-OT validation dataset ([Zenodo
 
 ## Files
 
-- **`reactant.xyz`**: Reactant geometry (7 atoms: O, 2C, 2N, 2H)
-- **`product.xyz`**: Product geometry
-- **`reference_ts.xyz`**: DFT reference transition state (ωB97x/6-31G(d))
-- **`output/ts_generated.xyz`**: React-OT generated transition state
+- **[reactant.xyz](reactant.xyz)**: Reactant geometry (7 atoms: O, 2C, 2N, 2H)
+- **[product.xyz](product.xyz)**: Product geometry
+- **[reference_ts.xyz](reference_ts.xyz)**: DFT reference transition state (ωB97x/6-31G(d))
+- **[output/ts_generated.xyz](output/ts_generated.xyz)**: React-OT generated transition state
 
 ## Usage
 

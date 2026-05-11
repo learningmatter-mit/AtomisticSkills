@@ -106,4 +106,10 @@ if __name__ == "__main__":
     )
     
     args = parser.parse_args()
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+    _params_path.parent.mkdir(parents=True, exist_ok=True)
+    _params_path.write_text(_json.dumps(_config, indent=2, default=str))
     plot_dos(args.results_dir, args.output)

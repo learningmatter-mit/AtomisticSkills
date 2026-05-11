@@ -1,0 +1,16 @@
+cif: test_structure_supercell.relaxed.cif
+steps: 100
+temperature_K: 298.0
+pressure_bar: 1.0
+scheme: gcmc
+adsorbate: CO2
+output_dir: single_gas
+restart_traj: null
+restart_frame: -1
+calculator: fairchem
+model_name: uma-s-1p1
+task_name: omol
+device: auto
+model_tag: null
+output: null
+keep_intermediates: false

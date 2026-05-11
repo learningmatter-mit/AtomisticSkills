@@ -1,7 +1,7 @@
 ---
 name: mat-sample-pes-by-md
 description: Sample off-equilibrium potential energy surface (PES), used for benchmarking and fine-tuning MLIPs.
-category: [materials]
+category: [materials, chemistry, machine-learning]
 ---
 
 # Sample PES by MD

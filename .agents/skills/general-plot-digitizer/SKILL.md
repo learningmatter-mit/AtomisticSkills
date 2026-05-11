@@ -1,7 +1,7 @@
 ---
 name: general-plot-digitizer
 description: Extract continuous X-Y data from experimental spectrum images (Raman, XRD, UV-Vis, IR, etc.) via hybrid VLM + CV pipeline and agent-in-the-loop workflow.
-category: [general]
+category: [general, machine-learning]
 ---
 
 # General Plot Digitizer

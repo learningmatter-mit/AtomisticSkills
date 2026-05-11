@@ -1,7 +1,7 @@
 ---
 name: ml-generative-diffcsp
 description: Generate crystal structures with exact composition control using DiffCSP++ (space group + Wyckoff positions), or unconditionally from trained distributions.
-category: [machine-learning]
+category: [machine-learning, materials]
 ---
 
 # DiffCSP++ Crystal Structure Generation

@@ -332,6 +332,10 @@ def main():
         if not args.quiet:
             print(f"\nPlot saved -> {args.plot}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.plot)
+
 
 if __name__ == "__main__":
     main()

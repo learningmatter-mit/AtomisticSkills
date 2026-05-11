@@ -4,8 +4,8 @@ cd $(dirname "$0")
 # Run Widom insertion using UMA
 export PYTHONPATH=$(dirname $(dirname $(dirname $(dirname "$PWD"))))
 conda run -n fairchem-agent python ../scripts/run_widom.py \
-  --structure Hb-DBD-AA_supercell.relaxed.cif \
-  --name Hb-DBD-AA \
+  --structure test_structure_supercell.relaxed.cif \
+  --name test_structure \
   --calculator fairchem \
   --model-name uma-s-1p1 \
   --task-name omol \

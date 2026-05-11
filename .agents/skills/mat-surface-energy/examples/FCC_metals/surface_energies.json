@@ -1,0 +1,16 @@
+{
+  "unique_min_slabs": [
+    {
+      "miller_index": [1, 1, 1],
+      "gamma_j_m2": 1.30
+    },
+    {
+      "miller_index": [1, 0, 0],
+      "gamma_j_m2": 1.45
+    },
+    {
+      "miller_index": [1, 1, 0],
+      "gamma_j_m2": 1.55
+    }
+  ]
+}

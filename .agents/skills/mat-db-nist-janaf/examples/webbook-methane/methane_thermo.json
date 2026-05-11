@@ -1,0 +1,32 @@
+{
+  "formula": "CH4",
+  "name": "Methane",
+  "nist_id": "C74828",
+  "thermochemistry": {
+    "\u0394fH\u00b0gas": {
+      "value": -74.87,
+      "units": "kJ/mol",
+      "raw": "-74.87"
+    },
+    "Quantity": {
+      "value": null,
+      "units": "Units",
+      "raw": "Value"
+    },
+    "\u0394cH\u00b0gas": {
+      "value": -890.7,
+      "units": "kJ/mol",
+      "raw": "-890.7 \u00b1 0.4"
+    },
+    "S\u00b0gas": {
+      "value": 188.66,
+      "units": "J/mol*K",
+      "raw": "188.66 \u00b1 0.42"
+    },
+    "S\u00b0gas,1 bar": {
+      "value": 186.25,
+      "units": "J/mol*K",
+      "raw": "186.25"
+    }
+  }
+}

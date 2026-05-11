@@ -84,3 +84,10 @@ debug*
 # cifs for phase search
 .agents/skills/mat-xrd-phase-analysis/exmples/*/phase_analysis_results/cifs
 dara_downloaded_cifs/
+
+# Generated documentation site (rebuilt by site/build_skills.py)
+site/skills/
+site/skills_index.json
+
+# Private agent skills
+.agents/skills/private-*/

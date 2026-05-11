@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>smol Server Tools — AtomisticSkills</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#f8f9fc; --bg2:#ffffff; --border:#e2e8f0; --text:#1b1464; --muted:#64748b; --accent:#816cff; }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-back{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .gh-link{font-size:0.84rem;font-weight:600;color:var(--accent);text-decoration:none;
+      border:1px solid var(--accent);border-radius:8px;padding:6px 14px;transition:all .2s}
+    .gh-link:hover{background:var(--accent);color:#fff}
+    .hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 2rem 2.5rem}
+    .hero-inner{max-width:900px;margin:0 auto}
+    .breadcrumb{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+    .breadcrumb a{color:var(--accent);text-decoration:none}
+    h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.15;color:var(--text);margin-bottom:0.75rem}
+    .desc{font-size:1.05rem;color:var(--muted);max-width:720px;line-height:1.6}
+    .content{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+    .tool-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    .tool-name { font-size: 1.25rem; font-weight: 700; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace; }
+    .rendered-md h2{font-size:1.35rem;font-weight:700;margin:2rem 0 1rem;color:var(--text);border-bottom:2px solid var(--border);padding-bottom:0.5rem}
+    .rendered-md h3{font-size:1.15rem;font-weight:700;margin:1.5rem 0 0.5rem;color:var(--text)}
+    .rendered-md p{margin:0.8rem 0;color:#374151;line-height:1.7}
+    .rendered-md ul,.rendered-md ol{padding-left:1.5rem;margin:0.8rem 0}
+    .rendered-md li{margin:0.4rem 0;color:#374151}
+    .rendered-md code{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:2px 6px;color:#be185d}
+    .rendered-md pre{background:#f8fafc;padding:1.25rem;border-radius:8px;border:1px solid #e2e8f0;overflow-x:auto;margin:1rem 0}
+    .rendered-md pre code{background:transparent;padding:0;border:none;color:#334155;font-size:0.9rem;line-height:1.6}
+    .rendered-md a{color:var(--accent);text-decoration:none}
+    footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html"><img src="../logo/atomisticskills_logo.svg" height="24" alt="AtomisticSkills"/></a>
+  <a class="nav-back" href="../index.html">← Back to Home</a>
+  <div class="nav-right">
+    <a class="gh-link" href="https://github.com/bowen-bd/AtomisticSkills/tree/main/src/mcp_server/smol_server.py" target="_blank">View on GitHub</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / Servers</div>
+    <h1>smol Server</h1>
+    <p class="desc">MCP Tools exposed by the <code>smol_server.py</code></p>
+  </div>
+</div>
+<div class="content">
+  <div class="tools-list">
+    
+        <div class="tool-card">
+          <h3 class="tool-name">📎 sample_ordered_structures</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nGenerate diverse ordered structures for iteration 0 via enumeration and D-optimality.\n\nArgs:\n    disordered_structure: Path to structure or dict representation.\n    cutoffs: Dict of cluster sizes to cutoffs.\n    num_structures: Target number of structures (default 1000).\n    target_num_sites: Target supercell size for enumeration.\n    basis_set: Basis set type.\n    max_cluster_size: Max cluster size.\n    output_dir: Optional directory to save CIF files. \n                If not provided, uses &#39;smol_ordered_structures&#39; in research dir.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 train_cluster_expansion</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nCreate a cluster subspace, add training data, and fit a cluster expansion.\n\nThis tool orchestrates the full training workflow for a cluster expansion model.\nIf &#39;cutoffs&#39; is NOT provided, it will automatically sweep over 2/3/4-body cutoffs\nto find the optimal model based on BIC, and generate a plot.\n\nThe resulting Cluster Expansion is saved to disk.\n\nArgs:\n    disordered_structure: Disordered structure (dict or file path, .cif is preferred).\n    training_data: Training data source. Can be:\n        - Path to a DIRECTORY containing relaxation results (e.g. from mcp_mace_relax_structure).\n          The tool will recursively search for &#39;relaxation_results.json&#39;, &#39;result.json&#39;, \n          or &#39;relaxed_structure.cif&#39; + &#39;relaxed_energy.txt&#39;.\n        - List of calculation dictionaries.\n        - Path to a JSON file containing the list.\n    cutoffs: Dict of cluster sizes to cutoff distances (e.g., {2: 5.0, 3: 4.0}).\n             If None, an automatic sweep is performed.\n    max_cluster_size: Maximum cluster size to include (used if cutoffs provided).\n    basis_set: Basis set type (\"chebyshev\", \"sinusoid\", \"indicator\").\n    fit_method: Fitting method (&#39;ls&#39;, &#39;lasso&#39;, &#39;ridge&#39;).\n    alpha: Regularization parameter for Lasso/Ridge.\n    ce_file: Optional path to save the CE. If not provided, it will be saved \n             in the current research directory as &#39;cluster_expansion.json&#39;.\n    \nReturns:\n    Dictionary with fitting results (RMSE, coefficient count) and sweep metrics.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 run_monte_carlo</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nRun Monte Carlo simulation using the fitted Cluster Expansion.\n\nArgs:\n    supercell_matrix: 3x3 matrix defining the supercell to run MC on.\n    temperature: Simulation temperature in Kelvin.\n    steps: Number of MC steps to run.\n    ensemble_type: \"canonical\" or \"semigrand\".\n    ce_file: Path to the Cluster Expansion file. \n             REQUIRED: Default loading is removed. You must provide the path.\n    trajectory_file: Optional path to save the MC trajectory (HDF5 format).\n    log_interval: Interval for saving samples.\n    initial_composition: Optional JSON string for initial composition (e.g. &#39;{\"Li\": 0.5, \"Ag\": 0.5}&#39;).\n                         If provided, generates a random initial structure with this composition.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 compute_feature_vectors</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nCompute feature vectors (correlations) for a list of structures using the current Cluster Expansion.\n\nArgs:\n    structures: List of structures (dicts or file paths).\n    ce_file: Optional path to load ClusterExpansion/Subspace if not already in memory.\n    \nReturns:\n    Dict with keys &#39;features&#39; (list of vectors), &#39;valid_indices&#39;, and &#39;errors&#39;.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 get_feature_matrix</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nGet the feature matrix of the current training set.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 fit_feature_matrix</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nFit a feature matrix directly, typically used with SGL or external pipelines.\n\nArgs:\n    feature_matrix_path: Path to .npy file of the feature matrix (n_samples, n_features)\n    energies_path: Path to .npy file of the energies (n_samples,)\n    groups_path: Path to .npy file of the groups (n_features,)\n    fit_method: \"ls\", \"lasso\", \"ridge\", or \"sgl\" (Sparse Group Lasso)\n    alpha: Regularization parameter for Lasso/Ridge/SGL\n    lambda_mixing: L1/L2 mixing parameter for SGL\n    point_features_count: For SGL, the first N features (typically 1 constant + point clusters) \n                          that are not penalized via the group penalty.\n    test_size: Test split ratio for RMSE evaluation\n\nReturns:\n    Dictionary with fitting results, including training RMSE, testing RMSE, and coefficient count.\n```"'></div>
+        </div>
+        
+        <div class="tool-card">
+          <h3 class="tool-name">📎 check_mapping</h3>
+          <div class="tool-doc rendered-md" data-md='"```text\nCheck if a relaxed structure still maps to the same configuration (correlation vector)\nas the initial structure.\n\nArgs:\n    initial_structure: The structure before relaxation.\n    relaxed_structure: The structure after relaxation.\n    \nReturns:\n    Dict with &#39;match&#39; (bool) and optionally error message.\n```"'></div>
+        </div>
+        
+  </div>
+</div>
+<footer><p>AtomisticSkills — Open-sourced AI research infrastructure</p></footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    marked.setOptions({ breaks: true, gfm: true });
+    document.querySelectorAll('.tool-doc').forEach(el => {
+        try {
+            // We encoded it with json.dumps(), so we parse with JSON.parse.
+            const rawHtmlStr = el.dataset.md;
+            // The unescaped string can be parsed back:
+            const md = JSON.parse(rawHtmlStr.replace(/&#39;/g, "'"));
+            el.innerHTML = marked.parse(md);
+        } catch(e) {
+            el.innerText = el.dataset.md;
+        }
+    });
+  });
+</script>
+</body>
+</html>

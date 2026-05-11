@@ -1,0 +1,20 @@
+{
+    "system_xml": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/drug-complex-system-builder/examples/hiv1-protease/system/system.xml",
+    "input_pdb": "/Users/matthewcox/Documents/GitHub/AtomisticSkills/.agents/skills/drug-complex-system-builder/examples/hiv1-protease/system/complex_solvated.pdb",
+    "temperature_K": 300.0,
+    "pressure_atm": 1.0,
+    "timestep_fs": 2.0,
+    "minimize_steps": 5000,
+    "equil_nvt_steps": 500,
+    "equil_npt_steps": 500,
+    "production_steps": 1000,
+    "restraint_k_kJ_mol_nm2": 50.0,
+    "reporting_interval": 100,
+    "checkpoint_interval": 500,
+    "seed": 42,
+    "platform": "OpenCL",
+    "wall_time_seconds": 57.7,
+    "production_dcd": "/tmp/hiv1_rerun/production.dcd",
+    "production_log": "/tmp/hiv1_rerun/production.log",
+    "final_state": "/tmp/hiv1_rerun/final_state.xml"
+}

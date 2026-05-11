@@ -137,6 +137,12 @@ def main() -> None:
         help="Maximum number of results to return (default: 100)",
     )
     parser.add_argument(
+        "--max_cifs",
+        type=int,
+        default=0,
+        help="Maximum number of CIF files to save (0 for all, default: 0)",
+    )
+    parser.add_argument(
         "--output_dir",
         required=True,
         help="Directory to save substituted structures and manifest",
@@ -173,8 +179,10 @@ def main() -> None:
         # Save CIF
         formula = result["formula"]
         cif_name = f"{i:03d}_{formula}.cif"
-        cif_path = output_dir / cif_name
-        result["structure"].to(filename=str(cif_path))
+        
+        if args.max_cifs == 0 or i < args.max_cifs:
+            cif_path = output_dir / cif_name
+            result["structure"].to(filename=str(cif_path))
 
         manifest_entries.append({
             "index": i,
@@ -209,6 +217,10 @@ def main() -> None:
         print(f"  [{entry['index']:3d}] {entry['formula']:20s} ({sub_str}) p={entry['probability']:.4f}")
     if len(manifest_entries) > 20:
         print(f"  ... and {len(manifest_entries) - 20} more (see manifest)")
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
 
 
 if __name__ == "__main__":

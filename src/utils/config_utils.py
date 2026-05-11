@@ -66,3 +66,37 @@ def inject_config_into_env():
                  os.environ[key] = json.dumps(val)
              else:
                  os.environ[key] = str(val)
+
+
+def save_skill_inputs(args, output_path: str):
+    """
+    Robustly save argparse arguments to an input_configs.yaml file.
+    Handles non-standard paths (extracts parent dir if path is a file).
+    """
+    try:
+        import yaml
+        from pathlib import Path
+        
+        # Convert args namespace to dict, handling non-standard types (like Path objects)
+        if hasattr(args, "__dict__"):
+            cfg = {k: str(v) if hasattr(v, "__fspath__") else v for k, v in vars(args).items()}
+        elif isinstance(args, dict):
+            cfg = {k: str(v) if hasattr(v, "__fspath__") else v for k, v in args.items()}
+        else:
+            cfg = {"arguments": str(args)}
+            
+        if not output_path:
+            return
+            
+        base_path = Path(output_path)
+        # If the path looks like a file (has a common config extension), use its parent directory
+        if base_path.suffix.lower() in [".yaml", ".yml", ".json", ".txt"]:
+            yaml_dir = base_path.parent
+        else:
+            yaml_dir = base_path
+            
+        yaml_dir.mkdir(parents=True, exist_ok=True)
+        with open(yaml_dir / "input_configs.yaml", "w") as f:
+            yaml.dump(cfg, f, default_flow_style=False, sort_keys=False)
+    except Exception as e:
+        print(f"Warning: Failed to save input_configs.yaml: {e}")

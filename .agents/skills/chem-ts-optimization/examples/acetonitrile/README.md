@@ -12,11 +12,11 @@ CH3CN (acetonitrile)  <->  CH3NC (isocyanomethane)
 
 | File | Description |
 |------|-------------|
-| `reactant_ch3cn.xyz` | Reactant reference geometry (CH3CN) |
-| `product_ch3nc.xyz` | Product reference geometry (CH3NC) |
-| `ts_guess.xyz` | Initial TS guess used by Sella |
+| [reactant_ch3cn.xyz](reactant_ch3cn.xyz) | Reactant reference geometry (CH3CN) |
+| [product_ch3nc.xyz](product_ch3nc.xyz) | Product reference geometry (CH3NC) |
+| [ts_guess.xyz](ts_guess.xyz) | Initial TS guess used by Sella |
 | `run_example.sh` | Reproducible run script |
-| `output/ts_optimized.xyz` | Optimized TS geometry |
+| [output/ts_optimized.xyz](output/ts_optimized.xyz) | Optimized TS geometry |
 | `output/ts_opt.traj` | TS optimization trajectory |
 | `output/ts_opt.log` | Optimizer log |
 | `output/ts_optimization_results.json` | Frequency analysis + TS pass/fail summary |

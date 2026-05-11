@@ -17,7 +17,7 @@ This example demonstrates how to calculate the activation energy barrier for a L
     - Removes one Li atom to create a vacancy.
     - Relaxes the initial state (Start).
     - Moves a NN Li atom to the vacancy and relaxes (End).
-    - Saves `start.cif` and `end.cif` to `neb_input/`.
+    - Saves [start.cif](start.cif) and [end.cif](end.cif) to `neb_input/`.
 - `run_example.sh`: Automated script to run preparation and NEB calculation.
 - `neb_barrier_plot.png`: Expected output plot (Barrier ~0.87 eV).
 

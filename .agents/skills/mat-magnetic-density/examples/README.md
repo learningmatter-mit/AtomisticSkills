@@ -8,7 +8,7 @@ This directory contains example calculations demonstrating the magnetic density 
 
 **Files**:
 - [`Fe_example.md`](Fe_example.md) - Detailed analysis and comparison
-- `Fe_bulk.cif` - Input structure (bcc Fe)
+- [Fe_bulk.cif](Fe_bulk.cif) - Input structure (bcc Fe)
 - `Fe_moments.json` - Parsed magnetic moment analysis
 
 **Key Results**:

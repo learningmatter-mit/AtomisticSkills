@@ -170,6 +170,10 @@ def main():
     if not args.quiet:
         print(f"Kinetics plot  -> {plot_path}.png, {plot_path}.svg")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 
 if __name__ == "__main__":
     main()

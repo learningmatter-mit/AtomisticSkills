@@ -16,6 +16,7 @@ To evaluate and improve the accuracy of a foundation Fairchem potential (e.g., U
 4.  **Data Preparation**: Execute `scripts/prepare_fairchem_data.py` to convert JSON structures to extxyz, generate native LMDB databases, compute dataset references, and configure a templated `uma_sm_finetune_template.yaml`.
 5.  **Fine-Tuning**: Execute `fairchem -c uma_sm_finetune_template.yaml job.run_dir=XXX` natively.
 6.  **Validation**: Run `scripts/extract_fairchem_logs.py` to extract curves and verify convergence against the benchmarked foundation metrics.
+7.  **Registration**: Use the `register_model` tool to register the newly fine-tuned model checkpoint into the local registry so future research tasks can discover and reuse it.
 
 ## Training Configuration
 

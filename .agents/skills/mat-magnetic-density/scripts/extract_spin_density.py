@@ -131,6 +131,10 @@ def main():
             json.dump(result, f, indent=2)
         print(f"\nAnalysis saved to: {output_path}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output)
+
 
 if __name__ == "__main__":
     main()

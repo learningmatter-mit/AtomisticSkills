@@ -1,0 +1,29 @@
+{
+  "structure": "TiO2_rutile_relaxed.cif",
+  "phonon_yaml": "phonon/phonon.yaml",
+  "point_group": "4/mmm",
+  "n_modes_total": 18,
+  "n_raman_active": 5,
+  "intensity_type": "equal",
+  "broadening_cm": 8.0,
+  "modes": [
+    {"mode_index": 0, "frequency_cm": 0.0,  "symmetry_label": "A2u", "is_acoustic": true,  "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 1, "frequency_cm": 0.0,  "symmetry_label": "Eu",  "is_acoustic": true,  "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 2, "frequency_cm": 0.0,  "symmetry_label": "Eu",  "is_acoustic": true,  "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 3, "frequency_cm": 141.3, "symmetry_label": "B1g", "is_acoustic": false, "raman_active": true,  "raman_intensity": 1.0},
+    {"mode_index": 4, "frequency_cm": 163.1, "symmetry_label": "B1u", "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 5, "frequency_cm": 384.7, "symmetry_label": "A2u", "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 6, "frequency_cm": 389.3, "symmetry_label": "Eu",  "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 7, "frequency_cm": 389.3, "symmetry_label": "Eu",  "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 8, "frequency_cm": 444.1, "symmetry_label": "Eg",  "is_acoustic": false, "raman_active": true,  "raman_intensity": 1.0},
+    {"mode_index": 9, "frequency_cm": 444.1, "symmetry_label": "Eg",  "is_acoustic": false, "raman_active": true,  "raman_intensity": 1.0},
+    {"mode_index": 10, "frequency_cm": 497.6, "symmetry_label": "A2u", "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 11, "frequency_cm": 501.8, "symmetry_label": "Eu",  "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 12, "frequency_cm": 501.8, "symmetry_label": "Eu",  "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 13, "frequency_cm": 609.8, "symmetry_label": "A1g", "is_acoustic": false, "raman_active": true,  "raman_intensity": 1.0},
+    {"mode_index": 14, "frequency_cm": 687.4, "symmetry_label": "A2g", "is_acoustic": false, "raman_active": true,  "raman_intensity": 1.0},
+    {"mode_index": 15, "frequency_cm": 692.3, "symmetry_label": "B1u", "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0},
+    {"mode_index": 16, "frequency_cm": 821.2, "symmetry_label": "B2g", "is_acoustic": false, "raman_active": true,  "raman_intensity": 1.0},
+    {"mode_index": 17, "frequency_cm": 824.9, "symmetry_label": "B1u", "is_acoustic": false, "raman_active": false, "raman_intensity": 0.0}
+  ]
+}

@@ -164,8 +164,10 @@ All MCP servers use centralized output redirection (see `src/utils/mcp_utils.py`
 - Training logs from breaking the JSON protocol
 - Debugging output from interfering with tool calls
 
+For a complete guide on how AtomisticSkills mitigates this execution noise issue across heterogeneous infrastructures, see the [MCP STDIO Redirection Guide](mcp_stdio_redirection.md).
+
 > [!WARNING]
-> Never use raw `print()` in MCP tool functions. Use logging or the `RedirectIO` context manager.
+> Never use raw `print()` in MCP tool functions expecting the user to read them cleanly. Use proper `logging`. Legacy outputs are automatically routed to standard error by the server.
 
 ### Research Directory Management
 Every research task should:

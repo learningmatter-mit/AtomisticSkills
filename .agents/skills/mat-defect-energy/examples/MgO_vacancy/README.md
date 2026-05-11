@@ -45,9 +45,9 @@ python .agents/skills/mat-defect-energy/scripts/calculate_defect_energy.py \
 
 ## Output Files
 
-- `pristine_supercell.cif` — 3×3×3 MgO supercell (Mg₂₇O₂₇, 54 atoms)
-- `vac_Mg_0.cif` — Mg vacancy supercell (53 atoms)
-- `vac_O_1.cif` — O vacancy supercell (53 atoms)
+- [pristine_supercell.cif](pristine_supercell.cif) — 3×3×3 MgO supercell (Mg₂₇O₂₇, 54 atoms)
+- [vac_Mg_0.cif](vac_Mg_0.cif) — Mg vacancy supercell (53 atoms)
+- [vac_O_1.cif](vac_O_1.cif) — O vacancy supercell (53 atoms)
 - `defect_energies.json` — Computed formation energies with elemental references
 
 ## References

@@ -97,6 +97,7 @@ def run_singlepoint(
         special_option=special_option,
         nprocs=nprocs,
         extra_calculator_settings=extra_calculator_settings,
+        output_dir=output_dir
     )
 
     props = [su.Property.Energy]
@@ -204,6 +205,10 @@ def main():
     with open(results_file, "w") as f:
         json.dump(recursive_tolist(result), f, indent=4)
     logger.info(f"Results saved to {results_file}")
+
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
 
 
 if __name__ == "__main__":

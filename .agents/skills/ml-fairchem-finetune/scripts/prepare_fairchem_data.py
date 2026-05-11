@@ -284,5 +284,9 @@ def main():
     print(f"  conda activate fairchem-agent")
     print(f"  python generate_fairchem_config.py --data-metadata {metadata_path.absolute()} --output-dir {save_dir.absolute()}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 if __name__ == "__main__":
     main()

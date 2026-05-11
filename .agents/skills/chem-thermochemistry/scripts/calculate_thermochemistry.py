@@ -531,6 +531,10 @@ def main():
         json.dump(recursive_tolist(output), f, indent=4)
     logger.info(f"\nResults saved to {results_file}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.output_dir)
+
 
 if __name__ == "__main__":
     main()

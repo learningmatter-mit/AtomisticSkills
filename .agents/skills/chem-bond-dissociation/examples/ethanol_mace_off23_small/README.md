@@ -37,5 +37,5 @@ Experimental values from Blanksby & Ellison, *Acc. Chem. Res.* **2003**, 36, 255
 ## Output Files
 
 - `bde_results.json` — Full results in JSON format
-- `intact_relaxed.xyz` — Relaxed intact ethanol
-- `frag_bondN_1.xyz`, `frag_bondN_2.xyz` — Relaxed radical fragments
+- [intact_relaxed.xyz](intact_relaxed.xyz) — Relaxed intact ethanol
+- [frag_bondN_1.xyz](frag_bondN_1.xyz), [frag_bondN_2.xyz](frag_bondN_2.xyz) — Relaxed radical fragments

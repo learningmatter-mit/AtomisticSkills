@@ -43,6 +43,6 @@ This example demonstrates a complete workflow for calculating the lithium-ion ac
 ![Final Arrhenius Plot](file:///home/bdeng/projects/AtomisticSkills/.agents/skills/mat-diffusion-analysis/examples/LGPS/arrhenius_plot.png)
 
 ### Files
-- `LGPS_221.cif`: Initial supercell structure.
+- [LGPS_221.cif](LGPS_221.cif): Initial supercell structure.
 - `arrhenius_plot.png`: Final publication-quality Arrhenius plot.
 - `msd_Li_600K.png`: Example MSD plot showing ps units and diffusive fit.

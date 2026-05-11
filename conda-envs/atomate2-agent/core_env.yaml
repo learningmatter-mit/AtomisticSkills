@@ -10,3 +10,7 @@ dependencies:
     - ase
     - h5py
     - pytest
+    - jobflow-remote
+    - amset
+    - lobsterpy
+    - ijson

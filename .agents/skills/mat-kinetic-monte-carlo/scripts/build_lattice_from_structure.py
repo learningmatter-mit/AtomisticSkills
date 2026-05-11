@@ -90,6 +90,10 @@ def main() -> None:
     out_path.write_text(json.dumps(out, indent=4))
     print(f"Wrote lattice with {n_sites} sites to: {out_path}")
 
+    # Save input configs for reproducibility
+    from src.utils.config_utils import save_skill_inputs
+    save_skill_inputs(args, args.out)
+
 
 if __name__ == "__main__":
     main()

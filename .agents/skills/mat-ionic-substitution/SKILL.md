@@ -64,6 +64,14 @@ The substitution probability model is trained on the ICSD (Inorganic Crystal Str
    - Substitution map: e.g., `{Na+→Li+}` and probability
    - Precursor MP material ID for traceability
 
+### Mode 3: Manual Targeted Substitution via MCP
+
+If you already know the exact substitution you want to make on a specific structure, you can immediately generate the new structure using the base MCP server's `modify_structure` tool:
+
+- **`modify_structure` tool**: Maps an existing element to a new element or fraction.
+  - Example 1 (Full replacement): `substitution_dict_json='{"Na": "Li"}'` (Replaces all Na with Li)
+  - Example 2 (Partial/Alloying): `substitution_dict_json='{"Na": {"Li": 0.5, "Na": 0.5}}'` (Creates a 50/50 random mixture)
+
 ## Examples
 
 ### Example 1: Discover new Li-ion cathode from NaCoO₂

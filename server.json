@@ -10,11 +10,8 @@
     "version": "1.0.0",
     "packages": [
         {
-            "registryType": "pypi",
-            "registryBaseUrl": "https://pypi.org",
-            "identifier": "atomisticskills",
-            "version": "1.0.0",
-            "runtimeHint": "python",
+            "registryType": "oci",
+            "identifier": "ghcr.io/bowen-bd/atomisticskills:1.0.0",
             "transport": {
                 "type": "stdio"
             },
