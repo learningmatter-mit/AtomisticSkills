@@ -50,6 +50,12 @@ class HTVSVaspHandler:
         "PREC": "prec",
         "KPOINT_DENSITY": "kppa",
         "KPOINTS": "kpoints",
+        "LDAU": "ldau",
+        "LDAUU": "ldauu",
+        "LDAUJ": "ldauj",
+        "LDAUL": "ldaul",
+        "LDAUTYPE": "ldautype",
+        "LMAXMIX": "lmaxmix",
     }
     
     # Pymatgen preset mappings
@@ -315,11 +321,20 @@ class HTVSVaspHandler:
             if calculation_type == "relaxation" and "matpes" in preset_type:
                 job_details["nsteps"] = 200
                 job_details["ibrion"] = 2
-                job_details["isif"] = 2
+                job_details["isif"] = 3
 
             # 5. Custom Overrides (Applied LAST to allow user control)
             if custom_settings:
-                job_details.update(custom_settings)
+                # Map custom settings to HTVS keys first
+                mapped_custom = self._map_to_htvs(custom_settings)
+                
+                # Only override if the value is not a dictionary 
+                # (dictionaries are intended for Pymatgen to process into lists)
+                for k, v in mapped_custom.items():
+                    if isinstance(v, dict) and k in job_details:
+                        # Pymatgen should have already handled this dict and expanded it to a list
+                        continue
+                    job_details[k] = v
                 
             return json.dumps(job_details, indent=2)
 
