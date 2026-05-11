@@ -100,6 +100,18 @@
       "env": {
         "PYTHONPATH": "/home/bdeng/projects/AtomisticSkills"
       }
+    },
+    "htvs": {
+      "command": "/home/bdeng/miniforge3/envs/htvs-agent/bin/python",
+      "args": [
+        "-m",
+        "src.mcp_server.htvs_server"
+      ],
+      "env": {
+        "PYTHONPATH": "/home/bdeng/projects/AtomisticSkills",
+        "HTVS_DJANGOCHEM_DIR": "/home/bdeng/projects/htvs/djangochem",
+        "HTVS_DIR": "/home/bdeng/projects/htvs"
+      }
     }
   }
 }
