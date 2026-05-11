@@ -75,6 +75,13 @@ def run_add_adsorbate(args: argparse.Namespace) -> Dict[str, Any]:
             continue
 
         details_B = (clean_cut.details or {}).get("B", [])
+        if not details_B:
+            if args.active_site:
+                details_B = [args.active_site]
+            else:
+                log(f"Surface {surface.id} has no active site metadata. Skipping.")
+                continue
+            
         for B in details_B:
             try:
                 slab = surface.as_ase_gratoms()
@@ -116,19 +123,28 @@ def run_add_adsorbate(args: argparse.Namespace) -> Dict[str, Any]:
 
             num_created += 1
             if not args.dry_run:
-                magmoms = slab_w_ads.get_initial_magnetic_moments().tolist()
+                raw_magmoms = slab_w_ads.get_initial_magnetic_moments()
+                magmoms_payload = None
+                if raw_magmoms is not None:
+                    m_list = raw_magmoms.tolist()
+                    magmoms_payload = [float(x) for x in m_list]
+                    if sum(abs(x) for x in magmoms_payload) == 0:
+                        magmoms_payload = None
+                
+                as_surf = Surface.from_ase_atoms(slab_w_ads)
+
                 payload = {
                     "bulk_id": clean_cut.bulk.id,
                     "parent_id": surface.id,
-                    "miller_index": clean_cut.miller_index,
+                    "miller_index": list(clean_cut.miller_index.hkl) if hasattr(clean_cut.miller_index, "hkl") else clean_cut.miller_index,
                     "xyz": as_surf.xyz,
                     "lattice": as_surf.lattice,
-                    "stoichiometry": as_surf.stoichiometry,
-                    "surface_atoms": surf_atoms,
-                    "adsorbate_atoms": ads_atoms,
+                    "stoichiometry": slab_w_ads.get_chemical_formula(),
+                    "surface_atoms": [bool(x) for x in surf_atoms],
+                    "adsorbate_atoms": [bool(x) for x in ads_atoms],
                     "active_site": [B],
                     "group_name": args.group,
-                    "magmoms": magmoms if np.sum(np.abs(magmoms)) > 0 else None
+                    "magmoms": magmoms_payload
                 }
                 
                 res_str = handler.save_adsorbate_surface(payload)
@@ -165,6 +181,7 @@ def main() -> None:
     parser.add_argument("--output_log", type=str, default=None, help="JSON file path to save created surface IDs")
     parser.add_argument("--settings", type=str, required=True, help="Django settings module")
     parser.add_argument("--djangochem", type=str, default=None, help="Path to the djangochem project root")
+    parser.add_argument("--active_site", type=str, default=None, help="Fallback active site species if missing in DB")
     args = parser.parse_args()
 
     try:

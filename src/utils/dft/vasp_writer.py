@@ -61,7 +61,7 @@ def write_vasp_input_files(
             "EDIFF": 1e-5,
             "EDIFFG": -0.02,
             "IBRION": 2,
-            "NSW": 99,
+            "NSW": 200,
             "ISIF": 3,
             "POTIM": 0.5
         })

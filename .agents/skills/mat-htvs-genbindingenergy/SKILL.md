@@ -17,8 +17,21 @@ Wait! HTVS operations directly interact with research databases. Before running 
 
 This file serves as the generic property bridge feeding directly into `.agents/skills/mat-htvs-catalysis-activity-analysis` to evaluate OER/ORR/CO2RR/NRR scaling laws.
 
-### 1. Execute the Pipeline
-Run the generator using the specific group configuration parameters:
+### 0. Initialize Project References (New Projects)
+
+For first-time setup or new screening groups, initialize the gas-phase references (`H2`, `H2O`, `CO2`, `N2`) in your target database. This skill provides a centralized resource and a utility to ensure consistent thermodynamics.
+
+**Verify Reference Energies**:
+Check `.agents/skills/mat-htvs-genbindingenergy/resources/reference_molecules.json` to ensure the total energies match your intended level of theory (default: PBE/Hartree).
+
+**Run Initialization**:
+```bash
+# Env: htvs-agent
+python .agents/skills/mat-htvs-genbindingenergy/scripts/migrate_references.py \
+    --settings djangochem.settings.toy \
+    --group_name my_project \
+    --research_dir ./research/current_research_dir
+```
 
 ```bash
 # Env: htvs-agent
@@ -31,7 +44,16 @@ python .agents/skills/mat-htvs-genbindingenergy/scripts/generate_binding_energy.
     --output_data ./research/current_research_dir/binding_energies.json
 ```
 
-### 2. Connect into Analytics
+### 2. Molecule Energy Scale Correction (Parallel Campaigns)
+
+When running parallel MLIP/DFT campaigns, the MLIP calculated energies must be shifted to the DFT molecule energy scale to ensure thermodynamic consistency in Volcano plots.
+
+**Procedure**:
+1. Update `resources/reference_molecules.json` with your high-fidelity DFT molecule energies (e.g., VASP-PBE).
+2. Run `generate_binding_energy.py` for the MLIP group, but set `--level` to your DFT level (e.g., `--level PBE`).
+3. This forces the script to use DFT molecule baselines even when the surface energies are in MLIP scale, effectively shifting the binding energy results.
+
+### 3. Connect into Analytics
 Navigate back into the standard analysis module (`mat-htvs-catalysis-activity-analysis`) and parse your newly created JSON:
 ```bash
 python .agents/skills/mat-htvs-catalysis-activity-analysis/scripts/run.py \

@@ -1,0 +1,42 @@
+{
+    "PBE": {
+        "H2": {
+            "totalenergy_ha": -0.24882607714892205,
+            "method": "dft_gga_pbe",
+            "units": "Hartree",
+            "orgel_id": 149529550
+        },
+        "H2O": {
+            "totalenergy_ha": -0.5228606832477579,
+            "method": "dft_d3_dhyb_dsdpbebp86",
+            "units": "Hartree",
+            "orgel_id": 149529549
+        }
+        // "CO2": {
+        //     "totalenergy_ha": -188.380762413044,
+        //     "method": "dft_d3_dhyb_dsdpbebp86",
+        //     "units": "Hartree",
+        //     "orgel_id": 192233
+        // },
+        // "N2": {
+        //     "totalenergy_ha": -109.400256608376,
+        //     "method": "dft_d3_dhyb_dsdpbebp86",
+        //     "units": "Hartree",
+        //     "orgel_id": 192192
+        // }
+    },
+    "UMA": {
+        "H2": {
+            "totalenergy_ha": -0.244180424,
+            "method": "uma-s-1p1",
+            "units": "Hartree (Converted from UMA eV)",
+            "orgel_id": 0
+        },
+        "H2O": {
+            "totalenergy_ha": -0.511766887,
+            "method": "uma-s-1p1",
+            "units": "Hartree (Converted from UMA eV)",
+            "orgel_id": 0
+        }
+    }
+}

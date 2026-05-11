@@ -113,11 +113,11 @@ class HTVSVaspHandler:
             incar_params.update({"IBRION": -1, "NSW": 0})
         elif calculation_type == "relaxation":
             incar_params.update({
-                "EDIFF": 1e-5,
+                "EDIFF": 1e-4,
                 "EDIFFG": -0.02,
                 "IBRION": 2,
-                "NSW": 99,
-                "ISIF": 3,
+                "NSW": 200,
+                "ISIF": 2,  # Safer default for HTVS (prevents vacuum collapse in slabs)
                 "POTIM": 0.5
             })
         
@@ -266,6 +266,10 @@ class HTVSVaspHandler:
             elif preset_type == "matpes-pbe":
                 set_kwargs["xc_functional"] = "PBE"
                 
+            # Inject custom settings into Pymatgen so it automatically handles element-wise tags (like LDAUU for Fe, O, H)
+            if custom_settings:
+                set_kwargs["user_incar_settings"] = custom_settings
+                
             # Generate Input
             vis = set_class(pmg_structure, **set_kwargs)
             
@@ -309,14 +313,10 @@ class HTVSVaspHandler:
 
             # 4. MatPES Relaxation Overrides (Applied as defaults)
             if calculation_type == "relaxation" and "matpes" in preset_type:
-                job_details["nsteps"] = 100
+                job_details["nsteps"] = 200
                 job_details["ibrion"] = 2
-                job_details["isif"] = 3
+                job_details["isif"] = 2
 
-            # 5. Custom Overrides (Applied LAST to allow user control)
-            if custom_settings:
-                job_details.update(custom_settings)
-                
             return json.dumps(job_details, indent=2)
 
         except Exception as e:

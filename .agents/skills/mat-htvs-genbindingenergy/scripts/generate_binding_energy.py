@@ -43,14 +43,21 @@ def get_adsorbate_formula(surface_obj) -> str:
     return mapping.get(formula, formula)
 
 def get_energy(geom_obj, method_obj) -> float:
-    calc = geom_obj.calcs.get(props__totalenergy__isnull=False, method=method_obj)
-    return calc.props["totalenergy"]
+    calc = geom_obj.calcs.get(totalenergy__isnull=False, method=method_obj)
+    return calc.totalenergy
 
 def get_optimized_clean(surface_obj, config_obj):
+    # Find the original 'clean_surface_cut' ancestor
     parent = surface_obj
-    while parent.parentjob.config.name != "clean_surface_cut":
-        parent = parent.parentjob.parent
-
+    # If it's a Surface, go to its parent Job, then its parent (which should be the original surface or job)
+    while True:
+        if hasattr(parent, "parentjob") and parent.parentjob and parent.parentjob.config.name == "clean_surface_cut":
+            break
+        if hasattr(parent, "parentjob") and parent.parentjob and parent.parentjob.parent:
+             parent = parent.parentjob.parent
+        else:
+             return None
+             
     done_job = parent.childjobs.filter(config=config_obj, status="done").first()
     if done_job is None:
         return None
@@ -68,6 +75,7 @@ def run_generate_binding_energy(args: argparse.Namespace) -> Dict[str, Any]:
 
     group_obj = Group.objects.get(name=args.group)
     config_obj = JobConfig.objects.get(name=args.config_name)
+    clean_config_obj = JobConfig.objects.get(name=args.clean_config or args.config_name)
     method_obj = Method.objects.get(name=args.method)
     metric_obj, _ = AffinityType.objects.get_or_create(name=args.metric)
 
@@ -78,13 +86,57 @@ def run_generate_binding_energy(args: argparse.Namespace) -> Dict[str, Any]:
         parentjob__config=ref_config_obj,
     )
     
+    # --- Step 1.1: Fetch Gas References (with JSON Fallback) ---
+    h2o_ref, h2_ref = None, None
+    from_db = False
+    
+    # Try Database First
     try:
         h2o_ref = get_energy(ref_crystals.get(stoichiometry__formula="H2O"), method_obj)
         h2_ref = get_energy(ref_crystals.get(stoichiometry__formula="H2"), method_obj)
-        log(f"Gas references: H2O={h2o_ref:.6f} Ha, H2={h2_ref:.6f} Ha")
+        from_db = True
+        log(f"Gas references loaded from database '{args.settings}'")
     except Exception as e:
-        log(f"Error fetching gas references: {e}")
-        raise
+        log(f"Database references not found, attempting centralized JSON fallback... ({e})")
+
+    # JSON Fallback
+    if h2o_ref is None or h2_ref is None:
+        resource_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "resources", "reference_molecules.json")
+        if os.path.exists(resource_path):
+            with open(resource_path, 'r') as f:
+                # Strip // comments before parsing JSON
+                import re
+                raw_content = f.read()
+                clean_content = re.sub(r'//.*', '', raw_content)
+                resource_data = json.loads(clean_content)
+                
+                level_data = resource_data.get(args.level, {})
+                h2o_ref = level_data.get("H2O", {}).get("totalenergy_ha")
+                h2_ref = level_data.get("H2", {}).get("totalenergy_ha")
+                if h2o_ref and h2_ref:
+                    log(f"Gas references loaded from centralized resource ({args.level}): {resource_path}")
+                else:
+                    log(f"Centralized resource missing H2 or H2O keys for level {args.level}.")
+        else:
+            log(f"Centralized resource NOT found at {resource_path}")
+
+    if h2o_ref is None or h2_ref is None:
+        log("CRITICAL: Could not find H2/H2O references in database or JSON resource.")
+        raise ValueError(f"Missing gas-phase references (H2, H2O) for level {args.level}. Run migrate_references.py first.")
+
+    # Convert to eV depending on source and method
+    ha_to_ev = 27.211386245988
+    
+    # If from JSON, it is explicitly in Hartree (totalenergy_ha). 
+    # If from DB, it's in Hartree for DFT, and eV for MLIP.
+    if not from_db or "dft" in method_obj.name.lower() or "vasp" in method_obj.name.lower():
+        h2o_ref_ev = h2o_ref * ha_to_ev
+        h2_ref_ev = h2_ref * ha_to_ev
+        log(f"Final References: H2O={h2o_ref:.6f} Ha ({h2o_ref_ev:.4f} eV), H2={h2_ref:.6f} Ha ({h2_ref_ev:.4f} eV)")
+    else:
+        h2o_ref_ev = h2o_ref
+        h2_ref_ev = h2_ref
+        log(f"Final References: H2O={h2o_ref_ev:.4f} eV, H2={h2_ref_ev:.4f} eV")
 
     surfaces = Surface.objects.filter(
         parentjob__group=group_obj,
@@ -115,7 +167,7 @@ def run_generate_binding_energy(args: argparse.Namespace) -> Dict[str, Any]:
         if adsorbate not in coeff_map:
             continue
             
-        clean_geoms = get_optimized_clean(surface, config_obj)
+        clean_geoms = get_optimized_clean(surface, clean_config_obj)
         if not clean_geoms:
             continue
             
@@ -150,10 +202,15 @@ def run_generate_binding_energy(args: argparse.Namespace) -> Dict[str, Any]:
         try:
             energy_w_ads = get_energy(surface, method_obj)
             energy_clean = get_energy(clean_surface, method_obj)
+            
+            # HTVS VASP parsers save totalenergy in Hartree, while MLIPs save in eV.
+            if "dft" in method_obj.name.lower() or "vasp" in method_obj.name.lower():
+                energy_w_ads *= ha_to_ev
+                energy_clean *= ha_to_ev
         except Exception:
             continue
             
-        dE = energy_w_ads - energy_clean - n_h2o * h2o_ref - n_h * h2_ref / 2
+        dE = energy_w_ads - energy_clean - n_h2o * h2o_ref_ev - n_h * h2_ref_ev / 2
         
         entries_to_save.append({
             "clean_id": clean_id,
@@ -193,10 +250,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Calculate surface binding energies in the HTVS database.")
     parser.add_argument("--group", type=str, required=True, help="Name of the project group")
     parser.add_argument("--config_name", type=str, required=True, help="JobConfig name for adsorbate surface calculations")
+    parser.add_argument("--clean_config", type=str, default=None, help="JobConfig name for clean surface calculations (defaults to config_name)")
     parser.add_argument("--ref_group", type=str, default="surface_binding_energy_references")
     parser.add_argument("--ref_config", type=str, default="pbe_u_paw_spinpol_opt_vasp")
     parser.add_argument("--method", type=str, default="dft_d3_paw_gga_pbe")
     parser.add_argument("--metric", type=str, default="surface_binding_dE")
+    parser.add_argument("--level", type=str, default="PBE")
     parser.add_argument("--limit", type=int, default=10000)
     parser.add_argument("--dry_run", action="store_true", help="Simulate without writing to the database")
     parser.add_argument("--output_data", type=str, default="binding_energies.json", help="Output JSON capturing standard schema")

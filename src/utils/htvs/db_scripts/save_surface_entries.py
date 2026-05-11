@@ -10,11 +10,15 @@ from django.contrib.contenttypes.models import ContentType
 def run(payload):
     from pgmols.models import Group, Surface, MillerIndex, Crystal, Calc, Method
     from jobs.models import Job, JobConfig
+    from ase import Atoms
     
     results = {"success": [], "errors": []}
     
     group_obj = Group.objects.get(name=payload["group_name"])
     config_obj = JobConfig.objects.get(name=payload["config_name"])
+    method_name = payload.get("method_name")
+    default_method_name = method_name if method_name else "manual_import"
+    method_obj, _ = Method.objects.get_or_create(name=default_method_name)
     
     entries = payload.get("entries", [])
     
@@ -23,18 +27,15 @@ def run(payload):
             bulk_obj = Crystal.objects.get(id=entry["bulk_id"])
             mi_obj, _ = MillerIndex.objects.get_or_create(hkl=entry["miller_index"])
             
-            surf = Surface(
-                bulk=bulk_obj,
-                miller_index=mi_obj,
-                xyz=entry["xyz"],
-                lattice=entry["lattice"],
-                stoichiometry=entry["stoichiometry"],
-                spacegroup=bulk_obj.spacegroup,
-                method=bulk_obj.method,
-                surface_atoms=entry["surface_atoms"],
-                adsorbate_atoms=entry["adsorbate_atoms"],
-                details=entry.get("details", {})
-            )
+            atoms = Atoms(symbols=entry["symbols"], positions=entry["xyz"], cell=entry["lattice"], pbc=True)
+            
+            surf = Surface.from_ase_atoms(atoms)
+            surf.bulk = bulk_obj
+            surf.miller_index = mi_obj
+            surf.surface_atoms = entry["surface_atoms"]
+            surf.adsorbate_atoms = entry["adsorbate_atoms"]
+            surf.details = entry.get("details", {})
+            surf.method = method_obj
             
             chemical_tag = surf.generate_hash()
             surf.chemical_tag = chemical_tag
@@ -52,6 +53,7 @@ def run(payload):
             job = Job(
                 config=config_obj,
                 group=group_obj,
+                method=method_obj,
                 status="done",
                 parentct=ContentType.objects.get_for_model(bulk_obj),
                 parentid=bulk_obj.id,

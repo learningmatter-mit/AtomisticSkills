@@ -165,7 +165,10 @@ def query_materials_project(
         for prop in properties:
             if hasattr(doc, prop):
                 value = getattr(doc, prop)
-                result[prop] = float(value) if value is not None else None
+                try:
+                    result[prop] = float(value) if value is not None else None
+                except (ValueError, TypeError):
+                    result[prop] = str(value) if value is not None else None
             else:
                 result[prop] = None
         

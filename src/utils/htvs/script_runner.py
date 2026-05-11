@@ -75,7 +75,9 @@ def setup_django(
     os.environ["DJANGO_SETTINGS_MODULE"] = settings_module
 
     import django
-    django.setup()
+    from django.apps import apps
+    if not apps.ready:
+        django.setup()
     logger.debug("Django configured with settings: %s", settings_module)
 
 
@@ -136,7 +138,9 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_mod)
 os.environ["DJANGO_SETTINGS_MODULE"] = settings_mod
 
 try:
-    django.setup()
+    from django.apps import apps
+    if not apps.ready:
+        django.setup()
 except Exception as e:
     print(json.dumps({{"error": f"Django setup failed: {{str(e)}}"}}))
     sys.exit(1)

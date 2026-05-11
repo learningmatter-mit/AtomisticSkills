@@ -27,6 +27,7 @@ framework_name = payload.get("framework_name")
 structure_type = payload.get("structure_type", "crystal")
 parent_bulk_id = payload.get("parent_bulk_id")
 miller_index_arg = payload.get("miller_index")
+details_arg = payload.get("details")
 
 def get_miller_index(hkl):
     mi, _ = MillerIndex.objects.get_or_create(hkl=hkl)
@@ -65,10 +66,22 @@ try:
         else:
             obj = Surface.from_ase_atoms(atoms)
             
+            if isinstance(parent_obj, Crystal):
+                obj.bulk = parent_obj
+            elif isinstance(parent_obj, Surface):
+                obj.bulk = parent_obj.bulk
+                
             if hasattr(parent_obj, "miller_index"):
                 obj.miller_index = parent_obj.miller_index
             else:
                 obj.miller_index = mi_obj
+
+            if details_arg:
+                obj.details = details_arg
+                
+            if obj.bulk is None:
+                print(json.dumps({"error": f"Surface must have a bulk reference. Parent object {parent_obj} did not provide one."}))
+                exit(1)
                 
             # Comprehensive surface/adsorbate tagging logic
             # Explicit info
@@ -107,6 +120,7 @@ try:
         job = Job(
             config=config_obj,
             group=group_obj,
+            method=method_obj,
             status="done",
             parentct=ContentType.objects.get_for_model(job_parent),
             parentid=job_parent.id,

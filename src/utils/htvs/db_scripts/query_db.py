@@ -120,7 +120,7 @@ def handle_get_structure():
     model = Crystal if structure_type.lower() == "crystal" else Surface
     try:
         obj = model.objects.get(id=structure_id)
-        atoms = obj.to_ase_atoms()
+        atoms = obj.as_ase_atoms()
         data = {
             "id": obj.id,
             "numbers": atoms.get_atomic_numbers().tolist(),

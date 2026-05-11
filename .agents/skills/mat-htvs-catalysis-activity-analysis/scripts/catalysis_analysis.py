@@ -65,7 +65,7 @@ def run_catalysis_analysis(args: argparse.Namespace) -> Dict[str, Any]:
         json.dump(results, f, indent=2)
         
     mechanism.plot_free_energy(results, str(out_dir / f"{args.reaction.lower()}_free_energy_steps.png"))
-    mechanism.plot_volcano(results, str(out_dir / f"{args.reaction.lower()}_volcano.png"))
+    mechanism.plot_volcano(results, str(out_dir / f"mlip_{args.reaction.lower()}_volcano.png"))
     
     return {
         "status": "success",

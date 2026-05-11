@@ -58,9 +58,10 @@ python .agents/skills/mat-htvs-cutcleansurface/scripts/cut_clean_surface.py \
 | `--limit` | ❌ | Max number of crystals to process (default: 10000) |
 | `--dry_run` | ❌ | Simulate without writing to DB |
 | `--target_species`| ❌ | Filter resulting slabs to those natively exposing this element on their topmost surface (e.g., `Fe`) |
-| `--layers` | ❌ | Minimum number of atomic layers in the sliced slab (default: 4) |
+| `--slab_thickness` | ❌ | Minimum slab thickness in Angstroms (default: 10.0). Specifies the bulk-like region's depth. |
 | `--vacuum` | ❌ | Vacuum thickness (Angstroms) surrounding the slab (default: 15.0) |
-| `--scale` | ❌ | Supercell scaling factors for a and b (e.g., `2 2` or `3 3`). If omitted, auto-scales the primitive cell to at least ~5.0 Å wide. |
+| `--supercell_min_length` | ❌ | Minimum distance between periodic images in Angstroms for auto-scaling (default: 10.0). |
+| `--scale` | ❌ | Exact supercell scaling factors for a and b (e.g., `2 2`). Overrides auto-scaling if provided. |
 | `--rotation` | ❌ | Rotation angle in degrees for the supercell grid (default: 0.0) |
 
 ### 3. Verify Results

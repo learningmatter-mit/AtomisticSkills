@@ -63,18 +63,41 @@ def _log_to_research_dir(tool_name: str, data: Dict[str, Any]):
         logging.getLogger(__name__).warning(f"Failed to log {tool_name} to research dir: {e}")
 
 @mcp.tool()
+def htvs_get_config() -> str:
+    """
+    Retrieve the current resolved HTVS configuration from environment and ~/.atomistic_skills.yaml.
+    Use this to verify compute_platform, inbox_path, and other global settings.
+    """
+    if not HTVS_UTILS_AVAILABLE:
+        return "Error: HTVS utilities not available."
+    
+    config = HTVSConfigHandler().load_config()
+    return json.dumps(config, indent=2)
+
+
+@mcp.tool()
 def htvs_set_project_context(settings_module: Optional[str] = None, group_name: Optional[str] = None) -> str:
     """
     Set the global database configuration and project group for all subsequent HTVS operations.
-    Must be called before using most HTVS tools so you don't have to provide settings_module and group_name repeatedly.
+    If arguments are omitted, attempts to load defaults from ~/.atomistic_skills.yaml.
     
     Args:
         settings_module: Django settings module name (e.g., 'orgel').
         group_name: HTVS project group name.
     """
+    msg = ""
+    if settings_module is None or group_name is None:
+        config = HTVSConfigHandler().load_config()
+        if settings_module is None:
+            settings_module = config.get("settings_module")
+            msg += f" (settings_module resolved to '{settings_module}')"
+        if group_name is None:
+            group_name = config.get("group_name")
+            msg += f" (group_name resolved to '{group_name}')"
+
     GLOBAL_HTVS_CONTEXT["settings_module"] = settings_module
     GLOBAL_HTVS_CONTEXT["group_name"] = group_name
-    return f"Successfully set global HTVS context: settings_module='{settings_module}', group_name='{group_name}'"
+    return f"Successfully set global HTVS context: settings_module='{settings_module}', group_name='{group_name}'.{msg}"
 
 def _get_context(settings_module: Optional[str] = None, group_name: Optional[str] = None):
     s = settings_module if settings_module is not None else GLOBAL_HTVS_CONTEXT.get("settings_module")

@@ -7,23 +7,29 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 
 def run(payload):
-    from pgmols.models import Group, Surface, Calc, Method, Crystal
+    from pgmols.models import Group, Surface, Calc, Method, Crystal, Stoichiometry
     from jobs.models import Job, JobConfig
     
     group_obj = Group.objects.get(name=payload["group_name"])
-    adsorbate_config_obj, _ = JobConfig.objects.get_or_create(name="add_adsorbate")
+    config_name = payload.get("config_name", "add_adsorbate")
+    adsorbate_config_obj, _ = JobConfig.objects.get_or_create(name=config_name)
     
     # We assume bulk and parent surface are already in DB
     bulk_obj = Crystal.objects.get(id=payload["bulk_id"])
     parent_surface = Surface.objects.get(id=payload["parent_id"])
     
     # Create Surface
+    stoich, _ = Stoichiometry.objects.get_or_create(formula=payload["stoichiometry"])
+    
+    from pgmols.models import MillerIndex
+    mi, _ = MillerIndex.objects.get_or_create(hkl=payload["miller_index"])
+    
     surf_w_ads = Surface(
         bulk=bulk_obj,
-        miller_index=payload["miller_index"],
+        miller_index=mi,
         xyz=payload["xyz"],
         lattice=payload["lattice"],
-        stoichiometry=payload["stoichiometry"],
+        stoichiometry=stoich,
         spacegroup=bulk_obj.spacegroup,
         method=bulk_obj.method,
         surface_atoms=payload["surface_atoms"],
@@ -37,11 +43,18 @@ def run(payload):
     if payload.get("magmoms"):
         surf_w_ads.magmoms = payload["magmoms"]
         
+    framework_name = payload.get("framework_name") or payload.get("framework")
+    if framework_name:
+        from pgmols.models import Framework
+        framework_obj, _ = Framework.objects.get_or_create(name=framework_name)
+        surf_w_ads.framework = framework_obj
+        
     # Check duplicate
     exists = Surface.objects.filter(
         bulk=bulk_obj,
         chemical_tag=chemical_tag,
         parentjob__group=group_obj,
+        parentjob__parentid=payload["parent_id"],
         details__B__contains=payload["active_site"][0] if isinstance(payload["active_site"], list) else payload["active_site"]
     ).first()
     
@@ -56,6 +69,7 @@ def run(payload):
         parentct=ContentType.objects.get_for_model(parent_surface),
         parentid=parent_surface.id,
         completetime=timezone.now(),
+        method=bulk_obj.method
     )
     job.save()
     

@@ -110,6 +110,10 @@ class HTVSConfigHandler:
         
         if not htvs_dir or not htvs_djangochem_dir:
             logger.warning("HTVS environment variables (HTVS_DIR, HTVS_DJANGOCHEM_DIR) not found in environment or config files.")
+            
+        vasp_steps = {}
+        if 'yaml_config' in locals() and isinstance(yaml_config, dict):
+            vasp_steps = yaml_config.get("vasp_steps", {})
         
         return {
             "htvs_dir": htvs_dir, 
@@ -121,7 +125,8 @@ class HTVSConfigHandler:
             "inbox_path": inbox_path,
             "potcar_path": potcar_path,
             "project_name": project_name,
-            "completed_path": completed_path
+            "completed_path": completed_path,
+            "vasp_steps": vasp_steps
         }
     
     def check_environment(self) -> Dict[str, Any]:

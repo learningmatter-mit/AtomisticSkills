@@ -109,7 +109,8 @@ class HTVSDbHandler:
         group_name: str,
         miller_index: List[int],
         method_name: Optional[str] = None,
-        framework_name: Optional[str] = None
+        framework_name: Optional[str] = None,
+        details: Optional[Dict[str, Any]] = None
     ) -> str:
         payload = {
             "structure_type": "surface",
@@ -119,7 +120,8 @@ class HTVSDbHandler:
             "method_name": method_name,
             "framework_name": framework_name,
             "parent_bulk_id": parent_bulk_id,
-            "miller_index": miller_index
+            "miller_index": miller_index,
+            "details": details
         }
         return self._execute_template("save_structures", payload)
 
@@ -132,7 +134,8 @@ class HTVSDbHandler:
         parent_bulk_id: Optional[int] = None,
         miller_index: List[int] = [0, 1, 0],
         method_name: Optional[str] = None,
-        framework_name: Optional[str] = None
+        framework_name: Optional[str] = None,
+        details: Optional[Dict[str, Any]] = None
     ) -> str:
         """
         Batch save structures from a directory or file with auto-detection.
@@ -176,7 +179,7 @@ class HTVSDbHandler:
                     
                     result = self.save_surfaces(
                         file_path, config_name, parent_bulk_id,
-                        group_name, miller_index, method_name, framework_name
+                        group_name, miller_index, method_name, framework_name, details
                     )
                 else:
                     results["structures"].append({
@@ -310,7 +313,8 @@ class HTVSDbHandler:
         self,
         entries: List[Dict[str, Any]],
         config_name: str,
-        group_name: str
+        group_name: str,
+        method_name: Optional[str] = None
     ) -> str:
         """
         Bulk save surface records generated in-memory.
@@ -320,7 +324,8 @@ class HTVSDbHandler:
         payload = {
             "entries": entries,
             "config_name": config_name,
-            "group_name": group_name
+            "group_name": group_name,
+            "method_name": method_name
         }
         return self._execute_template("save_surface_entries", payload)
 

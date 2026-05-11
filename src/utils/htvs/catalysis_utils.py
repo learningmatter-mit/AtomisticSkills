@@ -220,11 +220,26 @@ class ReactionMechanism(ABC):
         # Plot -eta for proper volcano shape
         plt.plot(x_desc, -eta_empirical, 'k--', alpha=0.5, label='Empirical Scaling Fit')
         
+        # Sort results to find top 3 (lowest eta)
+        sorted_results = sorted(results_dict.items(), key=lambda x: x[1]["eta"])
+        top_names = [x[0] for x in sorted_results[:3]]
+        
         # Plot data points
-        markers = ['o', 's', '^', 'D', 'v', '<', '>', 'p', '*']
+        top_colors = ['#d62728', '#ff7f0e', '#2ca02c'] # Red, Orange, Green
         for idx, (name, res) in enumerate(results_dict.items()):
-            marker = markers[idx % len(markers)]
-            plt.scatter([res["descriptor"]], [-res["eta"]], s=120, label=name, marker=marker, edgecolors='k', zorder=5)
+            if name in top_names:
+                color = top_colors[top_names.index(name)]
+                size = 100
+                zorder = 10
+                alpha = 1.0
+            else:
+                color = '#bcbcbc' # Grey
+                size = 60
+                zorder = 5
+                alpha = 0.6
+                
+            plt.scatter([res["descriptor"]], [-res["eta"]], s=size, color=color, 
+                        marker='o', edgecolors='k', zorder=zorder, alpha=alpha)
 
         # Plot Peak if present within range
         if len(x_desc) > 0:
@@ -233,8 +248,7 @@ class ReactionMechanism(ABC):
 
         plt.xlabel(self.get_descriptor_name(), fontsize=14)
         plt.ylabel(r'$-\eta$ (V)', fontsize=14)
-        plt.title(f'{self.name} Activity Volcano Plot', fontsize=14)
-        plt.legend(frameon=True, shadow=True)
+        plt.title('MLIP prediction', fontsize=14)
         plt.grid(alpha=0.3)
         plt.tight_layout()
         plt.savefig(output_path, dpi=300)

@@ -191,6 +191,20 @@ inbox_path: /home/user/mnt/perlmutter_m5068/jobs/inbox
 completed_path: /home/user/mnt/perlmutter_m5068/jobs/completed
 project_name: m5068
 requester: username
+
+# Step-specific VASP Workflow Parameters (Optional, parsed by HTVS tools and submit_jobs.py)
+vasp_steps:
+  pbe_u_paw_spinpol_opt_surf_vasp:
+    preset_type: omat
+    calculation_type: relaxation
+    custom_settings:
+      ENCUT: 520
+      ISIF: 2
+      NSW: 200
+      LDAUU: 
+        Fe: 4.3
+        O: 0
+        H: 0
 ```
 
 ### 2. Environment Variables
