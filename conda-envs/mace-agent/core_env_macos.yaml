@@ -1,0 +1,20 @@
+name: mace-agent
+# macOS (Apple Silicon / Intel) variant of core_env.yaml.
+# CUDA PyTorch builds do not exist for macOS, so the CUDA build pin is dropped;
+# PyTorch uses the MPS (Apple Silicon) or CPU backend instead.
+dependencies:
+  - python=3.10
+  - pytorch
+  - pip
+  - pip:
+    - mcp
+    - mace-torch>=0.3.15
+    - cython
+    - pymatgen
+    - pymatgen-analysis-diffusion
+    - ase
+    - matcalc
+    - setuptools<70
+    - setuptools-scm
+    - sella
+    - typing-extensions
