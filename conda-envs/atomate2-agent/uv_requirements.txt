@@ -1,0 +1,11 @@
+mcp
+atomate2
+pymatgen
+typing-extensions
+ase
+h5py
+pytest
+jobflow-remote
+amset
+lobsterpy
+ijson

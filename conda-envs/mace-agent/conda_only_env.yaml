@@ -1,0 +1,5 @@
+name: mace-agent
+dependencies:
+  - python=3.10
+  - pytorch
+  - pip
