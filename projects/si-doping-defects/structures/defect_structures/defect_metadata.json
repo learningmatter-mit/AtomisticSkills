@@ -1,0 +1,29 @@
+{
+  "bulk_formula": "Si2",
+  "supercell_size": [
+    3,
+    3,
+    3
+  ],
+  "pristine_num_atoms": 54,
+  "defects": [
+    {
+      "name": "sub_P_0",
+      "type": "substitution",
+      "dopant": "P"
+    },
+    {
+      "name": "sub_B_0",
+      "type": "substitution",
+      "dopant": "B"
+    },
+    {
+      "name": "vac_Si_0",
+      "type": "vacancy"
+    },
+    {
+      "name": "int_Si_0",
+      "type": "interstitial"
+    }
+  ]
+}
