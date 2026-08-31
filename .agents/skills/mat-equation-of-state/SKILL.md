@@ -47,13 +47,13 @@ python .agents/skills/mat-equation-of-state/scripts/calculate_eos.py \
 **Key Parameters:**
 - `--n_points`: Number of strain points (default: 11)
 - `--max_abs_strain`: Maximum volumetric strain applied (default: 0.1 = ±10%)
-- `--relax_structure`: Relax atomic positions at each strain point (recommended)
+- `--relax_structure`: Fully relax the input cell (positions *and* cell vectors) before the strain scan. It does **not** control the per-strain relaxation -- matcalc always relaxes the ions at each strained volume with the cell held fixed.
 - `--fmax`: Force convergence tolerance for relaxation (default: 0.1 eV/Å)
 
 ## 4. Output Files
 
-- `eos_results.json`: Summary containing bulk modulus (GPa), equilibrium volume (Ų), equilibrium energy (eV)
-- `energies_volumes.dat`: Energy-volume data points used for fitting
+- `eos_results.json`: Summary containing bulk modulus (GPa), equilibrium volume (Å³), equilibrium energy (eV) and the R² of the fit. The equilibrium volume and energy are the Birch-Murnaghan minimum (v0, e0) -- not the volume or energy of any individual scan point.
+- `energies_volumes.dat`: Energy-volume data points used for fitting. The same scan is repeated under the `energy_volume_curve` key of `eos_results.json`, so the fit can always be reproduced from the summary alone.
 
 ## 5. Examples
 
@@ -65,7 +65,7 @@ See `examples/` for detailed usage scenarios, including Silicon EOS calculation.
   - `mace-agent` for MACE models
   - `matgl-agent` for MatGL/CHGNet models
   - `fairchem-agent` for FairChem/UMA models
-- **Structure Relaxation**: It is highly recommended to start with a pre-relaxed structure and use `--relax_structure` to relax atomic positions at each strain point.
+- **Structure Relaxation**: Ions are relaxed at every strain point regardless. Use `--relax_structure` when the input cell is not already at this model's equilibrium, so the scan is centred on the model's own minimum rather than the input volume.
 - **Strain Range**: The default ±10% strain is suitable for most materials. For very soft or very hard materials, adjust `--max_abs_strain` accordingly.
 - **Fitting Model**: MatCalc uses the Birch-Murnaghan equation of state by default.
 ---
