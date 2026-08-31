@@ -46,8 +46,9 @@ python .agents/skills/mat-equation-of-state/scripts/calculate_eos.py \
 
 **Key Parameters:**
 - `--n_points`: Number of strain points (default: 11)
-- `--max_abs_strain`: Maximum volumetric strain applied (default: 0.1 = ±10%)
-- `--relax_structure`: Fully relax the input cell (positions *and* cell vectors) before the strain scan. It does **not** control the per-strain relaxation -- matcalc always relaxes the ions at each strained volume with the cell held fixed.
+- `--max_abs_strain`: Maximum linear strain applied (default: 0.1 = ±10%, i.e. volumes spanning (1±0.1)^3)
+- `--relax_structure` / `--no-relax_structure` (default on): fully relax the input cell (ions *and* cell vectors) before the strain scan, so the scan is centred on this model's own equilibrium volume rather than whatever volume the input file happens to have. It does **not** control the per-strain relaxation -- matcalc relaxes every strained point regardless.
+- `--allow_shape_change` / `--no-allow_shape_change` (default on, matcalc >= 0.5): at each strain point relax the cell *shape* at constant volume as well as the ions. This is the E(V) a Birch-Murnaghan fit assumes -- the minimum energy at fixed volume. Symmetry forbids shape relaxation in cubic cells, so it changes nothing there; for anisotropic cells, freezing the shape overestimates B0.
 - `--fmax`: Force convergence tolerance for relaxation (default: 0.1 eV/Å)
 
 ## 4. Output Files
@@ -65,9 +66,9 @@ See `examples/` for detailed usage scenarios, including Silicon EOS calculation.
   - `mace-agent` for MACE models
   - `matgl-agent` for MatGL/CHGNet models
   - `fairchem-agent` for FairChem/UMA models
-- **Structure Relaxation**: Ions are relaxed at every strain point regardless. Use `--relax_structure` when the input cell is not already at this model's equilibrium, so the scan is centred on the model's own minimum rather than the input volume.
+- **Structure Relaxation**: two distinct stages. The *pre-relaxation* (`--relax_structure`) centres the scan on the model's equilibrium cell; the *per-point* relaxation always runs. `--fmax` currently sets both -- the 0.1 eV/Å default is loose for a cell relaxation, and a pre-relaxation that stops early shifts the whole scan window and therefore B0. Tighten it (0.02-0.05) when B0 matters. V0 from the fit is far less sensitive than B0.
 - **Strain Range**: The default ±10% strain is suitable for most materials. For very soft or very hard materials, adjust `--max_abs_strain` accordingly.
-- **Fitting Model**: MatCalc uses the Birch-Murnaghan equation of state by default.
+- **Fitting Model**: MatCalc fits the Birch-Murnaghan equation of state. Note that `--max_abs_strain` is applied as a *linear* strain (target volume = (1+e)^3 x V0), despite matcalc's own docstring calling it volumetric.
 ---
 
 **Author:** Bowen Deng
