@@ -1,11 +1,31 @@
 {
-    "bulk_modulus_GPa": 96.42681590768773,
-    "equilibrium_volume_A3": 31.34880012190209,
-    "equilibrium_energy_eV": -9.965703964233398,
-    "r2_score": 0.9999876441231208,
+    "bulk_modulus_GPa": 96.42732513389873,
+    "equilibrium_volume_A3": 39.994830600829495,
+    "equilibrium_energy_eV": -10.833933797077835,
+    "r2_score": 0.9999876303451791,
+    "energy_volume_curve": {
+        "volumes_A3": [
+            31.348798842892048,
+            34.15455875686309,
+            37.122927163229434,
+            40.25848458290361,
+            43.56581153679817,
+            47.04948854582568,
+            50.714096130898675
+        ],
+        "energies_eV": [
+            -9.965702056884766,
+            -10.492039680480957,
+            -10.764144897460938,
+            -10.834558486938477,
+            -10.750547409057617,
+            -10.553449630737305,
+            -10.269378662109375
+        ]
+    },
     "n_points": 7,
     "max_abs_strain": 0.08,
-    "output_dir": ".agents/test/eos_validation",
+    "output_dir": "eos_output",
     "model_type": "mace",
     "model_name": "MACE-OMAT-0-small"
 }

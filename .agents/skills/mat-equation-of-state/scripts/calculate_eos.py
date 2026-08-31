@@ -13,6 +13,7 @@ Requirements:
 """
 
 import argparse
+import inspect
 import os
 import sys
 import json
@@ -33,6 +34,31 @@ logger = logging.getLogger("EOS-Skill")
 
 
 from src.utils.mlips.loader import load_wrapper
+
+
+def energy_volume_curve(result):
+    """Pull the energy-volume scan out of a MatCalc EOSCalc result.
+
+    MatCalc nests it as result["eos"]["volumes"/"energies"]; older releases put
+    it at the top level. Returns ([], []) when neither is present.
+    """
+    eos = result.get("eos")
+    if isinstance(eos, dict) and "volumes" in eos and "energies" in eos:
+        return list(eos["volumes"]), list(eos["energies"])
+    if "volumes" in result and "energies" in result:
+        return list(result["volumes"]), list(result["energies"])
+    return [], []
+
+
+def r2(observed, predicted):
+    """Coefficient of determination, so the fallback path needs no sklearn."""
+    import numpy as np
+
+    observed = np.asarray(observed, dtype=float)
+    predicted = np.asarray(predicted, dtype=float)
+    ss_res = float(((observed - predicted) ** 2).sum())
+    ss_tot = float(((observed - observed.mean()) ** 2).sum())
+    return 1.0 - ss_res / ss_tot if ss_tot else float("nan")
 
 
 def run_eos(args, wrapper, atoms):
@@ -59,7 +85,12 @@ def run_eos(args, wrapper, atoms):
         f"Starting EOS calculation with {args.n_points} points, ±{args.max_abs_strain*100}% strain"
     )
 
-    eos_calc = EOSCalc(
+    # matcalc changed the per-strain constraint between releases: 0.4.x froze the
+    # cell shape outright, 0.5.x relaxes it at constant volume via
+    # allow_shape_change (default True). Inheriting that default means the same
+    # script computes different physics depending on which matcalc is installed,
+    # so pin it when the installed version supports it.
+    eos_kwargs = dict(
         calculator=calc,
         n_points=args.n_points,
         max_abs_strain=args.max_abs_strain,
@@ -67,17 +98,57 @@ def run_eos(args, wrapper, atoms):
         fmax=args.fmax,
         max_steps=args.max_steps,
     )
+    if "allow_shape_change" in inspect.signature(EOSCalc.__init__).parameters:
+        eos_kwargs["allow_shape_change"] = args.allow_shape_change
+    elif not args.allow_shape_change:
+        logger.info(
+            "matcalc < 0.5 always freezes the cell shape; --no-allow_shape_change is a no-op"
+        )
+    else:
+        logger.warning(
+            "matcalc < 0.5 freezes the cell shape at each strain point; the scan is "
+            "ions-only. For anisotropic cells this overestimates the bulk modulus."
+        )
+
+    eos_calc = EOSCalc(**eos_kwargs)
 
     result = eos_calc.calc(atoms)
 
-    # Extract key results - MatCalc EOSCalc may use different key names
-    # Common keys: b0_GPa (bulk modulus), v0 (equilibrium volume), e0 (equilibrium energy)
     logger.info(f"Available result keys: {list(result.keys())}")
 
+    # MatCalc's EOSCalc exposes the Birch-Murnaghan fit only as `bulk_modulus_bm`
+    # and `r2_score_bm` -- never the fitted v0/e0. The `volume` and `energy` keys
+    # it does carry are inherited from its RelaxCalc step (`return result | {...}`),
+    # so they describe the relaxed input cell, not the EOS minimum. Reading them
+    # here reported the wrong quantity: for diamond Si at +/-8% strain they came
+    # out 0.88 A^3 and 3 meV away from the fit minimum, enough to fail a
+    # reproduction against a reference EOS. Refit the curve and read v0/e0 off
+    # the fit itself.
+    volumes, energies = energy_volume_curve(result)
     bulk_modulus = result.get("bulk_modulus_bm")
-    equilibrium_volume = result.get("volume")
-    equilibrium_energy = result.get("energy")
     r2_score = result.get("r2_score_bm")
+
+    if volumes and energies:
+        from pymatgen.analysis.eos import BirchMurnaghan
+
+        bm = BirchMurnaghan(volumes=volumes, energies=energies)
+        bm.fit()
+        equilibrium_volume = float(bm.v0)
+        equilibrium_energy = float(bm.e0)
+        if bulk_modulus is None:
+            bulk_modulus = float(bm.b0_GPa)
+        if r2_score is None:
+            r2_score = r2(energies, bm.func(volumes))
+    else:
+        # No E-V curve to refit (unexpected matcalc payload). Fall back to the
+        # relaxation keys and say so, rather than silently reporting them as
+        # the equilibrium values.
+        logger.warning(
+            "EOSCalc returned no energy-volume curve; falling back to the "
+            "relaxed-cell volume/energy, which are NOT the Birch-Murnaghan minimum"
+        )
+        equilibrium_volume = result.get("volume")
+        equilibrium_energy = result.get("energy")
 
     if bulk_modulus is not None:
         logger.info(f"Bulk modulus: {bulk_modulus:.2f} GPa")
@@ -88,12 +159,14 @@ def run_eos(args, wrapper, atoms):
     if r2_score is not None:
         logger.info(f"R² fit score: {r2_score:.6f}")
 
-    # Save energy-volume data
-    if "volumes" in result and "energies" in result:
+    # Save energy-volume data. matcalc nests the curve under result["eos"], so the
+    # old top-level "volumes"/"energies" check never fired and this file was never
+    # written -- leaving no way to audit the fit.
+    if volumes and energies:
         data_file = os.path.join(args.output_dir, "energies_volumes.dat")
         with open(data_file, "w") as f:
             f.write("# Volume (ų)    Energy (eV)\n")
-            for v, e in zip(result["volumes"], result["energies"]):
+            for v, e in zip(volumes, energies):
                 f.write(f"{v:12.6f}  {e:16.8f}\n")
         logger.info(f"Saved energy-volume data to {data_file}")
 
@@ -103,6 +176,7 @@ def run_eos(args, wrapper, atoms):
         "equilibrium_volume_A3": equilibrium_volume,
         "equilibrium_energy_eV": equilibrium_energy,
         "r2_score": r2_score,
+        "energy_volume_curve": {"volumes_A3": volumes, "energies_eV": energies},
         "n_points": args.n_points,
         "max_abs_strain": args.max_abs_strain,
         "output_dir": args.output_dir,
@@ -143,13 +217,29 @@ if __name__ == "__main__":
         "--max_abs_strain",
         type=float,
         default=0.1,
-        help="Maximum absolute volumetric strain (0.1 = ±10%%)",
+        help="Maximum absolute LINEAR strain (0.1 = ±10%%, i.e. volumes spanning "
+        "(1±0.1)^3 of the reference cell). matcalc's own docstring calls this "
+        "volumetric; the code applies it as linear.",
     )
     parser.add_argument(
         "--relax_structure",
-        action="store_true",
+        action=argparse.BooleanOptionalAction,
         default=True,
-        help="Relax atomic positions at each strain point",
+        help="Fully relax the input cell (ions and cell vectors) before the strain "
+        "scan, so the scan is centred on this model's own equilibrium volume. This "
+        "is NOT the per-strain relaxation -- matcalc always relaxes each strained "
+        "point. Was previously store_true with default=True, i.e. impossible to "
+        "switch off; use --no-relax_structure to scan about the input cell as given.",
+    )
+    parser.add_argument(
+        "--allow_shape_change",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="At each strain point, relax the cell shape at constant volume as well "
+        "as the ions. This is the E(V) a Birch-Murnaghan fit assumes -- the minimum "
+        "energy at fixed volume. Irrelevant for cubic cells, where symmetry forbids "
+        "shape relaxation; matters for anisotropic ones. Ignored on matcalc < 0.5, "
+        "which always froze the cell shape.",
     )
     parser.add_argument(
         "--fmax", type=float, default=0.1, help="Force convergence tolerance (eV/Å)"
