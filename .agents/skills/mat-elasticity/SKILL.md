@@ -52,7 +52,7 @@ python .agents/skills/mat-elasticity/scripts/calculate_elasticity.py \
 - `--norm_strains`: Normal strain magnitudes applied (default: ±0.5%, ±1.0%)
 - `--shear_strains`: Shear strain magnitudes applied (default: ±3%, ±6%)
 - `--relax_structure`: Relax the structure before applying strains (recommended)
-- `--relax_deformed`: Additionally relax atomic positions in each deformed structure (usually not needed)
+- `--relax_deformed` / `--no-relax_deformed` (**default on**): re-minimise the ions inside each deformed cell, with the cell held fixed. See **Relaxed-ion versus clamped-ion** below — this flag selects which of two physically distinct quantities you get, and the difference is not small.
 - `--fmax`: Force convergence tolerance for relaxation (default: 0.1 eV/Å)
 
 > [!TIP]
@@ -89,10 +89,61 @@ python .agents/skills/mat-elasticity/scripts/calculate_elasticity.py \
   - `mace-agent` for MACE models
   - `matgl-agent` for MatGL/CHGNet models
   - `fairchem-agent` for FairChem/UMA models
-- **Structure Relaxation**: It is highly recommended to relax the structure before computing elastic properties. Use `--relax_structure` (enabled by default).
+- **Structure Relaxation**: two distinct stages, controlled by two different flags. `--relax_structure` (default on) relaxes the input cell *before* the strain scan, so the scan is centred on a stress-free reference — elastic constants are defined about zero stress, so this matters. `--relax_deformed` (default on) controls the *per-deformation* ion relaxation, which selects between two different physical quantities; see below.
 - **Linear Regime**: Strains must be small enough to remain in the linear elastic regime. The default values are appropriate for most inorganic crystalline materials.
 - **Unit Conversion**: MatCalc returns moduli in eV/ų (bulk, shear) and Pa (Young's). The script converts all to GPa.
 - **Symmetry**: By default, symmetry reduction is disabled (`--symmetry` flag enables it). This means all 21 independent components are fitted independently.
+
+## Relaxed-ion versus clamped-ion
+
+Applying a strain to a crystal leaves internal degrees of freedom that the strain does
+not itself fix — the fractional coordinates of atoms on general Wyckoff positions. What
+you do with them decides which elastic constant you compute:
+
+| | `--relax_deformed` (default) | `--no-relax_deformed` |
+| --- | --- | --- |
+| ions in the deformed cell | re-minimised at fixed cell | carried rigidly by the affine strain |
+| quantity | **relaxed-ion**, a.k.a. equilibrium | **clamped-ion**, a.k.a. frozen-ion |
+| physical meaning | second derivative of the energy *minimised over* the internal coordinates — what a real crystal exhibits | second derivative at frozen internal coordinates |
+| cost | one ionic relaxation per deformation | one energy/stress evaluation per deformation |
+
+Relaxed-ion is the default here because it is the macroscopic elastic constant: it is
+what experiment measures and what the Materials Project and `atomate2` elastic
+workflows compute (ionic relaxation at fixed cell for every deformation). Note that
+`matcalc`'s own `ElasticityCalc` defaults `relax_deformed_structures=False`, so
+inheriting that default silently gives the clamped-ion answer instead.
+
+Clamped-ion is systematically **stiffer**, because freezing the ions suppresses the
+non-affine internal displacement that would otherwise relieve part of the strain. It is
+a reasonable fast screening choice, and it is exact only where symmetry leaves no
+internal degrees of freedom to relax (every atom on a special position, as in B1 or B2
+binaries). Otherwise the gap is real: for Pnma CaMgSi it is 1.4% on the bulk modulus but
+7.5% on the shear modulus, 7.3% on the Poisson ratio and 37% on the anisotropy index.
+Report which one you used.
+
+## Derived properties
+
+Beyond the tensor and the VRH averages, the script reports the standard post-processing
+of an elastic tensor. Two of these are easy to get wrong by hand:
+
+- **Universal anisotropy index** `A^U = 5 G_V/G_R + B_V/B_R - 6` (Ranganathan &
+  Ostoja-Starzewski, PRL **101**, 055504 (2008)), zero only for an isotropic crystal.
+  It needs the Voigt and Reuss bounds kept separate, so it cannot be recovered from the
+  VRH averages; the Voigt and Reuss bulk and shear moduli are reported alongside it.
+- **Directional Young's moduli** from `E(n) = 1 / (S_ijkl n_i n_j n_k n_l)`: along
+  `[100]`, `[010]`, `[001]`, plus the global minimum and maximum over *all* directions
+  with the directions they occur in. Two traps here. Expanding the Voigt compliance to
+  `S_ijkl` requires a factor of 1/4 on shear-shear entries (`S_1212 = S_66/4`, not
+  `S_66`) and 1/2 on normal-shear — the stiffness expands with no factors, so the two
+  cannot share a helper. And the extrema of an anisotropic crystal **need not lie on a
+  crystal axis**: for CaMgSi the stiffest direction sits ~40° off *a* in the *a*–*c*
+  plane and is 13% stiffer than the stiffest axis, so scanning only the axes is wrong.
+- **Acoustic and Debye properties**: density, longitudinal and transverse sound
+  velocities, the Debye mean velocity and the Debye temperature via the Anderson
+  relation `Theta_D = (hbar/k_B)(6 pi^2 N/V)^(1/3) v_m`. The mean is the harmonic-cube
+  mean over one longitudinal and two transverse branches, not the arithmetic mean of the
+  two branches (which runs ~20% high).
+- **Born stability** from the eigenvalues of the tensor, and the Pugh ratio `G/B`.
 ---
 
 **Author:** Bowen Deng
