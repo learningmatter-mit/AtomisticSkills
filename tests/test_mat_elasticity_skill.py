@@ -75,6 +75,15 @@ def test_full_compliance_has_the_expected_index_symmetries():
     assert np.allclose(full, np.transpose(full, (2, 3, 0, 1)))  # pair exchange
 
 
+@pytest.mark.base
+def test_full_compliance_is_pymatgen_compliance_tensor():
+    from pymatgen.core.elasticity import ComplianceTensor
+
+    compliance = np.linalg.inv(isotropic_voigt_stiffness(100.0, 0.3))
+    full = elasticity.full_compliance_tensor(compliance)
+    assert isinstance(full, ComplianceTensor)
+
+
 # --------------------------------------------------------------------------------------
 # Directional moduli. An isotropic solid is the analytic check with teeth: the axial
 # moduli come out right even with a mis-expanded shear compliance, so only the
@@ -192,6 +201,31 @@ def test_universal_anisotropy_index_is_positive_for_an_anisotropic_solid():
     stiffness = isotropic_voigt_stiffness(100.0, 0.3)
     stiffness[3, 3] *= 2.0  # break cubic/isotropic shear degeneracy
     assert elasticity.anisotropy_and_bounds(stiffness)["universal_anisotropy_index"] > 0
+
+
+@pytest.mark.base
+def test_anisotropy_and_bounds_matches_pymatgen_elastic_tensor():
+    from pymatgen.core.elasticity import ElasticTensor
+
+    stiffness = np.array(
+        [
+            [102.13, 24.33, 36.14, 0.0, 0.0, 0.0],
+            [24.33, 100.72, 23.42, 0.0, 0.0, 0.0],
+            [36.14, 23.42, 88.03, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 36.86, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 46.74, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 42.42],
+        ]
+    )
+    bounds = elasticity.anisotropy_and_bounds(stiffness)
+    et = ElasticTensor.from_voigt(stiffness)
+    assert bounds["bulk_modulus_voigt_GPa"] == pytest.approx(et.k_voigt)
+    assert bounds["bulk_modulus_reuss_GPa"] == pytest.approx(et.k_reuss)
+    assert bounds["shear_modulus_voigt_GPa"] == pytest.approx(et.g_voigt)
+    assert bounds["shear_modulus_reuss_GPa"] == pytest.approx(et.g_reuss)
+    assert bounds["universal_anisotropy_index"] == pytest.approx(
+        et.universal_anisotropy
+    )
 
 
 # --------------------------------------------------------------------------------------
