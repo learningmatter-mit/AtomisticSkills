@@ -34,8 +34,6 @@ from ase.io import read
 # Conversion factors
 EV_PER_A3_TO_GPA = 160.2176634  # 1 eV/ų = 160.2176634 GPa
 
-# Voigt index pairs, and constants for the Debye estimate.
-VOIGT_PAIRS = ((0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1))
 HBAR_SI = 1.054571817e-34
 KB_SI = 1.380649e-23
 AMU_SI = 1.66053906660e-27
@@ -46,18 +44,7 @@ logger = logging.getLogger("Elasticity-Skill")
 
 
 from src.utils.mlips.loader import load_wrapper
-from pymatgen.core.elasticity import ComplianceTensor, ElasticTensor
-
-
-def full_compliance_tensor(voigt_compliance: np.ndarray) -> ComplianceTensor:
-    """Expand a 6x6 Voigt compliance matrix into the full S_ijkl using pymatgen's ComplianceTensor.
-
-    The engineering-strain Voigt convention folds a factor of 2 into each shear index
-    pair of the compliance, so a shear-shear entry carries 1/4 and a normal-shear
-    entry 1/2: S_1122 = S_12, but S_1212 = S_66 / 4. pymatgen's ComplianceTensor.from_voigt
-    implements this standard conversion directly.
-    """
-    return ComplianceTensor.from_voigt(voigt_compliance)
+from pymatgen.core.elasticity import ElasticTensor
 
 
 def _sphere_directions(phi: np.ndarray, theta: np.ndarray) -> np.ndarray:
@@ -129,23 +116,6 @@ def youngs_modulus_extrema(full_compliance: np.ndarray, n_coarse: int = 721) -> 
     return result
 
 
-def anisotropy_and_bounds(voigt_stiffness: np.ndarray) -> dict:
-    """Voigt and Reuss bounds, the VRH averages and the universal anisotropy index via pymatgen.
-
-    A^U = 5 G_V/G_R + B_V/B_R - 6 (Ranganathan & Ostoja-Starzewski, PRL 101, 055504
-    (2008)); zero only for an elastically isotropic crystal. It needs the Voigt and
-    Reuss bounds kept separate, so it cannot be recovered from the VRH averages alone.
-    """
-    et = ElasticTensor.from_voigt(voigt_stiffness)
-    return {
-        "bulk_modulus_voigt_GPa": float(et.k_voigt),
-        "bulk_modulus_reuss_GPa": float(et.k_reuss),
-        "shear_modulus_voigt_GPa": float(et.g_voigt),
-        "shear_modulus_reuss_GPa": float(et.g_reuss),
-        "universal_anisotropy_index": float(et.universal_anisotropy),
-    }
-
-
 def debye_properties(bulk_gpa: float, shear_gpa: float, atoms) -> dict:
     """Anderson estimate: isotropic sound velocities, then the Debye temperature.
 
@@ -176,18 +146,20 @@ def derived_elastic_properties(
     voigt_stiffness_gpa: np.ndarray, atoms, bulk_gpa: float, shear_gpa: float
 ) -> dict:
     """Standard post-processing of an elastic tensor: bounds, anisotropy, directional
-    moduli and the acoustic/Debye estimates."""
+    moduli and the acoustic/Debye estimates via pymatgen."""
     et = ElasticTensor.from_voigt(voigt_stiffness_gpa)
-    full = et.compliance_tensor
-    out = dict(anisotropy_and_bounds(voigt_stiffness_gpa))
-    out.update(
-        {
-            "youngs_modulus_100_GPa": youngs_modulus_along(full, (1.0, 0.0, 0.0)),
-            "youngs_modulus_010_GPa": youngs_modulus_along(full, (0.0, 1.0, 0.0)),
-            "youngs_modulus_001_GPa": youngs_modulus_along(full, (0.0, 0.0, 1.0)),
-        }
-    )
-    out.update(youngs_modulus_extrema(full))
+    compliance = et.compliance_tensor
+    out = {
+        "bulk_modulus_voigt_GPa": float(et.k_voigt),
+        "bulk_modulus_reuss_GPa": float(et.k_reuss),
+        "shear_modulus_voigt_GPa": float(et.g_voigt),
+        "shear_modulus_reuss_GPa": float(et.g_reuss),
+        "universal_anisotropy_index": float(et.universal_anisotropy),
+        "youngs_modulus_100_GPa": youngs_modulus_along(compliance, (1.0, 0.0, 0.0)),
+        "youngs_modulus_010_GPa": youngs_modulus_along(compliance, (0.0, 1.0, 0.0)),
+        "youngs_modulus_001_GPa": youngs_modulus_along(compliance, (0.0, 0.0, 1.0)),
+    }
+    out.update(youngs_modulus_extrema(compliance))
     out.update(debye_properties(bulk_gpa, shear_gpa, atoms))
     eigenvalues = np.linalg.eigvalsh(np.asarray(voigt_stiffness_gpa, dtype=float))
     out["elastic_eigenvalues_GPa"] = [float(x) for x in eigenvalues]
