@@ -227,6 +227,29 @@ def derived_elastic_properties(
     return out
 
 
+def resolve_force_threshold(
+    fmax: float, deformed_fmax: float, relax_deformed: bool
+) -> float:
+    """Pick the force threshold to hand matcalc, which accepts only one.
+
+    ``ElasticityCalc`` applies a single ``fmax`` to both the pre-relaxation and the
+    per-deformation ion relaxation -- it builds the latter as
+    ``RelaxCalc(calculator, fmax=self.fmax, ...)``, and ``relax_calc_kwargs`` cannot
+    override it because that would be a duplicate keyword. The two stages want very
+    different thresholds: a cell pre-relaxation is fine at 0.01-0.03 eV/A, but residual
+    forces in a *deformed* cell contaminate the very stress the elastic tensor is
+    fitted from.
+
+    Left at a loose threshold, the relaxed-ion path silently degenerates to the
+    clamped-ion answer it was supposed to replace: on an EMT Cu3Au cell with atoms on
+    general positions, relaxing the deformed structures at fmax=0.1 reproduces the
+    clamped-ion shear modulus exactly (54.42 GPa), against 46.64 GPa converged -- so
+    the flag appeared to do nothing at all. Hence the tighter of the two whenever the
+    relaxed-ion path is active.
+    """
+    return min(fmax, deformed_fmax) if relax_deformed else fmax
+
+
 def run_elasticity(args: argparse.Namespace, wrapper: Any, atoms) -> dict:
     """
     Run elastic tensor calculation using MatCalc's ElasticityCalc.
@@ -247,18 +270,8 @@ def run_elasticity(args: argparse.Namespace, wrapper: Any, atoms) -> dict:
 
     calc = wrapper.create_calculator()
 
-    # matcalc applies ONE force threshold to both the pre-relaxation and the
-    # per-deformation ion relaxation (RelaxCalc is built with fmax=self.fmax, and
-    # relax_calc_kwargs cannot override it -- it would be a duplicate keyword). The two
-    # stages want very different thresholds: a cell pre-relaxation is fine at 0.01-0.03
-    # eV/A, but residual forces in a *deformed* cell contaminate the stress the tensor
-    # is fitted from, so the relaxed-ion path needs 1e-3 or tighter. Measured on Pnma
-    # CaMgSi with MACE-OMAT-0-small: at fmax 0.01 the "relaxed-ion" tensor comes back
-    # near the clamped-ion answer (G 39.8 against a converged 38.5 GPa, A^U 0.089
-    # against 0.145), while 1e-3 and 1e-4 agree with each other to 0.2%. So when the
-    # relaxed-ion path is active we take the tighter of the two thresholds.
-    effective_fmax = (
-        min(args.fmax, args.deformed_fmax) if args.relax_deformed else args.fmax
+    effective_fmax = resolve_force_threshold(
+        args.fmax, args.deformed_fmax, args.relax_deformed
     )
 
     logger.info(f"Normal strains: {args.norm_strains}")
