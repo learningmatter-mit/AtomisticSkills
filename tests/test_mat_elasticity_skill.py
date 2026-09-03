@@ -383,3 +383,67 @@ def test_loose_threshold_makes_relax_deformed_a_silent_no_op():
         "resolve_force_threshold must not hand back a threshold that degenerates "
         "to the clamped-ion answer"
     )
+
+
+# --------------------------------------------------------------------------------------
+# Shear-modulus extrema and acoustic branches. Isotropy is again the analytic check:
+# both shear extrema must collapse to G, and the two transverse branches must be
+# degenerate and match the closed forms.
+# --------------------------------------------------------------------------------------
+
+
+@pytest.mark.base
+def test_isotropic_shear_extrema_collapse_to_the_isotropic_modulus():
+    youngs, poisson = 137.0, 0.27
+    shear = youngs / (2.0 * (1.0 + poisson))
+    et = ElasticTensor.from_voigt(isotropic_voigt_stiffness(youngs, poisson))
+    extrema = elasticity.shear_modulus_extrema(et.compliance_tensor)
+    assert extrema["shear_modulus_min_GPa"] == pytest.approx(shear, rel=1e-6)
+    assert extrema["shear_modulus_max_GPa"] == pytest.approx(shear, rel=1e-6)
+
+
+@pytest.mark.base
+def test_anisotropic_shear_extrema_straddle_the_average_and_beat_the_diagonal():
+    """min(C44,C55,C66) is not the minimum shear modulus."""
+    stiffness = isotropic_voigt_stiffness(137.0, 0.27)
+    stiffness[3, 3] *= 0.55
+    stiffness[4, 4] *= 1.4
+    et = ElasticTensor.from_voigt(stiffness)
+    extrema = elasticity.shear_modulus_extrema(et.compliance_tensor)
+    assert extrema["shear_modulus_min_GPa"] < extrema["shear_modulus_max_GPa"]
+    diagonal_min = min(stiffness[3, 3], stiffness[4, 4], stiffness[5, 5])
+    assert extrema["shear_modulus_min_GPa"] <= diagonal_min + 1e-9
+
+
+@pytest.mark.base
+def test_isotropic_acoustic_branches_are_degenerate_and_match_closed_forms():
+    youngs, poisson, density = 137.0, 0.27, 2500.0
+    shear = youngs / (2.0 * (1.0 + poisson))
+    bulk = youngs / (3.0 * (1.0 - 2.0 * poisson))
+    et = ElasticTensor.from_voigt(isotropic_voigt_stiffness(youngs, poisson))
+
+    rng = np.random.default_rng(3)
+    for direction in rng.normal(size=(8, 3)):
+        out = elasticity.acoustic_branch_velocities(et, density, direction)
+        slow = out["acoustic_slow_transverse_m_s"]
+        fast = out["acoustic_fast_transverse_m_s"]
+        longitudinal = out["acoustic_longitudinal_m_s"]
+        # isotropy: the two transverse branches are degenerate, in every direction
+        assert slow == pytest.approx(fast, rel=1e-9)
+        assert slow == pytest.approx(math.sqrt(shear * 1e9 / density), rel=1e-9)
+        assert longitudinal == pytest.approx(
+            math.sqrt((bulk + 4.0 * shear / 3.0) * 1e9 / density), rel=1e-9
+        )
+
+
+@pytest.mark.base
+def test_anisotropic_acoustic_branches_lift_the_transverse_degeneracy():
+    """In an anisotropic crystal the transverse branches split, so the isotropic
+    shear velocity cannot stand in for either of them."""
+    stiffness = isotropic_voigt_stiffness(137.0, 0.27)
+    stiffness[3, 3] *= 0.55
+    et = ElasticTensor.from_voigt(stiffness)
+    out = elasticity.acoustic_branch_velocities(et, 2500.0, (1.0, 1.0, 0.0))
+    assert (
+        out["acoustic_slow_transverse_m_s"] < out["acoustic_fast_transverse_m_s"] * 0.97
+    )

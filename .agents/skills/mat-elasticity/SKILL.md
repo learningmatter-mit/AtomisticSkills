@@ -143,7 +143,32 @@ of an elastic tensor. Two of these are easy to get wrong by hand:
   relation `Theta_D = (hbar/k_B)(6 pi^2 N/V)^(1/3) v_m`. The mean is the harmonic-cube
   mean over one longitudinal and two transverse branches, not the arithmetic mean of the
   two branches (which runs ~20% high).
+- **Shear-modulus extrema** over all shear systems, from
+  `G(n,m) = 1/(4 S_ijkl n_i m_j n_k m_l)` with `m` in the plane normal to `n`. This is a
+  genuinely *two-dimensional* search — over the sphere and over the angle within each
+  plane — where Young's modulus needs only the sphere. `min(C44, C55, C66)` is not a
+  substitute: on an orthorhombic intermetallic it sits ~26% high.
+- **Acoustic branch velocities** along `--acoustic_direction`, from the eigenvalues of
+  the Christoffel matrix `Gamma_ik(n) = C_ijkl n_j n_l`. One quasi-longitudinal and two
+  quasi-transverse branches, and in an anisotropic crystal the transverse pair is *not*
+  degenerate — the slow branch can run >10% below the isotropic transverse velocity, so
+  the isotropic moduli cannot reproduce these.
 - **Born stability** from the eigenvalues of the tensor, and the Pugh ratio `G/B`.
+
+## Moduli under load
+
+`--pressure <GPa>` relaxes cell and ions against a hydrostatic load first, so the whole
+analysis is reported about a pressure-loaded reference. Two things to know:
+
+- ASE's `FrechetCellFilter` takes `scalar_pressure` in **eV/Å³**; the flag is in GPa and
+  converts internally. Passing GPa straight into ASE applies ~160× the intended load.
+- What comes back are the **stress-strain coefficients** about the loaded reference, not
+  the Birch coefficients that carry explicit pressure corrections. Those are a different
+  quantity, and the one you want for elastic *stability* under load.
+
+matcalc's own pre-relaxation is at zero pressure, so `--pressure` performs the loaded
+relaxation itself and then disables `relax_structure` — otherwise the scan would be
+re-centred back on the zero-pressure cell.
 ---
 
 **Author:** Bowen Deng

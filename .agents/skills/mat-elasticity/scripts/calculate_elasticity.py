@@ -116,6 +116,87 @@ def youngs_modulus_extrema(full_compliance: np.ndarray, n_coarse: int = 721) -> 
     return result
 
 
+def acoustic_branch_velocities(elastic_tensor, density_kg_m3: float, direction) -> dict:
+    """The three acoustic branch speeds along one direction, in m/s.
+
+    From the Christoffel (Green-Kristoffel) matrix Gamma_ik(n) = C_ijkl n_j n_l, whose
+    eigenvalues are rho v^2: one quasi-longitudinal and two quasi-transverse branches.
+    These are *not* recoverable from the isotropic bulk and shear moduli -- in an
+    anisotropic crystal the slow transverse branch can run >10% below the isotropic
+    transverse velocity, and the two transverse branches are not degenerate.
+
+    pymatgen's green_kristoffel returns the matrix in the tensor's own units (GPa
+    here), hence the 1e9 to reach Pa before dividing by the mass density.
+    """
+    n = np.asarray(direction, dtype=float)
+    n = n / np.linalg.norm(n)
+    gamma = np.asarray(elastic_tensor.green_kristoffel(n), dtype=float)
+    speeds = np.sqrt(np.sort(np.linalg.eigvalsh(gamma)) * 1e9 / density_kg_m3)
+    return {
+        "acoustic_direction": [float(x) for x in n.round(6)],
+        "acoustic_slow_transverse_m_s": float(speeds[0]),
+        "acoustic_fast_transverse_m_s": float(speeds[1]),
+        "acoustic_longitudinal_m_s": float(speeds[2]),
+    }
+
+
+def shear_modulus_extrema(
+    compliance_tensor, n_seed: int = 1200, n_angle: int = 180, rounds: int = 26
+) -> dict:
+    """Extremes of the directional shear modulus over all shear systems.
+
+    G(n, m) = 1 / (4 S_ijkl n_i m_j n_k m_l) for a shear-plane normal n and an
+    orthogonal shear direction m within that plane. This is a genuinely
+    two-dimensional search -- over the sphere *and* the angle inside each plane --
+    where Young's modulus needs only the sphere. Taking min(C44, C55, C66) instead is
+    not a substitute: on an orthorhombic intermetallic it can sit 26% high.
+
+    Deterministic: a Fibonacci sphere crossed with a uniform in-plane angle, then a
+    shrinking local grid in (theta, phi, psi).
+    """
+    s_full = np.asarray(compliance_tensor, dtype=float)
+
+    def evaluate(theta, phi, psi):
+        n = np.array(
+            [np.sin(theta) * np.cos(phi), np.sin(theta) * np.sin(phi), np.cos(theta)]
+        )
+        seed = (
+            np.array([0.0, 1.0, 0.0]) if abs(n[0]) > 0.9 else np.array([1.0, 0.0, 0.0])
+        )
+        e1 = np.cross(n, seed)
+        e1 /= np.linalg.norm(e1)
+        m = np.cos(psi) * e1 + np.sin(psi) * np.cross(n, e1)
+        return 1.0 / (4.0 * np.einsum("ijkl,i,j,k,l->", s_full, n, m, n, m))
+
+    index = np.arange(n_seed) + 0.5
+    seed_theta = np.arccos(1.0 - 2.0 * index / n_seed)
+    seed_phi = np.pi * (1.0 + 5.0**0.5) * index
+    coarse = [
+        (evaluate(t, p, a), t, p, a)
+        for t, p in zip(seed_theta, seed_phi)
+        for a in np.linspace(0.0, np.pi, n_angle, endpoint=False)
+    ]
+
+    def refine(seed, maximise):
+        _, theta, phi, psi = seed
+        span = np.pi / 24.0
+        for _ in range(rounds):
+            grid = [
+                (evaluate(t, p, a), t, p, a)
+                for t in np.linspace(theta - span, theta + span, 9)
+                for p in np.linspace(phi - span, phi + span, 9)
+                for a in np.linspace(psi - span, psi + span, 9)
+            ]
+            _, theta, phi, psi = max(grid) if maximise else min(grid)
+            span *= 0.6
+        return evaluate(theta, phi, psi)
+
+    return {
+        "shear_modulus_min_GPa": float(refine(min(coarse), maximise=False)),
+        "shear_modulus_max_GPa": float(refine(max(coarse), maximise=True)),
+    }
+
+
 def debye_properties(bulk_gpa: float, shear_gpa: float, atoms) -> dict:
     """Anderson estimate: isotropic sound velocities, then the Debye temperature.
 
@@ -143,7 +224,11 @@ def debye_properties(bulk_gpa: float, shear_gpa: float, atoms) -> dict:
 
 
 def derived_elastic_properties(
-    voigt_stiffness_gpa: np.ndarray, atoms, bulk_gpa: float, shear_gpa: float
+    voigt_stiffness_gpa: np.ndarray,
+    atoms,
+    bulk_gpa: float,
+    shear_gpa: float,
+    acoustic_direction=(1.0, 1.0, 1.0),
 ) -> dict:
     """Standard post-processing of an elastic tensor: bounds, anisotropy, directional
     moduli and the acoustic/Debye estimates via pymatgen."""
@@ -160,7 +245,14 @@ def derived_elastic_properties(
         "youngs_modulus_001_GPa": youngs_modulus_along(compliance, (0.0, 0.0, 1.0)),
     }
     out.update(youngs_modulus_extrema(compliance))
-    out.update(debye_properties(bulk_gpa, shear_gpa, atoms))
+    out.update(shear_modulus_extrema(compliance))
+    debye = debye_properties(bulk_gpa, shear_gpa, atoms)
+    out.update(debye)
+    out.update(
+        acoustic_branch_velocities(
+            et, debye["density_g_cm3"] * 1000.0, acoustic_direction
+        )
+    )
     eigenvalues = np.linalg.eigvalsh(np.asarray(voigt_stiffness_gpa, dtype=float))
     out["elastic_eigenvalues_GPa"] = [float(x) for x in eigenvalues]
     out["born_stable"] = bool(np.all(eigenvalues > 0.0))
@@ -210,6 +302,25 @@ def run_elasticity(args: argparse.Namespace, wrapper: Any, atoms) -> dict:
     os.makedirs(args.output_dir, exist_ok=True)
 
     calc = wrapper.create_calculator()
+
+    if args.pressure:
+        # matcalc's own pre-relaxation is at zero pressure, so a loaded reference has
+        # to be prepared here. ASE's FrechetCellFilter takes scalar_pressure in
+        # eV/A^3; the flag is in GPa.
+        from ase.filters import FrechetCellFilter
+        from ase.optimize import BFGS
+
+        logger.info("Relaxing against %.3f GPa hydrostatic load", args.pressure)
+        atoms = atoms.copy()
+        atoms.calc = calc
+        BFGS(
+            FrechetCellFilter(atoms, scalar_pressure=args.pressure / EV_PER_A3_TO_GPA),
+            logfile=None,
+        ).run(fmax=args.fmax, steps=500)
+        logger.info("Loaded reference volume: %.3f A^3", atoms.get_volume())
+        # The scan must now be centred on this loaded cell, not re-relaxed to zero
+        # pressure, which is what relax_structure would do.
+        args.relax_structure = False
 
     effective_fmax = resolve_force_threshold(
         args.fmax, args.deformed_fmax, args.relax_deformed
@@ -281,7 +392,11 @@ def run_elasticity(args: argparse.Namespace, wrapper: Any, atoms) -> dict:
         logger.info(f"  [{row_str}]")
 
     derived = derived_elastic_properties(
-        voigt_tensor_gpa, atoms, bulk_modulus_gpa, shear_modulus_gpa
+        voigt_tensor_gpa,
+        atoms,
+        bulk_modulus_gpa,
+        shear_modulus_gpa,
+        acoustic_direction=args.acoustic_direction,
     )
 
     logger.info(
@@ -307,6 +422,18 @@ def run_elasticity(args: argparse.Namespace, wrapper: Any, atoms) -> dict:
         derived["mean_velocity_m_s"],
         derived["debye_temperature_K"],
     )
+    logger.info(
+        "Shear modulus over all shear systems: min %.2f GPa, max %.2f GPa",
+        derived["shear_modulus_min_GPa"],
+        derived["shear_modulus_max_GPa"],
+    )
+    logger.info(
+        "Acoustic branches along %s: %.1f / %.1f / %.1f m/s (slow T, fast T, long.)",
+        derived["acoustic_direction"],
+        derived["acoustic_slow_transverse_m_s"],
+        derived["acoustic_fast_transverse_m_s"],
+        derived["acoustic_longitudinal_m_s"],
+    )
     logger.info("Born stable: %s", derived["born_stable"])
     logger.info("=" * 50)
 
@@ -323,6 +450,7 @@ def run_elasticity(args: argparse.Namespace, wrapper: Any, atoms) -> dict:
         "norm_strains": list(args.norm_strains),
         "shear_strains": list(args.shear_strains),
         "fmax_eV_per_A": effective_fmax,
+        "pressure_GPa": args.pressure,
         "model_type": args.model_type,
         "model_name": wrapper.model_name,
         "output_dir": args.output_dir,
@@ -398,6 +526,28 @@ if __name__ == "__main__":
         "the non-affine softening and is not small -- for Pnma CaMgSi it reaches 7.5% "
         "on the shear modulus. Defaults to the physical answer rather than inheriting "
         "matcalc's screening default.",
+    )
+    parser.add_argument(
+        "--acoustic_direction",
+        type=float,
+        nargs=3,
+        default=[1.0, 1.0, 1.0],
+        metavar=("NX", "NY", "NZ"),
+        help="Propagation direction for the three acoustic branch velocities, given as "
+        "Cartesian components in the cell's own frame (need not be normalised). The "
+        "branches come from the Christoffel matrix, so they are direction-dependent and "
+        "the two transverse ones are not degenerate; the isotropic bulk and shear "
+        "moduli cannot reproduce them.",
+    )
+    parser.add_argument(
+        "--pressure",
+        type=float,
+        default=0.0,
+        help="Hydrostatic pressure (GPa) to relax the cell against before the strain "
+        "scan, so the moduli are reported about a pressure-loaded reference. Note ASE "
+        "takes this in eV/A^3 internally; pass GPa here. What comes back are the "
+        "stress-strain coefficients about that reference, not the Birch coefficients "
+        "carrying explicit pressure corrections -- a different quantity.",
     )
     parser.add_argument(
         "--deformed_fmax",
