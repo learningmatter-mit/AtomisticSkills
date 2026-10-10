@@ -1,0 +1,23 @@
+mixture: skills/chem-nmr-analysis/examples/deconvolution/crude.csv
+components:
+- skills/chem-nmr-analysis/examples/deconvolution/borneol.csv
+- skills/chem-nmr-analysis/examples/deconvolution/isoborneol.csv
+protons:
+- 18
+- 18
+names:
+- borneol
+- isoborneol
+kappa: 0.25
+mnova: false
+baseline_correct: false
+baseline_window:
+- 3.7
+- 3.94
+baseline_stat: max
+ppm_range:
+- 3.5
+- 4.1
+plot: skills/chem-nmr-analysis/examples/deconvolution/output/h2_window/deconvolution_result.png
+json: true
+quiet: false

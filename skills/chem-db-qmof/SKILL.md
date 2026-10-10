@@ -31,11 +31,15 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/query_
 
 ### Available Arguments:
 - `--formula`: Search by chemical formula or elements (e.g., `Zn,O,C`).
-- `--identifier`: Search by specific CSD refcode or MOF common name (e.g., `KAXQIL`).
+- `--identifier`: Search by QMOF ID (e.g., `qmof-8b5bb88`) or CSD refcode (e.g., `KAXQIL`, `DOTSOV01`). Refcodes are matched as case-sensitive substrings of the QMOF source filename. MOF common names (e.g., HKUST-1) are not indexed.
 - `--max-results`: Maximum number of structures to download (default: 5).
 - `--output-dir`: Directory to save the resulting `.cif` files.
 
+Outputs: one `<qmof_id>.cif` per hit, `qmof_properties.json` (tabulated QMOF properties such as `EgPBE` band gap, density, pore sizes, source refcode/DOI, with a `units` block), and `input_configs.yaml`.
+
 ## Examples
+
+**Literature-validated example: HKUST-1 (CSD refcode DOTSOV01).** See [examples/hkust1_dotsov01/README.md](examples/hkust1_dotsov01/README.md). It retrieves the DFT-relaxed cell and PBE band gap, and checks them against the experimental lattice parameter and the official QMOF release.
 
 **Example 1: Automated testing script (Zinc MOF)**
 ```bash

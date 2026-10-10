@@ -1,0 +1,27 @@
+{
+  "retrieved": {
+    "reduced_formula": "CuH2(C3O2)2",
+    "n_atoms_primitive": 156,
+    "spacegroup": "Fm-3m",
+    "a_conventional_A": 26.474,
+    "volume_primitive_A3": 4638.737,
+    "volume_conventional_A3": 18554.951,
+    "density_g_cm3": 0.866108,
+    "d_CuCu_A": 2.4568,
+    "EgPBE_eV": 0.886534
+  },
+  "reference": {
+    "a_exp_A": 26.343,
+    "d_CuCu_exp_A": 2.63,
+    "EgPBE_official_eV": 0.886534,
+    "density_official_g_cm3": 0.866108,
+    "volume_official_A3": 4638.737256
+  },
+  "deviation": {
+    "a_rel_dev_pct": 0.5,
+    "volume_rel_dev_vs_exp_pct": 1.5,
+    "d_CuCu_dev_A": -0.173,
+    "EgPBE_abs_dev_eV": 0.0,
+    "density_abs_dev_g_cm3": 0.0
+  }
+}

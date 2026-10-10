@@ -1,0 +1,3 @@
+results: skills/ml-mlip-speed/examples/nacl_gb10_small/run/speed_benchmark.yaml
+reference: skills/ml-mlip-speed/resources/speed_benchmark_dgx_spark.yaml
+output_dir: skills/ml-mlip-speed/examples/nacl_gb10_small/comparison

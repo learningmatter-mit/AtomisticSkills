@@ -1,0 +1,11 @@
+smiles:
+- CCOC(C)=O
+- CCO
+names:
+- ethyl_acetate
+- ethanol
+field_mhz: 400.0
+linewidth: 1.0
+n_points: 8192
+output_dir: skills/chem-nmr-predict/examples/ethyl_acetate_ethanol_cdcl3
+quiet: false

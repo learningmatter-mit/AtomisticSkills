@@ -1,0 +1,7 @@
+compound,group,shift_ppm,multiplicity,J_Hz,nH,note
+ethyl_acetate,CH3CO,2.05,s,,3,
+ethyl_acetate,CH2 (OCH2CH3),4.12,q,7,2,
+ethyl_acetate,CH3 (OCH2CH3),1.26,t,7,3,
+ethanol,CH3,1.25,t,7,3,
+ethanol,CH2,3.72,q,7,2,CH2-OH coupling (J = 5 Hz) may also be observed
+ethanol,OH,1.32,s,,1,exchangeable; not all OH signals observable

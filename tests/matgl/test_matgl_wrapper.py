@@ -181,6 +181,15 @@ class TestMatGLModelLoading:
         assert wrapper.is_loaded
         assert wrapper.model is not None
 
+    def test_tensornet_pbe_v2025_1_alias(self, skip_if_wrong_env):
+        """The v2025.1 TensorNet PBE name resolves like the other v2025.1 aliases."""
+        from src.utils.mlips.matgl.matgl_wrapper import AVAILABLE_MATGL_MODELS
+
+        assert (
+            AVAILABLE_MATGL_MODELS["TensorNet-MatPES-PBE-v2025.1-PES"]
+            == "TensorNet-PES-MatPES-PBE-2025.2"
+        )
+
     def test_static_calculation(self, sample_ase_atoms, skip_if_wrong_env):
         """Test static_calculation returns energy, forces, and stress"""
         from src.utils.mlips.matgl.matgl_wrapper import MatGLWrapper

@@ -1,0 +1,33 @@
+{
+  "units": {
+    "volume": "A^3",
+    "density": "g/cm^3",
+    "pld": "A",
+    "lcd": "A",
+    "EgPBE": "eV",
+    "EgHLE17": "eV",
+    "EgHSE06star": "eV",
+    "EgHSE06": "eV"
+  },
+  "entries": [
+    {
+      "qmof_id": "qmof-8b5bb88",
+      "formula": "Cu12C72H24O48",
+      "filename": "DOTSOV01_FSR",
+      "csdRefcode": "DOTSOV01",
+      "source": "CSD",
+      "doi": "https://doi.org/10.1002/anie.200803925",
+      "synthesized": "True",
+      "reducedFormula": "CuC6H2O4",
+      "spacegroup": "Fm-3m",
+      "spacegroupNumber": "225",
+      "natoms": 156.0,
+      "volume": 4638.74,
+      "density": 0.866108,
+      "pld": 6.71716,
+      "lcd": 13.4521,
+      "EgPBE": 0.886534,
+      "netPBEMagmom": 0.0
+    }
+  ]
+}

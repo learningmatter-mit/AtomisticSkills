@@ -1,0 +1,9 @@
+elements:
+- Li
+- Fe
+- Cu
+- O
+- Si
+checkpoint: CHGNet-MPtrj-2023.12.1-2.7M-PES
+resources_dir: null
+output: skills/mat-elemental-energies/examples/li_fe_cu_o_si_vs_mp/CHGNet-MPtrj-2023.12.1-2.7M-PES/elemental_energies.json

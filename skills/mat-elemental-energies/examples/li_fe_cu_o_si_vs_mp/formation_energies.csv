@@ -1,0 +1,5 @@
+formula,mp_material_id,variant,E_mlip_total_eV,mp2020_correction_eV,mu_O_eV_per_atom,Ef_mlip_eV_per_atom,Ef_mp_gga_eV_per_atom,delta_meV_per_atom
+Li2O,mp-1960,"raw MLIP energy, O ref = library (O2 single point)",-14.2353,0.0,-4.9251,-1.8324,-2.0616,229.2
+Li2O,mp-1960,"MP2020-corrected, O ref = library (O2 single point)",-14.2353,-0.687,-4.9251,-2.0614,-2.0616,0.2
+Fe2O3,mp-19770,"raw MLIP energy, O ref = library (O2 single point)",-66.2036,0.0,-4.9251,-0.309,-1.7071,1398.1
+Fe2O3,mp-19770,"MP2020-corrected, O ref = library (O2 single point)",-66.2036,-13.146,-4.9251,-1.6236,-1.7071,83.5

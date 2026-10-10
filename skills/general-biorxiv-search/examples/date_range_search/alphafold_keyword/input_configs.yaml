@@ -1,0 +1,10 @@
+query: AlphaFold
+server: biorxiv
+category: null
+days: 30
+start: '2021-10-01'
+end: '2021-10-07'
+doi: null
+max_results: 10
+output: skills/general-biorxiv-search/examples/date_range_search/alphafold_keyword/results.json
+verbose: false

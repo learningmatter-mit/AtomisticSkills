@@ -1,0 +1,125 @@
+{
+  "source": "Materials Project API, materials/thermo endpoint (thermo_types GGA_GGA+U and R2SCAN)",
+  "mp_database_version": "2026.04.13",
+  "retrieved": "2026-10-10",
+  "elements": {
+    "Li": {
+      "material_id": "mp-1018134",
+      "formula": "Li",
+      "r2SCAN": {
+        "uncorrected_energy_per_atom_eV": -2.3867064133333336,
+        "energy_per_atom_eV": -2.3867064133333336,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      },
+      "GGA_GGA+U": {
+        "uncorrected_energy_per_atom_eV": -1.9089228666666667,
+        "energy_per_atom_eV": -1.9089228666666667,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      }
+    },
+    "Fe": {
+      "material_id": "mp-13",
+      "formula": "Fe",
+      "r2SCAN": {
+        "uncorrected_energy_per_atom_eV": -14.41338864,
+        "energy_per_atom_eV": -14.41338864,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      },
+      "GGA_GGA+U": {
+        "uncorrected_energy_per_atom_eV": -8.47002121,
+        "energy_per_atom_eV": -8.47002121,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      }
+    },
+    "Cu": {
+      "material_id": "mp-30",
+      "formula": "Cu",
+      "r2SCAN": {
+        "uncorrected_energy_per_atom_eV": -10.846796,
+        "energy_per_atom_eV": -10.846796,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      },
+      "GGA_GGA+U": {
+        "uncorrected_energy_per_atom_eV": -4.09920667,
+        "energy_per_atom_eV": -4.09920667,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      }
+    },
+    "O": {
+      "material_id": "mp-12957",
+      "formula": "O2",
+      "GGA_GGA+U": {
+        "uncorrected_energy_per_atom_eV": -4.947961005,
+        "energy_per_atom_eV": -4.947961005,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      }
+    },
+    "Si": {
+      "material_id": "mp-149",
+      "formula": "Si",
+      "r2SCAN": {
+        "uncorrected_energy_per_atom_eV": -8.773764595,
+        "energy_per_atom_eV": -8.773764595,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      },
+      "GGA_GGA+U": {
+        "uncorrected_energy_per_atom_eV": -5.42531803,
+        "energy_per_atom_eV": -5.42531803,
+        "formation_energy_per_atom_eV": 0.0,
+        "energy_above_hull_eV": 0.0
+      }
+    }
+  },
+  "O_r2SCAN_reference": {
+    "material_id": "mp-1524462",
+    "formula": "O2",
+    "r2SCAN": {
+      "uncorrected_energy_per_atom_eV": -5.97253365125,
+      "energy_per_atom_eV": -5.97253365125,
+      "formation_energy_per_atom_eV": 0.0,
+      "energy_above_hull_eV": 0.0
+    }
+  },
+  "compounds": {
+    "Li2O": {
+      "material_id": "mp-1960",
+      "formula": "Li2O",
+      "r2SCAN": {
+        "uncorrected_energy_per_atom_eV": -5.6088534800000005,
+        "energy_per_atom_eV": -5.6088534800000005,
+        "formation_energy_per_atom_eV": -2.0268713206944446,
+        "energy_above_hull_eV": 0.0
+      },
+      "GGA_GGA+U": {
+        "uncorrected_energy_per_atom_eV": -4.754533493333333,
+        "energy_per_atom_eV": -4.983533493333333,
+        "formation_energy_per_atom_eV": -2.0615979138888885,
+        "energy_above_hull_eV": 0.0
+      }
+    },
+    "Fe2O3": {
+      "material_id": "mp-19770",
+      "formula": "Fe2O3",
+      "r2SCAN": {
+        "uncorrected_energy_per_atom_eV": -10.894034464,
+        "energy_per_atom_eV": -10.894034464,
+        "formation_energy_per_atom_eV": -1.545158817250001,
+        "energy_above_hull_eV": 0.0
+      },
+      "GGA_GGA+U": {
+        "uncorrected_energy_per_atom_eV": -6.74927644,
+        "energy_per_atom_eV": -8.06387644,
+        "formation_energy_per_atom_eV": -1.7070913529999998,
+        "energy_above_hull_eV": 0.0
+      }
+    }
+  }
+}

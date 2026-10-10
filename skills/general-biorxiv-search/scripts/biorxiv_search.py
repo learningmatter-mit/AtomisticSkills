@@ -161,7 +161,11 @@ class BioRxivSearcher:
         return papers
 
     def search_by_doi(self, doi: str) -> Optional[Dict[str, Any]]:
-        """Retrieve metadata for a specific preprint by DOI."""
+        """Retrieve metadata for the latest version of a preprint by DOI.
+
+        The API returns one record per posted version; the latest version is
+        the one the DOI resolves to and carries the current title and authors.
+        """
         url = self.BASE_URL.format(server=self.server, interval=doi, cursor=0)
         self._log(f"Requesting DOI: {url}")
         time.sleep(0.5)
@@ -170,7 +174,8 @@ class BioRxivSearcher:
         data = response.json()
         collection = data.get("collection", [])
         if collection:
-            return self._parse_item(collection[0])
+            latest = max(collection, key=lambda item: int(item.get("version", 1)))
+            return self._parse_item(latest)
         return None
 
     def _parse_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
@@ -178,7 +183,7 @@ class BioRxivSearcher:
         doi = item.get("doi", "")
         return {
             "doi": doi,
-            "url": f"https://www.biorxiv.org/content/{doi}v{item.get('version', 1)}"
+            "url": f"https://www.{self.server}.org/content/{doi}v{item.get('version', 1)}"
             if doi
             else "",
             "title": item.get("title", "").strip(),
@@ -200,7 +205,9 @@ class BioRxivSearcher:
     ) -> bool:
         """Check if paper matches keyword and category filters."""
         if category:
-            full_cat = self.CATEGORIES.get(category, category)
+            # The API reports categories with spaces ("cell biology"), while the
+            # shortcuts and its query parameter use underscores ("cell_biology").
+            full_cat = self.CATEGORIES.get(category, category).replace("_", " ")
             if full_cat.lower() not in paper.get("category", "").lower():
                 return False
 

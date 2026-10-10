@@ -1,0 +1,8 @@
+query: null
+authors: null
+categories: null
+title:
+- MACE higher order equivariant message passing
+max_results: 5
+output: skills/general-arxiv-search/examples/title_search_mace/results.json
+verbose: true

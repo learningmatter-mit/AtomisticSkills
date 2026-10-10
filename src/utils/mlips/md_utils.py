@@ -22,7 +22,9 @@ class ExplosionMonitor:
 
     def __call__(self, *args, **kwargs):
         dyn = kwargs.get("dyn")
-        atoms = self.atoms
+        # The MD driver integrates its own copy of the input atoms, so read the
+        # temperature from the dynamics object when it is passed.
+        atoms = dyn.atoms if dyn is not None and hasattr(dyn, "atoms") else self.atoms
         for arg in args:
             if hasattr(arg, "get_temperature"):
                 if hasattr(arg, "atoms"):

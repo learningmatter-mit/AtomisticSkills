@@ -1,0 +1,10 @@
+query: single-cell
+server: biorxiv
+category: cell-bio
+days: 30
+start: '2021-10-01'
+end: '2021-10-07'
+doi: null
+max_results: 10
+output: skills/general-biorxiv-search/examples/date_range_search/single_cell_cell_biology/results.json
+verbose: false

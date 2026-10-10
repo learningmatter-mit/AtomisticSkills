@@ -1,0 +1,9 @@
+elements:
+- Li
+- Fe
+- Cu
+- O
+- Si
+checkpoint: MACE-MATPES-R2SCAN-0
+resources_dir: null
+output: skills/mat-elemental-energies/examples/li_fe_cu_o_si_vs_mp/MACE-MATPES-R2SCAN-0/elemental_energies.json

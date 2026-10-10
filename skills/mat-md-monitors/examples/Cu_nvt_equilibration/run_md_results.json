@@ -1,0 +1,34 @@
+[
+  {
+    "run": "relax",
+    "status": "success",
+    "converged": true,
+    "steps": 5,
+    "energy_eV": -16.36168670654297
+  },
+  {
+    "run": "stage1_equilibration",
+    "status": "stopped",
+    "stop_reason": "Equilibration reached: std(T)=49.78 < 50.0"
+  },
+  {
+    "run": "stage1b_equilibration_30K",
+    "status": "stopped",
+    "stop_reason": "Equilibration reached: std(T)=26.77 < 30.0"
+  },
+  {
+    "run": "stage2_production",
+    "status": "success",
+    "stop_reason": null
+  },
+  {
+    "run": "T100_stage1_equilibration",
+    "status": "stopped",
+    "stop_reason": "Equilibration reached: std(T)=8.89 < 10.0"
+  },
+  {
+    "run": "T100_stage2_production",
+    "status": "success",
+    "stop_reason": null
+  }
+]

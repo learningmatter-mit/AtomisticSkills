@@ -1,0 +1,20 @@
+$ venv/run cpu python skills/mat-dft-mixing-functionals/scripts/apply_correction.py skills/mat-dft-mixing-functionals/examples/fe2o3_mp2020_reproduction/Fe2O3_mp-19770.cif --energy -67.4927644
+Structure Formula: Fe2O3
+Original Energy: -67.4928 eV
+Corrected Energy: -80.6388 eV
+Total Correction: -13.1460 eV
+Corrections Details: {'MP2020 anion correction (oxide)': -4.122, 'MP2020 GGA/GGA+U mixing correction (Fe)': -9.024}
+
+$ venv/run cpu python skills/mat-dft-mixing-functionals/scripts/apply_correction.py skills/mat-dft-mixing-functionals/examples/fe2o3_mp2020_reproduction/Al2O3_mp-1143.cif --energy -74.81357943
+Structure Formula: Al2O3
+Original Energy: -74.8136 eV
+Corrected Energy: -78.9356 eV
+Total Correction: -4.1220 eV
+Corrections Details: {'MP2020 anion correction (oxide)': -4.122}
+
+$ venv/run cpu python skills/mat-dft-mixing-functionals/scripts/apply_correction.py skills/mat-dft-mixing-functionals/examples/fe2o3_mp2020_reproduction/FeS2_mp-226.cif --energy -73.03390479
+Structure Formula: FeS2
+Original Energy: -73.0339 eV
+Corrected Energy: -77.0579 eV
+Total Correction: -4.0240 eV
+Corrections Details: {'MP2020 anion correction (S)': -4.024}

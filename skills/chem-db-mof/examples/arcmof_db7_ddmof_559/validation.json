@@ -1,0 +1,57 @@
+{
+  "retrieved": {
+    "formula": "Ni64H32C384O224F192",
+    "n_atoms": 896,
+    "elements": [
+      "C",
+      "F",
+      "H",
+      "Ni",
+      "O"
+    ],
+    "n_Ni": 64,
+    "n_mu3_OH": 32,
+    "n_carboxylate": 96,
+    "n_F": 192,
+    "net_charge_e": 0.0,
+    "volume_A3": 32395.98,
+    "density_g_cm3": 0.80127,
+    "metal_node": "mn1",
+    "organic_edge": "['oe31']",
+    "topology": "snk",
+    "CO2_uptake_1bar_298K_mmol_g": 7.66
+  },
+  "reference": {
+    "paper_fig7": {
+      "metal_node": "mn1",
+      "organic_edge": "oe31",
+      "topology": "snk",
+      "mn1_cluster": "Ni4(mu3-OH)2(COO)6",
+      "zeolite_13X_CO2_mmol_g": 5.0,
+      "n_above_13X": "around 800"
+    },
+    "majumdar_mof_data": {
+      "volume_A3": 32396.0,
+      "density_g_cm3": 0.80127,
+      "Di_A": 11.02193,
+      "Df_A": 7.25913
+    },
+    "arcmof_geometric_properties": {
+      "filename": "DB7-ddmof_559.cif",
+      "volume_A3": 32396.0,
+      "density_g_cm3": 0.80127,
+      "Di_A": 11.02193,
+      "Df_A": 7.25913,
+      "in_ARC-MOF": false
+    }
+  },
+  "derived": {
+    "Ni_per_OH": 2.0,
+    "COO_per_Ni4": 6.0,
+    "linkers_C8F4O4": 48,
+    "n_above_13X_in_dataset": 807,
+    "n_with_CO2_data": 23651,
+    "volume_rel_dev_vs_arcmof_pct": -0.0001,
+    "density_rel_dev_vs_arcmof_pct": 0.0005
+  }
+}

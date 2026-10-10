@@ -109,10 +109,13 @@ After prediction, the agent must:
 
 ---
 
-## Environment
+## Examples
 
-```bash
-```
+- [Ethyl acetate and ethanol vs. experimental CDCl3 shifts](examples/ethyl_acetate_ethanol_cdcl3/README.md) — 400 MHz prediction validated per signal (δ, multiplicity, J, nH) against Fulmer et al., *Organometallics* 2010.
+
+---
+
+## Environment
 
 Environment: `cpu` (created on first use by `venv/run`; no separate install)
 
@@ -123,7 +126,7 @@ Required packages: `numpy`, `rdkit`, `requests`, `nmrsim`.
 ## References
 
 - Banfi, D. & Patiny, L., "www.nmrdb.org: Resurrecting and processing NMR spectra on-line", *Chimia*, 2008.
-- Aires-de-Sousa, J. et al., "SPINUS: prediction of 1H NMR spectra by neural networks", *J. Chem. Inf. Model.*, 2002.
+- Aires-de-Sousa, J., Hemmer, M. C. & Gasteiger, J., "Prediction of 1H NMR Chemical Shifts Using Neural Networks", *Anal. Chem.* 74, 80–90, 2002. [DOI](https://doi.org/10.1021/ac010737m)
 - Sametz, G., "nmrsim: a Python library for NMR simulation", [github.com/sametz/nmrsim](https://github.com/sametz/nmrsim).
 
 ---

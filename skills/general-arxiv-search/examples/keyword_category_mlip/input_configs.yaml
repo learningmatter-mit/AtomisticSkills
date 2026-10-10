@@ -1,0 +1,8 @@
+query: machine learning interatomic potential
+authors: null
+categories:
+- mtrl-sci
+title: null
+max_results: 10
+output: skills/general-arxiv-search/examples/keyword_category_mlip/results.json
+verbose: true

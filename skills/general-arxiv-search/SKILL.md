@@ -44,6 +44,11 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/arxiv_
 
 ## Examples
 
+Verified examples, each with its command, raw output and a comparison against the official arXiv record:
+
+- [Title search: the MACE paper](examples/title_search_mace/README.md) finds arXiv:2206.07697 and checks ID, authors, submission dates, categories, DOI and journal reference against its arXiv abstract page.
+- [Keyword + category search: MLIPs in cond-mat.mtrl-sci](examples/keyword_category_mlip/README.md) checks that the top 10 results are all on-topic, spot-checks two of them against their abstract pages, and documents the query-construction fix.
+
 ### Retrieval of Recent MACE Related Papers
 ```bash
 ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/arxiv_search.py "MACE force field" --max_results 3 --output mace_results.json
@@ -55,6 +60,7 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/arxiv_
 ```
 
 ## Constraints
+- **Query Semantics**: Every word of the keyword and `--title` strings must match (AND); wrap a phrase in double quotes inside the string to match it verbatim (e.g. `'"machine learning" potential'`). Each `--authors` name is matched as a phrase, and several `--categories` are OR-ed.
 - **Rate Limiting**: The ArXiv API requires a minimum of 3 seconds between requests. This script includes a small delay, but frequent calls should be avoided.
 - **Environment**: Requires the `cpu` environment.
 - **Dependencies**: Uses `feedparser` and `urllib`.

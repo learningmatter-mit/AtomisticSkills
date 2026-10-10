@@ -1,0 +1,15 @@
+relax_dir: skills/mat-md-monitors/examples/Cu_nvt_equilibration/relax
+stage1_logs:
+- skills/mat-md-monitors/examples/Cu_nvt_equilibration/stage1_equilibration/Cu256_300.0K_nvt.log
+- skills/mat-md-monitors/examples/Cu_nvt_equilibration/stage1b_equilibration_30K/Cu256_300.0K_nvt.log
+- skills/mat-md-monitors/examples/Cu_nvt_equilibration/T100_stage1_equilibration/Cu256_100.0K_nvt.log
+stage1_labels:
+- 300 K, threshold 50 K (default)
+- 300 K, threshold 30 K
+- 100 K, threshold 10 K
+production_logs:
+- skills/mat-md-monitors/examples/Cu_nvt_equilibration/stage2_production/Cu256_300.0K_nvt.log
+- skills/mat-md-monitors/examples/Cu_nvt_equilibration/T100_stage2_production/Cu256_100.0K_nvt.log
+n_atoms: 256
+n_blocks: 5
+output_dir: skills/mat-md-monitors/examples/Cu_nvt_equilibration/results

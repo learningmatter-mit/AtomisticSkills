@@ -1,0 +1,9 @@
+elements:
+- Li
+- Fe
+- Cu
+- O
+- Si
+checkpoint: TensorNet-MatPES-r2SCAN-v2025.1-PES
+resources_dir: null
+output: skills/mat-elemental-energies/examples/li_fe_cu_o_si_vs_mp/TensorNet-MatPES-r2SCAN-v2025.1-PES/elemental_energies.json

@@ -1,0 +1,10 @@
+models:
+- uma-s-1p1
+providers:
+- fairchem
+device: cuda
+output_dir: .agents/test/speed_2000
+max_atoms_limit: 2000
+results_file: null
+hardware_name: NVIDIA_GB10
+only_plot: false

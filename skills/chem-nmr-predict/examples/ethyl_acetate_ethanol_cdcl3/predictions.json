@@ -1,0 +1,26 @@
+{
+  "found": [
+    {
+      "smiles": "CCOC(C)=O",
+      "name": "ethyl_acetate",
+      "n_signals": 3,
+      "n_atoms_h": 8,
+      "spectrum": "skills/chem-nmr-predict/examples/ethyl_acetate_ethanol_cdcl3/ethyl_acetate.xy",
+      "signals": "skills/chem-nmr-predict/examples/ethyl_acetate_ethanol_cdcl3/ethyl_acetate_signals.csv"
+    },
+    {
+      "smiles": "CCO",
+      "name": "ethanol",
+      "n_signals": 2,
+      "n_atoms_h": 5,
+      "spectrum": "skills/chem-nmr-predict/examples/ethyl_acetate_ethanol_cdcl3/ethanol.xy",
+      "signals": "skills/chem-nmr-predict/examples/ethyl_acetate_ethanol_cdcl3/ethanol_signals.csv"
+    }
+  ],
+  "failed": [],
+  "parameters": {
+    "field_mhz": 400.0,
+    "linewidth_hz": 1.0,
+    "n_points": 8192
+  }
+}

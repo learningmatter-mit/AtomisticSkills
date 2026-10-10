@@ -1,0 +1,80 @@
+[
+  {
+    "doi": "10.1101/2021.10.01.462521",
+    "url": "https://www.biorxiv.org/content/10.1101/2021.10.01.462521v1",
+    "title": "Single-cell transcriptomics reveals the identity and regulators of human mast cell progenitors",
+    "authors": "Wu, C.; Boey, D.; Bril, O.; Grootens, J.; Vijayabaskar, M. S.; Sorini, C.; Ekoff, M.; Wilson, N. K.; Ungerstedt, J. S.; Nilsson, G.; Dahlin, J. S.",
+    "abstract": "Mast cell accumulation is a hallmark of a number of diseases including allergic asthma and systemic mastocytosis. IgE-mediated crosslinking of the Fc{varepsilon}RI receptors causes mast cell activation and contributes to disease pathogenesis. The mast cell lineage is one of the least studied among the hematopoietic cell lineages and there are still controversies about the identity of the mast cell progenitor, i.e., whether Fc{varepsilon}RI expression appears during the hematopoietic progenitor stage or in maturing mast cells. Here, we used single-cell transcriptomics to reveal a temporal association between the appearance of Fc{varepsilon}RI and the mast cell gene signature in CD34+ hematopoietic progenitors. In agreement with these data, the Fc{varepsilon}RI+ hematopoietic progenitors formed morphologically, phenotypically and functionally mature mast cells in long-term culture assays. Single-cell transcriptomics analysis further revealed the expression patterns of prospective cytokine receptors regulating mast cell progenitor development. Culture assays showed that IL-3 and IL-5 promoted disparate effects on progenitor cell proliferation and survival, respectively, whereas IL-33 caused robust Fc{varepsilon}RI downregulation. Taken together, we have demonstrated that Fc{varepsilon}RI appears during the hematopoietic progenitor stage of mast cell differentiation and that external stimuli may regulate the Fc{varepsilon}RI expression. Thus, the results resolve the controversy regarding the appearance of Fc{varepsilon}RI during mast cell development.\n\nOne-sentence summarySingle-cell analysis of human hematopoiesis uncovers the stage at which Fc{varepsilon}RI appears during mast cell differentiation and reveals disparate effects of IL-3, IL-5 and IL-33 on mast cell progenitor proliferation, survival, and suppression of Fc{varepsilon}RI expression.",
+    "date": "2021-10-01",
+    "category": "cell biology",
+    "server": "bioRxiv",
+    "version": "1",
+    "license": "cc_no",
+    "published": "10.1182/bloodadvances.2022006969"
+  },
+  {
+    "doi": "10.1101/2021.09.28.462199",
+    "url": "https://www.biorxiv.org/content/10.1101/2021.09.28.462199v2",
+    "title": "Cell-ACDC: a user-friendly toolset embedding state-of-the-art neural networks for segmentation, tracking and cell cycle annotations of live-cell imaging data",
+    "authors": "Padovani, F.; Mairhoermann, B.; Falter-Braun, P.; Lengefeld, J.; Schmoller, K. M.",
+    "abstract": "Live-cell imaging is a powerful tool to study dynamic cellular processes on the level of single cells with quantitative detail. Microfluidics enables parallel high-throughput imaging, creating a downstream bottleneck at the stage of data analysis. Recent progress on deep learning image analysis dramatically improved cell segmentation and tracking. Nevertheless, manual data validation and correction is typically still required and broadly used tools spanning the complete range of live-cell imaging analysis, from cell segmentation to pedigree analysis and signal quantification, are still needed. Here, we present Cell-ACDC, a user-friendly graphical user-interface (GUI)-based framework written in Python, for segmentation, tracking and cell cycle annotation. We included two state-of-the-art and high-accuracy deep learning models for single-cell segmentation of yeast and mammalian cells implemented in the most used deep learning frameworks TensorFlow and PyTorch. Additionally, we developed and implemented a cell tracking method and embedded it into an intuitive, semi-automated workflow for label-free cell cycle annotation of single cells. The open-source and modularized nature of Cell-ACDC will enable simple and fast integration of new deep learning-based and traditional methods for cell segmentation or downstream image analysis.\n\nSource codehttps://github.com/SchmollerLab/Cell_ACDC",
+    "date": "2021-10-03",
+    "category": "cell biology",
+    "server": "bioRxiv",
+    "version": "2",
+    "license": "cc_by_nc",
+    "published": "10.1186/s12915-022-01372-6"
+  },
+  {
+    "doi": "10.1101/2021.05.14.443718",
+    "url": "https://www.biorxiv.org/content/10.1101/2021.05.14.443718v2",
+    "title": "Chromatin loading of MCM hexamers is associated with di-/tri-methylation of histone H4K20 toward S phase entry",
+    "authors": "Hayashi-Takanaka, Y.; Hayashi, Y.; Hirano, Y.; Miyawaki-Kuwakado, A.; Ohkawa, Y.; Obuse, C.; Kimura, H.; Haraguchi, T.; Hiraoka, Y.",
+    "abstract": "DNA replication is a key step in initiating cell proliferation. Loading hexameric complexes of minichromosome maintenance (MCM) helicase onto DNA replication origins during the G1 phase is essential for initiating DNA replication. Here, we examined MCM hexamer states during the cell cycle in human hTERT-RPE1 cells using multicolor immunofluorescence-based, single-cell plot analysis, and biochemical size fractionation. Experiments involving cell-cycle arrest at the G1 phase and release from the arrest revealed that a double MCM hexamer was formed via a single hexamer during G1 progression. A single MCM hexamer was recruited to chromatin in the early G1 phase. Another single hexamer was recruited to form a double hexamer in the late G1 phase. We further examined relationship between the MCM hexamer states and the methylation levels at lysine 20 of histone H4 (H4K20) and found that the double MCM hexamer state was correlated with di/trimethyl-H4K20 (H4K20me2/3). Inhibiting the conversion from monomethyl-H4K20 (H4K20me1) to H4K20me2/3 retained the cells in the single MCM hexamer state. Non-proliferative cells, including confluent cells or Cdk4/6 inhibitor-treated cells, also remained halted in the single MCM hexamer state. We propose that the single MCM hexamer state is a halting step in the determination of cell cycle progression.",
+    "date": "2021-10-04",
+    "category": "cell biology",
+    "server": "bioRxiv",
+    "version": "2",
+    "license": "cc_by_nc_nd",
+    "published": "10.1093/nar/gkab1068"
+  },
+  {
+    "doi": "10.1101/2021.10.05.463175",
+    "url": "https://www.biorxiv.org/content/10.1101/2021.10.05.463175v1",
+    "title": "DetecDiv, a deep-learning platform for automated cell division tracking and replicative lifespan analysis",
+    "authors": "Aspert, T.; Hentsch, D.; Charvin, G.",
+    "abstract": "Automating the extraction of meaningful temporal information from sequences of microscopy images represents a major challenge to characterize dynamical biological processes. So far, strong limitations in the ability to quantitatively analyze single-cell trajectories have prevented large-scale investigations to assess the dynamics of entry into replicative senescence in yeast. Here, we have developed DetecDiv, a microfluidic-based image acquisition platform combined with deep learning-based software for high-throughput single-cell division tracking. We show that DetecDiv can automatically reconstruct cellular replicative lifespans with high accuracy and performs similarly with various imaging platforms and geometries of microfluidic traps. In addition, this methodology provides comprehensive temporal cellular metrics using time-series classification and image semantic segmentation. Last, we show that this method can be further applied to automatically quantify the dynamics of cellular adaptation and the real-time cell survival upon exposure to environmental stress. Hence, this methodology provides an all-in-one toolbox for high-throughput phenotyping for cell cycle, stress response, and replicative lifespan assays.",
+    "date": "2021-10-05",
+    "category": "cell biology",
+    "server": "bioRxiv",
+    "version": "1",
+    "license": "cc_by_nc_nd",
+    "published": "10.7554/eLife.79519"
+  },
+  {
+    "doi": "10.1101/2021.10.06.463357",
+    "url": "https://www.biorxiv.org/content/10.1101/2021.10.06.463357v1",
+    "title": "Hyaluronidase-1-mediated glycocalyx impairment underlies endothelial abnormalities in polypoidal choroidal vasculopathy",
+    "authors": "Wu, K.-X.; Yeo, N. J. Y.; Ng, C.-Y.; Chioh, F. W. J.; Fan, Q.; Tian, X.; Yang, B.; Narayanan, G.; Tay, H. M.; Hou, H. W.; Dunn, R. N.; Su, X.; Cheung, C. M. G.; Cheung, C.",
+    "abstract": "BackgroundPolypoidal choroidal vasculopathy (PCV), a subtype of age-related macular degeneration (AMD), is characterized by polyp-like dilatation of blood vessels and turbulent blood flow in the choroid of the eye. Gold standard anti-vascular endothelial growth factor (anti-VEGF) therapy often fails to regress polypoidal lesions in patients. Current animal models have also been hampered by their inability to recapitulate such vascular lesions. These underscore the need to identify VEGF-independent pathways in PCV pathogenesis.\n\nResultsWe cultivated blood outgrowth endothelial cells (BOECs) from PCV patients and normal controls to serve as our experimental disease models. When BOECs were exposed to heterogeneous flow, single-cell transcriptomic analysis revealed that PCV BOECs preferentially adopted migratory-angiogenic cell state, while normal BOECs undertook proinflammatory cell state. PCV BOECs also had a repressed protective response to flow stress by demonstrating lower mitochondrial functions. We uncovered that elevated hyaluronidase-1 in PCV BOECs led to increased degradation of hyaluronan, a major component of glycocalyx that interfaces between flow stress and vascular endothelium. Notably, knockdown of hyaluronidase-1 in PCV BOEC improved mechanosensitivity through activation of Kruppel-like factor 2, a flow-responsive transcription factor, which in turn modulated PCV BOEC migration. Barrier permeability due to glycocalyx impairment in PCV BOECs was also reversed by hyaluronidase-1 knockdown. Correspondingly, hyaluronidase-1 was detected in PCV patient vitreous humor and plasma samples.\n\nConclusionsHyaluronidase-1 inhibition could be a potential therapeutic modality in preserving glycocalyx integrity and endothelial stability in ocular diseases with vascular origin.",
+    "date": "2021-10-07",
+    "category": "cell biology",
+    "server": "bioRxiv",
+    "version": "1",
+    "license": "cc_by_nc_nd",
+    "published": "10.1186/s12915-022-01244-z"
+  },
+  {
+    "doi": "10.1101/2021.10.07.463508",
+    "url": "https://www.biorxiv.org/content/10.1101/2021.10.07.463508v1",
+    "title": "Fluorescence exclusion: a rapid, accurate and powerful method for measuring yeast cell volume",
+    "authors": "Garcia-Ruano, D.; Jain, A.; Ryan, J. C.; Balasubramaniam, V. R.; Venkova, L.; Piel, M.; Coudreuse, D.",
+    "abstract": "Cells exist in an astonishing range of volumes across and within species. However, our understanding of cell size control remains limited, due in large part to the challenges associated with accurate determination of cell volume. Much of our comprehension of size regulation derives from models such as budding and fission yeast, but even for these morphologically stereotypical cells, assessment of cell volume has relied on proxies and extrapolations from two-dimensional measurements. Recently, the fluorescence exclusion method (FXm) was developed to evaluate the size of mammalian cells, but whether it could be applied to smaller cells remained unknown. Using specifically designed microfluidic chips and an improved data analysis pipeline, we show here that FXm reliably detects subtle difference in the volume of fission yeast cells, even for those with altered shapes. Moreover, it allows for the monitoring of dynamic volume changes at the single-cell level with high time resolution. Collectively, our work reveals how coupling FXm with yeast genetics will bring new insights into the complex biology of cell growth.\n\nSUMMARY STATEMENTFluorescence exclusion provides a unique method to accurately measure the volume of yeast cells at both the population and single-cell levels.",
+    "date": "2021-10-07",
+    "category": "cell biology",
+    "server": "bioRxiv",
+    "version": "1",
+    "license": "cc_no",
+    "published": "10.1242/jcs.259392"
+  }
+]

@@ -60,10 +60,18 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/deconv
   mixture.csv ref_borneol.xy ref_isoborneol.xy \
   --protons 18 18 \
   --names "borneol" "isoborneol" \
-  --baseline-correct \
+  --baseline-window 3.70 3.94 \
+  --ppm-range 3.50 4.10 \
   --plot <research_dir>/deconvolution_result.png \
   --json
 ```
+
+Choose `--baseline-window` from the overlay plot: a stretch with no signal in the
+mixture or any reference, preferably close to the peaks being quantified. Add
+`--baseline-stat max` when the baseline is a one-sided floor rather than noise (e.g.
+digitized spectra, whose traced flat line leaves a small positive residue). Use
+`--ppm-range` to fit only a region where each component has an isolated diagnostic
+signal; omit it to fit the full spectrum.
 
 ### kinetics.py
 
@@ -77,9 +85,14 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/kineti
   --time_unit min \
   --protons 18 18 \
   --names "reactant" "product" \
-  --baseline_correct \
+  --baseline_window 2.40 3.40 \
   --output_dir <research_dir>/kinetics/
 ```
+
+`kinetics.py` takes the same baseline and range options as `deconvolve.py`, spelled
+with underscores (`--baseline_window`, `--baseline_stat`, `--ppm_range`).
+`kinetics.csv` also records the noise fraction and the subtracted baseline of every
+time point.
 
 ### plot.py
 
@@ -97,11 +110,17 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/plot.p
 
 ## Key Arguments for deconvolve.py
 
+`kinetics.py` accepts the same baseline and range options with underscores
+(`--baseline_window`, `--baseline_stat`, `--ppm_range`, `--baseline_correct`).
+
 | Argument | Required | Description |
 |---|---|---|
 | `--protons` | Yes | Number of 1H protons per molecule for each reference component. Critical for converting area fractions to mole fractions. The agent must look this up from the molecular formula or count from the SMILES. |
 | `--names` | No | Human-readable labels matching the order of reference files. The agent should always provide these for interpretable output. |
-| `--baseline-correct` | No | Shifts each spectrum so minimum intensity = 0. The agent should use this for digitized spectra or SPINUS-predicted spectra. |
+| `--baseline-window LO HI` | Recommended | Signal-free ppm window. Its `--baseline-stat` is subtracted from the mixture and every reference, and negatives are clipped to 0. If a spectrum has no samples in the window (dropped zero runs), the points bounding the gap are used. The agent should use this for any spectrum with noise or a baseline offset. |
+| `--baseline-stat` | No | `median` (default) for noisy or offset baselines; `max` for one-sided floors such as the residue of a digitized flat line, which a median only half removes. `max` subtracts about 3σ from every peak of a noisy spectrum, so do not use it there. |
+| `--ppm-range LO HI` | No | Deconvolve only this range, applied after the baseline step. Use it to fit isolated diagnostic signals. |
+| `--baseline-correct` | No | Legacy: shifts each spectrum so its minimum is 0. Exact only for noise-free spectra with a constant offset. On noisy spectra the minimum is several σ below the baseline, which leaves a positive pedestal and pulls fractions toward an even mixture; on a reference floor with a zero-valued minimum it removes nothing. Mutually exclusive with `--baseline-window`. |
 | `--kappa` | No | Denoising penalty (default 0.25). The agent should not change this unless instructed. |
 | `--plot` | No | Output plot path. The agent should always generate a plot. |
 | `--json` | No | Emit machine-readable JSON output. The agent should always use this. |
@@ -110,7 +129,9 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/plot.p
 
 ## Interpreting Results
 
-The deconvolution output contains proportions and a Wasserstein distance (WD) indicating fit quality.
+The deconvolution output contains proportions, a Wasserstein distance (WD) indicating fit quality, and the unexplained ("noise") signal fraction, the share of the mixture signal not assigned to any reference (printed, and `"noise"` in the JSON; the `noise_fraction` column in `kinetics.csv`).
+
+**Check the noise fraction as well as WD.** A baseline error can give a WD in the "acceptable" band while biasing the proportions badly. In the bundled examples, legacy minimum subtraction gave WD 0.11–0.14 with noise fractions of 0.36–0.43 and fractions off by up to 23 points. If the noise fraction exceeds about 0.2, the agent should inspect the residual panel, revisit the baseline (`--baseline-window`, `--baseline-stat`), and consider `--ppm-range` before reporting proportions.
 
 **If/Then rules for Wasserstein distance:**
 - **If WD < 0.05** -- good fit. The agent should report proportions with confidence.
@@ -121,7 +142,7 @@ The deconvolution output contains proportions and a Wasserstein distance (WD) in
   3. Ask the user if there are additional species in the mixture not accounted for.
   4. Not report proportions as reliable.
 
-**If proportions do not sum to ~1.0** -- the agent should note that the "noise" fraction represents unmatched signal and explain what it might be.
+**The reported proportions are renormalized to sum to 1** over the supplied references. The "noise" fraction is reported separately; the agent should state it and explain what the unmatched signal might be (a missing component, residual baseline, distorted lineshapes).
 
 **Verification:** After deconvolution, the agent must inspect the deconvolution plot, check the residual panel for large residuals, and verify that proportions are chemically reasonable. If results contradict known chemistry, the agent should flag this to the user rather than silently accepting.
 
@@ -156,9 +177,17 @@ Required packages: `numpy`, `scipy` (>= 1.7), `matplotlib`, `rdkit`, `requests`,
 | SPINUS returns no atoms | `chem-nmr-predict` prints FAILED for a compound | The SMILES may be invalid or the molecule too large. The agent should verify the SMILES and retry, or ask the user for a measured reference spectrum. |
 | ReactionT5 returns no products | `predict_products.py` returns empty products list | The agent should use its own chemistry knowledge to suggest products and ask the user to confirm. |
 | Wasserstein distance very high (> 0.15) | Deconvolution result unreliable | Missing component, ppm offset, or baseline issue. The agent should investigate and not report proportions as reliable. |
+| High noise fraction (> ~0.2) with an "acceptable" WD | Proportions biased toward an even mixture or toward one component | Usually a baseline problem: legacy `--baseline-correct` on noisy spectra, or a positive floor on the references. The agent should rerun with `--baseline-window` (and `--baseline-stat max` for digitized floors), and restrict `--ppm-range` to diagnostic signals if the rest of the spectrum is distorted. |
 | Proportions are all near zero except one | One component dominates | May be correct (e.g., >95% product), or may indicate missing starting material reference. The agent should check. |
 | nmrsim simulation fails | Warning in `chem-nmr-predict` output | Falls back to stick spectrum (shifts only, no multiplet structure). The agent should note reduced accuracy of that reference. |
 | kinetics curves are non-monotonic | Composition jumps up and down over time | Likely a mislabeled time point, phasing issue, or missing component. The agent should investigate individual spectra. |
+
+---
+
+## Examples
+
+- [Camphor reduction: borneol/isoborneol ratio from a crude spectrum](examples/deconvolution/README.md) — `deconvolve.py --baseline-window --ppm-range` gives 13:87 (direct integral 12.6:87.4; 17:83 reported by Lopansri et al. 2022); legacy `--baseline-correct` gives 6:94.
+- [Two-component time series: composition and rate constant](examples/kinetics/README.md) — `kinetics.py --baseline_window` on a synthetic series recovers the reference-free first-order k within 5 % (0.9σ); legacy `--baseline_correct` is 13 % low.
 
 ---
 
@@ -167,7 +196,7 @@ Required packages: `numpy`, `scipy` (>= 1.7), `matplotlib`, `rdkit`, `requests`,
 - Ciach, M. et al., "Masserstein: linear resampling of mass spectra by optimal transport", *Rapid Commun. Mass Spectrom.*, 2020.
 - Domzal, B. et al., "Magnetstein: Wasserstein-distance NMR mixture analysis", *Anal. Chem.*, 2024.
 - Sagawa, Y. et al., "ReactionT5: a large-scale pretrained model towards chemical reaction prediction", *arXiv*, 2023.
-- Dhawan, N. et al., "Synthesis of Isoborneol", *World J. Chem. Educ.*, 2022.
+- Lopansri, S. et al., "NMR Deconvolution: Quantitative Profiling of Isomeric Mixtures", *World J. Chem. Educ.* 10(2), 51–61, 2022. [DOI](https://doi.org/10.12691/wjce-10-2-1)
 
 ---
 

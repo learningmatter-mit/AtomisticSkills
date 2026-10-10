@@ -1,0 +1,11 @@
+Noise sigma (signal-free window): 0.0385
+Singular values (centred): 14.539 1.420 1.363 1.344 1.324 1.273 1.245 0.000  | expected noise level ~ 1.333
+PC1 explained variance: 0.9522
+Min-subtraction pedestal: 0.111 0.114 0.111 0.115 0.106 0.114 0.145 0.102 | fraction of summed intensity: 0.60 0.60 0.60 0.62 0.62 0.64 0.70 0.63
+Reference-free k (PC1): 0.0391 +/- 0.0002 (leave-one-out 0.0390-0.0393)
+Least-squares mixing weight: 1.039 0.898 0.775 0.597 0.479 0.359 0.300 0.247  | max |closure resid| = 0.014, max |offset resid| = 0.0025
+End members vs references: correlation 0.888 0.852, best shift (ppm) +0.0010 -0.0020; scales 1.042 1.219, offsets -0.653 -0.162
+Least squares: k = 0.0389 +/- 0.0004, x0 = 1.040, x_inf = 0.221
+legacy_min: k = 0.0339 +/- 0.0042 (-13.4% vs ref-free), x0 = 0.806, x_inf = 0.279, max |dx| vs LSQ = 0.227, monotonic = True
+window_baseline: k = 0.0372 +/- 0.0022 (-4.8% vs ref-free), x0 = 0.977, x_inf = 0.235, max |dx| vs LSQ = 0.067, monotonic = True
+Validation -> skills/chem-nmr-analysis/examples/kinetics/output/validation/validation.json, skills/chem-nmr-analysis/examples/kinetics/output/validation/validation.png

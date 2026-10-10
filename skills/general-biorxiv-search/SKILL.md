@@ -63,6 +63,11 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/biorxi
 
 ## Examples
 
+Verified examples, each with its command, raw output and a field-by-field comparison against the official record:
+
+- [DOI lookup: AlphaFold-Multimer and ESM-2](examples/doi_lookup/README.md) checks title, authors, version, posting date, category and the published-journal DOI against the bioRxiv API version list, Crossref and Europe PMC.
+- [Date-range search, 2021-10-01 to 2021-10-07](examples/date_range_search/README.md) runs a keyword search and a keyword + multi-word category search over a fixed past window, with an independent recount of the matches and spot-checks against Crossref.
+
 ### Recent Neuroscience Papers
 ```bash
 ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/biorxiv_search.py --category neuroscience --days 7 --max_results 5

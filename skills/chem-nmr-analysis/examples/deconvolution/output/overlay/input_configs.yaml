@@ -1,0 +1,13 @@
+spectra:
+- skills/chem-nmr-analysis/examples/deconvolution/crude.csv
+- skills/chem-nmr-analysis/examples/deconvolution/borneol.csv
+- skills/chem-nmr-analysis/examples/deconvolution/isoborneol.csv
+labels:
+- Crude mixture
+- borneol (enriched)
+- isoborneol
+title: Crude camphor reduction vs references
+output: skills/chem-nmr-analysis/examples/deconvolution/output/overlay/spectra_overview.png
+stacked: false
+ppm_min: null
+ppm_max: null

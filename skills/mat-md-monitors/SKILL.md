@@ -85,6 +85,8 @@ If a simulation explodes:
 
 Monitoring stability is handled automatically by the ASE callbacks. When a monitor is triggered, the stop reason is logged to `stdout` and saved in the result dictionary.
 
+- [FCC Cu NVT equilibration](examples/Cu_nvt_equilibration/README.md) — where the `equilibration` monitor stops a 256-atom MACE-MP-small run at 300 K and 100 K, validated against equipartition, canonical temperature fluctuations and the Dulong–Petit limit.
+
 ## Constraints
 - **Termination**: If a monitor triggers an explosion, terminate the task and adjust parameters. Do not proceed with unstable trajectories.
 - **Reporting**: Always report simulation parameters (ensemble, T, timestep, duration) in the research report.

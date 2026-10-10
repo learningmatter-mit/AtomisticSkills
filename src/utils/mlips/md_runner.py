@@ -353,9 +353,10 @@ class CustomMDCalc(PropCalc):
             atoms.set_cell(new_basis, scale_atoms=True)
 
     def calc(self, structure: Structure | Atoms | dict[str, Any]) -> dict[str, Any]:
-        # Preserve velocities if present
+        # Preserve velocities if present. ASE returns zeros (never None) when no
+        # momenta are stored, so require an explicit momenta array.
         velocities = None
-        if hasattr(structure, "get_velocities"):
+        if isinstance(structure, Atoms) and "momenta" in structure.arrays:
             velocities = structure.get_velocities()
 
         result = super().calc(structure)
@@ -374,6 +375,9 @@ class CustomMDCalc(PropCalc):
             structure_in = result["final_structure"]
 
         atoms = to_ase_atoms(structure_in)
+        # Keep a handle on the integrated atoms so callers can read the last
+        # MD frame even when a monitor stops the run with MDStopIteration.
+        self.md_atoms = atoms
 
         # Apply preserved velocities or initialize new ones
         if velocities is not None and not self.relax_structure:

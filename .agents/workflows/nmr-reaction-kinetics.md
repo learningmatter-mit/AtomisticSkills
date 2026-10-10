@@ -18,9 +18,9 @@ Follow Steps 0–5 of the `reaction-to-nmr-quantification.md` workflow to identi
 Perform Wasserstein deconvolution at each time point and assemble kinetics curves.
 
 - *Skill Reference:* `chem-nmr-analysis` (`kinetics.py`)
-- **Action:** Pass all reference spectra, all time-point crude spectra (in chronological order), corresponding time values, proton counts, and component names to `kinetics.py`.
-- **Output:** `kinetics.csv` (mole fractions + Wasserstein distance per time point) and `kinetics_plot.png` (mole fraction vs time + fit quality vs time).
-- **Decision:** Inspect the kinetics plot. If curves are non-monotonic or a Wasserstein distance spike occurs at a single time point, that spectrum likely has baseline or phasing issues — consider excluding it and re-running. If all WD values exceed 0.15, the fit is poor across the board; revisit reference alignment (Step 5) before trusting the kinetics.
+- **Action:** Pass all reference spectra, all time-point crude spectra (in chronological order), corresponding time values, proton counts, and component names to `kinetics.py`, with `--baseline_window LO HI` set to a ppm stretch that is signal-free in every time point and reference. Do not use the legacy `--baseline_correct` on noisy spectra: each spectrum's minimum is a noise excursion, and subtracting it biases all fractions toward an even mixture.
+- **Output:** `kinetics.csv` (mole fractions, Wasserstein distance, noise fraction and subtracted baseline per time point) and `kinetics_plot.png` (mole fraction vs time + fit quality vs time).
+- **Decision:** Inspect the kinetics plot and the `noise_fraction` column. If curves are non-monotonic or a WD or noise spike occurs at a single time point, that spectrum likely has baseline or phasing issues — consider excluding it and re-running. If all WD values exceed 0.15, or noise fractions exceed about 0.2, revisit reference alignment and the baseline window (Step 5) before trusting the kinetics.
 
 ## Summary Checklist for the Agent
 When tasked with "extract kinetics from NMR time series":
@@ -29,9 +29,9 @@ When tasked with "extract kinetics from NMR time series":
 3. [ ] Resolve names to SMILES. (`drug-db-pubchem`)
 4. [ ] Predict products via ReactionT5. (`chem-nmr-analysis` `predict_products.py`)
 5. [ ] Generate reference spectra. (`chem-nmr-predict`)
-6. [ ] Visual inspection of overlay. (`chem-nmr-analysis` `plot.py`)
-7. [ ] Run kinetics deconvolution. (`chem-nmr-analysis` `kinetics.py`)
-8. [ ] Inspect kinetics plot and verify chemical plausibility.
+6. [ ] Visual inspection of overlay; choose a signal-free baseline window. (`chem-nmr-analysis` `plot.py`)
+7. [ ] Run kinetics deconvolution with `--baseline_window`. (`chem-nmr-analysis` `kinetics.py`)
+8. [ ] Inspect kinetics plot and noise fractions, and verify chemical plausibility.
 
 ## References
 - Ciach, M. et al., "Masserstein: linear resampling of mass spectra by optimal transport", *Rapid Commun. Mass Spectrom.*, 2020.

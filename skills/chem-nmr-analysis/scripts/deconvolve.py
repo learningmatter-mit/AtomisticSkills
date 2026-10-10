@@ -17,19 +17,24 @@ built-in HiGHS backend.
 
 Usage:
   venv/run cpu python deconvolve.py crude.csv ref_a.csv ref_b.csv \
-      --protons 18 18 --names borneol isoborneol --baseline-correct --json
+      --protons 18 18 --names borneol isoborneol \
+      --baseline-window 2.40 3.40 --ppm-range 3.50 4.10 --json
 
 Requirements: numpy, scipy (>= 1.7), matplotlib (optional, for --plot)
 """
 
 import argparse
 import json
+import os
 import pathlib
 import sys
 from typing import Optional
 
 import numpy as np
 from scipy.optimize import linprog
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from spectra import BASELINE_STATS, preprocess_spectrum  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -61,12 +66,6 @@ def load_xy(
     if arr.ndim != 2 or arr.shape[1] < 2:
         raise ValueError(f"{path}: expected two numeric columns (ppm, intensity)")
     return arr
-
-
-def baseline_correct(arr: np.ndarray) -> np.ndarray:
-    corrected = arr.copy()
-    corrected[:, 1] -= arr[:, 1].min()
-    return corrected
 
 
 # ---------------------------------------------------------------------------
@@ -249,13 +248,15 @@ def deconvolve_spectra(
 
     Returns
     -------
-    dict with "proportions", "wasserstein_distance", "noise"
+    dict with "proportions", "wasserstein_distance", "noise", "signal_fractions"
     """
     mix_confs = list(zip(mix_arr[:, 0].tolist(), mix_arr[:, 1].tolist()))
     comp_confs = [list(zip(a[:, 0].tolist(), a[:, 1].tolist())) for a in comp_arrays]
 
     raw = wasserstein_deconvolve(mix_confs, comp_confs, kappa=kappa)
     raw_props = raw["proportions"]
+    # Fraction of the mixture signal assigned to each component (before proton correction)
+    raw["signal_fractions"] = list(raw_props)
 
     # Proton correction: convert area-proportional to concentration-proportional
     if protons and all(p > 0 for p in protons):
@@ -280,10 +281,13 @@ def _save_plot(
     names: list,
     props: list,
     wd: float,
+    signal_fractions: list | None = None,
 ) -> None:
     from plot import plot_deconvolution
 
-    plot_deconvolution(mix_arr, comp_arrays, names, props, wd, out_path)
+    plot_deconvolution(
+        mix_arr, comp_arrays, names, props, wd, out_path, signal_fractions
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -320,10 +324,36 @@ def main():
         action="store_true",
         help="Treat inputs as Mnova TSV (delimiter='\\t')",
     )
-    ap.add_argument(
+    baseline = ap.add_mutually_exclusive_group()
+    baseline.add_argument(
         "--baseline-correct",
         action="store_true",
-        help="Shift each spectrum so its minimum intensity becomes 0.",
+        help="Legacy: shift each spectrum so its minimum intensity becomes 0. "
+        "Biased for noisy or offset spectra; prefer --baseline-window.",
+    )
+    baseline.add_argument(
+        "--baseline-window",
+        type=float,
+        nargs=2,
+        metavar=("LO", "HI"),
+        default=None,
+        help="Signal-free ppm window; its --baseline-stat is subtracted from the "
+        "mixture and every reference, and negatives are clipped to 0.",
+    )
+    ap.add_argument(
+        "--baseline-stat",
+        choices=BASELINE_STATS,
+        default="median",
+        help="Baseline estimate in --baseline-window: median (noisy/offset "
+        "spectra, default) or max (one-sided floors such as digitization residue).",
+    )
+    ap.add_argument(
+        "--ppm-range",
+        type=float,
+        nargs=2,
+        metavar=("LO", "HI"),
+        default=None,
+        help="Deconvolve only this ppm range (applied after baseline correction).",
     )
     ap.add_argument(
         "--plot",
@@ -341,13 +371,32 @@ def main():
     mix_arr = load_xy(args.mixture, mnova=args.mnova)
     comp_arrays = [load_xy(p, mnova=args.mnova) for p in args.components]
 
-    if args.baseline_correct:
-        if not args.quiet:
+    prep = dict(
+        baseline_correct=args.baseline_correct,
+        baseline_window=args.baseline_window,
+        baseline_stat=args.baseline_stat,
+        ppm_range=args.ppm_range,
+    )
+    mix_arr, mix_base = preprocess_spectrum(mix_arr, **prep)
+    comp_prepped = [preprocess_spectrum(a, **prep) for a in comp_arrays]
+    comp_arrays = [a for a, _ in comp_prepped]
+    baselines = [mix_base] + [b for _, b in comp_prepped]
+    if not args.quiet:
+        if args.baseline_window is not None:
+            lo, hi = args.baseline_window
             print(
-                "Baseline correction: shifting each spectrum so its minimum intensity = 0."
+                f"Baseline: subtracted the {args.baseline_stat} of {lo}-{hi} ppm "
+                "(negatives clipped to 0)."
             )
-        mix_arr = baseline_correct(mix_arr)
-        comp_arrays = [baseline_correct(a) for a in comp_arrays]
+        elif args.baseline_correct:
+            print(
+                "Baseline correction (legacy): shifting each spectrum so its "
+                "minimum intensity = 0."
+            )
+        if args.ppm_range is not None:
+            print(
+                f"ppm range restricted to {min(args.ppm_range)}-{max(args.ppm_range)}."
+            )
 
     n = len(comp_arrays)
     names = (
@@ -384,13 +433,33 @@ def main():
     for name, val in zip(names, props):
         print(f"  {name.ljust(width)} {val:.6f}")
     print(f"\nWasserstein distance: {wd:.12f}")
+    print(f"Unexplained (noise) signal fraction: {result['noise']:.6f}")
+    baseline_map = dict(zip(["mixture"] + names, baselines))
+    if args.baseline_window is not None or args.baseline_correct:
+        print(
+            "Subtracted baselines: "
+            + ", ".join(f"{k}={v:.6g}" for k, v in baseline_map.items())
+        )
 
     if args.json:
-        out = {"proportions": dict(zip(names, props)), "Wasserstein distance": wd}
+        out = {
+            "proportions": dict(zip(names, props)),
+            "Wasserstein distance": wd,
+            "noise": result["noise"],
+            "baselines": baseline_map,
+        }
         print("\nJSON:", json.dumps(out))
 
     if args.plot:
-        _save_plot(args.plot, mix_arr, comp_arrays, names, props, wd)
+        _save_plot(
+            args.plot,
+            mix_arr,
+            comp_arrays,
+            names,
+            props,
+            wd,
+            result["signal_fractions"],
+        )
         if not args.quiet:
             print(f"\nPlot saved -> {args.plot}")
 

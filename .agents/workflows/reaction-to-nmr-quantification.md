@@ -50,16 +50,16 @@ Predict 1H NMR spectra for all identified species (reactants + products + solven
 Overlay the crude spectrum with all references to verify alignment before deconvolution.
 
 - *Skill Reference:* `chem-nmr-analysis` (`plot.py`)
-- **Action:** Generate an overlay plot and inspect it. Check that reference peaks align with mixture peaks and that no major mixture peaks are unaccounted for.
+- **Action:** Generate an overlay plot and inspect it. Check that reference peaks align with mixture peaks and that no major mixture peaks are unaccounted for. Pick a signal-free ppm stretch (no peaks in the mixture or any reference) for the baseline window of Step 6, and note any isolated diagnostic signals that could be fitted on their own with `--ppm-range`.
 - **Decision:** If peaks don't align, ask the user about ppm referencing. If major peaks are unmatched, revisit Step 1 for missing components.
 
 ### Step 6: Deconvolution
 Quantify component mole fractions via Wasserstein-distance deconvolution.
 
 - *Skill Reference:* `chem-nmr-analysis` (`deconvolve.py`)
-- **Action:** Run `deconvolve.py` with the crude spectrum, all reference spectra, proton counts, and component names. Always use `--plot` and `--json`.
-- **Output:** Estimated mole fractions, Wasserstein distance (fit quality), and a multi-panel deconvolution plot.
-- **Decision:** Review the Wasserstein distance. If WD > 0.15, the fit is poor — check for missing components or ppm offsets before trusting the proportions. If the proportions contradict known chemistry, flag this to the user.
+- **Action:** Run `deconvolve.py` with the crude spectrum, all reference spectra, proton counts, and component names, and `--baseline-window LO HI` set to the signal-free stretch from Step 5 (add `--baseline-stat max` for digitized spectra, whose baseline is a one-sided floor). Do not use the legacy `--baseline-correct` (minimum subtraction) on noisy or digitized spectra. Always use `--plot` and `--json`.
+- **Output:** Estimated mole fractions, Wasserstein distance (fit quality), unexplained (noise) signal fraction, subtracted baselines, and a multi-panel deconvolution plot.
+- **Decision:** Review the Wasserstein distance *and* the noise fraction. If WD > 0.15, the fit is poor — check for missing components or ppm offsets before trusting the proportions. If the noise fraction exceeds about 0.2, revisit the baseline window/statistic and consider restricting `--ppm-range` to diagnostic signals, even when WD looks acceptable. If the proportions contradict known chemistry, flag this to the user.
 
 ## References
 - Ciach, M. et al., "Masserstein: linear resampling of mass spectra by optimal transport", *Rapid Commun. Mass Spectrom.*, 2020.

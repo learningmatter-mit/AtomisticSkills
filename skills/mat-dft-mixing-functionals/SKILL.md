@@ -75,6 +75,9 @@ ${CLAUDE_SKILL_DIR}/../../venv/run cpu python ${CLAUDE_SKILL_DIR}/scripts/apply_
 ### 2. Batch Processing
 For referencing or phase diagram generation, apply this correction to every entry before computing E_hull.
 
+## Examples
+- [Reproducing MP2020 corrections for Fe2O3, Al2O3 and FeS2](examples/fe2o3_mp2020_reproduction/README.md): starting from MP's raw GGA(+U) energies, the skill reproduces MP's corrected energies and per-species adjustments exactly, and the constants match Wang et al. (2021).
+
 ## Constraints
 - **Environment**: `cpu` (requires `pymatgen`).
 - **Input Energy**: Must be the *total energy* in eV (not per atom).

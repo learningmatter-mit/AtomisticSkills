@@ -1,0 +1,15 @@
+[
+  {
+    "doi": "10.1101/2021.10.04.463034",
+    "url": "https://www.biorxiv.org/content/10.1101/2021.10.04.463034v2",
+    "title": "Protein complex prediction with AlphaFold-Multimer",
+    "authors": "Evans, R.; O'Neill, M.; Pritzel, A.; Antropova, N.; Senior, A. W.; Green, T.; Zidek, A.; Bates, R.; Blackwell, S.; Yim, J.; Ronneberger, O.; Bodenstein, S.; Zielinski, M.; Bridgland, A.; Potapenko, A.; Cowie, A.; Tunyasuvunakool, K.; Jain, R.; Clancy, E.; Kohli, P.; Jumper, J.; Hassabis, D.",
+    "abstract": "While the vast majority of well-structured single protein chains can now be predicted to high accuracy due to the recent AlphaFold [1] model, the prediction of multi-chain protein complexes remains a challenge in many cases. In this work, we demonstrate that an AlphaFold model trained specifically for multimeric inputs of known stoichiometry, which we call AlphaFold-Multimer, significantly increases accuracy of predicted multimeric interfaces over input-adapted single-chain AlphaFold while maintaining high intra-chain accuracy. On a benchmark dataset of 17 heterodimer proteins without templates (introduced in [2]) we achieve at least medium accuracy (DockQ [3] [&ge;] 0.49) on 13 targets and high accuracy (DockQ [&ge;] 0.8) on 7 targets, compared to 9 targets of at least medium accuracy and 4 of high accuracy for the previous state of the art system (an AlphaFold-based system from [2]). We also predict structures for a large dataset of 4,446 recent protein complexes, from which we score all non-redundant interfaces with low template identity. For heteromeric interfaces we successfully predict the interface (DockQ [&ge;] 0.23) in 70% of cases, and produce high accuracy predictions (DockQ [&ge;] 0.8) in 26% of cases, an improvement of +27 and +14 percentage points over the flexible linker modification of AlphaFold [4] respectively. For homomeric inter-faces we successfully predict the interface in 72% of cases, and produce high accuracy predictions in 36% of cases, an improvement of +8 and +7 percentage points respectively.",
+    "date": "2022-03-10",
+    "category": "bioinformatics",
+    "server": "bioRxiv",
+    "version": "2",
+    "license": "cc_no",
+    "published": "NA"
+  }
+]

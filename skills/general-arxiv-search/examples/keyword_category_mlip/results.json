@@ -1,0 +1,215 @@
+[
+  {
+    "id": "2602.04861v2",
+    "url": "http://arxiv.org/abs/2602.04861v2",
+    "title": "From Evaluation to Design: Using Potential Energy Surface Smoothness Metrics to Guide Machine Learning Interatomic Potential Architectures",
+    "authors": [
+      "Ryan Liu",
+      "Eric Qu",
+      "Tobias Kreiman",
+      "Samuel M. Blau",
+      "Aditi S. Krishnapriyan"
+    ],
+    "summary": "Machine Learning Interatomic Potentials (MLIPs) sometimes fail to reproduce the physical smoothness of the quantum potential energy surface (PES), leading to erroneous behavior in downstream simulations that standard energy and force regression evaluations can miss. Existing evaluations, such as microcanonical molecular dynamics (MD), are computationally expensive and primarily probe near-equilibrium states. To improve evaluation metrics for MLIPs, we introduce the Bond Smoothness Characterization Test (BSCT). This efficient benchmark probes the PES via controlled bond deformations and detects non-smoothness, including discontinuities, artificial minima, and spurious forces, both near and far from equilibrium. We show that BSCT correlates strongly with MD stability while requiring a fraction of the cost of MD. To demonstrate how BSCT can guide iterative model design, we utilize an unconstrained Transformer backbone as a testbed, illustrating how refinements such as a new differentiable $k$-nearest neighbors algorithm and temperature-controlled attention reduce artifacts identified by our metric. By optimizing model design systematically based on BSCT, the resulting MLIP simultaneously achieves a low conventional E/F regression error, stable MD simulations, and robust atomistic property predictions. Our results establish BSCT as both a validation metric for practitioners to assess MLIP utility and as an \"in-the-loop\" model design proxy that alerts MLIP developers to physical challenges that cannot be efficiently evaluated by current MLIP benchmarks. The BSCT dataset and evaluation are available on https://github.com/ryanliu30/bsct.git",
+    "published": "2026-02-04T18:50:10Z",
+    "updated": "2026-05-29T18:09:08Z",
+    "categories": [
+      "cs.LG",
+      "cond-mat.mtrl-sci",
+      "cs.AI",
+      "physics.chem-ph"
+    ],
+    "doi": null,
+    "journal_ref": null,
+    "primary_category": "cs.LG"
+  },
+  {
+    "id": "2509.02927v2",
+    "url": "http://arxiv.org/abs/2509.02927v2",
+    "title": "P-DRUM: Post-hoc Descriptor-based Residual Uncertainty Modeling for Machine Learning Potentials",
+    "authors": [
+      "Shih-Peng Huang",
+      "Nontawat Charoenphakdee",
+      "Yuta Tsuboi",
+      "Yong-Bin Zhuang",
+      "Wenwen Li"
+    ],
+    "summary": "Ensemble method is considered the gold standard for uncertainty quantification (UQ) in machine learning interatomic potentials (MLIPs). However, their high computational cost can limit its practicality. Alternative techniques, such as Monte Carlo dropout and deep kernel learning, have been proposed to improve computational efficiency; however, some of these methods cannot be applied to already trained models and may affect the prediction accuracy. In this paper, we propose a simple and efficient post-hoc framework for UQ that leverages the descriptor of a trained graph neural network potential to estimate residual errors. We refer to this method as post-hoc descriptor-based residual uncertainty modeling (P-DRUM). P-DRUM models the discrepancy between MLIP predictions and ground truth values, allowing these residuals to act as proxies for prediction uncertainty. We explore multiple variants of P-DRUM and benchmark them against established UQ methods, evaluating both their effectiveness and limitations.",
+    "published": "2025-09-03T01:36:27Z",
+    "updated": "2025-11-12T03:08:37Z",
+    "categories": [
+      "cs.LG",
+      "cond-mat.mtrl-sci"
+    ],
+    "doi": null,
+    "journal_ref": null,
+    "primary_category": "cs.LG"
+  },
+  {
+    "id": "2506.08818v1",
+    "url": "http://arxiv.org/abs/2506.08818v1",
+    "title": "Crystal Nucleation in Eutectic Al-Si Alloys by Machine-Learned Molecular Dynamics",
+    "authors": [
+      "Quentin Bizot",
+      "Noel Jakse"
+    ],
+    "summary": "Solidification control is crucial in manufacturing technologies, as it determines the microstructure and, consequently, the performance of the final product. Investigating the mechanisms occurring during the early stages of nucleation remains experimentally challenging as it initiates on nanometer length and sub-picoseconds time scales. Large scale molecular dynamics simulations using machine learning interatomic potential with quantum accuracy appears the dedicated approach to complex, atomic level, multidimensional mechanisms with local symmetry breaking. A potential trained on a high-dimensional neural network on density functional theory-based ab initio molecular dynamics (AIMD) trajectories for liquid and undercooled states for Al-Si binary alloys enables us to study the nucleation mechanisms occurring at the early stages from the liquid phase near the eutectic composition. Our results indicate that nucleation starts with Al in hypoeutectic conditions and with Si in hypereutectic conditions. Whereas Al nuclei grow in a globular shape, Si ones grow with polygonal faceting, whose underlying mechanisms are further discussed.",
+    "published": "2025-06-10T14:09:53Z",
+    "updated": "2025-06-10T14:09:53Z",
+    "categories": [
+      "cond-mat.mtrl-sci"
+    ],
+    "doi": "10.1103/jwmw-3lds",
+    "journal_ref": null,
+    "primary_category": "cond-mat.mtrl-sci"
+  },
+  {
+    "id": "2402.11383v1",
+    "url": "http://arxiv.org/abs/2402.11383v1",
+    "title": "Machine Learning a Universal Harmonic Interatomic Potential for Predicting Phonons in Crystalline Solids",
+    "authors": [
+      "Huiju Lee",
+      "Yi Xia"
+    ],
+    "summary": "Phonons, as quantized vibrational modes in crystalline materials, play a crucial role in determining a wide range of physical properties, such as thermal and electrical conductivity, making their study a cornerstone in materials science. In this study, we present a simple yet effective strategy for deep learning harmonic phonons in crystalline solids by leveraging existing phonon databases and state-of-the-art machine learning techniques. The key of our method lies in transforming existing phonon datasets, primarily represented in interatomic force constants, into a force-displacement representation suitable for training machine learning universal interatomic potentials. By applying our approach to one of the largest phonon databases publicly available, we demonstrate that the resultant machine learning universal harmonic interatomic potential not only accurately predicts full harmonic phonon spectra but also calculates key thermodynamic properties with remarkable precision. Furthermore, the restriction to a harmonic potential energy surface in our model provides a way of assessing uncertainty in machine learning predictions of vibrational properties, essential for guiding further improvements and applications in materials science.",
+    "published": "2024-02-17T21:21:21Z",
+    "updated": "2024-02-17T21:21:21Z",
+    "categories": [
+      "cond-mat.mtrl-sci"
+    ],
+    "doi": null,
+    "journal_ref": null,
+    "primary_category": "cond-mat.mtrl-sci"
+  },
+  {
+    "id": "2203.01117v1",
+    "url": "http://arxiv.org/abs/2203.01117v1",
+    "title": "Machine-learning interatomic potential for molecular dynamics simulation of ferroelectric KNbO3 perovskite",
+    "authors": [
+      "Hao-Cheng Thong",
+      "XiaoYang Wang",
+      "Han Wang",
+      "Linfeng Zhang",
+      "Ke Wang",
+      "Ben Xu"
+    ],
+    "summary": "Ferroelectric perovskites have been ubiquitously applied in piezoelectric devices for decades, among which, eco-friendly lead-free (K,Na)NbO3-based materials have been recently demonstrated to be an excellent candidate for sustainable development. Molecular dynamics is a versatile theoretical calculation approach for the investigation of the dynamical properties of ferroelectric perovskites. However, molecular dynamics simulation of ferroelectric perovskites has been limited to simple systems, since the conventional construction of interatomic potential is rather difficult and inefficient. In the present study, we construct a machine-learning interatomic potential of KNbO3 (as a representative system of (K,Na)NbO3) by using a deep neural network model. Including first-principles calculation data into the training dataset ensures the quantum-mechanics accuracy of the interatomic potential. The molecular dynamics based on machine-learning interatomic potential shows good agreement with the first-principles calculations, which can accurately predict multiple fundamental properties, e.g., atomic force, energy, elastic properties, and phonon dispersion. In addition, the interatomic potential exhibits satisfactory performance in the simulation of domain wall and temperature-dependent phase transition. The construction of interatomic potential based on machine learning could potentially be transferred to other ferroelectric perovskites and consequently benefits the theoretical study of ferroelectrics.",
+    "published": "2022-03-02T14:15:44Z",
+    "updated": "2022-03-02T14:15:44Z",
+    "categories": [
+      "cond-mat.mtrl-sci"
+    ],
+    "doi": "10.1103/PhysRevB.107.014101",
+    "journal_ref": null,
+    "primary_category": "cond-mat.mtrl-sci"
+  },
+  {
+    "id": "2602.08849v1",
+    "url": "http://arxiv.org/abs/2602.08849v1",
+    "title": "Cutting Through the Noise: On-the-fly Outlier Detection for Robust Training of Machine Learning Interatomic Potentials",
+    "authors": [
+      "Terry C. W. Lam",
+      "Niamh O'Neill",
+      "Christoph Schran",
+      "Lars L. Schaaf"
+    ],
+    "summary": "The accuracy of machine learning interatomic potentials suffers from reference data that contains numerical noise. Often originating from unconverged or inconsistent electronic-structure calculations, this noise is challenging to identify. Existing mitigation strategies such as manual filtering or iterative refinement of outliers, require either substantial expert effort or multiple expensive retraining cycles, making them difficult to scale to large datasets. Here, we introduce an on-the-fly outlier detection scheme that automatically down-weights noisy samples, without requiring additional reference calculations. By tracking the loss distribution via an exponential moving average, this unsupervised method identifies outliers throughout a single training run. We show that this approach prevents overfitting and matches the performance of iterative refinement baselines with significantly reduced overhead. The method's effectiveness is demonstrated by recovering accurate physical observables for liquid water from unconverged reference data, including diffusion coefficients. Furthermore, we validate its scalability by training a foundation model for organic chemistry on the SPICE dataset, where it reduces energy errors by a factor of three. This framework provides a simple, automated solution for training robust models on imperfect datasets across dataset sizes.",
+    "published": "2026-02-09T16:16:22Z",
+    "updated": "2026-02-09T16:16:22Z",
+    "categories": [
+      "stat.ML",
+      "cond-mat.mtrl-sci",
+      "cs.LG",
+      "physics.chem-ph"
+    ],
+    "doi": null,
+    "journal_ref": null,
+    "primary_category": "stat.ML"
+  },
+  {
+    "id": "2209.12322v1",
+    "url": "http://arxiv.org/abs/2209.12322v1",
+    "title": "Classical and Machine Learning Interatomic Potentials for BCC Vanadium",
+    "authors": [
+      "Rui Wang",
+      "Xiaoxiao Ma",
+      "Linfeng Zhang",
+      "Han Wang",
+      "David J. Srolovitz",
+      "Tongqi Wen",
+      "Zhaoxuan Wu"
+    ],
+    "summary": "BCC transition metals (TMs) exhibit complex temperature and strain-rate dependent plastic deformation behaviour controlled by individual crystal lattice defects. Classical empirical and semi-empirical interatomic potentials have limited capability in modelling defect properties such as the screw dislocation core structures and Peierls barriers in the BCC structure. Machine learning (ML) potentials, trained on DFT-based datasets, have shown some successes in reproducing dislocation core properties. However, in group VB TMs, the most widely-used DFT functionals produce erroneous shear moduli C44 which are undesirably transferred to machine-learning interatomic potentials, leaving current ML approaches unsuitable for this important class of metals and alloys. Here, we develop two interatomic potentials for BCC vanadium (V) based on (i) an extension of the partial electron density and screening parameter in the classical semi-empirical modified embedded-atom method (XMEAM-V) and (ii) a recent hybrid descriptor in the ML Deep Potential framework (DP-HYB-V). We describe distinct features in these two disparate approaches, including their dataset generation, training procedure, weakness and strength in modelling lattice and defect properties in BCC V. Both XMEAM-V and DP-HYB-V reproduce a broad range of defect properties relevant to plastic deformation and fracture. In particular, XMEAM-V reproduces nearly all mechanical and thermodynamic properties at DFT accuracies and with C44 near experimental value. XMEAM-V also naturally exhibits the anomalous slip at 77 K widely observed in group VB and VIB TMs and outperforms all existing, publically available interatomic potentials for V. The XMEAM thus provides a practical path to developing accurate and efficient interatomic potentials for nonmagnetic BCC TMs and possibly multi-principal element TM alloys.",
+    "published": "2022-09-21T11:04:01Z",
+    "updated": "2022-09-21T11:04:01Z",
+    "categories": [
+      "cond-mat.mtrl-sci"
+    ],
+    "doi": "10.1103/PhysRevMaterials.6.113603",
+    "journal_ref": null,
+    "primary_category": "cond-mat.mtrl-sci"
+  },
+  {
+    "id": "2312.11708v1",
+    "url": "http://arxiv.org/abs/2312.11708v1",
+    "title": "Accelerating the prediction of inorganic surfaces with machine learning interatomic potentials",
+    "authors": [
+      "Kyle Noordhoek",
+      "Christopher J. Bartel"
+    ],
+    "summary": "The surface properties of solid-state materials often dictate their functionality, especially for applications where nanoscale effects become important. The relevant surface(s) and their properties are determined, in large part, by the materials synthesis or operating conditions. These conditions dictate thermodynamic driving forces and kinetic rates responsible for yielding the observed surface structure and morphology. Computational surface science methods have long been applied to connect thermochemical conditions to surface phase stability, particularly in the heterogeneous catalysis and thin film growth communities. This review provides a brief introduction to first-principles approaches to compute surface phase diagrams before introducing emerging data-driven approaches. The remainder of the review focuses on the application of machine learning, predominantly in the form of learned interatomic potentials, to study complex surfaces. As machine learning algorithms and large datasets on which to train them become more commonplace in materials science, computational methods are poised to become even more predictive and powerful for modeling the complexities of inorganic surfaces at the nanoscale.",
+    "published": "2023-12-18T21:08:13Z",
+    "updated": "2023-12-18T21:08:13Z",
+    "categories": [
+      "cond-mat.mtrl-sci",
+      "cs.LG"
+    ],
+    "doi": "10.1039/D3NR06468A",
+    "journal_ref": null,
+    "primary_category": "cond-mat.mtrl-sci"
+  },
+  {
+    "id": "2504.05565v1",
+    "url": "http://arxiv.org/abs/2504.05565v1",
+    "title": "Cross-functional transferability in universal machine learning interatomic potentials",
+    "authors": [
+      "Xu Huang",
+      "Bowen Deng",
+      "Peichen Zhong",
+      "Aaron D. Kaplan",
+      "Kristin A. Persson",
+      "Gerbrand Ceder"
+    ],
+    "summary": "The rapid development of universal machine learning interatomic potentials (uMLIPs) has demonstrated the possibility for generalizable learning of the universal potential energy surface. In principle, the accuracy of uMLIPs can be further improved by bridging the model from lower-fidelity datasets to high-fidelity ones. In this work, we analyze the challenge of this transfer learning problem within the CHGNet framework. We show that significant energy scale shifts and poor correlations between GGA and r$^2$SCAN pose challenges to cross-functional data transferability in uMLIPs. By benchmarking different transfer learning approaches on the MP-r$^2$SCAN dataset of 0.24 million structures, we demonstrate the importance of elemental energy referencing in the transfer learning of uMLIPs. By comparing the scaling law with and without the pre-training on a low-fidelity dataset, we show that significant data efficiency can still be achieved through transfer learning, even with a target dataset of sub-million structures. We highlight the importance of proper transfer learning and multi-fidelity learning in creating next-generation uMLIPs on high-fidelity data.",
+    "published": "2025-04-07T23:45:40Z",
+    "updated": "2025-04-07T23:45:40Z",
+    "categories": [
+      "cond-mat.mtrl-sci",
+      "cs.LG"
+    ],
+    "doi": null,
+    "journal_ref": null,
+    "primary_category": "cond-mat.mtrl-sci"
+  },
+  {
+    "id": "2512.15952v3",
+    "url": "http://arxiv.org/abs/2512.15952v3",
+    "title": "Machine-Learned Interatomic Potential for Predictive Simulation of MoS2 Epitaxy",
+    "authors": [
+      "Emir Bilgili",
+      "Nicholas Taormina",
+      "Richard Hennig",
+      "Simon R. Phillpot",
+      "Youping Chen"
+    ],
+    "summary": "A machine-learned interatomic potential (MLIP) for multilayer MoS2 was developed using the ultra-fast force field (UF3) framework. The UF3 MLIP reproduces key properties in strong agreement with DFT including lattice constants, interlayer binding energies, and phase-stability. Furthermore, the potential reasonably captures the phonon spectra and the highly anisotropic elastic tensor across monolayer (1H) and bulk (2H, 3R) MoS2 phases. Critically, defect and edge formation energies are captured with high fidelity, exhibiting a strong correlation with DFT (R^2 = 0.91) across ten defective monolayers and reproducing the relative difference between the free energies of zigzag and armchair edges within 5% of DFT. Non-equilibrium molecular dynamics simulations reveal layered homoepitaxial growth consistent with experimental observations, demonstrating the formation of van der Waals gaps between successive epilayers and triangular domains bounded by zigzag edges. The robust UF3 MLIP, which is only ~2X slower than the fastest empirical potentials, enables large-scale atomistic simulations of MoS2 epitaxial growth.",
+    "published": "2025-12-17T20:26:05Z",
+    "updated": "2026-04-17T20:55:05Z",
+    "categories": [
+      "cond-mat.mtrl-sci"
+    ],
+    "doi": "10.1103/71xp-pjb6",
+    "journal_ref": null,
+    "primary_category": "cond-mat.mtrl-sci"
+  }
+]

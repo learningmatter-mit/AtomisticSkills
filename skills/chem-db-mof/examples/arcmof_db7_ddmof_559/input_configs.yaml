@@ -1,0 +1,8 @@
+database: arcmof-majumdar
+formula: null
+elements: null
+element_match: all
+identifier: ddmof_559
+max_results: 1
+output_dir: skills/chem-db-mof/examples/arcmof_db7_ddmof_559
+cache_dir: ~/.cache/arcmof

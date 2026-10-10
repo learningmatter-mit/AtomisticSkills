@@ -1,0 +1,102 @@
+{
+  "source": "Materials Project API, materials/thermo endpoint, thermo_type GGA_GGA+U (ComputedStructureEntry with MP2020 energy_adjustments)",
+  "mp_database_version": "2026.04.13",
+  "retrieved": "2026-10-10",
+  "entries": {
+    "mp-19770": {
+      "formula": "Fe2O3",
+      "entry_id": "mp-19770-GGA+U",
+      "run_type": "GGA+U",
+      "nsites": 10,
+      "uncorrected_total_energy_eV": -67.4927644,
+      "corrected_total_energy_eV": -80.6387644,
+      "total_correction_eV": -13.145999999999999,
+      "energy_adjustments": [
+        {
+          "name": "MP2020 anion correction (oxide)",
+          "value_eV": -4.122,
+          "uncertainty_eV": 0.012
+        },
+        {
+          "name": "MP2020 GGA/GGA+U mixing correction (Fe)",
+          "value_eV": -9.024,
+          "uncertainty_eV": 0.0404
+        }
+      ],
+      "parameters": {
+        "run_type": "GGA+U",
+        "is_hubbard": true,
+        "hubbards": {
+          "Fe": 5.3,
+          "O": 0.0
+        }
+      },
+      "thermo_uncorrected_energy_per_atom_eV": -6.74927644,
+      "thermo_energy_per_atom_eV": -8.06387644,
+      "thermo_formation_energy_per_atom_eV": -1.7070913529999998,
+      "builder_meta": {
+        "emmet_version": "0.87.0rc6",
+        "pymatgen_version": "2026.5.18"
+      },
+      "last_updated": "2026-05-30 05:51:24.451000+00:00"
+    },
+    "mp-1143": {
+      "formula": "Al2O3",
+      "entry_id": "mp-1143-GGA",
+      "run_type": "GGA",
+      "nsites": 10,
+      "uncorrected_total_energy_eV": -74.81357943,
+      "corrected_total_energy_eV": -78.93557943,
+      "total_correction_eV": -4.122,
+      "energy_adjustments": [
+        {
+          "name": "MP2020 anion correction (oxide)",
+          "value_eV": -4.122,
+          "uncertainty_eV": 0.012
+        }
+      ],
+      "parameters": {
+        "run_type": "GGA",
+        "is_hubbard": null,
+        "hubbards": null
+      },
+      "thermo_uncorrected_energy_per_atom_eV": -7.481357943000001,
+      "thermo_energy_per_atom_eV": -7.893557943,
+      "thermo_formation_energy_per_atom_eV": -3.4265510080000006,
+      "builder_meta": {
+        "emmet_version": "0.87.0rc6",
+        "pymatgen_version": "2026.5.18"
+      },
+      "last_updated": "2026-05-30 04:50:21.358000+00:00"
+    },
+    "mp-226": {
+      "formula": "FeS2",
+      "entry_id": "mp-226-GGA",
+      "run_type": "GGA",
+      "nsites": 12,
+      "uncorrected_total_energy_eV": -73.03390479,
+      "corrected_total_energy_eV": -77.05790479,
+      "total_correction_eV": -4.024,
+      "energy_adjustments": [
+        {
+          "name": "MP2020 anion correction (S)",
+          "value_eV": -4.024,
+          "uncertainty_eV": 0.0744
+        }
+      ],
+      "parameters": {
+        "run_type": "GGA",
+        "is_hubbard": null,
+        "hubbards": null
+      },
+      "thermo_uncorrected_energy_per_atom_eV": -6.0861587324999995,
+      "thermo_energy_per_atom_eV": -6.421492065833333,
+      "thermo_formation_energy_per_atom_eV": -0.840518417916666,
+      "builder_meta": {
+        "emmet_version": "0.87.0rc6",
+        "pymatgen_version": "2026.5.18"
+      },
+      "last_updated": "2026-05-30 05:42:42.472000+00:00"
+    }
+  }
+}

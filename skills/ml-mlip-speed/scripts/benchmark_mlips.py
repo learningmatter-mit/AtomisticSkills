@@ -10,7 +10,7 @@ import argparse
 from typing import List, Dict
 
 # Add project root to sys.path to allow absolute imports
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
@@ -113,8 +113,16 @@ def run_benchmark(wrapper, atoms: Atoms, steps: int = 10, name: str = ""):
         return None, None
 
 
-def plot_results(results: Dict[str, Dict[str, List]], output_dir: str):
-    """Generate plots for benchmark results with provider grouping and shading."""
+def plot_results(
+    results: Dict[str, Dict[str, List]], output_dir: str, hardware: str
+) -> None:
+    """Generate plots for benchmark results with provider grouping and shading.
+
+    Args:
+        results: Benchmark results keyed by model name.
+        output_dir: Directory where the PNG plots are written.
+        hardware: Hardware label used in plot titles and file names.
+    """
 
     # 1. Prepare data and grouping
     grouped_data = {"mace": [], "matgl": [], "fairchem": []}
@@ -166,7 +174,6 @@ def plot_results(results: Dict[str, Dict[str, List]], output_dir: str):
                     converged_val = y[-1]
                     label = f"[{provider.upper()}] {model['name']} ({converged_val:.3f} ms/atom)"
                     ylabel = "Inference Time / Atom (ms)"
-                    hardware = get_hardware_name()
                     title = f"MLIP Inference Speed Benchmark on {hardware.replace('_', ' ')}"
                 else:
                     y = data["memories"]
@@ -174,7 +181,6 @@ def plot_results(results: Dict[str, Dict[str, List]], output_dir: str):
                     converged_val = (y[-1] * 1024) / data["n_atoms"][-1]
                     label = f"[{provider.upper()}] {model['name']} ({converged_val:.2f} MB/atom)"
                     ylabel = "Memory Usage (GB)"
-                    hardware = get_hardware_name()
                     title = (
                         f"MLIP Memory Usage Benchmark on {hardware.replace('_', ' ')}"
                     )
@@ -201,7 +207,6 @@ def plot_results(results: Dict[str, Dict[str, List]], output_dir: str):
             plt.legend(fontsize=10)
 
         plt.grid(True, linestyle="--", alpha=0.6)
-        hardware = get_hardware_name()
         plt.savefig(
             os.path.join(output_dir, f"{plot_type}_{hardware.lower()}.png"),
             dpi=300,
@@ -235,9 +240,21 @@ def main():
         "--max_atoms_limit", type=int, default=10000, help="Maximum atoms to test."
     )
     parser.add_argument(
+        "--results_file",
+        default=None,
+        help="Results YAML read and updated by runs and read by --only_plot "
+        "(default: <output_dir>/speed_benchmark.yaml).",
+    )
+    parser.add_argument(
+        "--hardware_name",
+        default=None,
+        help="Hardware label for plot titles and file names "
+        "(default: detected GPU name, or CPU).",
+    )
+    parser.add_argument(
         "--only_plot",
         action="store_true",
-        help="Only generate plots from existing speed_benchmark.yaml",
+        help="Only regenerate plots from the existing results file (--results_file).",
     )
 
     args = parser.parse_args()
@@ -245,22 +262,22 @@ def main():
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
 
+    yaml_path = args.results_file or os.path.join(
+        args.output_dir, "speed_benchmark.yaml"
+    )
+    hardware = args.hardware_name or get_hardware_name()
     all_results = {}
-    yaml_path = os.path.join(args.output_dir, "speed_benchmark.yaml")
     if os.path.exists(yaml_path):
         with open(yaml_path, "r") as f:
-            try:
-                existing_results = yaml.safe_load(f)
-                if existing_results:
-                    all_results.update(existing_results)
-            except Exception:
-                pass
+            existing_results = yaml.safe_load(f)
+        if existing_results:
+            all_results.update(existing_results)
 
     if args.only_plot:
         if not all_results:
             print(f"Error: No results found in {yaml_path}")
             return
-        plot_results(all_results, args.output_dir)
+        plot_results(all_results, args.output_dir, hardware)
         print(f"Plots updated in {args.output_dir}")
         return
 
@@ -279,18 +296,6 @@ def main():
         for p in providers:
             for m in DEFAULT_MODELS.get(p, []):
                 to_benchmark.append((m, p))
-
-    # Load existing results if they exist
-    all_results = {}
-    yaml_path = os.path.join(args.output_dir, "speed_benchmark_dgx_spark.yaml")
-    if os.path.exists(yaml_path):
-        with open(yaml_path, "r") as f:
-            try:
-                existing_results = yaml.safe_load(f)
-                if existing_results:
-                    all_results.update(existing_results)
-            except Exception:
-                pass
 
     for model_name, provider in to_benchmark:
         print(f"\nStarting benchmark for {model_name} ({provider})")
@@ -382,7 +387,7 @@ def main():
         yaml.dump(all_results, f, default_flow_style=False)
 
     # Plot results (all combined)
-    plot_results(all_results, args.output_dir)
+    plot_results(all_results, args.output_dir, hardware)
     print(f"\nBenchmark complete. Results saved to {args.output_dir}")
 
     # Save input configs for reproducibility

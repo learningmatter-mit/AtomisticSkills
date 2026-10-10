@@ -1,0 +1,15 @@
+$ venv/run cpu python skills/mat-dft-mixing-functionals/scripts/check_compatibility.py --name MACE-MP-medium
+Requires MP2020 Correction: True
+exit code: 0
+
+$ venv/run cpu python skills/mat-dft-mixing-functionals/scripts/check_compatibility.py --name MACE-MH-1 --head omat_pbe
+Requires MP2020 Correction: True
+exit code: 0
+
+$ venv/run cpu python skills/mat-dft-mixing-functionals/scripts/check_compatibility.py --name CHGNet-MPtrj-2023.12.1-2.7M-PES
+Requires MP2020 Correction: False
+exit code: 1
+
+$ venv/run cpu python skills/mat-dft-mixing-functionals/scripts/check_compatibility.py --name MACE-MATPES-R2SCAN-0
+Requires MP2020 Correction: False
+exit code: 1

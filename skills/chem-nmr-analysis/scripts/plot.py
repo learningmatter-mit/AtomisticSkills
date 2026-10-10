@@ -116,22 +116,26 @@ def plot_deconvolution(
     proportions: list,
     wasserstein_distance: float,
     out_path: pathlib.Path,
+    signal_fractions: list | None = None,
 ) -> None:
     """
     Multi-panel deconvolution diagnostic plot.
 
     Panels (top to bottom):
       - Mixture spectrum
-      - One panel per component (scaled by proportion)
+      - One panel per component (scaled by its share of the mixture signal)
       - Fit vs mixture overlay with residual
 
     Args:
         mix_arr: (M, 2) array of mixture (ppm, intensity).
         comp_arrays: List of (N_i, 2) arrays for each component.
         names: Component names.
-        proportions: Estimated mole fractions per component.
+        proportions: Estimated mole fractions per component (used for labels).
         wasserstein_distance: Fit quality metric.
         out_path: Output path (saves .png and .svg).
+        signal_fractions: Fraction of the mixture signal (area) assigned to each
+            component by the deconvolution, before proton correction. Used to
+            scale the components; defaults to ``proportions`` when omitted.
     """
     mix_ppm = mix_arr[:, 0]
     mix_int = mix_arr[:, 1]
@@ -148,12 +152,16 @@ def plot_deconvolution(
         o = np.argsort(p)
         comp_on_grid.append(np.interp(mix_ppm, p[o], intens[o], left=0.0, right=0.0))
 
-    # Scale each component by its proportion
-    mix_max = mix_int.max() if mix_int.max() != 0 else 1.0
+    # Scale each component so its area equals its share of the mixture area.
+    # The deconvolution proportions are area (signal) fractions, not peak heights.
+    weights = signal_fractions if signal_fractions is not None else proportions
+    mix_area = np.trapezoid(np.clip(mix_int, 0.0, None), mix_ppm)
     scaled = []
-    for comp_int, prop in zip(comp_on_grid, proportions):
-        comp_max = comp_int.max() if comp_int.max() != 0 else 1.0
-        scaled.append(comp_int * (prop * mix_max / comp_max))
+    for arr, comp_int, weight in zip(comp_arrays, comp_on_grid, weights):
+        o = np.argsort(arr[:, 0])
+        comp_area = np.trapezoid(np.clip(arr[o, 1], 0.0, None), arr[o, 0])
+        scale = weight * mix_area / comp_area if comp_area > 0 else 0.0
+        scaled.append(comp_int * scale)
 
     fit = sum(scaled)
     residual = mix_int - fit

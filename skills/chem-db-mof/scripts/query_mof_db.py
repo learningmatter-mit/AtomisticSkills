@@ -43,8 +43,9 @@ ARCMOF_STRUCTURES_NAME = "ARCMOF_20241004.tar.gz"
 MAJUMDAR_MATERIALS_CLOUD_URL = "https://archive.materialscloud.org/api/records/et2ts-zxh44/files/mof_data.tar.gz/content"
 MAJUMDAR_TARBALL_CACHE_NAME = "majumdar_mof_data.tar.gz"
 
-# Local cache directory — shared across runs to avoid repeated downloads
-DEFAULT_CACHE_DIR = Path.home() / ".cache" / "arcmof"
+# Local cache directory — shared across runs to avoid repeated downloads.
+# Kept unexpanded ("~") so the saved input_configs.yaml stays machine-independent.
+DEFAULT_CACHE_DIR = "~/.cache/arcmof"
 
 # DB7 (Majumdar et al.) structure filename prefix in ARC-MOF
 ARCMOF_DB7_PREFIX = "DB7-"
@@ -91,7 +92,12 @@ def query_qmof(
     if formula:
         query["formula__contains"] = formula
     if identifier:
-        query["identifier__contains"] = identifier
+        if identifier.lower().startswith("qmof-"):
+            # The MPContribs identifier is the QMOF ID (e.g. qmof-8b5bb88)
+            query["identifier__contains"] = identifier
+        else:
+            # CSD refcodes and other source names are stored in data.filename
+            query["data__filename__contains"] = identifier
 
     print(f"Querying QMOF with: {query or '(no filter — returning first results)'}")
     try:
@@ -114,7 +120,6 @@ def query_qmof(
     print(f"Found {len(results['data'])} MOFs. Downloading CIFs to {output_dir}...")
 
     for contrib in results["data"]:
-        contrib_id = contrib["id"]
         identifier_name = contrib["identifier"]
         formula_name = contrib["formula"]
         print(f"  {identifier_name} ({formula_name})")
@@ -322,7 +327,7 @@ def _elements_from_cif_bytes(cif_bytes: bytes) -> set[str]:
 
     # Fallback: _atom_site_label (strip trailing digits/signs)
     labels = re.findall(r"^\s*([A-Z][a-z]?\d*[+-]?)\s", text, re.MULTILINE)
-    elements = {re.sub(r"[^A-Za-z]", "", l).capitalize() for l in labels}
+    elements = {re.sub(r"[^A-Za-z]", "", label).capitalize() for label in labels}
     return {e for e in elements if e.isalpha() and 1 <= len(e) <= 2}
 
 
@@ -377,9 +382,13 @@ def _extract_majumdar_cifs(
     max_results: int,
     metals: list[str],
     identifier: str | None,
+    element_match: str = "all",
 ) -> list[str]:
     """
     Extract CIFs from the Majumdar et al. Materials Cloud tarball.
+
+    ``element_match="all"`` keeps structures containing every element in ``metals``;
+    ``"any"`` keeps structures containing at least one of them.
 
     Tarball structure:
       majumdar_mof_data.tar.gz
@@ -411,6 +420,11 @@ def _extract_majumdar_cifs(
     meta_df = _load_majumdar_metadata(tarball_path)
     meta_df["MOF_name"] = meta_df["MOF_name"].str.replace(".cif", "", regex=False)
 
+    # An identifier that is a full MOF name (e.g. "ddmof_42") selects exactly that
+    # structure; anything else is treated as a name substring.
+    ident = identifier.removesuffix(".cif") if identifier else None
+    exact_ident = ident is not None and ident in set(meta_df["MOF_name"])
+
     required_metals = {m.capitalize() for m in metals}
     saved_paths = list(existing)
     saved_stems: set[str] = {Path(p).stem for p in existing}
@@ -418,9 +432,11 @@ def _extract_majumdar_cifs(
 
     print("Extracting CIFs from nested mof_structures.tar ...")
     if required_metals:
-        print(f"  Metal filter (at least one required): {sorted(required_metals)}")
+        rule = "all required" if element_match == "all" else "at least one required"
+        print(f"  Element filter ({rule}): {sorted(required_metals)}")
     if identifier:
-        print(f"  Identifier filter: '{identifier}'")
+        mode = "exact name" if exact_ident else "substring"
+        print(f"  Identifier filter ({mode}): '{ident}'")
 
     checked = 0
     with tarfile.open(tarball_path, "r:gz") as outer:
@@ -435,7 +451,9 @@ def _extract_majumdar_cifs(
                     continue
 
                 # Identifier filter
-                if identifier and identifier.lower() not in stem.lower():
+                if exact_ident and stem != ident:
+                    continue
+                if ident and not exact_ident and ident.lower() not in stem.lower():
                     continue
 
                 f = inner.extractfile(member)
@@ -448,8 +466,9 @@ def _extract_majumdar_cifs(
                 # Metal element filter — parsed from CIF _atom_site_type_symbol
                 if required_metals:
                     found = _elements_from_cif_bytes(cif_bytes)
-                    # Require at least one of the requested metals to be present
-                    if not required_metals.intersection(found):
+                    if element_match == "all" and not required_metals <= found:
+                        continue
+                    if element_match == "any" and not required_metals & found:
                         continue
 
                 out_path = output_dir / f"{stem}.cif"
@@ -463,7 +482,7 @@ def _extract_majumdar_cifs(
                     saved_meta_rows.append(row.iloc[0].to_dict())
 
                 print(f"  [{len(saved_paths)}] {stem}.cif")
-                if len(saved_paths) >= max_results:
+                if exact_ident or len(saved_paths) >= max_results:
                     break
 
     print(f"Done. Checked {checked} CIFs, saved {len(saved_paths)} to {output_dir}.")
@@ -510,6 +529,7 @@ def query_arcmof_majumdar(
     max_results: int,
     output_dir: Path,
     cache_dir: Path,
+    element_match: str = "all",
 ) -> list[str]:
     """
     Query the ARC-MOF DB7 (Majumdar et al. 2021) subset.
@@ -523,7 +543,9 @@ def query_arcmof_majumdar(
     Element filtering: parsed from _atom_site_type_symbol in each CIF — no formula CSV needed.
 
     Args:
-        elements: List of required elements (e.g., ["Zn", "O", "C"]).
+        elements: Element filter (e.g., ["Zn", "F"]).
+        element_match: "all" keeps structures containing every listed element
+            (default); "any" keeps structures containing at least one of them.
         identifier: Specific structure name/ID substring to retrieve.
         max_results: Maximum number of CIFs to download.
         output_dir: Directory to save CIF files.
@@ -538,6 +560,7 @@ def query_arcmof_majumdar(
         max_results=max_results,
         metals=elements,
         identifier=identifier,
+        element_match=element_match,
     )
 
 
@@ -579,17 +602,24 @@ Examples:
         "--elements",
         type=str,
         default=None,
-        help="[arcmof-majumdar] Comma-separated metal elements to filter by (e.g., 'Zn', 'Ni', 'Mg', or 'Zn,Ni'). "
-        "Structures containing AT LEAST ONE of the listed metals are returned. "
-        "Parsed from _atom_site_type_symbol in each CIF. "
-        "Add more metals to broaden diversity (e.g., 'Zn,Ni,Mg,Cu,Fe').",
+        help="[arcmof-majumdar] Comma-separated elements to filter by (e.g., 'Zn', 'Zn,F' or 'Zn,Cu'). "
+        "By default a structure must contain ALL listed elements (see --element-match). "
+        "Parsed from _atom_site_type_symbol in each CIF.",
+    )
+    parser.add_argument(
+        "--element-match",
+        choices=["all", "any"],
+        default="all",
+        help="[arcmof-majumdar] 'all' (default): keep structures containing every element in --elements; "
+        "'any': keep structures containing at least one of them (e.g. --elements Zn,Ni,Mg "
+        "--element-match any for a mixed-metal screening set).",
     )
     parser.add_argument(
         "--identifier",
         type=str,
         default=None,
-        help="Specific structure name or ID substring to retrieve (e.g., 'KAXQIL' for QMOF, "
-        "'DB7_00042' for ARC-MOF).",
+        help="Specific structure to retrieve: a QMOF ID or CSD refcode for QMOF (e.g., 'KAXQIL'); "
+        "a full MOF name for ARC-MOF DB7/Majumdar (e.g., 'ddmof_559', exact match) or a name substring.",
     )
     parser.add_argument(
         "--max-results",
@@ -606,13 +636,13 @@ Examples:
     parser.add_argument(
         "--cache-dir",
         type=str,
-        default=str(DEFAULT_CACHE_DIR),
+        default=DEFAULT_CACHE_DIR,
         help=f"Local cache directory for ARC-MOF metadata (default: {DEFAULT_CACHE_DIR}).",
     )
 
     args = parser.parse_args()
     output_dir = Path(args.output_dir)
-    cache_dir = Path(args.cache_dir)
+    cache_dir = Path(args.cache_dir).expanduser()
 
     if args.database == "qmof":
         saved = query_qmof(
@@ -632,6 +662,7 @@ Examples:
             max_results=args.max_results,
             output_dir=output_dir,
             cache_dir=cache_dir,
+            element_match=args.element_match,
         )
 
     print(f"\nDone. {len(saved)} CIF(s) saved to {output_dir}.")

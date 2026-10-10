@@ -77,6 +77,7 @@ AVAILABLE_MATGL_MODELS = {
     "TensorNet-MatPES-r2SCAN-v2025.1-PES": "TensorNet-PES-MatPES-r2SCAN-2025.2",
     "TensorNet-PES-MatPES-r2SCAN-2025.2": "TensorNet-PES-MatPES-r2SCAN-2025.2",
     "TensorNet-MatPES-PBE": "TensorNet-PES-MatPES-PBE-2025.2",
+    "TensorNet-MatPES-PBE-v2025.1-PES": "TensorNet-PES-MatPES-PBE-2025.2",
     "TensorNet-PES-MatPES-PBE-2025.2": "TensorNet-PES-MatPES-PBE-2025.2",
     "TensorNet-PES-ANI-1x-Subset": "TensorNet-PES-ANI-1x-Subset",
     # QET PES models

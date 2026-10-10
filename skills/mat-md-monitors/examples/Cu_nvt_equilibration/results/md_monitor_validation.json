@@ -1,0 +1,103 @@
+{
+  "n_atoms": 256,
+  "relaxed_lattice_a_A": 3.612702378299395,
+  "E_min_eV_per_atom": -4.090421676635742,
+  "stage1_equilibration": [
+    {
+      "label": "300 K, threshold 50 K (default)",
+      "log": "Cu256_300.0K_nvt.log",
+      "target_temperature_K": 300.0,
+      "max_steps": 10000,
+      "temp_std_threshold_K": 50.0,
+      "window_entries": 50,
+      "stop_time_ps": 1.26,
+      "stop_step": 630,
+      "std_T_last_window_K": 49.783656314095694,
+      "T_at_stop_K": 312.3,
+      "max_T_K": 340.2
+    },
+    {
+      "label": "300 K, threshold 30 K",
+      "log": "Cu256_300.0K_nvt.log",
+      "target_temperature_K": 300.0,
+      "max_steps": 10000,
+      "temp_std_threshold_K": 30.0,
+      "window_entries": 50,
+      "stop_time_ps": 1.68,
+      "stop_step": 840,
+      "std_T_last_window_K": 26.773244032055587,
+      "T_at_stop_K": 301.0,
+      "max_T_K": 361.0
+    },
+    {
+      "label": "100 K, threshold 10 K",
+      "log": "Cu256_100.0K_nvt.log",
+      "target_temperature_K": 100.0,
+      "max_steps": 10000,
+      "temp_std_threshold_K": 10.0,
+      "window_entries": 50,
+      "stop_time_ps": 2.3,
+      "stop_step": 1150,
+      "std_T_last_window_K": 8.891601430563563,
+      "T_at_stop_K": 106.2,
+      "max_T_K": 134.4
+    }
+  ],
+  "production": [
+    {
+      "log": "Cu256_300.0K_nvt.log",
+      "target_temperature_K": 300.0,
+      "duration_ps": 20.0,
+      "n_samples": 1000,
+      "T_mean_K": 296.90639999999996,
+      "T_sem_K": 1.1903869160907294,
+      "T_rel_error_pct": -1.0312000000000126,
+      "T_std_K": 15.286068789587466,
+      "T_std_canonical_K": 15.309310892394864,
+      "dEpot_mean_meV_per_atom": 37.43543054199219,
+      "dEpot_sem_meV_per_atom": 0.142349724941702,
+      "Ekin_mean_meV_per_atom": 38.37791796875,
+      "Ekin_sem_meV_per_atom": 0.1538698481201642,
+      "Etot_minus_Emin_mean_meV_per_atom": 75.81334851074219,
+      "Etot_minus_Emin_sem_meV_per_atom": 0.29598551244335175,
+      "equipartition_1p5kT_target_meV": 38.777999679000004,
+      "equipartition_1p5kT_meanT_meV": 38.37812094631015,
+      "dEpot_vs_1p5kT_target_pct": -3.462192862245224,
+      "dEpot_over_Ekin": 0.9754419344080821,
+      "dEpot_over_Ekin_sem": 0.0037091570485301775
+    },
+    {
+      "log": "Cu256_100.0K_nvt.log",
+      "target_temperature_K": 100.0,
+      "duration_ps": 20.0,
+      "n_samples": 1000,
+      "T_mean_K": 100.2239,
+      "T_sem_K": 0.5812718684058273,
+      "T_rel_error_pct": 0.22390000000000043,
+      "T_std_K": 6.101884855518006,
+      "T_std_canonical_K": 5.103103630798287,
+      "dEpot_mean_meV_per_atom": 12.838621948242183,
+      "dEpot_sem_meV_per_atom": 0.07534310167271517,
+      "Ekin_mean_meV_per_atom": 12.95499609375,
+      "Ekin_sem_meV_per_atom": 0.07523799782781761,
+      "Etot_minus_Emin_mean_meV_per_atom": 25.793618041992183,
+      "Etot_minus_Emin_sem_meV_per_atom": 0.15055230485816815,
+      "equipartition_1p5kT_target_meV": 12.925999893,
+      "equipartition_1p5kT_meanT_meV": 12.954941206760427,
+      "dEpot_vs_1p5kT_target_pct": -0.6759859622553139,
+      "dEpot_over_Ekin": 0.9910170451101904,
+      "dEpot_over_Ekin_sem": 0.005815756417639034
+    }
+  ],
+  "dulong_petit": {
+    "T_low_K": 100.2239,
+    "T_high_K": 296.90639999999996,
+    "cv_kB_per_atom": 2.9512278350612755,
+    "cv_kB_per_atom_sem": 0.01959281389371037,
+    "cv_J_per_mol_K": 24.537873511818045,
+    "cv_J_per_mol_K_sem": 0.1629037187006859,
+    "dulong_petit_kB_per_atom": 3.0,
+    "dulong_petit_J_per_mol_K": 24.943387854,
+    "rel_error_pct": -1.6257388312908165
+  }
+}

@@ -1,0 +1,10 @@
+query: null
+server: biorxiv
+category: null
+days: 30
+start: null
+end: null
+doi: 10.1101/2021.10.04.463034
+max_results: 10
+output: skills/general-biorxiv-search/examples/doi_lookup/alphafold_multimer/paper.json
+verbose: false

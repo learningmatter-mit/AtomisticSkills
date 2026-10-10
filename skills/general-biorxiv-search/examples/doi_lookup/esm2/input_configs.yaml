@@ -1,0 +1,10 @@
+query: null
+server: biorxiv
+category: null
+days: 30
+start: null
+end: null
+doi: 10.1101/2022.07.20.500902
+max_results: 10
+output: skills/general-biorxiv-search/examples/doi_lookup/esm2/paper.json
+verbose: false

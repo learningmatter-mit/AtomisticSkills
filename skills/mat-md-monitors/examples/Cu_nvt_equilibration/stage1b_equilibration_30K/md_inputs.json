@@ -1,0 +1,20 @@
+{
+    "model_name": "MACE-MP-small",
+    "prediction_head": null,
+    "temperature": 300.0,
+    "steps": 10000,
+    "timestep": 2.0,
+    "ensemble": "nvt",
+    "log_interval": 10,
+    "pressure": 0.0,
+    "pressure_mask": null,
+    "monitor": true,
+    "monitor_type": [
+        "explosion",
+        "equilibration"
+    ],
+    "monitor_params": {
+        "temp_std_threshold": 30.0
+    },
+    "supercell_min_length": 14.0
+}

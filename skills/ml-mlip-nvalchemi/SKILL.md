@@ -143,8 +143,8 @@ Static-inference and MD tables below measure different operations.
 Speedup comparison for a 100-step MD simulation under the `nvt_nose_hoover` ensemble at 300 K on 20 strained Cu FCC structures, each expanded to a fixed 108-atom cubic supercell ($\ge 10\text{ \AA}$ sides). Sequential = NValchemi disabled, structures run one at a time; Batched = all 20 driven through NValchemi integrators in a single GPU batch. Best-of-2 wall time, measured serially (one environment at a time to avoid GPU contention).
 
 #### MACE-OMAT-0-small (`mlip`)
-- **Sequential MD:** 54.48 s
-- **Batched MD (NValchemi):** 11.12 s (**4.90x speedup**)
+- **Sequential MD:** 53.1 s (earlier record: 54.48 s)
+- **Batched MD (NValchemi):** 38.0 s (**1.40x speedup**), peak GPU memory 19.9 GB. An earlier record of 11.12 s (4.90x) does not reproduce with the committed locks: one batched forward on 2160 atoms takes ~398 ms, so the batched step is bound by the model forward. See the [example](examples/cu_batch_static_accuracy/README.md).
 
 #### TensorNet-PES-MatPES-PBE-2025.2 (`mlip`)
 - **Sequential MD:** baseline
@@ -154,7 +154,7 @@ Speedup comparison for a 100-step MD simulation under the `nvt_nose_hoover` ense
 - **Sequential MD:** 339.74 s
 - **Batched MD:** disabled — routed to sequential (see note below; measured ~0.64x, i.e. *slower*, before being disabled)
 
-> **When does batched MD help?** Batched MD yields substantial speedups for launch-latency-bound models at small system sizes (e.g. MACE at **4.90x**, TensorNet at **1.8x**). For heavy models like FairChem uma-s-1p2 whose single-system path is already compute-bound, batching provides no speedup and MD is routed to sequential. The wrappers still accept a list of structures (and batch **static/relax** remain available); only FairChem's MD path is gated. Measured on NVIDIA GB10 (aarch64, CUDA 13, Warp 1.14).
+> **When does batched MD help?** Batched MD gives modest speedups for launch-latency-bound models at small system sizes (MACE **1.40x** in the latest re-run, TensorNet **1.8x** in the earlier record), at a much larger memory cost than static inference (≈20 GB GPU for 20 × 108-atom MACE structures; a TensorNet re-run of the same benchmark exceeded 37 GB and was stopped). Estimate memory before batching MD. For heavy models like FairChem uma-s-1p2 whose single-system path is already compute-bound, batching provides no speedup and MD is routed to sequential. The wrappers still accept a list of structures (and batch **static/relax** remain available); only FairChem's MD path is gated. Measured on NVIDIA GB10 (aarch64, CUDA 13, Warp 1.14).
 
 > **FairChem batched MD disabled (`_nvalchemi_supports_batch_md = False`):** uma-s-1p2's forward scales **superlinearly per atom** — ≈1.57 ms/atom at batch=1 (108 atoms) rising to ≈2.43 ms/atom at batch=20 (2160 atoms), 1.55x worse — so a single large batched step is *slower* than running the structures one at a time through the model's optimized single-system path (batched 0.64x). Two facts pin this down: (1) the cost is intrinsic to the eSCN/MoE forward, not the neighbor list — correcting the wrapper cutoff (12 A → the model's true 6 A) cut `adapt_input` edges from 530 to 78 per atom but left the per-step time unchanged at ~5.25 s; (2) uma-s-1p2 runs with `external_graph_gen=False`, so it **rebuilds its own graph internally and ignores the edges `adapt_input` provides** (energies are identical for any cutoff we pass, including a 0-edge 2 A list). Batched MD is therefore correct (energies match sequential to 0.00 meV/atom) but never a speedup, so `run_md` falls back to sequential.
 
@@ -315,6 +315,10 @@ See [resources/benchmark_results.md](resources/benchmark_results.md) for the ful
 | FairChem uma-s-1p1 (omat) | 3.4× | 5.5× | 2.5e-07 |
 
 ¹ M3GNet energy errors (~0.7–1.8×10⁻³ eV) from different neighbor-list graph connectivity (NValchemi GPU warp kernel vs. CPU `radius_graph_pbc`). Forces are exact (ΔF = 0). Within 5×10⁻³ eV tolerance for PES screening.
+
+## Examples
+
+- [Batched vs sequential static inference on strained Cu](examples/cu_batch_static_accuracy/README.md): re-runs `run_nvalchemi_benchmark.py` for MACE-OMAT-0-small and TensorNet-PES-MatPES-PBE-2025.2 (N = 2–20). Batched and sequential results agree to float32 round-off (ΔF = 0, ΔE ≤ 1.9e-6 eV), with speedups reported next to the stored table. A batched-MD re-run gives 1.4× for MACE (stored 4.9×; now bound by the model forward) and peaks at 20 GB GPU, while TensorNet batched MD exceeded 37 GB.
 
 ## Constraints
 

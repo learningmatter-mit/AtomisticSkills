@@ -1,0 +1,36 @@
+refs:
+- skills/chem-nmr-analysis/examples/deconvolution/borneol.csv
+- skills/chem-nmr-analysis/examples/deconvolution/isoborneol.csv
+timepoints:
+- skills/chem-nmr-analysis/examples/kinetics/t000min.csv
+- skills/chem-nmr-analysis/examples/kinetics/t005min.csv
+- skills/chem-nmr-analysis/examples/kinetics/t010min.csv
+- skills/chem-nmr-analysis/examples/kinetics/t020min.csv
+- skills/chem-nmr-analysis/examples/kinetics/t030min.csv
+- skills/chem-nmr-analysis/examples/kinetics/t045min.csv
+- skills/chem-nmr-analysis/examples/kinetics/t060min.csv
+- skills/chem-nmr-analysis/examples/kinetics/t090min.csv
+times:
+- 0.0
+- 5.0
+- 10.0
+- 20.0
+- 30.0
+- 45.0
+- 60.0
+- 90.0
+time_unit: min
+protons:
+- 18
+- 18
+names:
+- borneol
+- isoborneol
+baseline_correct: true
+baseline_window: null
+baseline_stat: median
+ppm_range: null
+kappa: 0.25
+mnova: false
+output_dir: skills/chem-nmr-analysis/examples/kinetics/output/legacy_min
+quiet: false

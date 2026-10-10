@@ -40,7 +40,13 @@ ${CLAUDE_SKILL_DIR}/../../venv/run mlip python ${CLAUDE_SKILL_DIR}/scripts/bench
 - `--providers`: Corresponding providers (`mace`, `matgl`, `fairchem`).
 - `--output_dir`: Directory to save results and plots.
 - `--max_atoms_limit`: Maximum system size to test (default: 5000).
-- `--only_plot`: Re-generate plots from an existing `speed_benchmark.yaml` file without running simulations.
+- `--only_plot`: Re-generate plots from an existing results file without running simulations.
+- `--results_file`: Results YAML that runs update and `--only_plot` reads (default: `<output_dir>/speed_benchmark.yaml`).
+- `--hardware_name`: Label for plot titles and file names (default: the detected GPU name, or `CPU`). Set it when replotting data measured elsewhere, e.g. the stored reference:
+  ```bash
+  ${CLAUDE_SKILL_DIR}/../../venv/run mlip python ${CLAUDE_SKILL_DIR}/scripts/benchmark_mlips.py --only_plot \
+      --results_file ${CLAUDE_SKILL_DIR}/resources/speed_benchmark_dgx_spark.yaml --hardware_name NVIDIA_GB10 --output_dir plots/
+  ```
 
 ### Metrics Explained
 - **Inference Time / Atom (ms):** The normalized time taken for a single force/energy calculation per atom. Converged values (for larger systems) provide the best comparison.
@@ -66,6 +72,9 @@ Performance benchmarks conducted on **NVIDIA GB10** reveal distinct performance 
 
 > [!TIP]
 > Use these results to select models for long MD simulations or large-scale screening. For systems >1000 atoms, prioritize models with latency < 0.5 ms/atom if ns-scale MD is required.
+
+## Examples
+- [Small benchmark on NaCl supercells](examples/nacl_gb10_small/README.md): MACE-MP-small/medium, TensorNet-MatPES-r2SCAN and uma-s-1p1 up to 2000 atoms on NVIDIA GB10, compared with the stored reference. MACE and TensorNet reproduce it (ms/atom within 5–18 %, MB/atom within 1–7 %); uma-s-1p1 is now 4.5× faster.
 
 ## Resources
 - [Example Benchmark Data (NVIDIA GB10)](resources/speed_benchmark_dgx_spark.yaml)
