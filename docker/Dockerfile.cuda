@@ -77,7 +77,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY src/ ${REPO_DIR}/src/
 COPY skills/ ${REPO_DIR}/skills/
 COPY venv/run venv/servers.tsv venv/platforms.tsv ${REPO_DIR}/venv/
-COPY docker/entrypoint.sh docker/images.json docker/render.py ${REPO_DIR}/docker/
+COPY docker/entrypoint.sh docker/images.json docker/render.py docker/NOTICE.md ${REPO_DIR}/docker/
 RUN --mount=type=cache,target=/root/.cache/uv \
     set -eux; \
     for v in ${VENVS}; do \
