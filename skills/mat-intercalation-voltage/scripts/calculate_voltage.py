@@ -14,6 +14,7 @@ Requirements:
 
 import argparse
 import json
+import math
 from pathlib import Path
 from typing import Dict, Any
 
@@ -26,12 +27,13 @@ def calculate_voltage(
     n_ions: int,
     metal_symbol: str = None,
     output_file: str = None,
+    electrons_per_ion: float = 1.0,
 ) -> Dict[str, Any]:
     """
     Calculate the average intercalation voltage.
 
     The voltage is calculated using:
-    V = -(E_full - E_empty - n * μ_metal) / n
+    V = -(E_full - E_empty - n * μ_metal) / (n * electrons_per_ion)
 
     where μ_metal = E_metal / n_metal_atoms
 
@@ -43,20 +45,28 @@ def calculate_voltage(
         n_ions: Number of intercalated ions (n_full - n_empty)
         metal_symbol: Optional symbol of intercalating ion for documentation
         output_file: Optional path to save results as JSON
+        electrons_per_ion: Positive finite number of electrons transferred per ion;
+            defaults to 1 for monovalent reactions. Not inferred from metal_symbol.
 
     Returns:
         Dictionary with voltage and energy data
     """
+    if not math.isfinite(electrons_per_ion) or electrons_per_ion <= 0:
+        raise ValueError("electrons_per_ion must be positive and finite")
+
     # Calculate chemical potential of metal
     mu_metal = e_metal / n_metal
 
     # Calculate voltage
-    # V = -(E_full - E_empty - n*μ_metal) / n
-    voltage = -(e_full - e_empty - n_ions * mu_metal) / n_ions
+    # Energies in eV divided by the transferred electron count give volts.
+    n_electrons = n_ions * electrons_per_ion
+    voltage = -(e_full - e_empty - n_ions * mu_metal) / n_electrons
 
     results = {
         "voltage_V": voltage,
         "n_ions": n_ions,
+        "electrons_per_ion": electrons_per_ion,
+        "n_electrons": n_electrons,
         "E_full_eV": e_full,
         "E_empty_eV": e_empty,
         "E_metal_total_eV": e_metal,
@@ -81,6 +91,8 @@ def calculate_voltage(
     print(f"  μ(metal):       {mu_metal:.6f} eV/atom")
     print("\nIntercalation:")
     print(f"  Number of ions: {n_ions}")
+    print(f"  Electrons per ion: {electrons_per_ion:g}")
+    print(f"  Total electrons transferred: {n_electrons:g}")
     print(f"  ΔE:             {e_full - e_empty:.6f} eV")
     print(f"  n×μ(metal):     {n_ions * mu_metal:.6f} eV")
     print("=" * 60 + "\n")
@@ -131,6 +143,12 @@ def main():
         help="Number of intercalated ions (difference between full and empty)",
     )
     parser.add_argument(
+        "--electrons_per_ion",
+        type=float,
+        default=1.0,
+        help="Positive finite electrons transferred per ion (default: 1; use 2 for a divalent reaction)",
+    )
+    parser.add_argument(
         "--metal",
         type=str,
         default=None,
@@ -141,6 +159,8 @@ def main():
     )
 
     args = parser.parse_args()
+    if not math.isfinite(args.electrons_per_ion) or args.electrons_per_ion <= 0:
+        parser.error("electrons_per_ion must be positive and finite")
 
     calculate_voltage(
         e_full=args.e_full,
@@ -150,6 +170,7 @@ def main():
         n_ions=args.n_ions,
         metal_symbol=args.metal,
         output_file=args.output,
+        electrons_per_ion=args.electrons_per_ion,
     )
 
     # Save input configs for reproducibility
