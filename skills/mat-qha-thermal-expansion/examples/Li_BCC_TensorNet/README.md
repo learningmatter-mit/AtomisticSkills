@@ -3,9 +3,12 @@
 This example demonstrates a Quasi-Harmonic Approximation (QHA) calculation for bulk Lithium (BCC) using the TensorNet MatPES r2SCAN model.
 
 ## Command
+
+Use a relaxed BCC lithium structure named `Li.cif` in the working directory.
+
 ```bash
-venv/run mlip python skills/qha/scripts/calculate_qha.py \
-    --structure tests/Li.cif \
+venv/run mlip python skills/mat-qha-thermal-expansion/scripts/calculate_qha.py \
+    --structure Li.cif \
     --model_type matgl \
     --model_name TensorNet-MatPES-r2SCAN-v2025.1-PES \
     --eos vinet \
