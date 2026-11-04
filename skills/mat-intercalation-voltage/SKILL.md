@@ -21,11 +21,11 @@ metadata:
 > ```
 
 ## Goal
-To calculate the average open-circuit voltage (OCV) of an intercalation cathode material (e.g., Li$_x$M$_y$O$_z$) by computing the energy difference between the fully intercalated (charged) and de-intercalated (discharged) states.
+To calculate the average open-circuit voltage (OCV) of an intercalation cathode material (e.g., Li$_x$M$_y$O$_z$) by computing the energy difference between the fully intercalated and de-intercalated states.
 
 The average voltage $V$ is given by:
-$$V = -\frac{E(\text{full}) - E(\text{empty}) - n \mu_{\text{metal}}}{n}$$
-where $E$ is the total energy, $n$ is the number of intercalated ions, and $\mu_{\text{metal}}$ is the chemical potential per atom of the bulk metal.
+$$V = -\frac{E(\text{full}) - E(\text{empty}) - n \mu_{\text{metal}}}{n z}$$
+where $E$ is the total energy in eV, $n$ is the number of intercalated ions, $z$ is the positive number of electrons transferred per ion, and $\mu_{\text{metal}}$ is the chemical potential per atom of the bulk metal. With these units, $V$ is in volts. Set $z=1$ for a monovalent reaction or $z=2$ for a divalent reaction; the script does not infer $z$ from the metal symbol.
 
 ## Instructions
 
@@ -89,6 +89,7 @@ where $E$ is the total energy, $n$ is the number of intercalated ions, and $\mu_
         --e_metal -1.23 \
         --n_metal 16 \
         --n_ions 4 \
+        --electrons_per_ion 1 \
         --metal Li \
         --output voltage_calc/voltage_results.json
     ```
@@ -99,8 +100,11 @@ where $E$ is the total energy, $n$ is the number of intercalated ions, and $\mu_
     - `--e_metal`: Total energy of bulk metal structure (eV)
     - `--n_metal`: Number of metal atoms in the bulk metal structure
     - `--n_ions`: Number of intercalated ions (difference between full and empty)
+    - `--electrons_per_ion`: Positive finite electrons transferred per ion (default 1). Use `--electrons_per_ion 2` for a Mg²⁺/Mg, Ca²⁺/Ca or Zn²⁺/Zn reaction.
     - `--metal`: Symbol of intercalating ion (optional, for documentation)
     - `--output`: Path to save results as JSON (optional)
+
+    The result records `electrons_per_ion` and the total transferred electron count `n_electrons`, in addition to the voltage and reaction energies. The default preserves existing monovalent calls.
 
 ## Available Metal Structures
 
