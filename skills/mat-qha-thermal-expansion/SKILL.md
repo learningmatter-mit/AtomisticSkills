@@ -44,6 +44,12 @@ Note the cube: a window quoted as "+/-5%" in lattice parameter is three times th
 volume. Read which convention a tool means before comparing windows across codes --
 `QHACalc` scales the lattice (`apply_strain`), not the volume.
 
+Omit `--volume_window` to retain MatCalc's native scale grid; `--n_volumes` only
+applies when a volume window is supplied. For example,
+`--volume_window 0.10 --n_volumes 7` samples seven volumes from 0.90 to 1.10 times
+the relaxed volume,
+with lattice scale factors obtained by taking their cube roots.
+
 > [!IMPORTANT]
 > **The window must bracket the free-energy minimum at your highest temperature.** The
 > lattice expands on heating, so a window adequate at 0 K can be too narrow at high T,
