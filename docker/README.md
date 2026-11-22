@@ -115,28 +115,14 @@ On HPC clusters without a Docker daemon, set `ATOMISTIC_RUNTIME: apptainer` in `
 venv/run --setup
 ```
 
-## Licences: What the Images Contain
+## Licenses and model weights
 
-An image ships this repository's MIT code plus the software its
-`venv/<name>/uv.lock` pins. It carries **no model weights**: every checkpoint is
-fetched at run time into the mounted model cache under the caller's own
-credentials. FAIRChem's UMA is the case that makes this a rule rather than a
-convenience — `facebook/UMA` is a gated repository (manual approval, the FAIR
-Chemistry licence), so weights are downloaded by `fairchem-core` with the user's
-`HF_TOKEN` after access is granted. An image without a token cannot obtain them,
-and an image that shipped them would be redistributing them.
-
-Never add a build step that pre-downloads weights. Verify an image with:
-
-```bash
-docker run --rm --entrypoint sh <image> -c 'ls -A /opt/model-cache; \
-  find / -xdev \( -name "*.ckpt" -o -name "*.safetensors" \) -size +20M'
-```
-
-A few dependencies are strongly copyleft — `pymupdf` (AGPL-3.0 or commercial) and
-`openbabel-wheel` (GPL) in `cpu`, `mlip` and `fairchem`, plus `python_hostlist`
-(GPL-2.0+) in `mlip`. `docker/NOTICE.md` lists them per image and says where the
-corresponding source is; it is copied into every image.
+Each image ships the project's MIT license at `/opt/atomisticskills/LICENSE`
+and the [container notice](NOTICE.md) at `/opt/atomisticskills/docker/NOTICE.md`.
+The notice lists selected third-party licenses by image and points to upstream
+sources. Model checkpoints such as FAIRChem UMA are fetched at run time, not
+by the image build. See the [model weight spot check](NOTICE.md#model-weights-are-downloaded-at-run-time)
+for a command that flags large files with common checkpoint extensions, including `.pt`.
 
 ## Known Limitations
 

@@ -127,14 +127,18 @@ def test_launchers_are_executable(path):
     assert os.access(PROJECT_ROOT / path, os.X_OK)
 
 
-def test_dockerfile_copies_existing_files():
-    text = (PROJECT_ROOT / "docker" / "Dockerfile").read_text()
+@pytest.mark.parametrize("dockerfile", ["Dockerfile", "Dockerfile.cuda"])
+def test_dockerfile_copies_existing_files(dockerfile):
+    text = (PROJECT_ROOT / "docker" / dockerfile).read_text()
+    copied = set()
     for line in text.splitlines():
         if line.startswith("COPY ") and "--from" not in line:
             for src in line.split()[1:-1]:
                 if "$" in src:
                     continue
-                assert (PROJECT_ROOT / src).exists(), f"Dockerfile copies missing {src}"
+                assert (PROJECT_ROOT / src).exists(), f"{dockerfile} copies missing {src}"
+                copied.add(src)
+    assert {"LICENSE", "docker/NOTICE.md"} <= copied
 
 
 def test_build_matrix_covers_every_image_and_platform():

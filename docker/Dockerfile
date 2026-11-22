@@ -77,7 +77,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY src/ ${REPO_DIR}/src/
 COPY skills/ ${REPO_DIR}/skills/
 COPY venv/run venv/servers.tsv venv/platforms.tsv ${REPO_DIR}/venv/
-COPY docker/entrypoint.sh docker/images.json docker/render.py docker/NOTICE.md ${REPO_DIR}/docker/
+COPY docker/entrypoint.sh docker/images.json docker/render.py ${REPO_DIR}/docker/
 RUN --mount=type=cache,target=/root/.cache/uv \
     extras="--all-extras"; \
     if grep -q '^cu126 = ' venv/${VENV}/pyproject.toml; then extras="${extras} --no-extra cu126"; fi; \
@@ -88,6 +88,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
         > docker/server-map.txt \
     && cat docker/server-map.txt \
     && chmod +x docker/entrypoint.sh venv/run
+
+COPY LICENSE ${REPO_DIR}/LICENSE
+COPY docker/NOTICE.md ${REPO_DIR}/docker/NOTICE.md
 
 # `python` is the environment's interpreter for every caller: docker run,
 # apptainer exec (which skips the entrypoint) and the entrypoint itself.

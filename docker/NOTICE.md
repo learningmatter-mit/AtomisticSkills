@@ -1,83 +1,76 @@
 # NOTICE: third-party software in the container images
 
-The images published under `ghcr.io/learningmatter-mit` package this repository's
-own code (MIT, see `LICENSE`) together with the software each
-`venv/<name>/uv.lock` pins. This file records what that means, and the one thing
-the images deliberately do not carry.
+The images published under `ghcr.io/learningmatter-mit` contain this repository's
+code and the dependencies selected from the `venv/<name>/uv.lock` files. The
+repository code is licensed under MIT; its license is shipped at
+`/opt/atomisticskills/LICENSE` in every image built with this notice.
+Third-party software has its own license terms.
 
-## The images carry no model weights
+## Model weights are downloaded at run time
 
-Every MLIP checkpoint is fetched at run time by the code that needs it, into the
-mounted model cache (`ATOMISTIC_MODEL_CACHE`, `HF_HOME`, `TORCH_HOME`,
-`MATGL_CACHE`), never into an image layer. Three things hold that:
+The Dockerfiles do not download model checkpoints. The build context excludes
+common checkpoint and trajectory formats (`*.pt`, `*.pth`, `*.ckpt`,
+`*.safetensors`, `*.model`, `*.traj`, and `*.h5`) and local virtual environments.
+The build leaves `/opt/model-cache` empty; the runtime uses that location for
+its mounted model cache.
 
-- `.dockerignore` excludes `*.pt`, `*.pth`, `*.ckpt`, `*.model`, `*.traj` and
-  `*.h5` from the build context, along with `**/.venv/`;
-- the Dockerfiles copy only `src/`, `skills/`, `venv/` and `docker/`, then run
-  `uv sync --frozen` from the locks;
-- `/opt/model-cache` is a `VOLUME` that is empty at build.
+FAIRChem's UMA weights illustrate why this matters. `facebook/UMA` is gated and
+uses the FAIR Chemistry license. FAIRChem downloads the checkpoints at run time
+using the caller's Hugging Face credentials (`HF_TOKEN` or a cached login) with
+access to the repository. The two small `.pt` files in `fairchem-core`, `Jd.pt`
+and `wigner_d_coefficients.pt`, are precomputed Wigner-D tables, not checkpoints.
+Do not add a build step that downloads weights: shipping them in an image would
+be redistribution, not a run-time download by the user.
 
-The FAIRChem UMA checkpoints are why this matters. `facebook/UMA` is a gated
-repository (`gated: manual`, licence `other` — the FAIR Chemistry licence), and
-`fairchem-core` downloads the weights at run time with the **user's own**
-`HF_TOKEN`, for a user who has been granted access. An image carrying those
-weights would be redistributing them; these do not. Without a token a
-`load_model` call fails with 401, which is the intended behaviour, not a bug.
-
-The two `.pt` files inside `fairchem-core` — `models/uma/Jd.pt` (22 KB) and
-`models/uma/common/quaternion/wigner_d_coefficients.pt` (30 KB) — are precomputed
-Wigner-D constant tables distributed in the MIT-licensed wheel. They are not
-model weights.
-
-**Do not add a build step that pre-downloads weights.** It would turn a permitted
-run-time download into a redistribution the model licences do not allow, and
-would grow every image by gigabytes. Check an image with:
+To spot-check a fresh container, replace the image below with the tag or digest
+of interest. Do not bind-mount your existing model cache:
 
 ```bash
-docker run --rm --entrypoint sh <image> -c \
-  'ls -A /opt/model-cache; find / -xdev \( -name "*.ckpt" -o -name "*.safetensors" \) -size +20M'
+image=ghcr.io/learningmatter-mit/atomisticskills-fairchem:2.0.0
+docker run --rm --entrypoint sh "$image" -ec '
+  ls -A /opt/model-cache
+  find / -xdev -type f \( -name "*.pt" -o -name "*.pth" -o -name "*.ckpt" \
+    -o -name "*.safetensors" -o -name "*.model" -o -name "*.traj" \
+    -o -name "*.h5" \) -size +20M -print
+'
 ```
 
-A correct image prints nothing but build-time placeholders.
+The cache listing should be empty. Review any paths printed by `find`: a large
+file with a matching extension is not necessarily a checkpoint. Conversely,
+this is only a spot check for large files with common extensions. `find -xdev`
+stays on the image filesystem and does not descend into the separate cache
+volume; the cache listing above is a separate check. No matches do not prove
+that the image contains no checkpoints.
 
-## Strong-copyleft packages
+## Selected dependencies with GPL or AGPL licenses
 
-Most of the pinned software is permissive (MIT, BSD, Apache-2.0). These are the
-exceptions, as installed in each image:
+This is not a complete license inventory. The versions and image assignments
+below follow the locked environments and the Dockerfiles' selected extras.
 
-| Package           | Version  | Licence                     | Images                              |
-| ----------------- | -------- | --------------------------- | ----------------------------------- |
-| `pymupdf`         | 1.28.2   | AGPL-3.0 or Artifex commercial | cpu, mlip, fairchem              |
-| `openbabel-wheel` | 3.1.1.23 | GPL                         | cpu, mlip, fairchem, generative     |
-| `python_hostlist` | 2.3.0    | GPL-2.0+                    | mlip                                |
+| Package           | Version  | License                       | Images                             |
+| ----------------- | -------- | ----------------------------- | ---------------------------------- |
+| `pymupdf`         | 1.28.2   | AGPL-3.0 or Artifex commercial | cpu, mlip, fairchem                |
+| `openbabel-wheel` | 3.1.1.23 | GPL                           | cpu, mlip, fairchem, generative     |
+| `python-hostlist` | 2.3.0    | GPL-2.0-or-later              | mlip                               |
+| `BoltzTraP2`      | 26.3.1   | GPL-3.0-or-later              | cpu, mlip, fairchem                |
 
-They arrive as dependencies of the environments in `venv/` — `pymupdf` extracts
-PDF text in the paper-download and synthesis-extraction paths, and
-`openbabel-wheel` ships the `obabel` converter that the docking skills invoke as
-a command — not as modifications of this repository's code, and the images do
-not alter them. In the generative image only the `adit` environment pulls one in.
+`pymupdf` is used for PDF text extraction, and `openbabel-wheel` provides the
+`obabel` command used by the docking skills. In the generative image only the
+`adit` environment installs `openbabel-wheel`. `BoltzTraP2` comes in through
+AMSET in the `transport` extra. GPU images also carry NVIDIA runtime packages
+with their own license terms, separate from the generative image's CUDA base.
 
-## Corresponding source
+## Where to look for source and license terms
 
-For an image tag, the corresponding source is:
+- Repository code and build files: use the repository revision that built the
+  image. An image tag alone does not identify a Git commit.
+- Python dependencies: use the versions and upstream sources recorded in the
+  lockfiles at that revision. For example, the PyPI source distribution for
+  `pymupdf` can be fetched with
+  `pip download --no-binary :all: --no-deps pymupdf==1.28.2`.
+- Base images: `ubuntu:24.04` and, for the generative image,
+  `nvidia/cuda:13.0.1-devel-ubuntu24.04`. Consult their publishers for source and
+  license information.
 
-- this repository at tag `v<tag>` — `src/`, `skills/`, `docker/` and `venv/run`;
-- the exact package versions in `venv/<name>/uv.lock`, for which PyPI serves the
-  source distributions. To fetch one:
-
-  ```bash
-  pip download --no-binary :all: --no-deps -d /tmp/src pymupdf==1.28.2
-  ```
-
-- the base images: `ubuntu:24.04`, and for the generative image
-  `nvidia/cuda:13.0.1-devel-ubuntu24.04`, redistributed under NVIDIA's container
-  licence.
-
-If you redistribute an image and need a written offer of corresponding source,
-open an issue on the repository.
-
-## Scope
-
-This file is an inventory of what the images contain, kept so that whoever
-distributes them can make the call knowingly. It is not legal advice, and it
-makes no claim about obligations that apply to a given form of distribution.
+This notice documents packaging. It does not determine redistribution
+obligations or replace the upstream license terms.
