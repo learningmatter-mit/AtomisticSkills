@@ -96,6 +96,9 @@ print('${v}: PyG extensions with CUDA', torch.ops.torch_scatter.cuda_version())"
     cat docker/server-map.txt; \
     chmod +x docker/entrypoint.sh venv/run
 
+COPY LICENSE ${REPO_DIR}/LICENSE
+COPY docker/NOTICE.md ${REPO_DIR}/docker/NOTICE.md
+
 # Each server runs in its own environment (docker/server-map.txt). A command
 # runs in the environment named by ATOMISTIC_VENV, which venv/run passes; the
 # first one by default.

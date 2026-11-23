@@ -3,9 +3,8 @@
 # Without this the context is the whole working tree -- on a development machine
 # that includes tens of gigabytes of research output and local credentials, all
 # of which would be uploaded to the daemon and could end up in an image layer.
-# The Dockerfiles copy only src/, skills/, docker/, venv/ (locks and launcher),
-# pyproject.toml and VERSION, so everything else
-# is excluded here by default.
+# The Dockerfiles copy selected source, runtime and packaging files, including
+# the repository LICENSE and the container NOTICE.
 
 # --- credentials and private data (never build these in)
 .env
@@ -75,6 +74,8 @@ venv/*/.atomisticskills-sync.lock
 **/*.pth
 *.ckpt
 **/*.ckpt
+*.safetensors
+**/*.safetensors
 *.traj
 **/*.traj
 *.h5
@@ -85,4 +86,4 @@ docs/
 tests/
 *.md
 !skills/**/*.md
-LICENSE
+!docker/NOTICE.md

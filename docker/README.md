@@ -115,6 +115,15 @@ On HPC clusters without a Docker daemon, set `ATOMISTIC_RUNTIME: apptainer` in `
 venv/run --setup
 ```
 
+## Licenses and model weights
+
+Each image ships the project's MIT license at `/opt/atomisticskills/LICENSE`
+and the [container notice](NOTICE.md) at `/opt/atomisticskills/docker/NOTICE.md`.
+The notice lists selected third-party licenses by image and points to upstream
+sources. Model checkpoints such as FAIRChem UMA are fetched at run time, not
+by the image build. See the [model weight spot check](NOTICE.md#model-weights-are-downloaded-at-run-time)
+for a command that flags large files with common checkpoint extensions, including `.pt`.
+
 ## Known Limitations
 
 - **Generative servers on x86_64** run natively where glibc ≥ 2.32 (PyG's wheels) and from the amd64 `generative` image elsewhere.

@@ -89,6 +89,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     && cat docker/server-map.txt \
     && chmod +x docker/entrypoint.sh venv/run
 
+COPY LICENSE ${REPO_DIR}/LICENSE
+COPY docker/NOTICE.md ${REPO_DIR}/docker/NOTICE.md
+
 # `python` is the environment's interpreter for every caller: docker run,
 # apptainer exec (which skips the entrypoint) and the entrypoint itself.
 ENV PATH=${REPO_DIR}/venv/${VENV}/.venv/bin:${PATH} \
