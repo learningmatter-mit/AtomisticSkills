@@ -21,15 +21,6 @@ logger = logging.getLogger("QHA-Skill")
 from src.utils.mlips.loader import load_wrapper
 
 
-def QHACalc_default_scale_factors():
-    """matcalc's own default: +/-5% in linear strain, i.e. -14%/+16% in volume."""
-    import inspect
-
-    from matcalc import QHACalc
-
-    return inspect.signature(QHACalc.__init__).parameters["scale_factors"].default
-
-
 def scale_factors_from_volume_window(window, n_volumes):
     """Linear scale factors spanning +/-`window` in VOLUME about the relaxed cell.
 
@@ -52,6 +43,12 @@ def run_qha(args, wrapper, atoms):
 
     calc = wrapper.create_calculator()
 
+    scale_kwargs = {}
+    if args.volume_window is not None:
+        scale_kwargs["scale_factors"] = scale_factors_from_volume_window(
+            args.volume_window, args.n_volumes
+        )
+
     qha_calc = QHACalc(
         calculator=calc,
         t_step=args.t_step,
@@ -63,11 +60,9 @@ def run_qha(args, wrapper, atoms):
         # returning. 1e-3 is tight enough for QHA and is reachable.
         fmax=args.fmax,
         max_steps=args.max_steps,
-        scale_factors=scale_factors_from_volume_window(
-            args.volume_window, args.n_volumes
-        ),
         write_gibbs_temperature=os.path.join(args.output_dir, "gibbs_temperature.dat"),
         write_thermal_expansion=os.path.join(args.output_dir, "thermal_expansion.dat"),
+        **scale_kwargs,
     )
 
     logger.info("Starting QHA calculation...")
