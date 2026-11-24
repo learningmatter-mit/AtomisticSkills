@@ -24,9 +24,11 @@ mcp_mace_relax_structure(
 # 4. Calculate voltage (substitute actual energies from relaxation)
 venv/run cpu python skills/mat-intercalation-voltage/scripts/calculate_voltage.py \
     --e_full <E_full> --e_empty <E_empty> --e_metal <E_metal> \
-    --n_metal <n_metal_atoms> --n_ions <n_Li_removed> --metal Li \
+    --n_metal <n_metal_atoms> --n_ions <n_Li_removed> --electrons_per_ion 1 --metal Li \
     --output voltage/voltage_results.json
 ```
+
+Li⁺/Li transfers one electron per ion, which is also the default. For a divalent reaction, pass `--electrons_per_ion 2`; at the same reaction energy per ion, the voltage is half the monovalent value. `--metal` only labels the output and does not choose the electron transfer.
 
 ## Expected Results
 
